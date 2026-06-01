@@ -1,0 +1,33 @@
+$font-weights: ("extra-light": 200,
+  "light": 300,
+  "regular": 400, //base font weight
+  "medium": 500,
+  "semibold": 600,
+  "bold": 700,
+  "extra-bold": 800,
+);
+
+$text: ("-center": center,
+  "-left": left,
+  "-right": right,
+  "-justify": justify,
+  "-initial": initial,
+  "-inherit": inherit,
+);
+
+
+$fontsize: (
+  "h1" : 48.83px,
+  "h2" : 39.81px, // Always used h2 for heading
+  "h3" : 33.18px,
+  "h4" : 27.65px,
+  "h5" : 23.04px,
+  "h6" : 19.20px,
+  "subtitle" : 16px,
+  "body" : 16px,
+  "subbody": 14px,
+  "paragraph":12px,
+  "label": 13px,
+  "input":12px,
+  "info":10px
+);

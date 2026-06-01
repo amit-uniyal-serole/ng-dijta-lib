@@ -1,0 +1,13 @@
+<div class="dx-field-wrapper" [class.dx-disable]="disabled">
+  <mat-checkbox [tabIndex]="tabIndex" [id]="id" [formControl]="control?.control" (ngModelChange)="inputChange($event)"
+    [disabled]="disabled || readonly || viewOnly" (change)="onInputChangeEvent($event)">
+    <mat-label class="subbody">
+      <ng-content select="dx-label"></ng-content>
+    </mat-label>
+  </mat-checkbox>
+  <mat-error>
+    <div class="dx-error">
+      <ng-content select="dx-error"> </ng-content>
+    </div>
+  </mat-error>
+</div>

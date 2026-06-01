@@ -1,0 +1,20 @@
+<div class="dx-field-wrapper input-variant-layout" [class.none-label]="noneLabel" [ngClass]="outline"
+  [class.error]="control?.invalid && (control.touched || control.dirty)">
+  <mat-form-field appearance="outline">
+    <span matPrefix class="material-icons">{{icon}}</span>
+    <mat-label class="dx-input-label" *ngIf="!onTouched && placeholder">{{placeholder}}</mat-label>
+    <input type="text" matInput [mask]="mask" [(ngModel)]="value" [placeholder]="placeholder"
+      (ngModelChange)="inputChange($event)" [disabled]="disabled" (blur)="onBlur($event)" [required]="required" />
+    <span matSuffix>
+      <ng-content select="dx-suffix"></ng-content>
+    </span>
+    <mat-hint>
+      <ng-content select="dx-hint"> </ng-content>
+    </mat-hint>
+  </mat-form-field>
+  <mat-error>
+    <div class="dx-error">
+      <ng-content select="dx-error"> </ng-content>
+    </div>
+  </mat-error>
+</div>

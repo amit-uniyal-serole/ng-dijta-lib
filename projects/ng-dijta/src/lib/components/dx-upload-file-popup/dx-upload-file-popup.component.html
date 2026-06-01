@@ -1,0 +1,75 @@
+<div class="popup-header" mat-dialog-title *ngIf="title">
+  <div class="header-title">{{title}}</div>
+  <button class="material-icons popup-close" (click)="close()">
+    close
+  </button>
+</div>
+
+<mat-dialog-content class="mat-typography">
+  <div class="popup-wrapper">
+    <div class="popup-container mt-3">
+      <div class="drop-area mb-3" attachementDirective *ngIf="!files?.length">
+        <input class="file-input" type="file" multiple #fileDropRef id="fileDropRef"
+          (change)="fileBrowseHandler($event)" [accept]="acceptFormat" />
+        <!-- upload-image -->
+        <svg width="48" height="52" viewBox="0 0 48 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M36.4051 13.3472L25.2051 0.5472C24.9011 0.2016 24.4627 0 24.0019 0C23.5411 0 23.1027 0.2016 22.7987 0.5472L11.5987 13.3472C11.1859 13.8208 11.0835 14.4896 11.3459 15.0624C11.6051 15.632 12.1747 16 12.8019 16H19.2019V36.8C19.2019 37.6832 19.9187 38.4 20.8019 38.4H27.2019C28.0851 38.4 28.8019 37.6832 28.8019 36.8V16H35.2019C35.8291 16 36.3987 15.6352 36.6579 15.0624C36.9171 14.4896 36.8211 13.8176 36.4051 13.3472Z"
+            fill="#52C4FF" />
+          <path
+            d="M41.6 35.1993V44.7993H6.4V35.1993H0V47.9993C0 49.7689 1.4336 51.1993 3.2 51.1993H44.8C46.5696 51.1993 48 49.7689 48 47.9993V35.1993H41.6Z"
+            fill="#1F3BB3" />
+        </svg>
+        <!--  -->
+        <label class="file-label" for="fileDropRef">{{'Drag and drop or click to select' | transloco}}</label>
+        <label class="file-label-error" *ngIf="fileSizeError">{{'File size should not exceed' | transloco}}
+          {{defaultFileSizeMsg}}</label>
+        <label class="file-label-error" *ngIf="!fileSizeError && fileFormatError">{{'Only files with following
+          extensions are allowed' | transloco}}
+          {{defaultFileSizeMsg | transloco}}</label>
+      </div>
+
+      <div class="attachement-viewer" *ngIf="files?.length">
+        <table mat-table [dataSource]="files" class="table-light-bg">
+          <!-- file_name Column -->
+          <ng-container matColumnDef="file_name">
+            <th mat-header-cell *matHeaderCellDef>
+              <p class="custom-font-family mb-0 subbody fw-semibold table-header-text">{{'File Name' | transloco}}</p>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element?.file_name | transloco }}</td>
+          </ng-container>
+          <!-- document_type Column -->
+          <ng-container matColumnDef="file_type">
+            <th mat-header-cell *matHeaderCellDef>
+              <p class="custom-font-family mb-0 subbody fw-semibold table-header-text">{{'File Type' | transloco}}</p>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element?.file_type }}</td>
+          </ng-container>
+          <!-- file_size Column -->
+          <ng-container matColumnDef="file_size">
+            <th mat-header-cell *matHeaderCellDef>
+              <p class="custom-font-family mb-0 subbody fw-semibold table-header-text">{{'File Size' | transloco}}</p>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element?.file_size }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <br />
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="attachment-footer">
+    <div class="attachment-footer-details">
+      <span class="body" *ngIf="!files?.length && hint">{{hint}}</span>
+    </div>
+    <div class="attachment-footer-actions">
+      <dx-button class="secondary-btn" title="{{'Cancel' | transloco}}"
+        (onActionSelect)="close()"></dx-button>&nbsp;&nbsp;
+      <dx-button title="{{'Upload' | transloco}}" (onActionSelect)="uploadAttachment()"></dx-button>
+    </div>
+  </div>
+</mat-dialog-actions>

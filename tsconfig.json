@@ -1,0 +1,53 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,    
+    "noImplicitAny": false,    
+    "paths": {
+      "ng-dijta": ["dist/ng-dijta/ng-dijta", "dist/ng-dijta"],
+      "@ng-dijta/directive/validation": ["lib/directive/validation/index"],
+      "@ng-dijta/basic-tile": ["lib/components/dx-basic-tile/index"],
+      "@ng-dijta/content": ["lib/components/dx-content/index"],
+      "@ng-dijta/footer": ["lib/components/dx-footer/index"],
+      "@ng-dijta/title": ["lib/components/dx-title/index"],
+      "@ng-dijta/chart-tile": ["lib/components/dx-chart-tile/index"],
+      "@ng-dijta/calendar": ["lib/components/dx-calendar/index"],
+      "@ng-dijta/input": ["lib/components/dx-input/index"],
+      "@ng-dijta/flex-table": ["lib/components/flex-table/index"],
+      "@ng-dijta/select": ["lib/components/dx-select/index"],
+      "@ng-dijta/upload-file": ["lib/components/dx-upload-file-popup/index"],
+      "@ng-dijta/autocomplete-select": [
+        "lib/components/dx-autocomplete-select/index"
+      ],
+      "@ng-dijta/loader": ["lib/components/dx-loader/index"],
+      "@ng-dijta/datepicker": ["lib/components/dx-datepicker/index"],
+      "@ng-dijta/tree": ["lib/components/dx-tree/index"]
+    },
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2020",
+    "module": "es2020",
+    "lib": ["es2020", "dom"],
+    "types": [
+      "node"
+    ],
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": false,
+  }
+}

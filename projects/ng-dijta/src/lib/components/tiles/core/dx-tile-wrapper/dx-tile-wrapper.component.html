@@ -1,0 +1,10 @@
+<div class="dx_card">
+  <div class="dx_card_header" *ngIf="header">
+    <div class="dx_card_header_main px-2">
+      <dx-tiles-header [header]="header"></dx-tiles-header>
+    </div>
+  </div>
+  <div class="dx_card_content">
+    <ng-content></ng-content>
+  </div>
+</div>

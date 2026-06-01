@@ -1,0 +1,33 @@
+<div class="dx-card-list-view-wrapper">
+  <div class="dx-card-list-view-container">
+    <div class="dx-card-list-view-profile-container" *ngIf="config?.basicCardConfig?.profile">
+      <dx-card-profile (emitFileDetails)="emitFileDetail($event)"
+        [profile]="config?.basicCardConfig?.profile"></dx-card-profile>
+    </div>
+    <div class="dx-card-list-view-description-container" *ngIf="config?.basicCardConfig?.description">
+      <dx-card-description [description]="config?.basicCardConfig?.description">
+        <ng-content>
+        </ng-content>
+      </dx-card-description>
+    </div>
+    <ng-container *ngIf="!isAdditionalContent;else additionalContentTemplateRef">
+      <div class="tiles" *ngIf="config?.basicCardConfig?.tiles">
+        <div class="tile" *ngFor="let tile of config?.basicCardConfig?.tiles" [style.background]="tile?.bgColor">
+          <h3 class="heading-5 mb-0">{{tile.title}}</h3>
+          <p class="paragraph mb-0">{{tile.subtitle}}</p>
+        </div>
+      </div>
+      <div class="dx-card-list-view-listing-container" *ngIf="config?.basicCardConfig?.contentListing">
+        <dx-card-listing [contentListing]="config?.basicCardConfig?.contentListing"></dx-card-listing>
+      </div>
+    </ng-container>
+  </div>
+  <div class="dx-card-list-view-actions-container" *ngIf="config?.basicCardConfig?.actions">
+    <dx-card-action [data]="data" [actions]="config?.basicCardConfig?.actions"
+      (onClickCardAction)="onSelectCardAction($event)"></dx-card-action>
+  </div>
+</div>
+
+<ng-template #additionalContentTemplateRef>
+  <ng-content select="additional-content-selector"></ng-content>
+</ng-template>

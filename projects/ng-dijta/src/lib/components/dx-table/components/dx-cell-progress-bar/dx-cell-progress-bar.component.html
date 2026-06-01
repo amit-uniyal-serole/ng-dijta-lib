@@ -1,0 +1,7 @@
+<div class="table-progress">
+  <p dx-tooltip dxTooltipTitle="{{data}}%" dxTooltipPlacement="topLeft" class="mb-0" *ngIf="data">{{data}}%</p>
+  <div class="progress" *ngIf="column?.progressBar || source?.progressBar?.show">
+    <div class="progress-bar progress-bar-striped" [style.background-color]="source?.progressBar?.color"
+      role="progressbar" [style.width.%]="data" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+  </div>
+</div>

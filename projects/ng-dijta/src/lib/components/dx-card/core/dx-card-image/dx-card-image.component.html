@@ -1,0 +1,25 @@
+<div class="dx-card-image-wrapper">
+    <ng-container *ngIf="data?.value?.length > 0">
+        <ng-container *ngFor="let item of data?.value;let i = index">
+            <div class="image-preview">
+                <dx-image-preview (onClickImage)="open()" [isShowPreview]="false" [fileItem]="item"></dx-image-preview>
+                <p class="paragraph mb-0">{{item?.fileName | transloco}}</p>
+
+                <div class="edit-btn">
+                    <span *ngIf="this.data?.adapterData?.removeFileUrl" class="material-icons-outlined delete"
+                        (click)="remove(i)">
+                        delete
+                    </span>
+                    <span *ngIf="this.data?.adapterData?.downloadUrl" class="material-icons-outlined download"
+                        (click)="download(i)">
+                        file_download
+                    </span>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+</div>
+
+<div style="display: none;" dImagePreview [customSub]="customSub" [disableDefault]="true">
+    <img *ngFor="let image of safeUrls" [attr.src]="image" alt="image">
+</div>

@@ -1,0 +1,16 @@
+<span [class.tbl-text-copy]="column?.copyText" class="table-service-data" *ngIf="!isBusy;else serviceDataLoader">
+  <span *ngIf="!error" [matTooltip]="text && text !='-'? text:null">
+    <span class="service-data-text">{{text | transloco}}</span>
+  </span>
+  <span *ngIf="error" class="material-icons-outlined error" [matTooltip]="error"
+    matTooltipClass="service-data-errror-tooltip">info</span>
+  <p [cdkCopyToClipboard]="text" *ngIf=" column?.copyText && text && text !='-'"
+    class="material-icons-outlined copy-clipboard" [matTooltip]="copyText" (mouseenter)="changeText()"
+    (click)="onClickCopy()">
+    content_copy
+  </p>
+</span>
+
+<ng-template #serviceDataLoader>
+  <dx-skeleton-loader [theme]="SquareBox"></dx-skeleton-loader>
+</ng-template>

@@ -1,0 +1,38 @@
+<div class="dx-field-wrapper dx-daterange" [class.none-label]="noneLabel" [ngClass]="outline"
+  [class.display-view]="viewOnly" [class.dx-disable]="disabled" [class.required]="required || ctrRequired"
+  [class.none-border]="noneBorder">
+  <mat-label class="dx-outer-label-wrapper">
+    <span class="dx-outer-label">
+      <ng-content select="[dxLabel]"></ng-content>
+      <span *ngIf="required || ctrRequired" class="astrict">*</span>
+    </span>
+  </mat-label>
+  <mat-form-field appearance="outline">
+    <mat-label class="dx-input-label">
+      <ng-content select="dx-label"></ng-content>
+    </mat-label>
+    <span matPrefix>
+      <ng-content select="dx-prefix"></ng-content>
+    </span>
+    <mat-date-range-input [formGroup]="range" [rangePicker]="pickerdaterange" [required]="required || ctrRequired">
+      <input matStartDate placeholder="Start date" (dateChange)="dateChange()" formControlName="start" [min]="minDate"
+        [datePickerFormat]="format" ngDefaultControl [readonly]="readonly || viewOnly || disabled"
+        [required]="startDateRequird">
+      <input matEndDate placeholder="End date" (dateChange)="dateChange()" formControlName="end" [max]="maxDate"
+        [datePickerFormat]="format" ngDefaultControl [readonly]="readonly || viewOnly || disabled"
+        [required]="endDateRequird">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matSuffix [for]="pickerdaterange" [disabled]="disabled"></mat-datepicker-toggle>
+    <mat-date-range-picker #pickerdaterange></mat-date-range-picker>
+    <span matSuffix>
+      <ng-content select="dx-suffix"></ng-content>
+    </span>
+    <mat-hint>
+      <ng-content select="dx-hint"> </ng-content>
+    </mat-hint>
+    <mat-error>
+      <ng-content select="dx-error"> </ng-content>
+    </mat-error>
+  </mat-form-field>
+
+</div>

@@ -1,0 +1,17 @@
+.dx-loading-backdrop {
+    position: absolute;
+    z-index: 1079;
+    background-color: #d7d8da;
+    opacity: 0.3;
+    left: 0;
+    top: 0;
+    bottom: 0 !important;
+    right: 0;
+  }
+  
+  .dx-loading-backdrop.dx-loading-full {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+  }
+  

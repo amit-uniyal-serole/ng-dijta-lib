@@ -1,0 +1,12 @@
+.header-title {
+  display: flex;
+  align-items: center;
+
+  .icons {
+    background: var(--primary-base);
+    color: var(--primary-on-base);
+    padding: 7px;
+    border-radius: 50%;
+    font-size: 18px;
+  }
+}

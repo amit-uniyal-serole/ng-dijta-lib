@@ -1,0 +1,350 @@
+.dxBtn {
+  background-color: var(--primary-base);
+  color: var(--primary-on-base);
+  align-items: center;
+  display: flex;
+  &:hover {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(26, 25, 25, 0.3) 0px 18px 36px -18px inset;
+  }
+
+  .dx-btn-mat-icons {
+    font-size: 19px;
+    color: var(--primary-on-base);
+    padding-right: 10px;
+  }
+}
+
+.dxIconClass {
+  background-color: var(--primary-base);
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 17px;
+  color: inherit;
+  padding: 16px 20px;
+  border: 1px solid var(--primary-base);
+  margin-top: 3px;
+}
+
+button:disabled {
+  background-color: #999da77a;
+  cursor: not-allowed;
+  color: inherit;
+  opacity: 0.5;
+}
+
+.dx-btn-outline:focus {
+  outline: none;
+}
+
+.secondary-btn {
+  background-color: var(--surface-base) !important;
+  border-radius: 4px;
+  color: inherit;
+  border: 1px solid var(--surface-on-base) !important;
+  align-items: center;
+
+  .dx-btn-multi-action-icon {
+    color: inherit !important;
+  }
+
+  .material-icons {
+    font-size: 19px;
+    color: inherit;
+    margin: 0 10px;
+  }
+
+}
+
+.bottom-icon {
+  display: inline-block;
+  margin-right: 9px;
+  height: 18px;
+}
+
+.btn-pointer {
+  cursor: pointer;
+}
+
+.multi-action-wrapper {
+  display: inline-flex;
+  position: relative;
+
+  .primaryBtn {
+    border-radius: 4px 0px 0px 4px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: 0px;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      box-shadow: rgba(50, 50, 93, 0.30) 0px 30px 60px -12px inset, rgba(26, 25, 25, 0.3) 0px 18px 36px -18px inset;
+    }
+  }
+
+  .multi-action-menu {
+    border-radius: 0px 4px 4px 0px;
+    padding: 0px 6px;
+    background: var(--primary-base);
+    border-left: 0.5px solid #ffffffd9;
+    min-width: 20px;
+
+    &:hover {
+      box-shadow: rgba(50, 50, 93, 0.30) 0px 30px 60px -12px inset, rgba(26, 25, 25, 0.3) 0px 18px 36px -18px inset;
+    }
+
+    .dx-btn-multi-action-icon {
+      align-items: center;
+      display: flex;
+      color: var(--primary-on-base);
+      font-size: 25px;
+    }
+
+    .multi-action-dropdown-label {
+      margin-left: 6px;
+    }
+
+    &.is-only-dropdown {
+      border-radius: 4px !important;
+    }
+  }
+
+  .multi-action-panel {
+    background: #ffffff;
+    box-shadow: 0px 1px 3px rgb(0 0 0 / 25%);
+    border-radius: 6px;
+    width: 100%;
+    top: 35px;
+    position: absolute;
+    padding: 0px 0px;
+    z-index: 999;
+
+    &.mat-menu-panel {
+      min-width: 160px !important;
+    }
+  }
+}
+
+.action-icons {
+  margin-right: 0px;
+  font-size: 20px;
+  min-width: 20px;
+}
+
+.dx-multi-btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.multi-action-items {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.3px;
+  width: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-left: 3px;
+}
+
+.menu-btns {
+  height: 30px;
+  display: block;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  padding: 0px 12px;
+  color: #000000;
+
+  &:hover {
+    background-color: var(--primary-hover);
+    color: var(--primary-on-hover);
+  }
+}
+
+.menu-btns {
+  &:disabled {
+    border: none;
+    background-color: #ebebeb;
+    color: #000000ce;
+    opacity: 0.6;
+  }
+}
+
+.multi-action-menu {
+  &:disabled {
+    border: none;
+    opacity: 0.6;
+  }
+}
+
+.close-action-btn {
+  background: transparent;
+  border: none;
+  padding-bottom: 1px;
+
+  .material-icons-outlined {
+    font-size: 16px;
+  }
+}
+
+
+.dx-default {
+  background-color: red;
+}
+
+.mat-flat-button {
+ padding: 10px 15px;
+}
+
+.btn-small {
+  line-height: 25px;
+  font-size: 12px;
+
+  .dx-btn-mat-icons {
+    font-size: 14px;
+  }
+}
+
+.btn-big {
+  line-height: 40px;
+  font-size: 15px;
+}
+
+
+// Generic Loaders
+// Arc , Dual Arc , Semi Circle
+.dx-btn-loader {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  margin-right: 7px;
+  animation: rotation 1s linear infinite;
+
+  &.semi-circle {
+    border: 3px solid var(--primary-base);
+    border-bottom-color: transparent;
+  }
+
+  &.arc {
+    border: 3px solid var(--primary-on-base);
+    ;
+    border-bottom-color: var(--primary-base);
+  }
+
+  &.dual-arc {
+    border: 3px solid;
+    border-color: var(--primary-base) transparent;
+  }
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+// Pulse
+
+.dx-btn-pulse {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  position: relative;
+  margin-right: 7px;
+}
+
+.dx-btn-pulse::after,
+.dx-btn-pulse::before {
+  content: '';
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary-base);
+  position: absolute;
+  left: 0;
+  top: 0;
+  animation: animloader 2s linear infinite;
+}
+
+.dx-btn-pulse::after {
+  animation-delay: 1s;
+}
+
+@keyframes animloader {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+
+// Refresh
+
+.dx-btn-refresh {
+  width: 18px;
+  height: 18px;
+  border-width: 2.5px;
+  border-style: solid;
+  border-color: var(--primary-base) var(--primary-base) transparent var(--primary-base);
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+  margin-right: 7px;
+}
+
+.dx-btn-refresh::after {
+  content: "";
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  left: 4px;
+  top: 8px;
+  border: 6px solid transparent;
+  border-right-color: var(--primary-base);
+  transform: rotate(309deg);
+
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.no-permission-btn {
+  position: relative;
+  top: -3px;
+}
+
+.hidden {
+  display: none;
+}
+
+.border-radius {
+  border-radius: 4px !important;
+}
+.mat-flat-button {
+  font-family: inherit !important;
+}

@@ -1,0 +1,18 @@
+<div class="dx-menu-accordian">
+  <div class="dx-menu-accordian-title-wrapper" (click)="toggleContent()" [matTooltip]="title && showTooltip?title:null"
+    [matTooltipPosition]="tooltipPosition??'right'">
+    <div *ngIf="title" class="dx-menu-accordian-title menu-elipsis-text"><span class="fw-semibold">{{title |
+        transloco}}</span>
+    </div>
+    <div *ngIf="!hideArrows" [@rotate]="showContent?'default':'rotated'">
+      <span class="material-icons-outlined dx-menu-accordian-dropdown-arrow">
+        expand_more
+      </span>
+    </div>
+  </div>
+  <div [@expandCollapse]="showContent?'expand':'collapse'">
+    <div class="dx-menu-accordian-content">
+      <ng-content select="dx-menu-accordian-content"></ng-content>
+    </div>
+  </div>
+</div>

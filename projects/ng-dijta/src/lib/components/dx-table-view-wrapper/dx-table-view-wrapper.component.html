@@ -1,0 +1,33 @@
+<div>
+    <ng-container [ngSwitch]="multiViewTable?.selectedView">
+        <ng-container *ngSwitchCase="'dx-table'">
+            <dx-table [multiViewTable]="multiViewTable" [dataSource]="dataSource" [setting]="setting"
+                [columns]="columns" (onCheckboxChange)="onCheckboxChange($event)"
+                (onRowSelection)="onRowSelection($event)" (onSort)="onSort($event)"
+                (onFilterClick)="onFilterClick($event)" (onPaginationClick)="onPaginationClick($event)"
+                (onAction)="onAction($event)" (onEventChange)="onEventChange($event)"
+                (onClickTableViewSwitcher)="onClickViewSwitcher($event)"
+                (onClickTablePageSize)="onClickTablePageSize($event)"></dx-table>
+        </ng-container>
+        <ng-container *ngSwitchCase="'dx-canvas'">
+
+            <dx-canvas [multiViewTable]="multiViewTable" [canvasSetting]="canvasSetting"
+                [canvasDataSource]="canvasDataSource" [cardActions]="cardActions"
+                (onCanvasPaginationClick)="onCanvasPaginationClick($event)"
+                (onCanvasCheckboxChange)="onCanvasCheckboxChange($event)"
+                (onClickCanvasHeaderAction)="onClickCanvasHeaderAction($event)"
+                (onClickCanvasAction)="onClickCanvasAction($event)"
+                (onClickCanvasViewSwitcher)="onClickViewSwitcher($event)"
+                (onClickCanvasPageSize)="onClickCanvasPageSize($event)"></dx-canvas>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+            <dx-table [multiViewTable]="multiViewTable" [dataSource]="dataSource" [setting]="setting"
+                [columns]="columns" (onCheckboxChange)="onCheckboxChange($event)"
+                (onRowSelection)="onRowSelection($event)" (onSort)="onSort($event)"
+                (onFilterClick)="onFilterClick($event)" (onPaginationClick)="onPaginationClick($event)"
+                (onAction)="onAction($event)" (onEventChange)="onEventChange($event)"
+                (onClickTableViewSwitcher)="onClickViewSwitcher($event)"
+                (onClickTablePageSize)="onClickTablePageSize($event)"></dx-table>
+        </ng-container>
+    </ng-container>
+</div>

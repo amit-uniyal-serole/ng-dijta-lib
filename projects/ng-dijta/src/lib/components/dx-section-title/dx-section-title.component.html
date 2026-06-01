@@ -1,0 +1,19 @@
+<div class="dx-qms-section-title section-items-flex-center">
+  <div class="section-items-flex-center">
+    <span *ngIf="icon" class="material-icons" [class.fill]="fill" [class]="class">{{icon}}</span>
+    <span *ngIf="title" class="subtitle"><span class="fw-bold">{{title | transloco}}</span></span>
+  </div>
+  <div *ngIf="buttonConfig?.visible == true">
+    <button class="label-btn" (click)="onClickAction(buttonConfig?.type)">
+      <span *ngIf="buttonConfig?.label" class="subtile-1"><span
+          class="fw-medium mx-2">{{buttonConfig?.label | transloco}}</span></span>
+      <span *ngIf="buttonConfig?.icon" class="material-icons label-btn-icon"
+        [ngStyle]="btnClr()">{{buttonConfig?.icon}}</span>
+    </button>
+  </div>
+  <div class="d-flex align-items-center justify-content-end" *ngIf="showBtns">
+    <dx-button class="secondary-btn me-1" id="cancel" [title]='"Cancel" | transloco'></dx-button>
+    <dx-button id="save" [title]='"Save" | transloco' (onActionSelect)="onSave()"></dx-button>
+  </div>
+  <ng-content></ng-content>
+</div>

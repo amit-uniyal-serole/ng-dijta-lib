@@ -1,0 +1,26 @@
+<div class="dx-card-wrapper">
+
+  <ng-container [ngSwitch]="config?.cardConfig?.type">
+    <ng-container *ngSwitchCase="'basic'">
+      <dx-card-list-view (onImageUpload)="emitFileDetails($event)" [data]="data" [config]="config"
+        (onClickCardAction)="onCardAction($event)" [isAdditionalContent]="isAdditionalContent">
+        <div *ngTemplateOutlet="tagContent">
+        </div>
+        <ng-content select="dx-card-additional-content" ngProjectAs="additional-content-selector"></ng-content>
+      </dx-card-list-view>
+    </ng-container>
+
+    <ng-container *ngSwitchDefault>
+      <dx-card-list-view (onImageUpload)="emitFileDetails($event)" [data]="data" [config]="config"
+        (onClickCardAction)="onCardAction($event)">
+        <div *ngTemplateOutlet="tagContent">
+        </div>
+      </dx-card-list-view>
+    </ng-container>
+  </ng-container>
+
+</div>
+
+<ng-template #tagContent>
+  <ng-content></ng-content>
+</ng-template>

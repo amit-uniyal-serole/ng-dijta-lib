@@ -1,0 +1,36 @@
+<dx-timeline [outline]="'timeline-detail-view'">
+  <ng-container *ngFor="let item of data">
+    <dx-timeline-item [timelineItemTileLabel]="getLabel(item)">
+      <ng-container *ngFor="let section of item?.section">
+        <div class="timeline-details-card mb-2">
+          <div class="timeline-left-section">
+            <div *ngIf="section.imageSrc" class="timeline-image">
+              <img [src]="section?.imageSrc" alt="">
+            </div>
+            <div class="icon">
+              <span *ngIf="section?.iconName" class="material-icons" [style.color]="section?.iconClr">
+                {{section.iconName}}
+              </span>
+            </div>
+          </div>
+          <div class="timeline-right-section">
+            <div class="timeline-right-section-header">
+              <h3 class="body fw-bold mb-0">{{section?.title | transloco}}</h3>
+              <div class="timeline-right-section-datetime">
+                <span class="section-type-chip" [ngStyle]="getChipStyles(section)">{{section?.tagName |
+                  transloco}}</span>
+                <p class="caption mb-0">{{section?.date | dxdate:'Do MMMM, YYYY'}}</p>
+                <div class="spacing"></div>
+                <p class="caption mb-0">{{section?.date | dxdate:'hh:mm a'}}</p>
+              </div>
+            </div>
+            <div class="timeline-right-section-body">
+              <p class="paragraph mb-0">{{section.description}}</p>
+              <div *ngIf="section?.content" [innerHtml]="section?.content"></div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </dx-timeline-item>
+  </ng-container>
+</dx-timeline>

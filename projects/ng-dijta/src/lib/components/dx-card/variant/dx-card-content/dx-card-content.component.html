@@ -1,0 +1,18 @@
+<a [ngClass]="{'content-path':content?.path}" [routerLink]="content?.path" [queryParams]="content?.params">
+  <dx-card-text-wrapper [dxPopoverContentContext]="{$implicit: content}" dx-popover
+    [dxHeader]="content?.displayPopoverConfig?.header" [dxPopoverTitle]="titleTemplateRef"
+    [dxPopoverContent]="templateRef" [dxPopoverTitleContext]="{$implicit: content}"
+    [dxPopoverTrigger]="content?.displayPopoverConfig?.isShow && content?.displayPopoverConfig?.popover?.trigger"
+    [data]="content" [enableTextCopy]="enableTextCopy"
+    [dxPopoverPlacement]="content?.displayPopoverConfig?.popover?.placement"
+    [dxActionButton]="content?.displayPopoverConfig?.actions"></dx-card-text-wrapper>
+</a>
+<ng-template #titleTemplateRef let-popoverTitleConfig>
+  <dx-popover-variant-wrapper section="HEADER" [popoverTitleConfig]="popoverTitleConfig"
+    (onPopoverAction)="sendDetailData($event)"></dx-popover-variant-wrapper>
+</ng-template>
+
+
+<ng-template #templateRef let-popoverContent>
+  <dx-popover-variant-wrapper section="CONTENT" [popoverContent]="popoverContent"></dx-popover-variant-wrapper>
+</ng-template>

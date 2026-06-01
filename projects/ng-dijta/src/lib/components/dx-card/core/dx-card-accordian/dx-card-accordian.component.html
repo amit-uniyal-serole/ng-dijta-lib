@@ -1,0 +1,38 @@
+<div class="dx-card-generic">
+  <div class="dx-card-generic-header">
+    <div (click)="toggleContent()" class="d-flex align-items-center cursor-pointer">
+      <div [@rotatedState]="collapsed">
+        <span class="material-icons-outlined card-collapse-icon">
+          expand_more
+        </span>
+      </div>
+      <div *ngIf="title" class="subtitle"><span class="fw-semibold">{{title | transloco}}</span></div>
+    </div>
+    <!-- BASIC BUTTON -->
+    <div [matTooltip]="action?.tooltip??null" class="d-flex align-items-center cursor-pointer"
+      (click)="onActionClick(action?.type)" *ngIf="action?.buttonType !== 'dx-button'">
+      <span class="body acc-action-label" *ngIf="action?.label"><span class="fw-semibold"
+          [ngStyle]="applyClr(action?.color)">{{action?.label}}</span></span>
+      <span [ngStyle]="applyClr(action?.color)" *ngIf="action?.icon"
+        class="material-icons-outlined custom-accordian-action-icon">
+        {{action?.icon}}
+      </span>
+    </div>
+
+    <!-- DX-BUTTON -->
+    <div [matTooltip]="action?.tooltip??null" class="d-flex align-items-center cursor-pointer"
+      *ngIf="action?.buttonType === 'dx-button'">
+      <dx-button [class]="action?.dxButtonConfig?.class === 'secondary' ? 'secondary-btn':'dxBtn'"
+        [disabled]="action?.dxButtonConfig?.disabled" [src]="action?.dxButtonConfig?.src"
+        [multiActionDropDown]="action?.dxButtonConfig?.multiActionDropDown" [title]="action?.label"
+        [icon]="action?.icon" [size]="action?.dxButtonConfig?.size"
+        [confirmationPopover]="action?.dxButtonConfig?.confirmationPopover"
+        [isLoading]="action?.dxButtonConfig?.isLoading" [loaderType]="action?.dxButtonConfig?.loaderType"
+        (onActionSelect)="onActionClick(action?.type)" (onClickMenuAction)="onActionClick($event)"></dx-button>
+    </div>
+
+  </div>
+  <div class="dx-card-generic-body" [@collapse]="collapsed">
+    <ng-content></ng-content>
+  </div>
+</div>

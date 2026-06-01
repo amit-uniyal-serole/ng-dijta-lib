@@ -1,0 +1,48 @@
+.form-builder-list-search-icon {
+    position: absolute;
+    bottom: -2px;
+    left: -18px;    
+    background: #fff;
+}
+
+.lookup-table-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100px;
+    margin: 1rem;
+    flex-direction: column;
+
+    >.primary-icon {
+        font-size: 4rem;
+    }
+
+    >.secondary-icon {
+        position: absolute;
+        font-size: 2rem;
+        bottom: 5px;
+        left: 38px;
+        background: #fff;
+        border-radius: 50%;
+    }
+}
+.lookup-modal-table{
+    min-height: 150px;
+}
+
+.icon-color {
+    color: red;
+}
+
+.text-align-end{
+    text-align: end;
+}
+
+.confirm-unassign{
+    background-color: #ec3748;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+}

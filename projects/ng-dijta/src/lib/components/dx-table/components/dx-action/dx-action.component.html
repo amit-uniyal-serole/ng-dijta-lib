@@ -1,0 +1,55 @@
+<div class="table-action">
+  <ng-container *ngFor="let action of allowAction">
+    <ng-container [ngSwitch]="action">
+      <ng-container *ngSwitchCase="'expand'">
+        <button *ngIf="!isBusy;else iconSkeletonLoader" class="expand" mat-icon-button>
+          <mat-icon *ngIf="selectedData != data" (click)="expand(data)">keyboard_arrow_up</mat-icon>
+          <mat-icon *ngIf="selectedData == data" (click)="expand()">keyboard_arrow_down</mat-icon>
+        </button>
+      </ng-container>
+      <ng-container *ngSwitchCase="'edit'">
+        <button *ngIf="!isBusy;else iconSkeletonLoader" mat-icon-button class="edit" (click)="onActionClick(action)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </ng-container>
+      <ng-container *ngSwitchCase="'delete'">
+        <button dx-popover [dxHeader]="columns?.confirmationPopover?.header"
+          [dxPopoverTrigger]="columns?.confirmationPopover?.isShow ? 'click' : ''"
+          [dxPopoverContent]="columns?.confirmationPopover?.content?.message"
+          [dxActionButton]="columns?.confirmationPopover?.actions"
+          [dxPopoverPlacement]="columns?.confirmationPopover?.popoverPlacement" (sendDetailData)="onActionClick(action)"
+          *ngIf="!isBusy;else iconSkeletonLoader" mat-icon-button (click)="onActionClick(action)">
+          <span class="material-icons-outlined delete">delete</span>
+        </button>
+      </ng-container>
+      <ng-container *ngSwitchCase="'next'">
+        <button *ngIf="!isBusy;else iconSkeletonLoader" mat-icon-button class="next" (click)="onActionClick(action)">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </ng-container>
+      <ng-container *ngSwitchCase="'menu'">
+        <button *ngIf="!isBusy;else iconSkeletonLoader" [matMenuTriggerFor]="tableMenu" mat-icon-button class="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu [panelClass]="'table-action'" #tableMenu="matMenu" class="action-menu-panel" xPosition="before">
+          <ng-container *ngFor="let option of columns?.menuOptions">
+            <button (click)="onActionClick(option?.event, option?.confirmationPopover)" dxTooltipPlacement="left"
+              dxTooltipTitle="{{option?.label | transloco}}" dx-tooltip [disabled]="option?.disable"
+              class="table-menu-btns" mat-menu-item>
+              <div class="d-flex align-items-center">
+                <span class="material-icons-outlined table-menu-icon" *ngIf="option?.icon">{{option?.icon}}</span>
+                <span class="table-menu-items custom-font-family body">{{option?.label | transloco}}</span>
+              </div>
+            </button>
+          </ng-container>
+        </mat-menu>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</div>
+
+<!-- Icon skeleton -->
+<ng-template #iconSkeletonLoader>
+  <dx-skeleton-loader appearance="circle" [theme]="iconSkeleton"></dx-skeleton-loader>
+</ng-template>
+<!--  -->

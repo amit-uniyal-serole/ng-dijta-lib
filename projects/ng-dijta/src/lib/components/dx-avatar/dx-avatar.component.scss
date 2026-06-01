@@ -1,0 +1,116 @@
+:host {
+  border-radius: 50%;
+}
+.avatar-status-wrapper {
+  position: relative;
+  .active-status {
+    position: absolute;
+    background-color: #ffffff;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+
+    .status-dot {
+      height: 10px;
+      width: 10px;
+      position: absolute;
+      right: 3px;
+      top: 2.7px;
+      border-radius: 50%;
+      font-size: 13.5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      &.status-active {
+        background-color: #19df19;
+      }
+      &.status-inactive {
+        background-color: red;
+      }
+    }
+    &.top-right {
+      top: -2px;
+      right: -2px;
+    }
+    &.top-left {
+      top: -2px;
+      left: -2px;
+    }
+    &.bottom-left {
+      bottom: -2px;
+      left: -2px;
+    }
+    &.bottom-right {
+      bottom: -2px;
+      right: -2px;
+    }
+  }
+}
+
+.camera-overlay {
+  color: #fff;
+  font-size: 25px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: 0.3s ease;
+  background-color: #666565a6;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.icon-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: 0.3s ease;
+  background-color: #666565a6;
+  cursor: pointer;
+  border-radius: unset !important;
+}
+
+.avatar-container:hover {
+  .icon-overlay {
+    opacity: 1;
+  }
+}
+
+.avatar-container:hover {
+  .overlay {
+    opacity: 1;
+  }
+}
+
+.icon-content {
+  width: 65px !important;
+  height: 65px !important;
+  line-height: 65px !important;
+  text-align: center !important;
+  color: #fff;
+  background-color: var(--primary-base);
+  font-size: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block !important;
+}

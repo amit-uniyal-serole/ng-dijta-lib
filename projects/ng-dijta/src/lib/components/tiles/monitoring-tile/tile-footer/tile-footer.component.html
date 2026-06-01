@@ -1,0 +1,15 @@
+<div class="tile-footer" *ngIf="footer">
+    <div class="counter">
+        <div class="icon" *ngIf="footer?.icon">
+            <span class="material-icons-outlined" [ngStyle]="{ 'color': footer?.iconClr }">
+                {{footer?.icon}}
+            </span>
+        </div>
+        <div class="count" *ngIf="footer?.count" [ngStyle]="{ 'color': footer?.countClr }">
+            {{footer?.count}}
+        </div>
+    </div>
+    <div class="description" *ngIf="footer?.description && !isContentHeightSmall">
+        <p class="main">{{footer?.description}}</p>
+    </div>
+</div>

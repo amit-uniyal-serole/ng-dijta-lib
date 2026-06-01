@@ -1,0 +1,117 @@
+@charset 'utf-8';
+@import "./tui-calendar.scss";
+@import "./tui-date-picker.scss";
+@import "./tui-time-picker.scss";
+//styles import from dijta
+
+
+// Indigit Typography End
+@import "./theme";
+@import "./partials/layout/entry.scss";
+@import "./partials/layout/compact";
+@import "./layout/sidenav/vertical.scss";
+@import "./layout/notification.scss";
+@import "./layout/sidenav/horizantal.scss";
+@import "flex-menu/flex-menu";
+
+@import "./navigation-menu/dx-navigation-menu";
+@import "./navigation-menu/dx-menu-accordian";
+
+.custom-font-family {
+  font-family: inherit;
+}
+
+#main-sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+#main-sidebar::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 0px;
+}
+
+#main-sidebar::-webkit-scrollbar-thumb {
+  border-radius: 0px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+.mat-form-field-required-marker {
+  color: rgb(255, 0, 0);
+  font-size: 20px;
+  position: absolute;
+}
+
+@media (max-width: 768px) {
+  .table-wrapper-container {
+    padding: 0 12px;
+    width: 100%;
+  }
+
+  .dx-drawer-right .dx-drawer-content-wrapper {
+    width: 100% !important;
+  }
+
+  .mobile-full-width-dialog {
+    width: 90% !important;
+  }
+}
+// Used when disabling global scrolling.
+.cdk-global-scrollblock {
+  position: fixed;
+  width: 100%;
+  overflow-y: scroll;
+  body {
+    overflow-x: visible;
+  }
+
+  left: 0px !important;
+  top: 0px !important;
+}
+
+.highlightRowBg {
+  .link-wrapper {
+    a {
+      color: #242424 !important;
+      font-weight: bold !important;
+    }
+  }
+}
+
+.dx-tooltip-list {
+  white-space: pre;
+  max-width: fit-content !important;
+  background: var(--secondary-dark) !important;
+  color: var(--secondary-on-dark) !important;
+  font-size: 12px !important;
+}
+
+.dx-info-icon {
+  font-size: 20px;
+  color: var(--primary-dark);
+  cursor: pointer;
+}
+
+.dx-tag-view .mat-chip-list .mat-chip-list-wrapper {
+  flex-wrap: nowrap !important;
+}
+.notification-menu {
+  .mat-menu-content:not(:empty) {
+    padding: 0px !important;
+    .notification-main-wrapper {
+      padding: 0px !important;
+    }
+  }
+}
+.notification-scroll-content {
+  min-height: 10rem;
+  overflow: auto;
+  max-height: 40rem;
+}
+.notifications-body {
+  dx-notification-item:last-child {
+    .dx-notification-item {
+      border: none;
+    }
+  }
+  
+}

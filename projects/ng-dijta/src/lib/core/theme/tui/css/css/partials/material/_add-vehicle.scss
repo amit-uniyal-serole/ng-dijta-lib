@@ -1,0 +1,96 @@
+#addVehicle {
+  .mat-radio-group .mat-radio-button {
+    padding-bottom: 10px;
+    padding-right: 35px;
+  }
+
+  .mat-radio-label-content {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    color: rgb(107, 119, 140);
+  }
+
+  #dxDatepicker .mat-form-field-appearance-outline .mat-form-field-outline {
+    background: rgb(255, 255, 255);
+    border-radius: 5px;
+  }
+
+  #dxInput .mat-form-field-appearance-outline .mat-form-field-outline {
+    background: rgb(255, 255, 255);
+    border-radius: 5px;
+  }
+
+  .mat-tab-group.mat-primary .mat-ink-bar,
+  .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+    background-color: $primary;
+    border-radius: 6px 6px 0px 0px;
+    height: 100%;
+    z-index: 98;
+  }
+
+  .mat-tab-label {
+    z-index: 99;
+    font-size: 13px;
+    line-height: 17px;
+    color: $text-color;
+    font-weight: bold;
+    opacity: 1 !important;
+    padding: 0 20px !important;
+    min-width: auto !important;
+
+    &.mat-tab-label-active {
+      color: $light;
+      opacity: 1;
+    }
+  }
+
+  .mat-tab-header {
+    border-bottom: 1px solid $primary !important;
+  }
+
+  .mat-tab-body.mat-tab-body-active {
+    overflow: visible !important;
+    background: $light;
+    border-radius: 0px 0px 6px 6px;
+    padding: 20px 20px 18px 20px;
+    // max-height: 500px
+  }
+
+  .mat-tab-body-content {
+    overflow: visible !important;
+    // max-height: 500px;
+  }
+
+  .custom-dialog-container .mat-dialog-container {
+    padding: 0;
+    border-radius: 10px;
+    background: $light;
+    margin-bottom: 50px;
+    max-height: 600px;
+  }
+
+  // .cdk-overlay-pane {
+  //   width: auto !important;
+  //   height: auto;
+  // }
+
+  // .cdk-global-scrollblock {
+  //   overflow-y: hidden;
+  // }
+
+  // .cdk-global-overlay-wrapper {
+  //   max-height: 100vh;
+  //   overflow: auto;
+  //   padding: 50px 0;
+  //   pointer-events: auto;
+  // }
+  label {
+    padding-bottom: 3px;
+  }
+  .mat-form-field-infix {
+    input {
+      line-height: 0px;
+    }
+  }
+}

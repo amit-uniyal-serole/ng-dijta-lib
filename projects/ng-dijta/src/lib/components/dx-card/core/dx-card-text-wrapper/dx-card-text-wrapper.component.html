@@ -1,0 +1,69 @@
+<ng-container [ngSwitch]="data?.type">
+  <ng-container *ngSwitchCase="'text'">
+    <dx-card-text dx-tooltip dxTooltipTitle="{{!data?.displayPopoverConfig?.isShow ? data?.value : ''}}"
+      [highLightData]="data?.displayPopoverConfig?.isShow" [data]="data?.value" [avatar]="data?.avatar"
+      [enableTextCopy]="enableTextCopy" [isStatus]="data?.isStatus" [color]="data?.color" [icon]="data?.icon"
+      [link]="data?.link">
+    </dx-card-text>
+  </ng-container>
+  <ng-container *ngSwitchCase="'date'">
+    <dx-card-date [data]="data?.value" [setting]="data?.settings?.date"></dx-card-date>
+  </ng-container>
+  <ng-container *ngSwitchCase="'currency'">
+    <dx-card-currency [data]="data?.value" [setting]="data?.settings?.currency"></dx-card-currency>
+  </ng-container>
+  <ng-container *ngSwitchCase="'URL'">
+    <dx-card-url [data]="data"></dx-card-url>
+  </ng-container>
+  <ng-container *ngSwitchCase="'Email'">
+    <dx-card-email [data]="data?.value"></dx-card-email>
+  </ng-container>
+  <ng-container *ngSwitchCase="'dropdown'">
+    <dx-details-dropdown [data]="data"></dx-details-dropdown>
+  </ng-container>
+  <ng-container *ngSwitchCase="'dropdown_filled'">
+    <dx-dropdown-filled [data]="data"></dx-dropdown-filled>
+  </ng-container>
+  <ng-container *ngSwitchCase="'datetime'">
+    <dx-card-datetime [value]="data.value"></dx-card-datetime>
+  </ng-container>
+  <ng-container *ngSwitchCase="'Check Box'">
+    <dx-card-checkbox [data]="data"></dx-card-checkbox>
+  </ng-container>
+  <ng-container *ngSwitchCase="'HTML'">
+    <div class="text-cell" [innerHtml]="data?.value"></div>
+  </ng-container>
+  <ng-container *ngSwitchCase="'ONLY_HTML'">
+    <div class="html-content">
+      <div class="html-content-length" [class.more]="data?.value?.length >= 500"
+        [innerHTML]=" data?.value?.length >= 500 ? (data?.value ?? '').substring(0, 300) : data?.value"></div>
+      <div class="show_more_container" (click)="$event.stopPropagation()">
+        <span dx-tooltip [dxTooltipTitle]="'View Full Details' | transloco" class="material-icons-outlined show_more"
+          *ngIf="data?.value?.length > 500 " (click)="openViewModal()">
+          visibility
+        </span>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngSwitchCase="'image'">
+    <dx-card-image [data]="data"></dx-card-image>
+  </ng-container>
+  <ng-container *ngSwitchDefault>
+    <dx-card-text dx-tooltip dxTooltipTitle="{{!data?.displayPopoverConfig?.isShow ? data?.value : ''}}"
+      [data]="data?.value" [highLightData]="data?.displayPopoverConfig?.isShow">
+    </dx-card-text>
+  </ng-container>
+</ng-container>
+<ng-template #modalContent let-modalInstance="modalInstance">
+  <div class="card-model">
+    <div class="card-model-header">
+      <h3 class="heading-6">{{ data?.label ?? 'Detail'}}</h3>
+    </div>
+    <div class="card-model-body">
+      <div class="display-text" [innerHtml]="data?.value | transloco"></div>
+    </div>
+    <div class="card-model-footer">
+      <button type="button" (click)="close()">Close</button>
+    </div>
+  </div>
+</ng-template>

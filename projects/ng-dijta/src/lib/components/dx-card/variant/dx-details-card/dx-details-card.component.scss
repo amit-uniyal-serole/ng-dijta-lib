@@ -1,0 +1,128 @@
+.dx-details-card-wrapper {
+  margin: 5px;
+
+  .dx-details-card {
+    background-color: #fff;
+    border-radius: 6px;
+    margin-bottom: 12px;
+
+    .details-card-title {
+      padding: 20px;
+      padding-bottom: 0px;
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    .details-card-title-border {
+      border-bottom: 1px solid rgb(214 214 219 / 55%)
+    }
+
+    .details-card-content-wrapper {
+      padding:20px;
+    }
+
+    &.details-card-border{
+      border: 0.1px solid #dce1e7;
+      box-shadow:0 3px 2px #00000008;
+    }
+
+    .dx-details-card-label-value-wrapper {
+      min-height: 35px;
+      height: auto;
+      hyphens: auto;
+      margin-bottom: 1.2rem;
+      &.left {
+        margin-bottom: 0.2rem;
+        display: flex;
+        align-items: center;
+        margin-bottom: 0;
+      }
+      &.left:last-child {
+        border: none;
+      }
+      .dx-details-card-content-label {
+        flex: 0 0 32%;
+        width: auto;
+        margin-right: 20px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #59667a !important;
+        margin-bottom: 6px;
+      }
+
+      .dx-details-card-content-value {
+        font-size: 14px;
+        font-weight: 500;
+        color: #0B0F32;
+      }
+      &.bottom-separator {
+        &::after {
+          content: '';
+          border-bottom: 0.8px solid #c3c3c3;
+          width: 100%;
+          display: block;
+          margin-top: 3px;
+        }
+      }
+     
+      
+    }
+  }
+}
+
+.label-styles {
+  font-style: normal;
+  font-size: 15px;
+  color: #616161;
+}
+
+.value-styles {
+  color: #2f2f2f;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.dx-header-title {
+  margin: 5px 0px;
+  justify-content: space-between;
+
+  .material-icons-outlined {
+    font-size: 21px;
+    margin-right: 5px;
+    color: #434343;
+
+    &.fill {
+      font-size: 19px;
+      background: var(--primary-base);
+      border-radius: 50%;
+      margin-right: 9px;
+      color: var(--primary-on-base);
+      padding: 5px;
+    }
+  }
+
+  .label-btn {
+    background-color: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+
+    .label-btn-icon {
+      font-size: 16px;
+      background: var(--primary-base);
+      border-radius: 50%;
+      color: var(--primary-on-base);
+      padding: 2px;
+    }
+  }
+}
+
+.header-items-flex-center {
+  display: flex;
+  align-items: center;
+}

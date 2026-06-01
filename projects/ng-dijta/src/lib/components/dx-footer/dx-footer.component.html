@@ -1,0 +1,20 @@
+<div class="footer-wrapper">
+  <div class="tile-footer">
+    <div class="footer-description">
+      <div class="tile-value">{{ tile?.footerValue | transloco }}</div>
+      <div class="tile-value-text" #tooltip="matTooltip" [matTooltip]="tile?.footerTt" matTooltipPosition="above">
+        {{ tile?.footerTt | transloco }}
+      </div>
+    </div>
+    <div>
+      <button class="tile-button">
+        <ng-container *ngIf="tile?.openNewTabFg; else other_icon">
+          <span class="material-icons">launch</span>
+        </ng-container>
+        <ng-template #other_icon>
+          <span class="material-icons"> arrow_forward </span>
+        </ng-template>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+.dx-toggle-panel-wrapper {
+  background-color: #fff;
+  height: 98vh;
+  border-radius: 5px;
+  position: fixed;
+  top: 58px;
+  z-index: 999;
+  overflow-x: hidden;
+  border-top: 1px solid rgb(240, 241, 243);
+
+  &.open-panel {
+    &-right {
+      right: 5px;
+    }
+
+    &-left {
+      left: 76px;
+    }
+
+  }
+
+}

@@ -1,0 +1,75 @@
+//import helper scss
+@import '../../core/theme/tui/css/css/partials/variables';
+
+#tableFilter {
+  .popup-wrapper {
+    max-width: 800px;
+    min-width: 700px;
+    width: 100%;
+    padding: 0;
+  }
+
+  .title {
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 28px;
+    color: #1c1919;
+    margin-bottom: 7px;
+  }
+
+  .filter-settings {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 28px;
+    color: #929292;
+    margin-bottom: 7px;
+  }
+
+  .right {
+    float: right;
+    padding: 10px 0px;
+  }
+
+  .col-md-3 {
+    max-width: 33% !important;
+  }
+
+  .popup-header {
+    border-bottom: 1px solid $boder-color;
+    padding: 15px 20px 5px 20px;
+  }
+
+  .popup-container {
+    // background-color: $light-bg;
+    padding: 20px 20px 25px 20px;
+  }
+
+  .popup-close {
+    border: none;
+    background-color: transparent;
+    color: $close-icon;
+    font-size: 18px;
+  }
+
+  .clear-filter {
+    color: $reset-filter;
+    display: flex;
+
+    cursor: pointer;
+
+    .material-icons-round {
+      color: $reset-filter;
+      font-size: 18px !important;
+      display: inline-flex;
+      align-items: center;
+    }
+  }
+}
+
+.custom-dialog-container .mat-dialog-container {
+  padding: 0;
+  border-radius: 10px;
+  background: $light;
+  margin-bottom: 50px;
+  max-height: 600px;
+}

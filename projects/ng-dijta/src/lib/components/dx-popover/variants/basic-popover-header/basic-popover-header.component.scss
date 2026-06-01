@@ -1,0 +1,68 @@
+.dx-header-title {
+  margin: 5px 0px;
+  justify-content: space-between;
+
+  .material-icons-outlined {
+    font-size: 21px;
+    margin-right: 5px;
+    color: #434343;
+
+    &.fill {
+      font-size: 19px;
+      background: var(--primary-base);
+      border-radius: 50%;
+      margin-right: 9px;
+      color: var(--primary-on-base);
+      padding: 5px;
+    }
+  }
+
+  .label-btn {
+    background-color: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+
+    .label-btn-icon {
+      font-size: 16px;
+      background: var(--primary-base);
+      border-radius: 50%;
+      color: var(--primary-on-base);
+      padding: 2px;
+    }
+  }
+}
+
+.header-items-flex-center {
+  display: flex;
+  align-items: center;
+}
+
+.header-title-style {
+  font-style: normal;
+  font-size: 17px !important;
+  line-height: 31px;
+  color: #2f2f2f;
+}
+
+.subtitle-align {
+  color: #a5a5a5;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.close-icon-align {
+  position: relative;
+  right: -2.5em;
+  top: -0.5em;
+}
+
+.icon-align {
+  cursor: pointer;
+  font-size: 18px !important;
+  color: #1f3bb3 !important; 
+}

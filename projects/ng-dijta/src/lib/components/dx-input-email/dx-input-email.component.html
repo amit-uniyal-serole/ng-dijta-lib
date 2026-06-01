@@ -1,0 +1,33 @@
+<div class="dx-field-wrapper" [class.none-label]="noneLabel" [ngClass]="outline" [class.display-view]="viewOnly"
+  [class.dx-disable]="disabled" [class.left-align-label]="labelPosition==='left'" [class.required]="required || ctrRequired">
+  <mat-label class="dx-outer-label-wrapper">
+    <span class="dx-outer-label">
+      <ng-content select="[dxLabel]"></ng-content>
+      <span *ngIf="required || ctrRequired" class="astrict">*</span>
+    </span>
+  </mat-label>
+  <mat-form-field appearance="outline">
+    <mat-label class="dx-input-label">
+      <ng-content select="dx-label"></ng-content>
+    </mat-label>
+    <span matPrefix>
+      <span class="material-icons dx-input-icon">
+        email
+      </span>
+    </span>
+    <input [tabIndex]="tabIndex" [id]="id" matInput [formControl]="control" (ngModelChange)="inputChange($event)" (blur)="onBlur($event)"
+      [readonly]="readonly || viewOnly || disabled" [minlength]="minLength" [maxlength]="maxLength"
+      [required]="required || ctrRequired" [placeholder]="tooltip" [pattern]="_EMAIL_REGEXP"/>
+    <span matSuffix>
+      <ng-content select="dx-suffix"></ng-content>
+    </span>
+    <mat-hint>
+      <ng-content select="dx-hint"> </ng-content>
+    </mat-hint>
+    <mat-error>
+      <span *ngIf="control.errors?.pattern">{{control.errors?.pattern?.actualValue}} not valid email</span>
+      <ng-content select="dx-error"></ng-content>
+    </mat-error>
+  </mat-form-field>
+
+</div>

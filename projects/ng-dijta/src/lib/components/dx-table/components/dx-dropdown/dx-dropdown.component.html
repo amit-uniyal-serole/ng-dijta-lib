@@ -1,0 +1,65 @@
+<div class="dx-dropdown-wrapper" [class.no-wrap]="hasPopupOption">
+    <ng-container *ngFor="let option of displayDropdown">
+        <ng-container *ngIf="column?.type !== 'filled_dropdown';else other_option">
+            <ng-conatiner *ngIf="option?.popupTitle && option?.popupDesc; else withoutPopupDesc">
+                <div [ngClass]="{'value-align':!option?.color}" class="dx-dropdown -popup" [changeChipColor]="option?.color"
+                    [sameColor]="column?.type !== 'filled_dropdown'">
+                    <span [ngStyle]="{ 'color': option?.color }" class="material-icons-outlined cursor-pointer -info" (keydown)="onKeyDown($event)" (click)="clickPopup(displayDropdown)">info</span>
+                </div>
+            </ng-conatiner>
+            <ng-template #withoutPopupDesc>
+                <div [ngClass]="{'value-align':!option?.color}" class="dx-dropdown" [changeChipColor]="option?.color"
+                [sameColor]="column?.type !== 'filled_dropdown'">
+                <span class="dot" [class.blinking]="column?.setting?.dropdown?.blinking ?? false"
+                    [changeChipColor]="option?.color" [dot]="column?.type !== 'filled_dropdown'"></span>
+                {{
+                option?.valueTt | transloco
+                }}
+            </div>
+            </ng-template>
+        </ng-container>
+
+        <ng-template #other_option>
+            <div class="dx-dropdown" [style.backgroundColor]="option?.color"
+                [ngClass]="{'padding-none':!option?.color}">
+                {{
+                option?.valueTt | transloco
+                }}
+            </div>
+        </ng-template>
+
+    </ng-container>
+    <span class="show_more_dropdown" *ngIf="remainingDropdown.length > 0" dx-popover
+        [dxPopoverContent]="contentTemplate">
+        +{{remainingDropdown.length}}
+    </span>
+
+    <ng-template #contentTemplate>
+        <div class="dx-dropdown-wrapper d-block">
+            <ng-container *ngFor="let option of remainingDropdown">
+                <ng-container *ngIf="column?.type !== 'filled_dropdown';else other_option">
+                    <div [ngClass]="{'value-align':!option?.color}" class="dx-dropdown"
+                        [changeChipColor]="option?.color" [sameColor]="column?.type !== 'filled_dropdown'">
+                        <span class="dot" [class.blinking]="column?.setting?.dropdown?.blinking ?? false"
+                            [changeChipColor]="option?.color" [dot]="column?.type !== 'filled_dropdown'"></span>
+                        {{
+                        option?.valueTt | transloco
+                        }}
+                    </div>
+                </ng-container>
+
+                <ng-template #other_option>
+                    <div class="dx-dropdown" [style.backgroundColor]="option?.color"
+                        [ngClass]="{'padding-none':!option?.color}">
+                        {{
+                        option?.valueTt | transloco
+                        }}
+                    </div>
+                </ng-template>
+            </ng-container>
+        </div>
+
+    </ng-template>
+
+</div>
+<dx-default [show]="displayDropdown.length <= 0"></dx-default>

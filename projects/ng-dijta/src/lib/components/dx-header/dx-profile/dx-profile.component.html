@@ -1,0 +1,80 @@
+<div class="dx-profile-wrapper">
+  <span class="material-icons close" (click)="close()">
+    close
+  </span>
+  <div class="profile">
+    <div class="profile-image">
+      <ndx-avatar [avatarSettings]="avatarSettings" [src]="profile?.profileBasic?.imgSrc"
+        [name]="profile?.profileBasic?.name | transloco">
+      </ndx-avatar>
+      <h3 class="heading-6 m-2">{{profile?.profileBasic?.name | transloco}}</h3>
+      <p class="body mb-1"><a href="mailto:{{profile?.profileBasic?.email}}">{{profile?.profileBasic?.email}}</a>
+      </p>
+      <p class="subtitle">{{profile?.profileBasic?.designation | transloco}}</p>
+      <!-- tenant swither -->
+      <div *ngIf="selectedCompany && isCompListMoreThanOne();else onlySelectedCompanyText"
+        class="profile-tenant-label-wrapper cursor-pointer" [matMenuTriggerFor]="companyName" #t="matMenuTrigger"
+        [class.focus-tenant-name]="t?.menuOpen">
+        <h3 class="subtitle mx-1 mb-0 default-tenant"><span class="tenant-title">{{ selectedCompany?.name | transloco
+            }}</span>
+        </h3>
+        <span *ngIf="isCompListMoreThanOne()
+          " class="material-icons-outlined">
+          keyboard_arrow_down
+        </span>
+      </div>
+      <ng-template #onlySelectedCompanyText>
+        <div class="profile-tenant-label-wrapper">
+          <h3 *ngIf="selectedCompany?.name" class="subtitle mx-1 mb-0 default-tenant"><span class="tenant-title">{{
+              selectedCompany?.name | transloco }}</span></h3>
+        </div>
+      </ng-template>
+      <mat-menu #companyName="matMenu" class="profile-tenant-menu-panel" xPosition="before">
+        <ng-container *ngIf="
+            profile?.profileBasic?.companyList &&
+            profile?.profileBasic?.companyList?.length > 0
+          ">
+          <ng-container *ngFor="let comp of profile?.profileBasic?.companyList">
+            <div (click)="onSelectCompany(comp)" class="d-flex align-items-center justify-content-between"
+              [class.highlight-comp]="comp?.default">
+              <button *ngIf="comp?.name" mat-menu-item class="tenant-menu-items">
+                <div class="menu-items profile-tenant-wrapper">
+                  <ndx-avatar [avatarSettings]="logoAvatarSettings" [src]="comp?.logo"
+                    [name]="(comp?.name | transloco) ?? ''">
+                  </ndx-avatar>
+                  <div class="profile-company-name">
+                    <h3 [matTooltip]="comp?.name" [class.default-comp-name]="comp?.default"
+                      class="subtitle tenant-name-overflow-text">{{ comp?.name | transloco }}</h3>
+                    <button *ngIf="comp?.default" class="selected-tenant-item-btn">
+                      <span class="material-icons-outlined select-comp-icon">
+                        done
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </button>
+            </div>
+          </ng-container>
+        </ng-container>
+      </mat-menu>
+      <!--  -->
+
+    </div>
+  </div>
+  <div class="profile-actions">
+    <div class="action-items" *ngFor="let action of profile?.profileBasic?.profileActions"
+      (click)="submitAction(action)">
+      <span [ngStyle]="{color:action?.color??'#2F2F2F'}"> {{action?.label | transloco}}</span>
+    </div>
+  </div>
+  <div class="layout-type" *ngIf="profile?.profileBasic?.showLayoutOption">
+    <dx-radio-button [options]="option" [formControl]="layoutType" (onRadioChange)="onLayoutChange($event?.value)">
+      <dx-radio-button-label>
+        <h3 class="subtitle">{{'LAYOUT' | transloco}}</h3>
+      </dx-radio-button-label>
+    </dx-radio-button>
+  </div>
+  <div class="profile-footer" *ngIf="profile?.profileBasic?.footerTitle">
+    <span class="body">{{profile?.profileBasic?.footerTitle | transloco}}</span>
+  </div>
+</div>

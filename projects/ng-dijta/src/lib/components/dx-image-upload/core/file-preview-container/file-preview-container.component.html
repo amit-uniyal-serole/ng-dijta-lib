@@ -1,0 +1,17 @@
+<div class="upload-preview">
+  <div class="card">
+    <div class="card-header" *ngIf="fileMaxCount">
+      <h3 class="body">{{'Selected Images' | transloco}} <span>( {{previewFiles?.length}}/{{fileMaxCount}} )</span></h3>
+    </div>
+    <div class="card-body">
+      <preview-lightbox *ngIf="lightboxFile" [file]="lightboxFile" (previewClose)="closeLightbox()"></preview-lightbox>
+      <file-preview-item [isUpload]="isUpload && previewFiles?.length> 0" *ngFor="let file of previewFiles"
+        [fileItem]="file" (removeFile)="removeFile.next($event)" (uploadSuccess)="uploadSuccess.next($event)"
+        (uploadFail)="uploadFail.next($event)" (imageClicked)="openLightbox($event)" [adapterData]="adapterData"
+        [itemTemplate]="itemTemplate" [captions]="captions" [enableAutoUpload]="enableAutoUpload"></file-preview-item>
+    </div>
+    <div class="card-footer" *ngIf="totalMaxSize">
+      <p class="caption fw-bold">{{'Total Size Limit' | transloco}}: {{calculateTotal()}} / {{totalMaxSize}}MB</p>
+    </div>
+  </div>
+</div>

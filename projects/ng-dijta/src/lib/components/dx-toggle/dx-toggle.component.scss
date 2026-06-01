@@ -1,0 +1,22 @@
+.toggle-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+.custom-toggle{
+  display: flex;
+  align-items: center;
+}
+.mat-slide-toggle.mat-disabled {
+  opacity: 1 !important;
+  .mat-slide-toggle-bar {
+    opacity: 0.38 !important;
+  }
+  dx-label {
+    opacity: 1 !important;
+  }
+}
+.mat-slide-toggle-content {
+  font-family: inherit !important;
+}

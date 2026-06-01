@@ -1,0 +1,155 @@
+// dx-dijta-home variales
+//dx-form
+$checkbox-light: rgba(255, 255, 255, 0.502);
+$dark-opec: rgba(255, 255, 255, 0.102);
+$dark-opec-25: rgba(255, 255, 255, 0.251);
+$primary-opec: rgba(248, 182, 2, 0.302);
+$plan-line: rgb(217, 217, 217);
+$stepper-icon-bg: rgb(233, 235, 247);
+$field-label-color: rgba(0, 0, 0, 0.522);
+$required: rgb(239, 8, 18);
+$table-head-border-color: rgba(0, 0, 0, 0.07);
+$expand-title-color: rgb(165, 177, 225);
+$valueTxt: rgb(82, 196, 255);
+$dark: rgb(0, 0, 0);
+$light: rgb(255, 255, 255);
+
+//select
+$menu-color: rgb(141, 153, 167);
+$select-bg-color: rgba(11, 15, 50, 0.05);
+$btn-border-color: rgba(11, 15, 50, 0.25);
+//badge
+$badge-red-color: rgb(253, 33, 80);
+//check box
+$check-box-border: rgb(201, 208, 218);
+//font color
+
+$btn-icon-color: rgba(11, 15, 50, 0.7);
+
+$btn-view-color: rgb(82, 94, 255);
+
+//side bar
+$sidebar-width: 70px;
+
+$sidebar-active-bg: rgba(28, 89, 241, 0.65);
+$sidebar-active-color: rgb(82, 205, 255);
+$sidebar-dropdown-container: rgb(11 27 72 / 3%);
+$mat-icon-sidebar: rgb(255, 255, 255);
+//top-bar
+// scss variable
+
+$topBarbr: rgb(242, 242, 242);
+$topBarIcon: rgb(165, 165, 165);
+
+$expand-detail-title-color: rgb(115, 127, 139);
+
+$icon-color: rgb(173, 216, 230);
+
+// media querry mixins
+$mobile-width: 767px;
+$tablet-width: 991px;
+$field-bg: rgb(249, 249, 251);
+
+$targetTxt: rgb(254, 92, 131);
+
+$text-light: rgb(107, 119, 140);
+$tile-box-shadow: rgba(0, 0, 0, 0.04);
+// media querry mixins
+$mobile-width: 767px;
+$tablet-width: 991px;
+$sm-laptop-width: 1160px;
+//breadcrumb
+$breadcrumb-color: rgb(0, 123, 255);
+
+//button
+$primary: rgb(25, 71, 204);
+$primary-disabled: rgb(134, 141, 160);
+//title
+$text-color: rgb(11, 15, 50);
+// policychart
+$stepper-icon-bg: rgb(233, 235, 247);
+//select product
+$close-icon: rgb(196, 196, 196);
+$bg-color: rgb(248, 248, 248);
+$boder-color: rgb(228, 228, 228);
+//stepper
+
+// scss variable
+$mainBG: rgb(242, 242, 247);
+$mainBorder: rgb(237, 237, 237);
+$light-bg: rgb(251, 251, 253);
+$recommend: rgb(26, 194, 128);
+$field-border-color: rgb(212, 214, 219);
+$succesClr: rgb(230, 245, 230);
+$succesBrClr: rgb(92, 184, 92);
+$warningClr: rgb(253, 242, 227);
+$warningBrClr: rgb(240, 173, 78);
+$errorClr: rgb(252, 220, 220);
+$error-border-clr: rgb(239, 38, 38);
+$stepper-border: rgb(193, 200, 233);
+$badge-inactive: rgb(227, 230, 244);
+$radio-box-border: rgb(124, 140, 153);
+//badge
+$badge-yellow-color: rgb(235, 189, 15);
+$badge-lightblue-color: rgb(1, 160, 182);
+$badge-green-color: rgb(92, 184, 92);
+$badge-light-grey: rgb(121, 141, 156);
+$rightBox: rgb(232, 236, 255);
+// quote box width
+$quoteBoxWith: 279px;
+$quoteBoxWithDesktop: 190px;
+$quoteBoxWithMobile: 150px;
+// media querry mixins
+$mobile-width-sm: 575px;
+$mobile-width: 767px;
+$tablet-width: 991px;
+$desktop-width: 1199px;
+$desktop-width-lg: 1300px;
+$container-bg-color: rgb(246, 247, 251);
+$container-border-color: rgba(229, 230, 233, 0.4);
+$scroll-color: rgb(192, 191, 191);
+
+$quoteReportBackgroundColor: rgba(222, 226, 230, 0.302);
+$quoteReportBottomborderColor: rgba(128, 128, 128, 0.122);
+
+//upload file
+
+$boder-color: rgb(232, 232, 232);
+
+$table-row-bg: rgb(245, 245, 245);
+$drop-area-br: rgb(190, 190, 190);
+$selectBr: rgb(238, 238, 238);
+$select-arrow: rgb(198, 207, 216);
+$scrollbar: rgb(222, 222, 222);
+
+$tooltip: rgb(156, 165, 178);
+$greyBox: rgb(250, 250, 250);
+//mat row input field
+$cancel-btn: rgb(125, 128, 130);
+$save-btn: rgb(0, 128, 0);
+
+$btn-hover: rgba(0, 0, 0, 0.1);
+
+$btn-icon: rgba(78, 79, 84, 0.89);
+
+$border-top-color: rgb(241, 242, 244);
+$blue-lineant-one: rgb(31, 59, 179);
+$blue-lineant-two: rgba(29, 83, 232, 0.659);
+$green-check: rgba(0, 128, 0, 0.522);
+
+$side-bar-background: rgb(249, 250, 250);
+$side-bar-box-shadow: rgba(169, 169, 169, 0.49);
+$side-bar-hover-color: rgba(29, 78, 219, 0.1);
+$toggle-btn-color: rgba(255, 0, 0, 0.69);
+$light-black: rgba(62, 60, 60, 0.212);
+$light-grey: rgb(105, 102, 102);
+// $disabled-field-color: #e1dede59
+$disabled-field-color: rgba(228, 229, 231, 0.322);
+
+$badge-color: rgb(255, 255, 255);
+
+$border-color: rgb(211, 211, 211);
+$primary-light: rgba(27, 83, 228, 0.729);
+$table-header-bg: rgba(255, 255, 255, 0.612);
+
+$reset-filter:rgb(238, 62, 84);

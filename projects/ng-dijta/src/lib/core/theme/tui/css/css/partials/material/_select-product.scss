@@ -1,0 +1,135 @@
+@import '../variables';
+
+#selectproductdia {
+  .cdk-overlay-pane {
+    width: auto !important;
+  }
+
+  .cdk-global-overlay-wrapper {
+    overflow: auto;
+    padding: 20px 0;
+    box-sizing: border-box;
+  }
+
+  .vertical-tab {
+    min-width: 635px;
+
+    .mat-tab-labels {
+      flex-direction: column;
+    }
+
+    .mat-tab-group {
+      flex-direction: row;
+    }
+
+    .mat-tab-body-wrapper {
+      padding: 20px;
+      border-radius: 6px;
+      background: $bg-color;
+      border: 1px solid $boder-color;
+      flex: 1 1 auto;
+    }
+
+    .mat-tab-label {
+      height: 45px;
+      opacity: 1;
+      min-width: 172px;
+      padding: 0 15px;
+      justify-content: flex-start;
+
+      &.mat-tab-label-active {
+        background: $bg-color;
+        border: 1px solid $boder-color;
+        border-radius: 6px 0 0 6px;
+        border-right: 0px solid transparent;
+
+        .mat-tab-label-content {
+          font-weight: bold;
+          font-size: 13px;
+          line-height: 17px;
+          color: $primary;
+        }
+      }
+
+      .mat-tab-label-content {
+        font-weight: 500;
+        font-size: 13px;
+        line-height: 17px;
+        color: $text-color;
+      }
+    }
+
+    .mat-tab-header {
+      padding: 10px 0;
+      transform: translateX(1px);
+      z-index: 9;
+      border: none;
+      background-color: rgb(255, 255, 255) !important;
+      border-bottom: 0px solid transparent !important;
+
+      .mat-ink-bar {
+        display: none;
+      }
+    }
+
+    .mat-tab-body-content {
+      overflow: visible;
+    }
+
+    .mat-tab-group.mat-primary .mat-tab-label.cdk-program-focused:not(.mat-tab-disabled) {
+      background: $bg-color;
+    }
+  }
+
+  .selectProductClass {
+    .mat-dialog-container {
+      margin-bottom: 20px;
+      padding: 24px !important;
+    }
+  }
+
+  .mat-dialog-container {
+    padding: 0 !important;
+    border-radius: 10px;
+    background: $light;
+    margin-bottom: 50px;
+  }
+
+  .cdk-overlay-pane {
+    // width: auto !important;
+
+    height: auto;
+  }
+
+  .cdk-global-scrollblock {
+    overflow-y: hidden;
+  }
+
+  .cdk-global-overlay-wrapper {
+    max-height: 100vh;
+    overflow: auto;
+    padding: 50px 0;
+    pointer-events: auto;
+  }
+
+  @media (max-width: 1000px) {
+    .vertical-tab {
+      min-width: 100%;
+    }
+
+    .content {
+      padding: 0 20px;
+      height: 200px;
+      width: 300px;
+    }
+
+    .popup-header {
+      width: 100%;
+    }
+
+    .mat-tab-group.mat-primary {
+      display: block !important;
+    }
+  }
+
+}

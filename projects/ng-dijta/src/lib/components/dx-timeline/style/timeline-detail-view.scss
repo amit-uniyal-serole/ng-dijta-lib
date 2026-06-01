@@ -1,0 +1,112 @@
+.timeline-detail-view {
+  padding: 0px 15px;
+
+  .dx-timeline-item-head {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: var(--secondary-base);
+    border: 2px transparent;
+    border-radius: 100px;
+  }
+
+  .dx-timeline-item-tail {
+    position: absolute;
+    top: 10px;
+    left: 6px;
+    height: calc(100% - 10px);
+    border-left: 2px solid #CCCCCC;
+  }
+
+  .dx-timeline-item {
+    padding-bottom: 3rem;
+  }
+
+  .timeline-details-card {
+    background-color: #fff;
+    box-shadow: 5px 6px 3px rgba(0, 0, 0, 0.01), 3px 3px 3px rgba(0, 0, 0, 0.03), 1px 1px 2px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.06), 0px 0px 0px rgba(0, 0, 0, 0.06);
+    border-radius: 6px;
+    padding: 10px;
+    display: flex;
+
+    .timeline-left-section {
+      .timeline-image {
+        max-width: 200px;
+
+        img {
+          max-width: 100%;
+          max-height: 100%;
+        }
+      }
+
+      .icon {
+        display: flex;
+        align-items: center;
+        height: 100%;
+      }
+    }
+
+    .timeline-right-section {
+      margin: 0px 9px;
+      width: 100%;
+
+      .timeline-right-section-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 3px;
+
+        .timeline-right-section-datetime {
+          display: flex;
+          justify-content: baseline;
+          align-items: center;
+
+          .spacing {
+            margin: auto 4px;
+            height: 78%;
+            border-left: 1px solid #ccc;
+          }
+        }
+      }
+    }
+  }
+
+  .dx-timeline-item-content {
+    position: relative;
+    top: 28px;
+    margin: 0 0 0 0px;
+    word-break: break-word;
+  }
+
+  .dx-timeline-item-tail-label {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 20px;
+    border: none;
+  }
+
+  &.dx-timeline-alternate {
+    .dx-timeline-item-tail-label {
+      left: 52%;
+    }
+
+    .dx-timeline-item-content {
+      margin: 0 0 0 15px;
+      text-align: start !important;
+    }
+  }
+}
+
+.section-type-chip {
+  border-radius: 5px;
+  padding: 1px 15px;
+  margin: 0px 6px;
+}
+
+.p10 {
+  padding: 10px;
+}
+
+.pT10 {
+  padding-top: 10px;
+}

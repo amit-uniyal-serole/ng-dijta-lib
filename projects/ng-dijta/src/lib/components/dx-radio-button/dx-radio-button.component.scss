@@ -1,0 +1,31 @@
+.radio-button-wrapper {
+  display: flex;
+  flex-direction: column;
+
+  .mat-radio-label {
+    .mat-radio-container{
+      margin-top: 1px !important;
+    }
+  }
+  .dx-radio-vertical{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+  .dx-radio-horizantal{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .radio-option-subtitle{
+    line-height: 16px;
+    margin-left: 2px;
+  }
+}
+
+.radio-label {
+  transform: translateY(1px) translateX(0px) !important;
+  color: var(--input-label-fc);
+}

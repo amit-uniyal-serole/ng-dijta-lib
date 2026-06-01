@@ -1,0 +1,168 @@
+<div id="detailView" class="detail-view-wrapper">
+  <div class="email-detail-view" *ngIf="email">
+    <div class="topbar">
+      <div>
+        <button class="btn-icon backToList" (click)="backToList()">
+          <span class="material-icons-outlined menu-icon">keyboard_backspace</span>
+        </button>
+      </div>
+      <div class="icon-label-wrapper">
+        <ng-container *ngFor="let item of  menu">
+          <button class="btn-icon" [matMenuTriggerFor]="emailTopBarMenu" *ngIf="item?.subMenu"
+            (click)="onTopBarMenuClick(item?.key)">
+            <span [ngClass]="item.icon=='star_outline'?'material-icons-round':'material-icons-outlined'"
+              class=" menu-icon">
+              <span [ngClass]="{'imp-mail-icon': email?.isImportant&& item.icon=='error_outline'}">{{item.icon}}</span>
+            </span>
+          </button>
+          <button class="btn-icon" *ngIf="!item?.subMenu" (click)="onTopBarMenuClick(item?.key)">
+            <span [ngClass]="item.icon=='star_outline'?'material-icons-round':'material-icons-outlined'"
+              class=" menu-icon">
+              <span [ngClass]="{'imp-mail-icon': email?.isImportant&& item.icon=='error_outline'}">{{item.icon}}</span>
+            </span>
+          </button>
+          <mat-menu #emailTopBarMenu="matMenu">
+            <div *ngFor="let menu of  item?.subMenu">
+              <button class="icon-label-wrapper" mat-menu-item (click)="onMenuItemClick(menu?.key)">
+                <span class="material-icons-outlined top-bar-menu" *ngIf="!menu?.checkbox">{{menu.icon}}</span>
+                <span class="material-icons-outlined top-bar-menu menu-checkbox" (click)="$event.stopPropagation()"
+                  *ngIf="menu?.checkbox">
+                  <mat-checkbox></mat-checkbox>
+                </span>
+                <span class="menu-items">{{menu?.label}}</span>
+              </button>
+            </div>
+          </mat-menu>
+        </ng-container>
+      </div>
+    </div>
+    <div class="email">
+      <div class="email-subject">
+        <div class="subject"> {{email?.subject? email?.subject: "(no subject)" }}</div>
+        <div class="labels-wrapper">
+          <div class="labels" *ngFor="let label of Labels" [ngStyle]="bgClr(label)"> {{label.label}}</div>
+        </div>
+      </div>
+      <div class="body-wrapper">
+        <div class="email">
+          <div class="email-body">
+            <div class="email-header">
+              <div>
+                <img [src]="email.img" class="avatar">
+              </div>
+              <div>
+                <span class="bold-text">{{email?.from?.name}}</span>
+                <div>
+                  <div class="icon-label-wrapper">to &nbsp;<span class="bold-text">me</span> &nbsp;
+                    &nbsp;<button class="btn-icon" [matMenuTriggerFor]="emailMenu"><span
+                        class="material-icons-outlined menu-icon">
+                        expand_more
+                      </span>
+                    </button>
+                    <mat-menu #emailMenu="matMenu">
+
+                      <div class="email-detail-menu">
+                        <div class="email-info">
+                          <div class="info-label">from:</div>
+                          <div class="info-value">
+                            {{email.from?.name}}
+                            <span class="material-icons-outlined">
+                              arrow_back_ios
+                            </span>{{email?.from?.email}}<span class="material-icons-outlined">
+                              arrow_forward_ios
+                            </span> </div>
+                        </div>
+                        <div class="email-info">
+                          <div class="info-label">to:</div>
+                          <div class="info-value">
+                            me <span class="material-icons-outlined">
+                              arrow_back_ios
+                            </span>hughes.brian@company.com<span class="material-icons-outlined">
+                              arrow_forward_ios
+                            </span>
+                          </div>
+                        </div>
+                        <div class="email-info" *ngIf="email?.cc && email?.cc.length>0">
+                          <div class="info-label">cc:</div>
+                          <ng-container *ngFor="let ccItem of email?.cc">
+                            <div class="info-value">
+                              {{ccItem?.name}} <span class="material-icons-outlined">
+                                arrow_back_ios
+                              </span>{{ccItem?.email}}<span class="material-icons-outlined">
+                                arrow_forward_ios
+                              </span>
+                            </div>
+                          </ng-container>
+                        </div>
+                        <div class="email-info" *ngIf="email?.bcc && email?.bcc.length>0">
+                          <div class="info-label">bcc:</div>
+                          <ng-container *ngFor="let bccItem of email?.bcc">
+                            <div class="info-value">
+                              {{bccItem?.name}} <span class="material-icons-outlined">
+                                arrow_back_ios
+                              </span>{{bccItem?.email}}<span class="material-icons-outlined">
+                                arrow_forward_ios
+                              </span>
+                            </div>
+                          </ng-container>
+                        </div>
+                        <div class="email-info">
+                          <div class="info-label">date:</div>
+                          <div class="info-value">
+                            {{email?.date | date:'fullDate'}} {{email?.date | date:'shortTime'}}
+                          </div>
+                        </div>
+                        <div class="email-info" *ngIf="email.subject">
+                          <div class="info-label">subject:</div>
+                          <div class="info-value">
+                            {{email.subject}}
+                          </div>
+                        </div>
+                      </div>
+                    </mat-menu>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="body">
+              <!-- <quill-view-html [content]="email?.body"></quill-view-html> -->
+              <div [innerHtml]="email?.body"></div>
+            </div>
+
+          </div>
+          <div class="email-footer">
+            <div class="action-buttons" *ngIf="!reply">
+              <button (click)="emailAction()" class="footer-action icon-label-wrapper"><span
+                  class="material-icons-outlined">
+                  reply
+                </span>&nbsp; &nbsp;Reply</button>
+              <button (click)="emailAction()" class="footer-action icon-label-wrapper"><span
+                  class="material-icons-outlined">
+                  reply_all
+                </span>&nbsp; &nbsp;Reply All</button>
+              <button (click)="emailAction()" class="footer-action icon-label-wrapper"><span
+                  class="material-icons-outlined">
+                  keyboard_double_arrow_right
+                </span>&nbsp;&nbsp;Forward</button>
+            </div>
+            <div class="reply-box" *ngIf="reply">
+              <!-- <dx-quill-editor [styles]="styles" placeholder="Type your reply here..." [quillConfig]="QuillConfigModel">
+              </dx-quill-editor> -->
+
+              <div id="dxButton" class="reply-btn">
+                <button (click)="emailAction()" class="secondary-btn">Cancel</button>
+                <button (click)="emailAction()" class="dxBtn">Send</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="empty-email-view" *ngIf="!email">
+    <div class="mailbox-image">
+      <img [src]="maiBoxImg" width="100px" height="100px">
+      <div class="select-mail-text">Select a mail to read</div>
+    </div>
+  </div>
+</div>

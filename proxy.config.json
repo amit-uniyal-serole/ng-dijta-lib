@@ -1,0 +1,12 @@
+{
+  "/dx-lcnc-api/*": {
+      "_comment": "Try This",
+      "target": "https://tune.dev.indigit.io/dx-lcnc-api/",
+      "secure": false,
+      "logLevel": "debug",
+      "pathRewrite": {
+        "^/dx-lcnc-api": ""
+      },
+      "changeOrigin": true
+    }
+}

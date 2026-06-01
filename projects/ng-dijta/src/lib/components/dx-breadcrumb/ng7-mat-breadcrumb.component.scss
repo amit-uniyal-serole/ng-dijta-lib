@@ -1,0 +1,19 @@
+.dx-bread-crumb {
+  .mat-bread-crumb {
+    height: 30px;
+    background-color: rgb(241, 239, 235);
+    overflow: hidden;
+  }
+  .mat-bread-crumb-list{
+    padding-bottom: 10px;
+    
+  }
+  .mat-bread-crumb-spacer {
+    margin-left: -20px;
+  }
+  .mat-list-base .mat-list-item {
+    height: auto;
+  }
+
+}
+

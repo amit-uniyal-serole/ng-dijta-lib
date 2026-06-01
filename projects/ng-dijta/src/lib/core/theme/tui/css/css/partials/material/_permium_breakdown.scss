@@ -1,0 +1,50 @@
+#permiumBD {
+  .mat-tab-group.mat-primary .mat-ink-bar,
+  .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+    background-color: $primary;
+    border-radius: 6px 6px 0px 0px;
+    height: 100%;
+    z-index: 98;
+  }
+
+  .mat-tab-label {
+    z-index: 99;
+    font-size: 13px;
+    line-height: 17px;
+    color: $text-color;
+    font-weight: bold;
+    opacity: 1 !important;
+    padding: 0 20px !important;
+    min-width: auto !important;
+
+    &.mat-tab-label-active {
+      color: $light;
+      opacity: 1;
+    }
+  }
+
+  .mat-tab-header {
+    border-bottom: 1px solid $primary !important;
+  }
+
+  .mat-tab-body.mat-tab-body-active {
+    overflow: visible !important;
+    background: $light;
+    border-radius: 0px 0px 6px 6px;
+    padding: 20px 20px 18px 20px;
+    // max-height: 500px
+  }
+
+  .mat-tab-body-content {
+    overflow: visible !important;
+    // max-height: 500px;
+  }
+}
+
+.custom-dialog-container .mat-dialog-container {
+  padding: 0;
+  border-radius: 10px;
+  background: $light;
+  margin-bottom: 50px;
+  max-height: 570px;
+}

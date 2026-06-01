@@ -1,0 +1,60 @@
+#email-table-view {
+	width: 100%;
+	height: 100vh;
+	overflow: auto;
+
+	background-color: #ffffff;
+	table {
+		width: 100%;
+	}
+	tr.mat-header-row {
+		display: none;
+	}
+
+	mat-header-cell,
+	.mat-cell {
+		// white-space: nowrap !important;
+		// overflow: hidden !important;
+		// text-overflow: ellipsis !important;
+	}
+	.subject-content {
+		word-break: break-word;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		line-height: 16px;
+
+		-webkit-line-clamp: 1;
+		-webkit-box-orient: vertical;
+	}
+	.mat-cell {
+		padding: 0px 1.5%;
+		border-bottom-color: #e5e5e5;
+	}
+	tr.mat-row {
+		height: 45px;
+		cursor: pointer;
+	}
+	tr.mat-row:hover {
+		box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+	}
+	.mail-col-1 {
+		min-width: 160px;
+		max-width: 160px;
+		font-weight: 800;
+		font-size: 13px;
+	}
+	.subject {
+		font-size: 12.5px;
+		font-weight: 700;
+	}
+	.content {
+		font-size: 12.5px;
+		font-weight: 500;
+	}
+	.date-col {
+		min-width: 110px;
+		max-width: 110px;
+		text-align: right;
+	}
+}

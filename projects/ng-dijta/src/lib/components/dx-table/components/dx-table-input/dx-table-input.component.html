@@ -1,0 +1,10 @@
+<div *ngIf="setting?.isNotvisibilty && showInput; else otherInput">
+  -
+</div>
+<ng-template #otherInput>
+  <span *ngIf="setting?.displayOnly;else displayInput">{{input | transloco}}</span>
+  <ng-template #displayInput>
+    <input [type]="setting?.type" class="input" [(ngModel)]="input" (ngModelChange)="onChange($event)"
+      (change)="change()" (blur)="onTouch()" [disabled]="setting?.disable" [readonly]="setting?.readonly">
+  </ng-template>
+</ng-template>

@@ -1,0 +1,162 @@
+<div *ngIf="bulkAction && bulkAction?.show" class="bulk-action-wrapper">
+  <ng-container *ngIf="bulkAction.type === 'btn';else other_table_action">
+    <dx-button [data]="data" [condition]="bulkAction?.multiActionButtonSettings?.classCondition"
+      [src]="bulkAction?.multiActionButtonSettings?.src" [icon]="bulkAction?.multiActionButtonSettings?.icon"
+      [disabled]="bulkAction?.multiActionButtonSettings?.disabled"
+      [title]="bulkAction?.multiActionButtonSettings?.title" [class]="bulkAction?.multiActionButtonSettings?.class"
+      [multiActionDropDown]="bulkAction?.multiActionButtonSettings?.multiActionDropDown"
+      (onActionSelect)="onBtnSingleEvent(bulkAction?.multiActionButtonSettings)"
+      (onClickMenuAction)="onBtnMultiEvent($event)" [permission]="bulkAction?.multiActionButtonSettings?.permission">
+    </dx-button>
+  </ng-container>
+  <ng-template #other_table_action>
+    <button class="bt-filter" [matMenuTriggerFor]="bulkActionMenu" [ngClass]="{'mat-flat-button':bulkAction?.viewType === 'button',
+      'mat-icon-button': bulkAction?.viewType ===undefined,'mat-button-disabled':bulkAction?.disable}"
+      [disabled]="bulkAction?.disable" dx-tooltip dxTooltipTitle="{{bulkActionMenuLabel}}" dxTooltipPlacement="bottom">
+      <span #bulkActionDropDownLabelWrapper [ngClass]="{'filter':bulkAction?.viewType === 'button'}"
+        [class.rectangular]="bulkAction?.isRectangularBtn">
+        <span [ngStyle]="{ 'order':changeOrder()?2:1,'margin-left': '5px'}" #bulkActionDropDownLabel
+          *ngIf="bulkAction?.viewType" class="bulkMenuLabel">{{bulkActionMenuLabel | transloco}}</span>
+        <span [ngStyle]="{ 'order':changeOrder()?1:2}" class="material-icons-outlined multi-action-icon">
+          {{bulkAction?.icon?bulkAction?.icon:'more_vert'}}</span>
+      </span>
+    </button>
+    <!-- [xPosition]="bulkAction?.menuPosition==='left-to-right'?'after':'before'" -->
+    <mat-menu #bulkActionMenu="matMenu" class="bulk-action-panel parent-menu" xPosition="before"
+      [ngStyle]="styles(bulkAction?.dropDownPanelWidth)" [class.is-button]="bulkAction?.viewType !== 'button'"
+      [ngClass]="bulkAction?.menuPosition==='left-to-right'?'bulk-menu-position-left':'bulk-menu-position-right'">
+      <div *ngIf="bulkAction?.filter" class="search-bulk-action-wrapper" (click)="$event?.stopPropagation();">
+        <input *ngIf="bulkAction?.filter==='local-filter';" class="search-bulk-action-menu" type="text"
+          placeholder="Search">
+        <input *ngIf="bulkAction?.filter==='server-filter';" class="search-bulk-action-menu"
+          (input)="onChangeBulkActionSearch($event,'server-filter')" type="text" placeholder="Search">
+
+        <div *ngIf="emptyRecordsMessage()" class="body my-3"><span class="bulk-action-search-no-match">{{'no match
+            found' | transloco}}</span></div>
+
+        <div class="my-3" *ngIf="bulkAction?.loading">
+          <mat-spinner diameter="35"></mat-spinner>
+        </div>
+      </div>
+      <ng-container *ngIf=!bulkAction?.loading>
+        <!-- parentmenu -->
+        <!-- actions -->
+        <ng-container *ngIf="filteredBulkActionsList && filteredBulkActionsList?.length > 0">
+          <div class="my-1">
+            <div *ngFor="let item of filteredBulkActionsList" class="d-flex align-items-center blk-action-btn-wrapper">
+              <!-- parent menu item -->
+              <span dx-tooltip dxTooltipTitle="{{bulkAction?.toolTipMessage}}" (click)="onMarkAsDefault(item)"
+                class="material-icons bulk-action-icons bulk-default-action" [class.default-bulk-action]="item?.active"
+                *ngIf="bulkAction?.defaultIcon">push_pin</span>
+              <button dx-tooltip dxTooltipTitle="{{item?.label | transloco}}" dxTooltipPlacement="right"
+                [disabled]="item?.disable" class="bulk-menu-btns" [class.blk-action-padding]="bulkAction?.defaultIcon"
+                (click)="bulkActionMenuClick(item)">
+                <div class="d-flex align-items-center">
+                  <span class="material-icons-outlined bulk-action-icons" [ngStyle]="fillLabelColor(item?.color)"
+                    [class.bulk-action-item-active]="(item?.active)" *ngIf="item?.icon">{{item?.icon}}</span>
+                  <span class="bulk-action-items" [ngStyle]="fillLabelColor(item?.color)"
+                    [class.bulk-action-item-active]="(item?.active)">{{item?.label | transloco}}</span>
+                </div>
+              </button>
+              <button *ngIf="item?.subMenu" class="blk-action-submenu-btn">
+                <span class="material-icons-outlined bulk-action-sub-menu" (click)="$event.stopPropagation()"
+                  [matMenuTriggerFor]="bulkActionSubMenu">more_vert</span>
+              </button>
+              <mat-menu #bulkActionSubMenu="matMenu" class="bulk-action-panel">
+                <!-- submenu  -->
+                <div *ngFor="let submenu of item?.subMenu" class="d-flex align-items-center ">
+                  <!-- sub menu item -->
+                  <button dx-tooltip dxTooltipTitle="{{submenu?.label | transloco}}" dxTooltipPlacement="right"
+                    [disabled]="submenu?.disable" class="bulk-menu-btns blk-action-sub-menu-items"
+                    [class.submenu-border-top]="submenu?.isBorderTop" (click)="onClickSubMenu(item?.type,submenu)">
+                    <div class="d-flex align-items-center">
+                      <span class="material-icons-outlined bulk-action-icons" [ngStyle]="fillLabelColor(submenu?.color)"
+                        [class.bulk-action-item-active]="(submenu?.active)"
+                        *ngIf="submenu?.icon && !submenu?.uniqueAction">{{submenu?.icon}}</span>
+                      <span class="unique-action" *ngIf="submenu?.uniqueAction"><input type="checkbox"
+                          [(ngModel)]="submenu.checked"></span>
+                      <span class="bulk-action-items" [ngStyle]="fillLabelColor(submenu?.color)">{{submenu?.label |
+                        transloco}}</span>
+                    </div>
+                  </button>
+                </div>
+              </mat-menu>
+            </div>
+          </div>
+        </ng-container>
+        <!-- group -->
+        <!-- Code duplication need to be fixed  -->
+        <ng-container *ngFor="let group of (filteredGroupsList | async)" class="d-flex align-items-center">
+          <!-- parent menu item -->
+          <div class="my-2">
+            <div class="pb-1 border-bottom border-top">
+              <h3 class="body mx-2 bulk-action-group-title fw-semibold"> {{group?.title | transloco}}
+              </h3>
+            </div>
+            <ng-container *ngIf="group?.actions?.length > 0;">
+              <div *ngFor="let item of group?.actions;" class="d-flex align-items-center blk-action-btn-wrapper">
+                <span dx-tooltip dxTooltipTitle="{{bulkAction?.toolTipMessage}}" (click)="onMarkAsDefault(item)"
+                  class="material-icons bulk-action-icons bulk-default-action"
+                  [class.default-bulk-action]="item?.active" *ngIf="bulkAction?.defaultIcon">push_pin</span>
+                <button dx-tooltip dxTooltipTitle="{{item?.label | transloco}}" dxTooltipPlacement="right"
+                  [disabled]="item?.disable" class="bulk-menu-btns" [class.blk-action-padding]="bulkAction?.defaultIcon"
+                  (click)="bulkActionMenuClick(item)">
+                  <div class="d-flex align-items-center">
+                    <span class="material-icons-outlined bulk-action-icons" [ngStyle]="fillLabelColor(item?.color)"
+                      [class.bulk-action-item-active]="(item?.active)" *ngIf="item?.icon">{{item?.icon}}</span>
+                    <span class="bulk-action-items" [ngStyle]="fillLabelColor(item?.color)"
+                      [class.bulk-action-item-active]="(item?.active)">{{item?.label | transloco}}</span>
+                  </div>
+                </button>
+                <button *ngIf="item?.subMenu" [matMenuTriggerFor]="bulkActionSubMenu" class="blk-action-submenu-btn"
+                  (click)="$event?.stopPropagation()">
+                  <span class="material-icons-outlined bulk-action-sub-menu">more_vert</span>
+                </button>
+                <mat-menu #bulkActionSubMenu="matMenu" class="bulk-action-panel">
+                  <!-- submenu  -->
+                  <div *ngFor="let submenu of item?.subMenu" class="d-flex align-items-center ">
+                    <!-- sub menu item -->
+                    <button *ngIf="!submenu?.hide" dx-tooltip dxTooltipTitle="{{submenu?.label | transloco}}"
+                      dxTooltipPlacement="right" [disabled]="submenu?.disable"
+                      class="bulk-menu-btns blk-action-sub-menu-items" [class.submenu-border-top]="submenu?.isBorderTop"
+                      (click)="onClickSubMenu(item?.type,submenu)">
+                      <div class="d-flex align-items-center">
+                        <span class="material-icons-outlined bulk-action-icons"
+                          [ngStyle]="fillLabelColor(submenu?.color)" [class.bulk-action-item-active]="(submenu?.active)"
+                          *ngIf="submenu?.icon && !submenu?.uniqueAction">{{submenu?.icon}}</span>
+                        <span class="unique-action" *ngIf="submenu?.uniqueAction"><input type="checkbox"
+                            [(ngModel)]="submenu.checked"></span>
+                        <span class="bulk-action-items" [ngStyle]="fillLabelColor(submenu?.color)">{{submenu?.label |
+                          transloco}}</span>
+                        <span *ngIf="submenu?.info" dx-tooltip dxTooltipTitle="{{submenu?.info | transloco}}"
+                          dxTooltipPlacement="right" class="material-icons">info</span>
+                      </div>
+                    </button>
+                  </div>
+                </mat-menu>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="!group?.actions?.length">
+              <ng-template *ngTemplateOutlet="noActionsRef; context:{errorMessage:group?.errorMessage}"></ng-template>
+            </ng-container>
+          </div>
+        </ng-container>
+        <!--  -->
+        <button *ngIf="bulkAction?.createNewAction?.isShow" class="bulk-menu-btns bulk-action-create-new-option"
+          dx-tooltip dxTooltipTitle="{{bulkAction?.createNewAction?.label | transloco}}" dxTooltipPlacement="right"
+          (click)="clickCreateCustomView()">
+          <div class="d-flex align-items-center">
+            <span class="material-icons create-new-options-add-icon">add</span>
+            <span class="bulk-action-items">{{bulkAction?.createNewAction?.label | transloco}}</span>
+          </div>
+        </button>
+      </ng-container>
+    </mat-menu>
+  </ng-template>
+
+</div>
+<ng-template #noActionsRef let-errorMessage="errorMessage">
+  <div align="center" class="my-2">
+    <span class="subbody bulk-action-group-title">{{errorMessage ?? ('No Records' | transloco) }}</span>
+  </div>
+</ng-template>

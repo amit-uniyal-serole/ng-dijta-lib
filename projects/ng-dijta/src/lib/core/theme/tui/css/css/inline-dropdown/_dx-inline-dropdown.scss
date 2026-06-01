@@ -1,0 +1,21 @@
+.inline-dropdown-overflow-text{    
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
+  
+  .cdk-overlay-pane .mat-menu-panel.inline-dropdown-menu-panel {
+    min-height: 35px !important;
+    max-width: 240px !important;
+    min-width: 160px !important;
+    .mat-menu-content:not(:empty) {
+      padding: 0px !important;
+    }
+    dx-skeleton-loader{
+        .loader{
+            margin: 5px 0px !important;
+            display: block;
+        }
+    }
+  }

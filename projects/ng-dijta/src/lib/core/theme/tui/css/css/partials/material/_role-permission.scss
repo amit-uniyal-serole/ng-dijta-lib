@@ -1,0 +1,81 @@
+@import '../variables';
+
+#role-permission {
+
+  .mat-checkbox-checked .mat-checkbox-background,
+  .mat-checkbox-indeterminate[_ngcontent-wkx-c3] .mat-checkbox-background[_ngcontent-wkx-c3] {
+    background-color: transparent !important;
+    border: 1px solid rgb(25, 71, 204);
+  }
+
+  .mat-checkbox-checkmark-path {
+    stroke: rgb(25, 71, 204) !important;
+  }
+
+  .mat-checkbox .mat-ripple-element {
+    background-color: rgb(25, 71, 204);
+  }
+
+  .mat-checkbox-frame {
+    background-color: transparent;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(25, 71, 204);
+  }
+
+  .mat-checkbox-inner-container {
+    height: 20px;
+    width: 20px;
+  }
+
+  .mat-expansion-panel.mat-expanded .mat-expansion-panel-header {
+    background-image: linear-gradient(to right, $primary, $blue-lineant-two);
+    ;
+  }
+
+  .mat-expansion-panel-header.mat-expanded:focus,
+  .mat-expansion-panel-header.mat-expanded:hover {
+    background-image: linear-gradient(to right, $primary, $blue-lineant-two);
+  }
+
+  .mat-expansion-panel-header {
+    background-image: linear-gradient(to right, $primary, $blue-lineant-two);
+  }
+
+  .mat-expansion-panel .mat-expansion-panel-header.cdk-keyboard-focused:not([aria-disabled=true]),
+  .mat-expansion-panel .mat-expansion-panel-header.cdk-program-focused:not([aria-disabled=true]),
+  .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled=true]) {
+    background-image: linear-gradient(to right, $primary, $blue-lineant-two);
+  }
+
+  .mat-checkbox-layout {
+    white-space: normal !important;
+
+  }
+
+  .mat-checkbox-inner-container {
+    margin-top: 4px;
+  }
+}
+
+#module-permission {
+
+  .mat-expansion-panel.mat-expanded .mat-expansion-panel-header {
+    background: $light !important;
+  }
+
+  .mat-expansion-panel-header.mat-expanded:focus,
+  .mat-expansion-panel-header.mat-expanded:hover {
+    background: $light !important
+  }
+
+  .mat-expansion-panel-header {
+    background: $light !important
+  }
+
+  .mat-expansion-panel .mat-expansion-panel-header.cdk-keyboard-focused:not([aria-disabled=true]),
+  .mat-expansion-panel .mat-expansion-panel-header.cdk-program-focused:not([aria-disabled=true]),
+  .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled=true]) {
+    background: $light !important
+  }
+}

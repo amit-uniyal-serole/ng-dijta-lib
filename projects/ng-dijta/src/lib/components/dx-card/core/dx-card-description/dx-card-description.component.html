@@ -1,0 +1,17 @@
+<div class="dx-card-description-wrapper">
+  <div class="d-flex align-items-centern dx-card-description-wrapper-title">
+    <div *ngIf="description?.title?.name" dx-tooltip dxTooltipTitle="{{description?.title?.name}}" class="card-title heading-6 fw-medium">{{description?.title?.name | transloco}}</div>
+    <div *ngIf="description?.title?.badge" class="dx-card-description-title-badge"
+      [ngStyle]="showBackgroundColor(description?.title?.badgeColor)">
+      <span>
+        {{description?.title?.badge}}
+      </span>
+    </div>
+  </div>
+  <div class="dx-card-description-subtitle" *ngIf="description?.subtitle">
+    <span *ngIf="description?.subtitle?.label">{{description?.subtitle?.label | transloco}}:&nbsp;</span>
+    <span *ngIf="description?.subtitle?.value">{{description?.subtitle?.value | transloco}}</span>
+  </div>
+  <ng-content>
+  </ng-content>
+</div>

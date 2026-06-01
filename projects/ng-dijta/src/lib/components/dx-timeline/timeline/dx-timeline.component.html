@@ -1,0 +1,33 @@
+<ul class="dx-timeline " [class.calender]="outline === 'calender'"
+  [class.timeline-detail-view]="outline === 'timeline-detail-view'" [class.dx-timeline-label]="hasLabelItem"
+  [class.dx-timeline-right]="!hasLabelItem && dxMode === 'right'"
+  [class.dx-timeline-alternate]="dxMode === 'alternate' || dxMode === 'custom'"
+  [class.dx-timeline-pending]="!!dxPending" [class.dx-timeline-reverse]="dxReverse"
+  [class.dx-timeline-rtl]="dir === 'rtl'">
+  <!-- pending dot (reversed) -->
+  <ng-container *ngIf="dxReverse" [ngTemplateOutlet]="pendingTemplate"></ng-container>
+  <!-- timeline items -->
+  <ng-container *ngFor="let item of timelineItems">
+    <ng-template [ngTemplateOutlet]="item.template"></ng-template>
+  </ng-container>
+  <ng-container *ngIf="!dxReverse" [ngTemplateOutlet]="pendingTemplate"></ng-container>
+  <!-- pending dot -->
+</ul>
+<ng-template #pendingTemplate>
+  <li *ngIf="dxPending" class="dx-timeline-item dx-timeline-item-pending">
+    <div class="dx-timeline-item-tail"></div>
+    <div class="dx-timeline-item-head dx-timeline-item-head-custom dx-timeline-item-head-blue">
+      <ng-container *dxStringTemplateOutlet="nzPendingDot">
+        {{ nzPendingDot }}
+        <!-- <i *ngIf="!nzPendingDot" nz-icon nzType="loading"></i> -->
+      </ng-container>
+    </div>
+    <div class="dx-timeline-item-content">
+      <ng-container *dxStringTemplateOutlet="nzPending">
+        {{ isPendingBoolean ? '' : nzPending }}
+      </ng-container>
+    </div>
+  </li>
+</ng-template>
+<!-- Grasp items -->
+<ng-content></ng-content>

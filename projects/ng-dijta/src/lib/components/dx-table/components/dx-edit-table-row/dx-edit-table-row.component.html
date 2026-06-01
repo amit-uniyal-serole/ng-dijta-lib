@@ -1,0 +1,24 @@
+<div class="dx-table-row-action">
+  <!-- isEditable done & cancel -->
+  <ng-container *ngIf="isEditable">
+    <button mat-icon-button class="done" matTooltip="Save Changes" (click)="onClickRowBtn('save')">
+      <mat-icon>done</mat-icon>
+    </button>
+
+    <button mat-icon-button class="cancel" matTooltip="Cancel Changes" (click)="onClickRowBtn('cancel')">
+      <mat-icon>close</mat-icon>
+    </button>
+  </ng-container>
+  <!--  -->
+  <!-- !isEditable edit & delete -->
+  <ng-container *ngIf="!isEditable">
+    <button mat-icon-button class="edit" matTooltip="Edit" (click)="onClickRowBtn('edit')">
+      <mat-icon>edit</mat-icon>
+    </button>
+
+    <button *ngIf="isRowDelete" mat-icon-button class="delete " matTooltip="Delete" (click)="onClickRowBtn('delete')">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </ng-container>
+  <!--  -->
+</div>

@@ -1,0 +1,72 @@
+#uploadFile {
+  .mat-dialog-container {
+    padding: 0;
+    border-radius: 10px;
+    background: $light;
+    margin-bottom: 50px;
+  }
+
+  .cdk-overlay-pane {
+    width: auto !important;
+    height: auto;
+  }
+
+  .cdk-global-scrollblock {
+    overflow-y: hidden;
+  }
+
+  .cdk-global-overlay-wrapper {
+    max-height: 100vh;
+    overflow: auto;
+    padding: 50px 0;
+    pointer-events: auto;
+  }
+
+  // pdf viewer
+  #thumbnailView,
+  .toolbar,
+  #sidebarContainer {
+    display: none;
+  }
+
+  .pdfViewer,
+  #mainContainer,
+  .loadingInProgress {
+    background: $light-bg !important;
+  }
+
+  #viewer .page {
+    border-image: none;
+  }
+
+  #viewerContainer {
+    &::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: transparentize($scrollbar, 0.8);
+      border-radius: 20px;
+    }
+  }
+
+  .table.mat-table {
+    width: 100%;
+  }
+
+  .th.mat-header-cell,
+  td.mat-cell,
+  td.mat-footer-cell {
+    padding-left: 20px;
+    color: rgb(0, 0, 0);
+  }
+}
+.mat-dialog-container {
+  padding: 0 !important;
+  border-radius: 10px !important;
+  background: $light !important;
+  margin-bottom: 50px !important;
+  max-height: 600px !important;
+  position: relative !important;
+}

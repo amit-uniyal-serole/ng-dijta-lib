@@ -1,0 +1,152 @@
+<div class="container-fluid px-0">
+<div class="dx-card rounded-0 border-0" *ngIf="show">
+  <div class="dx-card-body p-1 bg-white w-100" [class.dx-card-tabs]="setting?.tabConfig?.tabs">
+    <div class="pagination-tabs" *ngIf="setting?.tabConfig">
+      <div class="d-flex gap-2">
+        <d-tabs [type]="setting?.tabConfig.type ?? 'tabs'" (activeTabChange)="activeTabChange.emit($event)"
+          [activeTab]="setting?.tabConfig?.activeTab">
+          <ng-container *ngFor="let tab of tabsData;let i = index">
+            <d-tab [id]="tab.event" [title]="tab?.tabName"></d-tab>
+          </ng-container>
+        </d-tabs>
+        <button *ngIf="mobileDevice && setting?.tabConfig?.tabs?.length" matIconButton [matMenuTriggerFor]="menu"
+          aria-label="Example icon-button with a menu">
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item *ngFor="let tab of menusData" (click)="onTabChange(tab?.event)">{{tab?.tabName}}</button>
+        </mat-menu>
+      </div>
+    </div>
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-1" [class.justify-content-end]="setting?.enableUI">
+      <div class="d-flex align-items-center gap-2">
+        <div class="paginator-checkbox" *ngIf="setting?.paginatorMultiSelect">
+          <mat-checkbox (change)="$event ? onMasterToggle() : null" [checked]="selection?.hasValue() && isAllSelected"
+            [indeterminate]="selection?.hasValue() && !isAllSelected">
+          </mat-checkbox>
+        </div>
+        <!-- change-view -->
+        <dx-bulk-actions [bulkAction]="setting?.leftDropDown"
+          (onBulkActionSubMenuClick)="onBulkActionSubMenuClick($event)" (onClickBulkMenuAction)="changeView($event)"
+          (onClickMarkAsDefault)="onClickMarkAsDefault($event)" (onClickCreateCustomView)="clickCreateCustomView()"
+          (onSearchBulkActionMenu)="leftDropDownSearch($event)">
+        </dx-bulk-actions>
+        <!--  -->
+        <!-- Specific action: refresh -->
+        <ng-container *ngFor="let action of setting?.leftActions">
+          <ng-container  *ngIf="action?.icon === 'refresh'">
+            <div class="refresh-btn">
+          <button class="btn btn-outline-secondary p-1 px-md-1 border-secondary btn-sm rounded-circle border d-flex justify-content-center btn-outline-secondary align-items-center refresh-icon no-hover-btn"
+            [id]="action?.label ?? 'Filter'"
+            [ngClass]="{
+              'flex-active-icon': action?.active,
+              'mat-flat-button': action?.viewType === 'button',
+              'mat-icon-button': action?.viewType === undefined,
+              'mat-button-disabled': action?.disable,
+              'filter': action?.viewType === 'button'
+            }"
+            [disabled]="action?.disable"
+            [matTooltip]="action?.label | transloco"
+            matTooltipPosition="below"
+            (click)="onEvent(action?.type)">
+           <p class="mb-0" *ngIf="action?.viewType">{{ action?.label | transloco }}</p>
+           <mat-icon class="body">{{ action?.icon }}</mat-icon>
+          </button>
+          </div>
+  </ng-container>
+</ng-container>
+
+<!-- Render all other actions except refresh -->
+<ng-container *ngFor="let action of setting?.leftActions">
+  <ng-container *ngIf="action?.icon !== 'refresh' && (action?.permission ? (action?.permission?.permission | ablePure: action?.permission?.apiName | async) : true)">
+    <button  class="btn btn-outline-secondary btn-sm border rounded-pill border-secondary rounded d-flex align-items-center gap-1 
+    p-1 px-md-3 no-hover-btn"
+            [id]="action?.label ?? 'Filter'"
+            [ngClass]="{
+              'flex-active-icon': action?.active,
+              'mat-flat-button': action?.viewType === 'button',
+              'mat-icon-button': action?.viewType === undefined,
+              'mat-button-disabled': action?.disable,
+              'filter': action?.viewType === 'button'
+            }"
+            [disabled]="action?.disable"
+            [matTooltip]="action?.label | transloco"
+            matTooltipPosition="below"
+            (click)="onEvent(action?.type)">
+       <p class="mb-0 d-md-block d-none p-md-0 p-2" *ngIf="action?.viewType">{{ action?.label | transloco }}</p>
+        <mat-icon class="heading-5">{{ action?.icon }}</mat-icon>
+    </button>
+  </ng-container>
+</ng-container>
+<dx-button class="d-md-none" *ngIf="setting?.multiActionButtonSettings?.show"
+            [confirmationPopover]="setting?.multiActionButtonSettings?.confirmationPopover"
+            [src]="setting?.multiActionButtonSettings?.src" [disabled]="setting?.multiActionButtonSettings?.disabled"
+            [title]="setting?.multiActionButtonSettings?.title" [class]="setting?.multiActionButtonSettings?.class"
+            [multiActionDropDown]="setting?.multiActionButtonSettings?.multiActionDropDown"
+            (onActionSelect)="onEvent(setting?.multiActionButtonSettings?.type)"
+            [permission]="setting?.multiActionButtonSettings?.permission" (onClickMenuAction)="onEvent($event)">
+          </dx-button>
+      </div>
+       <div class="d-flex align-items-center gap-2">
+        <div class="d-flex col col-md-auto align-items-center justify-content-between">
+          <!-- Page Size Selection -->
+          <div *ngIf="!setting?.isHidePageSizeSelection && !!setting?.pagination">
+            <dx-bulk-actions *ngIf="!setting?.isHidePageSizeSelection" [bulkAction]="pageSizeSelection"
+              (onClickBulkMenuAction)="
+            onSelectPageSize($event?.type)">
+            </dx-bulk-actions>
+          </div>
+          <!--  -->
+          <mat-paginator class="col" *ngIf="setting?.pagination" [length]="setting?.totalItems" [pageIndex]="setting?.pageIndex"
+            [pageSize]="setting?.pageSize" [showFirstLastButtons]="setting?.paginationFirstLastButtons"
+            (page)="onPaginate($event)" aria-label="Select page">
+          </mat-paginator>
+          <span class="separator"
+            *ngIf="(setting?.rightActions) || (setting?.bulkActions && setting?.bulkActions && setting?.bulkActions?.show) || showSeparator || multiViewTable?.isMultiViewToggle">|</span>
+          <ng-container *ngFor="let action of setting?.rightActions">
+            <button class="bt-filter" [ngClass]="{'mat-flat-button':action?.viewType === 'button',
+          'mat-icon-button': action?.viewType ===undefined,'mat-button-disabled':action?.disable}"
+              [disabled]="action?.disable" [matTooltip]="action?.label | transloco" matTooltipPosition="below"
+              (click)="onEvent(action?.type)">
+              <span [ngClass]="{'filter':action?.viewType === 'button'}">
+                <p *ngIf="action?.viewType">{{action?.label | transloco}}</p>
+                <mat-icon>{{action?.icon}}</mat-icon>
+              </span>
+  
+            </button>
+          </ng-container>
+          <ng-content></ng-content>
+          <!-- bulk -->
+          <dx-bulk-actions [bulkAction]="setting?.bulkActions" (onClickBulkMenuAction)="onEvent($event?.type)">
+          </dx-bulk-actions>&nbsp;
+          <!--  -->
+          <div class="filter view-switcher" *ngIf="multiViewTable?.isMultiViewToggle">
+            <span class="view-switcher-icons">
+              <span class="material-icons" [matTooltip]="'Table View'"
+                [ngClass]="{'active':'dx-table'===multiViewTable?.selectedView}" (click)="onClickSelectView('dx-table')">
+                table_chart
+              </span>
+              |
+              <span class="material-icons" [matTooltip]="'Canvas View'"
+                [ngClass]="{'active':'dx-canvas'===multiViewTable?.selectedView}"
+                (click)="onClickSelectView('dx-canvas')">
+                table_rows
+              </span>
+            </span>
+          </div>
+        </div>
+        <div class="d-none d-md-inline-block">
+          <dx-button *ngIf="setting?.multiActionButtonSettings?.show"
+            [confirmationPopover]="setting?.multiActionButtonSettings?.confirmationPopover"
+            [src]="setting?.multiActionButtonSettings?.src" [disabled]="setting?.multiActionButtonSettings?.disabled"
+            [title]="setting?.multiActionButtonSettings?.title" [class]="setting?.multiActionButtonSettings?.class"
+            [multiActionDropDown]="setting?.multiActionButtonSettings?.multiActionDropDown"
+            (onActionSelect)="onEvent(setting?.multiActionButtonSettings?.type)"
+            [permission]="setting?.multiActionButtonSettings?.permission" (onClickMenuAction)="onEvent($event)">
+          </dx-button>
+        </div>
+       </div>
+    </div>
+  </div>
+</div>
+</div>

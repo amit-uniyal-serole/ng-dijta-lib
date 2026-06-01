@@ -1,0 +1,99 @@
+.image-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  img {
+    height: 30px;
+    width: 30px;
+    background: #ccc;
+    padding: 4px;
+    border-radius: 7px;
+  }
+  .more_icon {
+    background: #fff;
+    border-radius: 50%;
+    font-size: 16px;
+    padding: 3px;
+    opacity: 0;
+    margin: 0px 2px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+  }
+  &:hover {
+    .more_icon {
+      opacity: 1;
+    }
+  }
+  .download-error {
+    position: absolute;
+    bottom: -13px;
+    color: var(--error-fc);
+    font-size: 10px;
+    left: 23px;
+  }
+}
+.file-action-menu {
+  padding: 0px 4px;
+  list-style: none;
+   li {
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    &:hover {
+      background: var(--primary-hover);
+      color: var(--primary-on-hover);
+    }
+   }
+}
+// Loader
+.spinner {
+	min-height: 22px;
+}
+
+.spinner h3 {
+	position: relative;
+}
+
+.spinner h3:after {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  top: 2px;
+  left: -23px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #b1b1b2;
+  border-top-color: #323e48;
+  animation: spinner 1s linear infinite;
+  background: #fff;
+}
+
+@-webkit-keyframes spinner {
+	to {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes spinner {
+	to {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+/* from MDN - https://developer.mozilla.org/ */
+.visually-hidden {
+	clip: rect(1px, 1px, 1px, 1px) !important;
+	border: 0 !important;
+	-webkit-clip-path: inset(50%) !important;
+	clip-path: inset(50%) !important;
+	height: 1px !important;
+	margin: -1px !important;
+	overflow: hidden !important;
+	padding: 0 !important;
+	position: absolute !important;
+	white-space: nowrap !important;
+	width: 1px !important;
+}

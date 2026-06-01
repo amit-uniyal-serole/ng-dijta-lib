@@ -1,0 +1,85 @@
+.table-action {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 5px;
+
+  button {
+    width: 30px !important;
+    height: 30px !important;
+    padding: 2px !important;
+    text-align: center !important;
+    margin: 3px !important;
+
+    mat-icon {
+      font-size: 18px !important;
+      border-radius: 50%;
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &.expand {
+      background: #1947cc;
+      color: #fff;
+    }
+
+    &.edit {
+      background: #52c4ff;
+      color: #fff;
+    }
+
+    .delete {
+      color: #ef7474;
+    }
+
+    &.menu {
+      border-radius: 50% !important;
+      border: 1px solid #dedddd !important;
+    }
+  }
+}
+
+.table-menu-icon {
+  margin-right: 9px;
+  font-size: 20px;
+  min-width: 20px;
+}
+
+.table-menu-items {
+  font-size: 13px;
+  line-height: 16px;
+  letter-spacing: 0.3px;
+  width: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-left: 3px;
+}
+
+.table-menu-btns {
+  display: block;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  color: #000000;
+  height: 43px;
+}
+
+.table-menu-btns {
+  &:disabled {
+    border: none;
+    background-color: #ebebeb;
+    color: #000000ce;
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: all;
+  }
+}
+
+.cdk-overlay-pane .mat-menu-panel.action-menu-panel {
+  min-height: 40px !important;
+}
+
+.mat-menu-item:hover:not([disabled]) {
+  background: rgba(134, 134, 134, 0.199) !important;
+}

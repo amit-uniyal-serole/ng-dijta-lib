@@ -1,0 +1,45 @@
+{
+  "name": "@ngdx/dijta",  
+  "version": "14.2.104",
+  "license": "UNLICENsSED",
+  "peerDependencies": {
+    "@angular/common": ">=14.0.0",
+    "@angular/core": ">=14.0.0",
+    "@angular/material": "^14.0.0",
+    "moment": "^2.29.4",
+    "echarts": "^5.4.0",
+    "ngx-echarts": "^8.0.1",
+    "resize-observer-polyfill": "^1.5.1",
+    "@types/core-js": "^2.5.5",
+    "tui-calendar": "^1.15.1",
+    "ngx-mat-select-search": "^5.0.0",
+    "ts-input-mask": "^2.1.0",
+    "bootstrap": "^5.1.3",
+    "lodash": "^4.17.21",
+    "@angular-material-components/datetime-picker": "^8.0.0",
+    "@angular-material-components/moment-adapter": "^8.0.0",
+    "@angular/material-moment-adapter": "^14.2.7",
+    "moment-timezone": "^0.5.39",
+    "libphonenumber-js": "^1.11.14",
+    "fp-ts": "^1.13.0",
+    "inputmask": "^5.0.8",
+    "mrmime": "^2.0.0",
+    "cropperjs": "^1.6.1",
+    "@ngneat/transloco": "^4.3.0",
+    "@casl/ability": "^6.5.0",
+    "@casl/angular": "^8.2.1",
+    "@ngneat/input-mask": "6.1.0",
+    "ngx-mask": "14.3.3",
+    "date-fns": "^2.30.0",
+    "date-fns-tz": "^2.0.1"
+  },
+  "dependencies": {
+    "tslib": "^2.1.0"
+  },
+  "publishConfig": {
+    "registry": "https://repository.serole.com/repository/dx-npm-local/"
+  },
+  "devDependencies": {
+    "@types/quill": "^2.0.9"
+  }
+}

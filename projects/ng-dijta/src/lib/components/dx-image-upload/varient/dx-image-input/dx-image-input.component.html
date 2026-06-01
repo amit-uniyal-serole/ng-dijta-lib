@@ -1,0 +1,35 @@
+<div class="dx-field-wrapper" [class.image-upload-input]="control?.value?.length <= 0" [class.none-label]="noneLabel"
+  [ngClass]="outline" [class.display-view]="viewOnly" [class.dx-disable]="disabled"
+  [class.left-align-label]="labelPosition === 'left'" floatLabel="never" [class.required]="required"
+  [class]="outerLabelErrorType" [class.none-border]="noneBorder">
+  <mat-label class="dx-outer-label-wrapper">
+    <span class="dx-outer-label">
+      <ng-content select="[dxLabel]"></ng-content>
+      <span *ngIf="required" class="astrict">*</span>
+    </span>
+  </mat-label>
+  <mat-form-field appearance="outline">
+    <mat-label class="dx-input-label">
+      <ng-content select="dx-label"></ng-content>
+    </mat-label>
+    <span matPrefix>
+      <div>
+        <ng-content select="dx-prefix"></ng-content>
+      </div>
+    </span>
+    <dx-image [tabIndex]="tabIndex" [formControl]="control" (ngModelChange)="inputChange($event)" (blur)="onBlur($event)"
+      [required]="required" [placeholder]="placeholder" [uploadType]="uploadType" [uploadBtnTitle]="uploadBtnTitle"
+      [adapterData]="adapterData" [enableAutoUpload]="enableAutoUpload" [fileMaxSize]="fileMaxSize"
+      [totalMaxSize]="totalMaxSize" [fileMaxCount]="fileMaxCount"></dx-image>
+    <span matSuffix>
+      <ng-content select="dx-suffix"></ng-content>
+    </span>
+    <mat-hint>
+      <ng-content select="dx-hint"> </ng-content>
+    </mat-hint>
+
+    <mat-error>
+      <ng-content select="dx-error"></ng-content>
+    </mat-error>
+  </mat-form-field>
+</div>

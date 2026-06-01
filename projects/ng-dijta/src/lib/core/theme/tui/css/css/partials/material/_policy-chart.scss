@@ -1,0 +1,46 @@
+#PolicyChart {
+  .chart-type-select {
+    .mat-form-field {
+      width: 100%;
+
+      .mat-form-field-flex {
+        height: auto;
+        background: $light;
+        border: 0;
+        padding: 0;
+      }
+    }
+
+    .mat-form-field-wrapper {
+      padding: 0;
+    }
+
+    .mat-form-field-infix {
+      padding: 0;
+      border: 0;
+    }
+
+    .mat-select-value {
+      font-weight: 800;
+      font-size: 16px;
+      line-height: 22px;
+      color: $primary;
+    }
+
+    .mat-form-field-underline,
+    .mat-form-field-subscript-wrapper {
+      display: none;
+    }
+
+    .mat-select-arrow-wrapper {
+      // background: url(../../../assets/images/down-chevron.svg) no-repeat;
+      background-size: 13px;
+      background-position: center;
+    }
+
+    .mat-select-arrow {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+}

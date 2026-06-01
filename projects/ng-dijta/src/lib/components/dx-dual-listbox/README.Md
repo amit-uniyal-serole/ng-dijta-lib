@@ -1,0 +1,105 @@
+dx-dual-Listbox
+=========
+
+The **dx-dual-listbox** is a component that provides two lists controls side-by-side that allows items in one list to be selected and moved* to the other list via drag-and-drop and/or a button-based interface. 
+The component supports multiple select options from the list, programatic setting of list sources, and layout with direction and button formatting.
+
+\* Technically, the dual-list component does not move items from one array to another. Rather it makes a copy from the source array of the item and adds it to the destination array, or removes it from the destination array. Thus, the source array is a master list of all available item and the destintion array is a list of items that have been selected from the master list. Therefore, in order for an item to be in the destination array it must also exist in the source array.
+
+
+
+## How to use?
+
+```
+$ npm i @ngdx/dijta
+```
+
+## Integration
+
+The **dx-dual-listbox** should work as-is with webpack/angular-cli. Just add the `DxDualListboxModule`:
+
+````typescript
+import { DxDualListboxModule } from '@ngdx/dijta';
+
+@NgModule({
+    imports: [ DxDualListboxModule ],
+    ...
+})
+export class AppModule {}
+
+
+## Usage
+Basic usage is:
+```html
+<dx-dual-listbox [config]="config"  [source]="source"
+[(destination)]="confirmed"   (onDestinationChange)="destinationChange($event)"></dx-dual-listbox>
+````
+## Additional Features
+
+>Extend **DxListBoxAdditionalFeatures** to the source/destination model
+
+## Input
+
+The following parameters are available for the dual-list:
+| Input | Data need to be passed as input |
+| ------------- | ------------- |
+| **key** |  The unique identifier field of each object in the `source` and `destination` arrays, default is `_id`. (Note: with a source of an array of strings, each string is its own id.)|
+| **display** |  The field of each object for displaying the object each the lists, default is `_name`. Or, a function that returns a string that can be used for displaying an object. (Note: with a source of an array of strings, each string is its own display.)|
+| **height** | The height of the lists, default is `100px`|
+| **format** | A format object, default is `{ direction: 'left-to-right', draggable: true, locale: undefined }`|
+| **filter** | A boolean whether or not to display a filter for the lists, default is `false`.|
+| **sort** | A boolean whether or not to keep the lists sorted, default is `false`.|
+| **compare** | A compare function to be used for sorting the lists. Note if sort is not set and compare is set, then sort will be set `true`.|
+| **source** | The source array of objects or strings for the list. (This is the universal, master list of all possible objects.)|
+| **destination** | The destination array of objects or strings selected from the source. Note, the `destination` array can have prexisting elements.|
+| **disabled** | The dual-list is disabled, default is `false`|
+|**hideDefaulLabel** | Hide default labels|
+|**subtitleAsEmailFg** | Pass subtitleAsEmailFg as `true`, If subtitle value is `email` to open mail senders|
+
+## Format
+
+The format object allows for the text for the add, remove, all, and none buttons to be set. It also can be used to set the layout direction with the source being on the left-hand side as the default, toggling drag-and-drop, and explicitly setting the locale for the filter string comparision. The default locale is undefined and will use host environment's current locale. An example format object:
+
+```typescript
+export class MyComponent {
+    ...
+    format = {
+        direction: DualListComponent.LTR, draggable: true, locale: 'da' };
+    ...
+}
+```
+
+## Output
+
+**(onDestinationChange)** - An event triggered when the destination array changes.
+
+Then used in an html template:
+
+```html
+<dx-dual-listbox
+  [config]="config"
+  [source]="source"
+  [(destination)]="confirmed"
+  (onDestinationChange)="destinationChange($event)"
+></dx-dual-listbox>
+```
+
+## Extending
+The html template packaged with this component is based on Bootstap 3; however it can be overridden for customization. Here is an example:
+
+```typescript
+import { Component } from '@angular/core';
+import { DxDualListboxComponent } from '@ngdx/dijta';
+
+@Component({
+    selector: 'custom-dual-list',
+    templateUrl: './custom-dual-list.component.html',
+    styleUrls: [ './custom-dual-list.component.scss' ]
+})
+export class CustomDualListComponent extends DxDualListboxComponent {
+}
+```
+
+### Result
+
+![Dual ListBox](result.png)

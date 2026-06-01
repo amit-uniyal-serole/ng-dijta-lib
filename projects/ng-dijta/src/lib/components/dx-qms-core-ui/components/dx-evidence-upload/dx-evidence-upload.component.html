@@ -1,0 +1,391 @@
+<div class="container-fluid px-0 d-none d-lg-block">
+  <dx-section-title *ngIf="evidenceTitle" [title]='evidenceTitle | transloco'>
+  </dx-section-title>
+  <div class="col-md-12 p-1  position-relative dx-evidence-upload" dLoading [loading]="isBusy" [backdrop]="true"
+    [message]="'Fetching Evidence List...'" [style.height.%]="100">
+    <!-- {{evidenceList | json}} -->
+    <ng-container *ngIf="evidenceList?.length! > 0 && rootUrl; else noEvidences">
+      <div class="row mb-2">
+        <div class="col-md-2 subbody fw-semibold" *ngFor="let col of columns">{{col.title}}</div>
+      </div>
+      <div class="row gap-1" *ngIf="groupedEvidenceList?.length > 0 && evidenceForms">
+            <ng-container *ngFor="let group of groupedEvidenceList">
+              <fieldset class="evidence-group" [ngClass]="{ 'mb-3 p-2 border border-2 border-danger rounded bg-light': group.groupId }">
+                <legend
+        class="float-none w-auto px-2 fw-semibold fs-6"
+        [ngClass]="{ 'text-danger': group.groupId }"
+        *ngIf="group.groupId"
+      >
+      <span class="text-danger fs-4">*</span>
+        <span>Any one of the Document is Required to be Uploaded</span>
+      </legend>
+        <div class="card py-2 scroll-container shadow-sm border-0" *ngFor="let evidence of group.items; trackBy: trackByGEId">
+          <div class="row align-items-center" [formGroup]="evidenceForms[evidence.gEId]">
+            <!-- Verification Item -->
+            <div class="col-md-2 subbody text-truncate fw-normal d-flex">
+              <span *ngIf="mandatoryDocTypes?.includes(evidence.keyTt)" class="text-danger fs-4">* </span>
+             <span class="p-1 cursor-default text-truncate d-inline-block" dx-tooltip [dxTooltipTitle]="evidence.verificationItem || evidence.valueTt"> {{evidence.verificationItem || evidence.valueTt}} </span>
+            </div>
+            <!-- Status -->
+            <div class="col-md-2 subbody text-truncate fw-normal py-2">
+              <ng-container
+                *ngTemplateOutlet="statusDisplay; context: { $implicit: evidence, index: evidence.gEId, form: evidenceForms[evidence.gEId] }"></ng-container>
+            </div>
+            <!-- Comments -->
+            <div class="col-md-2 subbody text-truncate fw-normal">
+              <ng-container *ngTemplateOutlet="commentsDisplay; context: { $implicit: evidence, index: evidence.gEId, form: evidenceForms[evidence.gEId] }">
+              </ng-container>
+            </div>
+            <!-- Verified By -->
+            <div class="col-md-2 subbody text-truncate fw-normal">
+              <ng-container *ngTemplateOutlet="verifiedByDisplay; context: { $implicit: evidence, index: evidence.gEId, form: evidenceForms[evidence.gEId] }">
+              </ng-container>
+
+            </div>
+            <!-- Date -->
+            <div class="col-md-2">
+              <ng-container *ngTemplateOutlet="dateDisplay; context: { $implicit: evidence, index: evidence.gEId, form: evidenceForms[evidence.gEId] }">
+              </ng-container>
+            </div>
+            <!-- Action -->
+            <div class="d-flex gap-1 col-md-2 subbody fw-normal justify-content-end">
+              <ng-container *ngTemplateOutlet="actionDisplay; context: { $implicit: evidence, index: evidence.gEId }">
+              </ng-container>
+            </div>
+          </div>
+          <div class="card py-2 scroll-container shadow-sm border-0" *ngIf="evidence && evidence?.descriptionTt">
+            <div class="py-1">
+              <span class="subbody fw-semibold">Conditions</span>
+            </div>
+          
+            <div class="pb-2">
+              <span class="subbody text-truncate fw-normal">
+                {{evidence?.descriptionTt}}
+              </span>
+            </div>
+          </div>
+          <div class="d-flex flex-column gap-1 mt-1">
+            <div *ngFor="let file of evidence.fileObject; let j=index"
+              class="d-flex justify-content-between align-items-center border border-dark rounded-2 p-1">
+              <div class="d-flex gap-1">
+                <span class="material-icons-outlined custom-material-icons">attach_file</span>
+                <span>{{file.file_name}}</span>
+                <span class="ms-3">{{file.file_size}}</span>
+          
+              </div>
+             <button
+                type="button"
+                class="d-flex gap-1 bg-transparent border-0 p-0"
+                *ngIf="!evidence?.isEditing && evidence?.fileObject?.length && 
+                      (evidence?.statusCd === initialEvidenceUploadStatus || (evidence.statusCd === 'RUPLD' && isAgent)) && 
+                      !disabledEvidenceUpload && actions?.includes('DELETE')"
+                (click)="deleteEvidence(evidence, undefined, evidence.gEId, j)"
+                aria-label="Delete evidence"
+              >
+                <span class="material-icons-outlined custom-material-icons cursor-pointer">
+                  close
+                </span>
+              </button>
+            </div>
+          </div>
+        </div></fieldset>
+        </ng-container>
+      </div>
+    </ng-container>
+    <ng-template #noEvidences>
+      <div class="d-flex align-items-center justify-content-center" style="height: 200px;">
+        <ng-container *ngIf="!disabledEvidenceUpload">
+          <span class="subtitle"> <span class="fw-semibold">{{customNoEvidenceMsg?customNoEvidenceMsg:"No Evidence" }}</span></span>
+        </ng-container>
+        <ng-container *ngIf="disabledEvidenceUpload">
+          <span class="subtitle"> <span class="fw-semibold">{{"No Data Available" | transloco}}</span></span>
+        </ng-container>
+      </div>
+    </ng-template>
+    <ng-container *ngTemplateOutlet="uploadLaterVisibleDisplay; context: { variant: 'desktop' }">
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #lineThemeRef>
+  <dx-skeleton-loader [theme]="lineTheme">
+  </dx-skeleton-loader>
+</ng-template>
+<ng-template #statusThemeRef>
+  <dx-skeleton-loader [theme]="statusTheme">
+  </dx-skeleton-loader>
+</ng-template>
+
+<ng-template #spinnerLoaderRef let-id>
+  <div class="mt-1">
+    <mat-spinner diameter="25">
+    </mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #statusDisplay let-evidence let-i="index" let-form="form">
+  <ng-container *ngIf="isEvidenceSaving && (selectedIndex === evidence.gEId); else statusRef">
+    <ng-template *ngTemplateOutlet="statusThemeRef"></ng-template>
+  </ng-container>
+  <ng-template #statusRef>
+    <ng-container *ngIf="!evidence.isEditing">
+      <ng-container *ngIf="evidence.statusCd; else noStatus">
+        <dx-status [status]="evidence?.statusCd" [statusList]="statusList" class="text-nowrap"></dx-status>
+      </ng-container>
+      <ng-template #noStatus>-</ng-template>
+    </ng-container>
+    <ng-container *ngIf="evidence.isEditing">
+      <form [formGroup]="form">
+        <dx-select [noneLabel]="true" class="w-100" outline="outer-label" formControlName="statusCd"
+          [options]="statusList" [required]="true"></dx-select>
+      </form>
+    </ng-container>
+  </ng-template>
+</ng-template>
+
+<ng-template #commentsDisplay let-evidence let-i="index" let-form="form">
+  <ng-container *ngIf="isEvidenceSaving && (selectedIndex === evidence.gEId) else commentsRef">
+    <ng-template *ngTemplateOutlet="lineThemeRef"></ng-template>
+  </ng-container>
+  <ng-template #commentsRef>
+    <span *ngIf="!evidence.isEditing" dx-tooltip [dxTooltipTitle]="evidence.comments">
+      {{evidence.comments ? evidence.comments : '-'}}
+    </span>
+    <ng-container *ngIf="evidence.isEditing">
+      <form [formGroup]="form">
+        <dx-input [noneLabel]="true" class="w-100" outline="outer-label" formControlName="comments" [required]="true"
+        (blur)="onInputIdNumber(evidence)"></dx-input>
+      </form>
+    </ng-container>
+  </ng-template>
+</ng-template>
+
+<ng-template #verifiedByDisplay let-evidence let-i="index" let-form="form">
+  <ng-container *ngIf="isEvidenceSaving && (selectedIndex === evidence.gEId) else verifiedByRef">
+    <ng-template *ngTemplateOutlet="lineThemeRef"></ng-template>
+  </ng-container>
+  <ng-template #verifiedByRef>
+    {{evidence.verifiedBy ? evidence.verifiedBy : '-'}}
+  </ng-template>
+</ng-template>
+
+<ng-template #dateDisplay let-evidence let-i="index" let-form="form">
+  <ng-container *ngIf="isEvidenceSaving && (selectedIndex === evidence.gEId) else verifiedDateRef">
+    <ng-template *ngTemplateOutlet="lineThemeRef"></ng-template>
+  </ng-container>
+  <ng-template #verifiedDateRef>
+    {{(evidence.verifiedDate) ? (evidence.verifiedDate | date:'dd/MM/yyyy') : '-'}}
+  </ng-template>
+</ng-template>
+
+<ng-template #actionDisplay let-evidence let-i="index">
+  <!-- Upload -->
+  <ng-container *ngIf="actions?.includes('UPLOAD')">
+    <ng-container *ngIf="(isEvidenceUploading && selectedIndex === evidence.gEId);else uploadBtn">
+      <ng-template *ngTemplateOutlet="spinnerLoaderRef"></ng-template>
+    </ng-container>
+    <ng-template #uploadBtn>
+      <ng-container *ngIf="!specialDocTypes?.includes(evidence.keyTt)">
+        <!-- {{evidence | json}} -->
+        <label *ngIf="(evidence?.fileObject?.length===0 || evidence.statusCd === reUploadStatusCode) && !disabledEvidenceUpload"
+        [for]="'fileDropRef' + evidence.gEId" class="d-flex"><span
+          class="material-icons-outlined text-white bg-danger  py-1 px-2 rounded-1">cloud_upload</span></label>
+      <input type="file" class="d-none" [id]="'fileDropRef' + evidence.gEId" (change)="uploadEvidence($event, evidence,evidence.gEId,specialDocTypes?.includes(evidence.keyTt))">
+      </ng-container>
+      <ng-container *ngIf="specialDocTypes?.includes(evidence.keyTt)">
+        <label *ngIf="(
+        ((evidence?.fileObject?.length<=5 || evidence?.statusCd === reUploadStatusCode))
+      ) && !disabledEvidenceUpload" [ngClass]="{ 'pe-none opacity-50': evidence?.fileObject?.length === 5 }" [for]="'fileDropRef' + evidence.gEId" class="d-flex"><span
+          class="material-icons-outlined text-white bg-danger  py-1 px-2 rounded-1">cloud_upload</span></label>
+      <input type="file" class="d-none" [id]="'fileDropRef' + evidence.gEId" (change)="uploadEvidence($event, evidence,evidence.gEId,specialDocTypes?.includes(evidence.keyTt))" multiple>
+      </ng-container>
+    </ng-template>
+  </ng-container>
+  <!-- ~ -->
+
+  <!-- Edit -->
+  <ng-container *ngIf="actions?.includes('EDIT')">
+    <button [disabled]="isEvidenceDownloading" (click)="toggleEdit(evidence)"
+      *ngIf="!evidence.isEditing && !disabledEvidenceUpload && evidence?.fileObject?.length"
+      class="border border-warning cursor-pointer bg-white lh-1 text-warning py-1 px-2 rounded-1"
+      aria-label="Edit evidence">
+      <span class="material-icons-outlined text-warning">edit</span>
+    </button>
+
+  </ng-container>
+  <!-- ~ -->
+
+  <!-- Download -->
+  <ng-container *ngIf="actions?.includes('DOWNLOAD')">
+    <ng-container *ngIf="(isEvidenceDownloading && selectedIndex === evidence.gEId);else downloadBtn">
+      <ng-template *ngTemplateOutlet="spinnerLoaderRef"></ng-template>
+    </ng-container>
+    <ng-template #downloadBtn>
+      <button [disabled]="isEvidenceDeleting"
+        (click)="downloadEvidence(evidence?.pkId, evidence?.originalFileName, evidence?.contentType,evidence.gEId,evidence,specialDocTypes?.includes(evidence.keyTt))"
+        *ngIf="!evidence.isEditing && evidence?.fileObject?.length"
+        class="bg-success text-white py-1 px-2 rounded-1 lh-1 border-0 d-inline-flex align-items-center"
+        aria-label="Download evidence">
+        <span class="material-icons">download</span>
+      </button>
+    </ng-template>
+  </ng-container>
+  <!-- ~ -->
+
+  <!-- Delete -->
+  <ng-container *ngIf="actions?.includes('DELETE')">
+    <ng-container *ngIf="(isEvidenceDeleting && selectedIndex === evidence.gEId);else deleteBtn">
+      <ng-template *ngTemplateOutlet="spinnerLoaderRef"></ng-template>
+    </ng-container>
+    <ng-template #deleteBtn>
+
+      <button [disabled]="isEvidenceDownloading" (click)="deleteEvidence(evidence,undefined,evidence.gEId)"
+        *ngIf="!evidence.isEditing && evidence?.fileObject?.length && (evidence.statusCd === initialEvidenceUploadStatus || (evidence.statusCd === reUploadStatusCode && isAgent)) && !disabledEvidenceUpload"
+        class="text-danger border border-danger bg-white lh-1 cursor-pointer  py-1 px-2 rounded-1"
+        aria-label="Delete evidence">
+        <span class="material-icons-outlined text-danger fs-4">delete</span>
+      </button>
+    </ng-template>
+    <ng-template #deleteBtn>
+    </ng-template>
+  </ng-container>
+  <!-- ~ -->
+
+  <!-- Save -->
+  <ng-container *ngIf="actions?.includes('SAVE')">
+    <ng-container *ngIf="(isEvidenceSaving && selectedIndex === evidence.gEId);else saveBtn">
+      <ng-template *ngTemplateOutlet="spinnerLoaderRef"></ng-template>
+    </ng-container>
+    <ng-template #saveBtn>
+      <button *ngIf="evidence.isEditing && !disabledEvidenceUpload" (click)="saveEdit(evidence, evidence.gEId)"
+        class="cursor-pointer bg-success text-white border-0 lh-1 py-1 px-2 rounded-1" aria-label="Save evidence">
+        <span class="material-icons-outlined text-white">save</span>
+      </button>
+    </ng-template>
+  </ng-container>
+  <!-- ~ -->
+  <ng-container *ngIf="actions?.includes('SAVE')">
+    <button (click)="cancelEdit(evidence, evidence.gEId)" *ngIf="evidence.isEditing && !disabledEvidenceUpload"
+      [disabled]="isEvidenceSaving"
+      class="cursor-pointer  border border-danger text-danger bg-white lh-1 py-1 px-2 rounded-1"
+      aria-label="Close evidence">
+      <span class="material-icons-outlined text-danger">close</span>
+    </button>
+  </ng-container>
+</ng-template>
+
+<ng-template #uploadLaterVisibleDisplay let-variant="variant">
+  <div *ngIf="uploadLaterVisible" class="row mt-3" [formGroup]="attachmentsForm">
+    <div class="">
+      <dx-checkbox [id]="'isUploadLater-' + variant" formControlName="isUploadLater" (ngModelChange)="uploadChkbx($event)"
+        [disabled]="disabledUploadLater || evidenceList?.length === 0">
+        <dx-label>{{"Upload Supporting documents later" | transloco}}</dx-label>
+      </dx-checkbox>
+    </div>
+    <div class="col-md-12" *ngIf="attachmentsForm?.get('isUploadLater')?.value">
+      <dx-textarea [id]="'explanation-' + variant" formControlName="explanation" [disabled]="disabledUploadLater">
+        <dx-label>{{"Rationale/Explanation" | transloco}}</dx-label>
+      </dx-textarea>
+    </div>
+  </div>
+</ng-template>
+
+<div class="d-block d-md-block d-lg-none p-1  position-relative dx-evidence-upload" dLoading [loading]="isBusy"
+  [backdrop]="true" [message]="'Fetching Evidence List...'" [style.height.%]="100">
+  <ng-container *ngIf="groupedEvidenceList?.length && rootUrl && evidenceForms; else noEvidences">
+
+    <dx-section-title *ngIf="evidenceTitle" [title]='evidenceTitle | transloco'>
+    </dx-section-title>
+    <ng-container *ngFor="let group of groupedEvidenceList">
+
+      <fieldset class="evidence-group"
+        [ngClass]="{ 'mb-3 p-2 border border-2 border-danger rounded bg-light': group.groupId }">
+
+        <legend
+          class="float-none w-auto px-2 fw-semibold fs-6"
+          [ngClass]="{ 'text-danger': group.groupId }"
+          *ngIf="group.groupId">
+          <span class="text-danger fs-4">*</span>
+          <span>Any one of the Document is Required to be Uploaded</span>
+        </legend>
+    <div class="card mb-3 py-2 border rounded-3" *ngFor="let evidence of group.items; trackBy: trackByGEId">
+      <div class="row align-items-center" [formGroup]="evidenceForms[evidence.gEId]">
+        <div class="d-flex justify-content-between align-items-center mb-2 ps-4">
+          <p class="mb-0 body fw-bold col overflow-hidden text-truncate" dx-tooltip
+            [dxTooltipTitle]="evidence.verificationItem || evidence.valueTt">{{ evidence.verificationItem ||
+            evidence.valueTt}}</p>
+          <div class="d-flex gap-2 px-2">
+            <ng-container *ngTemplateOutlet="actionDisplay; context: { $implicit: evidence, index: evidence.gEId }">
+            </ng-container>
+          </div>
+        </div>
+        <div class="custom-row">
+          <div class="row bg-light p-1 m-1 py-2 px-2 my-1">
+            <div class="col-6 text-secondary  fw-medium">{{mobileRows.verificationItem}}</div>
+            <div class="col-6 d-flex  fw-semibold paragraph fw-medium justify-content-end">{{ evidence.verificationItem
+              || evidence.valueTt}}</div>
+          </div>
+          <div class="row p-1 m-1 py-2 px-2 my-1">
+            <div class="col-6  text-secondary fw-medium">{{mobileRows.status}}</div>
+            <div class="col-6 d-flex  fw-semibold paragraph fw-medium justify-content-end"><ng-container
+                *ngTemplateOutlet="statusDisplay; context: { $implicit: evidence, index: evidence.gEId, form: evidenceForms[evidence.gEId] }"></ng-container></div>
+          </div>
+          <div class="row bg-light p-1 m-1 py-2 px-2 my-1">
+            <div class="col-6  text-secondary fw-medium">{{mobileRows.comments}}</div>
+            <div class="col-6 d-flex  paragraph fw-medium justify-content-end"><ng-container
+                *ngTemplateOutlet="commentsDisplay; context: { $implicit: evidence, index: evidence.gEId, form: evidenceForms[evidence.gEId] }">
+              </ng-container></div>
+          </div>
+          <div class="row p-1 m-1 py-2 px-2 my-1">
+            <div class="col-6  text-secondary fw-medium">{{mobileRows.verifiedBy}}</div>
+            <div class="col-6 d-flex  paragraph fw-medium justify-content-end">
+              <ng-container *ngTemplateOutlet="verifiedByDisplay; context: { $implicit: evidence, index: evidence.gEId, form: evidenceForms[evidence.gEId] }">
+              </ng-container>
+            </div>
+          </div>
+          <div class="row bg-light p-1 m-1 py-2 px-2 my-1">
+            <div class="col-6  text-secondary fw-medium">{{mobileRows.verifiedDate}}</div>
+            <div class="col-6 d-flex  paragraph fw-medium justify-content-end"><ng-container
+                *ngTemplateOutlet="dateDisplay; context: { $implicit: evidence, index: evidence.gEId, form: evidenceForms[evidence.gEId] }">
+              </ng-container></div>
+
+
+          </div>
+
+           <div *ngIf="evidence.fileObject" class="d-flex flex-column gap-1 mt-1">
+            <div *ngFor="let file of evidence.fileObject; let j=index"
+              class="d-flex justify-content-between align-items-center border border-dark rounded-2 p-1 mx-3">
+              <div class="d-flex gap-1">
+                <span class="material-icons-outlined custom-material-icons">attach_file</span>
+                <span class="m-fileName">{{file.file_name}}</span>
+          
+              </div>
+              <div class="d-flex gap-1">
+                <span class="ms-3">{{file.file_size}}</span>
+                <button
+                  type="button"
+                  class="material-icons-outlined custom-material-icons cursor-pointer btn p-0 border-0 bg-transparent"
+                  *ngIf="!evidence?.isEditing && evidence?.fileObject?.length && 
+                        (evidence?.statusCd === initialEvidenceUploadStatus || (evidence.statusCd === reUploadStatusCode && isAgent)) && 
+                        !disabledEvidenceUpload && actions?.includes('DELETE')"
+                  (click)="deleteEvidence(evidence, undefined, evidence.gEId, j)"
+                  aria-label="Delete evidence"
+                >
+                   <span class="material-icons-outlined custom-material-icons cursor-pointer">
+                  close
+                </span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+     </fieldset>
+
+    </ng-container>
+    <ng-container *ngTemplateOutlet="uploadLaterVisibleDisplay; context: { variant: 'mobile' }">
+    </ng-container>
+  </ng-container>
+</div>

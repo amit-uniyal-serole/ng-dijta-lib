@@ -1,0 +1,61 @@
+<div class="dx-field-wrapper" [class.none-label]="noneLabel" [ngClass]="outline" [class.display-view]="viewOnly"
+  [class.dx-disable]="disabled" [class.left-align-label]="labelPosition === 'left'" floatLabel="never"
+  [class.required]="required || ctrRequired" [class]="outerLabelErrorType" [class.none-border]="noneBorder"
+  [class.readonly]="readonly">
+  <mat-label class="dx-outer-label-wrapper">
+    <span class="dx-outer-label">
+      <ng-content select="[dxLabel]"></ng-content>
+      <span *ngIf="required || ctrRequired" class="astrict">*</span>
+    </span>
+  </mat-label>
+  <mat-form-field appearance="outline" floatLabel='never'>
+    <mat-label class="dx-input-label">
+      <ng-content select="dx-label"></ng-content>
+    </mat-label>
+
+    <span matPrefix>
+      <ng-content select="dx-prefix"></ng-content>
+    </span>
+    <span matPrefix *ngIf="isCurrency && currencyPosition === 'left'">
+      <span class="mx-1"> {{ currencySymbol }}</span>
+    </span>
+
+    <input [dxTrimInput]="applyTrim" [tabIndex]="tabIndex" [id]="id" [mentionConfig]="mentionConfigData ?? {}"
+      *ngIf="!isCurrency && !isAutoComplete" [type]="type" matInput [mask]="mask" [patterns]="maskingPatterns"
+      [formControl]="control" (ngModelChange)="inputChange($event)" (blur)="onBlur($event)"
+      [readonly]="readonly || viewOnly || disabled" [minlength]="minLength" [maxlength]="maxLength"
+      [required]="required || ctrRequired" ngDefaultControl [placeholder]="tooltip" dxEnterKey
+      (enterKeyPressed)="onEnter.emit()" (change)="onInputChangeEvent($event)" />
+
+    <!-- auto complete -->
+    <input [tabIndex]="tabIndex" [id]="id" *ngIf="!isCurrency && isAutoComplete" [type]="type" matInput [mask]="mask"
+      [formControl]="searchCtrl" [(ngModel)]="value" (ngModelChange)="inputChange($event)" [disabled]="disabled"
+      (blur)="onBlur($event)" [required]="required" [matAutocomplete]="inputAutoComplete" ngDefaultControl />
+    <mat-autocomplete #inputAutoComplete="matAutocomplete">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option?.keyTt"
+        (click)="onSelectOption(option)">
+        <div class="item">
+          <span [matTooltipDisabled]="true" matTooltipPosition="left" [matTooltip]="
+              option?.valueTt && showToolTip ? option?.valueTt : null
+            ">
+            {{ option?.valueTt | transloco }}
+          </span>
+        </div>
+      </mat-option>
+    </mat-autocomplete>
+    <span matSuffix *ngIf="isCurrency && currencyPosition === 'right'">
+      <span class="mx-1"> {{ currencySymbol }}</span>
+    </span>
+    <span matSuffix>
+      <ng-content select="dx-suffix"></ng-content>
+    </span>
+
+    <mat-hint>
+      <ng-content select="dx-hint"> </ng-content>
+    </mat-hint>
+
+    <mat-error>
+      <ng-content select="dx-error"></ng-content>
+    </mat-error>
+  </mat-form-field>
+</div>

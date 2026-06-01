@@ -1,0 +1,23 @@
+<div class="dx-field-wrapper input-variant-layout" [class.none-label]="noneLabel" [ngClass]="outline"
+  [class.error]="control?.invalid && (control.touched || control.dirty)" [class.display-view]="viewOnly"
+  [class.required]="required">
+  <mat-form-field appearance="outline">
+    <span matPrefix class="material-icons-outlined">{{icon}}</span>
+    <mat-label class="dx-input-label">
+      <ng-content select="dx-label"></ng-content>
+    </mat-label>
+    <input type="text" matInput [mask]="mask" [formControl]="control?.control" [placeholder]="placeholder"
+      (ngModelChange)="inputChange($event)" [disabled]="disabled" (blur)="onBlur($event)"
+      [readonly]="readonly || viewOnly" />
+    <span matSuffix>
+      <ng-content select="dx-suffix"></ng-content>
+    </span>
+    <mat-hint>
+      <ng-content select="dx-hint"> </ng-content>
+    </mat-hint>
+    <mat-error>
+      <ng-content select="dx-error"> </ng-content>
+    </mat-error>
+  </mat-form-field>
+
+</div>

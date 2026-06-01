@@ -1,0 +1,14 @@
+.table-progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .paragraph {
+    flex: 0 0 44px;
+    padding: 0px 10px;
+  }
+
+  .progress {
+    flex: 1;
+  }
+}

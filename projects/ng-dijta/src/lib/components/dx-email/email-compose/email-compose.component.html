@@ -1,0 +1,52 @@
+<div [formGroup]="newEmailForm" id="composeEmail" class="new-mail-wrapper">
+  <div class="title-area">
+    <div class="title"> New Email</div>
+    <div><button (click)="close()" class="btn-icon"><span class="material-icons-outlined menu-icon">
+          close
+        </span>
+      </button></div>
+  </div>
+  <div class="popup-container row">
+    <div class="col-md-12 remove-quill-toolbar">
+      <div class="input-label-wrapper input-label">
+        <div>To&nbsp;<span>*</span></div>
+        <div><span *ngIf="!isCc" class="cc-bcc" (click)="onClickSendOption('Cc')">Cc</span><span *ngIf="!isBcc"
+            (click)="onClickSendOption('Bcc')" class="cc-bcc">Bcc</span></div>
+      </div>
+      <!-- <dx-input>
+      </dx-input> -->
+      <!-- uncomment the below selectors once quill enabled -->
+      <!-- <dx-quill-editor placeholder="@..." [quillConfig]="toQuillConfigModel" (ContentChanged)="toQuillContent($event)">
+      </dx-quill-editor> -->
+      <div class="email-error" *ngIf="inValidEmail">Please enter atleast one email</div>
+    </div>
+    <div class="col-md-12 remove-quill-toolbar" *ngIf="isCc">
+      <div class="input-label">Cc</div>
+      <!-- <dx-quill-editor placeholder="@..." [quillConfig]="toQuillConfigModel" (ContentChanged)="ccQuillContent($event)">
+      </dx-quill-editor> -->
+    </div>
+    <div class="col-md-12 remove-quill-toolbar" *ngIf="isBcc">
+      <div class="input-label">Bcc</div>
+      <!-- <dx-quill-editor placeholder="@..." [quillConfig]="toQuillConfigModel" (ContentChanged)="bccQuillContent($event)">
+      </dx-quill-editor> -->
+    </div>
+    <div class="col-md-12 email-subject">
+      <div class="input-label">Subject</div>
+      <input class="subject-input" formControlName="subject" />
+    </div>
+    <div class="col-md-12">
+      <div class="input-label">Body</div>
+      <!-- <dx-quill-editor [styles]="styles" placeholder="create your new email..." [quillConfig]="QuillConfigModel"
+        (ContentChanged)="ContentChanged($event)"></dx-quill-editor> -->
+    </div>
+  </div>
+  <div class="btn-wrapper" id="dxButton">
+    <div>
+      <button class="secondary-btn" (click)="close()">Discard</button>
+    </div>
+    <div>
+      <button class="secondary-btn">Save as draft</button>
+      <button class="dxBtn" (click)="sendMail()">Send</button>
+    </div>
+  </div>
+</div>

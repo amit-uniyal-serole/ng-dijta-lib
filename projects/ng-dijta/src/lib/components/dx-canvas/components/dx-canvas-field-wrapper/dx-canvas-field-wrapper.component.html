@@ -1,0 +1,18 @@
+<span>
+    <ng-container [ngSwitch]="data?.type">
+        <ng-container *ngSwitchCase="'text'">
+            <dx-table-text-cell [isCanvasCard]="true" [data]="data?.valueTt">
+            </dx-table-text-cell>
+        </ng-container>
+        <ng-container *ngSwitchCase="'currency'">
+            <dx-table-currency [data]="data?.valueTt" [setting]="data?.settings?.currency">
+            </dx-table-currency>
+        </ng-container>
+        <ng-container *ngSwitchCase="'date'">
+            <dx-table-date [data]="data?.valueTt" [setting]="data?.settings?.date"></dx-table-date>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+            <dx-flex-table-text-cell></dx-flex-table-text-cell>
+        </ng-container>
+    </ng-container>
+</span>

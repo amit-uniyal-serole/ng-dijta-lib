@@ -1,0 +1,82 @@
+<div id="avatar-id" (click)="onAvatarClicked()" class="avatar-container avatar-status-wrapper" [ngStyle]="hostStyle">
+  <div [matTooltip]="avatarStatus?.toolTip && avatarStatus?.toolTip !=''?avatarStatus?.toolTip:null"
+    class="active-status" [ngClass]="avatarStatus?.position?avatarStatus?.position:'top-right'"
+    *ngIf="avatarStatus?.color || avatarStatus?.icon">
+    <span class="status-dot" [ngStyle]="setStatus(avatarStatus?.color)" *ngIf="!avatarStatus?.icon"></span>
+    <span class="status-dot material-icons-outlined" [ngStyle]="setStatus(avatarStatus?.color,avatarStatus?.icon)"
+      *ngIf="avatarStatus?.icon">{{avatarStatus?.icon}}</span>
+  </div>
+  <div *ngIf="!custom && icon" class="material-icons-outlined icon-content">{{icon}}</div>
+  <img alt="avatar" *ngIf="(avatarSrc || custom) && !icon; else textAvatar" [src]="avatarSrc ?? custom" [width]="size"
+    [height]="size" [ngStyle]="avatarStyle" (error)="fetchAvatarSource()" class="avatar-content" loading="lazy" />
+  <ng-template #textAvatar>
+    <div *ngIf="avatarText && !icon" class="avatar-content" [ngStyle]="avatarStyle">
+      {{ avatarText }}
+    </div>
+    <ng-container *ngIf="defaultLogo && isCompanyLogo && !avatarText && !icon;else showUserAvatar">
+
+      <svg class="icon" [ngStyle]="svgStyles()" viewBox="0 0 1024 1024" version="1.1"
+        xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M510.118 44.768c-259.469 0-470.055 210.588-470.055 470.055s210.588 470.055 470.055 470.055 470.055-210.588 470.055-470.055-210.588-470.055-470.055-470.055z"
+          fill="#EDEDED" />
+        <path
+          d="M430.21 787.457h-124.096v-55.465l124.096-8.454zM430.21 683.107l-124.096 12.221v-52.649l124.096-20.685zM430.21 578.754l-124.096 24.442v-53.59l124.096-31.964zM430.21 476.276l-124.096 33.842v-56.403l124.096-40.427z"
+          fill="#B8B8B8" />
+        <path
+          d="M568.403 786.508h-102.47v-428.69l-198.368 63.932v366.638h-34.784v-385.444l266.055-93.069 69.564 41.365z"
+          fill="#B8B8B8" />
+        <path
+          d="M787.457 786.508h-158.878v-542.444l-237.841 78.030v-24.442l262.286-94.010 78.972 65.807v482.275h55.465z"
+          fill="#B8B8B8" />
+      </svg>
+    </ng-container>
+    <ng-template #showUserAvatar>
+      <ng-container *ngIf="defaultLogo && !isCompanyLogo && !avatarText && !icon">
+        <svg [ngStyle]="svgStyles()" enable-background="new 312.809 0 401 401" version="1.1" viewBox="312.809 0 401 401"
+          xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
+          <g transform="matrix(1.223 0 0 1.223 -467.5 -843.44)">
+            <rect x="601.45" y="653.07" width="401" height="401" fill="#E4E6E7" />
+            <path d="m802.38 908.08c-84.515 0-153.52 48.185-157.38 108.62h314.79c-3.87-60.44-72.9-108.62-157.41-108.62z"
+              fill="#AEB4B7" />
+            <path
+              d="m881.37 818.86c0 46.746-35.106 84.641-78.41 84.641s-78.41-37.895-78.41-84.641 35.106-84.641 78.41-84.641c43.31 0 78.41 37.9 78.41 84.64z"
+              fill="#AEB4B7" />
+          </g>
+        </svg>
+      </ng-container>
+    </ng-template>
+
+
+  </ng-template>
+  <div *ngIf="isImageUpload">
+    <div [ngClass]="isRecordProfile ? 'icon-overlay':'overlay'" mat-icon-button [matMenuTriggerFor]="menu">
+      <span class="camera-overlay material-icons-outlined"> photo_camera </span>
+    </div>
+    <input style="display: none" type="file" #fileDropRef id="fileDropRef" (change)="fileChangeEvent($event)"
+      accept="image/jpg,image/png,image/jpeg,image/gif" />
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="fileDropRef?.click()">
+        <mat-icon>upload</mat-icon>
+        <span>{{'Upload'}}</span>
+      </button>
+      <button *ngIf="custom" mat-menu-item (click)="open()">
+        <mat-icon>visibility</mat-icon>
+        <span>{{'Preview'}}</span>
+      </button>
+    </mat-menu>
+    <div style="visibility: hidden;" dImagePreview [zIndex]="1050" [customSub]="customSub" [backDropZIndex]="1040">
+
+      <img [attr.src]="custom | safe: 'url'" style="max-width: 800px" />
+    </div>
+  </div>
+  <div [matTooltip]="footerBadge?.title" *ngIf="footerBadge?.title && !round" class="subbody position-absolute text-truncate bottom-0 w-100  text-center" [ngStyle]="{
+        'background-color': footerBadge?.backgroundColor,
+        'border-radius':footerBadge?.borderRadius,
+        color:footerBadge?.color
+      }">
+    <span >
+      {{footerBadge?.title}}
+    </span>
+  </div>
+</div>

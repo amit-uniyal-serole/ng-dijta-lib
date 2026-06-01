@@ -1,0 +1,58 @@
+@import '../variables';
+
+#matTabDetails {
+
+  /* Styles for tab labels */
+  .mat-tab-label {
+    min-width: 25px !important;
+    padding: 5px;
+    background-color: transparent;
+    color: var(--primary-base);
+    font-weight: 700;
+    border-radius: 25px;
+    opacity: 1;
+  }
+
+  /* Styles for the active tab label */
+  .mat-tab-label.mat-tab-label-active {
+    margin-bottom: 4px;
+
+    color: var(--primary-base);
+
+    font-weight: 700;
+    margin-right: 30px;
+
+    &.mat-tab-label-active .mat-tab-label-content {
+      color: var(--primary-on-base);
+      border: 1px solid var(--primary-base);
+      border-radius: 25px;
+      background-color: var(--primary-base);
+      padding: 9px 17px;
+    }
+  }
+
+  /* Styles for the tab label */
+  .mat-tab-label.mat-tab-label {
+    margin-bottom: 4px;
+    color: var(--primary-base);
+    font-weight: 700;
+    margin-right: 30px;
+  }
+
+  /* Styles for the ink bar */
+  .mat-ink-bar {
+    display: none;
+  }
+
+  .mat-tab-nav-bar,
+  .mat-tab-header {
+    border-bottom: 0px;
+  }
+
+  .mat-tab-label .mat-tab-label-content {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 22px;
+    padding: 6px;
+  }
+}

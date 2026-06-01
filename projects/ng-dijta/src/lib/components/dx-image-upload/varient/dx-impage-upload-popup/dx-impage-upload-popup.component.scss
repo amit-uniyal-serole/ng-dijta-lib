@@ -1,0 +1,13 @@
+.upload-content {
+  height: 400px;
+}
+
+.upload-file-error {
+  color: var(--error-fc);
+  ol{    
+    padding: 0px 12px !important;
+    li{
+      font-size: 14px;
+    }
+  }
+}

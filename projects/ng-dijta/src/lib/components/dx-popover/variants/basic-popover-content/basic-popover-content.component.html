@@ -1,0 +1,7 @@
+<div class="popover-content-wrapper">
+  <div class="row align-items-center"
+    *ngFor="let data of popoverContentData?.[popoverConfigName ?? 'displayPopoverConfig' ]?.content">
+    <div class="label-styles fw-medium col-md-4">{{data?.label | transloco}}</div>
+    <div class="value-styles col-md-4">{{data?.value | transloco}}</div>
+  </div>
+</div>

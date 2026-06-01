@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>{{title}}</h2>
+<mat-dialog-content class="upload-content">
+  <dx-image-upload-v1 #uploader1 [enableCropper]="false" [uploadType]="uploadType" [enableAutoUpload]="enableAutoUpload"
+    [adapterData]="adapterData" [files]="files" (fileAdded)="onFileAdd($event)" [fileMaxSize]="fileMaxSize"
+    [totalMaxSize]="totalMaxSize" [fileMaxCount]="fileMaxCount" [fileTypes]="fileTypes"></dx-image-upload-v1>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+
+  <div class="d-flex align-items-center justify-content-between w-100">
+    <div class="upload-file-error">
+      <span *ngIf="(getErrorMessageList$ | async)?.length>0">
+        <ol>
+          <li class="subbody" *ngFor="let message of (getErrorMessageList$ | async)">
+            {{message}}
+          </li>
+        </ol>
+      </span>
+    </div>
+    <div class="d-flex">
+      <dx-button class="secondary-btn" [title]="'Cancel'" (onActionSelect)="onClose()"></dx-button>
+      <dx-button
+        [disabled]="!this.uploader1?.uploader?.files || !this.uploader1?.uploader?.files?.length || (isUploading$ | async) || isFilesAttaching"
+        [title]="'Upload'" (onActionSelect)="onSubmit()" [isLoading]="isFilesAttaching"></dx-button>
+    </div>
+  </div>
+
+</mat-dialog-actions>

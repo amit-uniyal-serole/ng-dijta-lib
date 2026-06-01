@@ -1,0 +1,11 @@
+.monitoring-tile {
+    position: relative;
+    padding: 0px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .content {
+        height: 100%;
+    }
+}

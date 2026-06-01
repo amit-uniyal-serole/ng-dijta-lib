@@ -1,0 +1,4 @@
+<div *ngIf="profile?.show">
+  <ndx-avatar [isRecordProfile]="true" [src]="profile?.src!" [icon]="profile?.icon" [name]="profile?.name"
+    (onImageUpload)="emitFileDetail($event)" [avatarSettings]="profile?.settings!"></ndx-avatar>
+</div>

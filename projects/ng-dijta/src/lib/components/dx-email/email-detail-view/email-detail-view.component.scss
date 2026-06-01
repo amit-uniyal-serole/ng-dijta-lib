@@ -1,0 +1,208 @@
+@import "../../../core/theme/tui/css/css/partials/mixins";
+.detail-view-wrapper {
+  height: 100%;
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 8.5px 10px;
+    border-bottom: 1px solid #d7d7d7;
+    background: #efefefb5;
+    .backToList {
+      display: none;
+      @include mobile {
+        display: block;
+      }
+    }
+  }
+
+  .email {
+    .email-subject {
+      background: #ffffff;
+      border-bottom: 1px solid #d7d7d7;
+      padding: 21px;
+
+      .subject {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      .labels-wrapper {
+        display: flex;
+        .labels {
+          padding: 2px 9px;
+          margin-right: 10px;
+          font-size: 11px;
+          border-radius: 12px;
+          font-weight: 600;
+        }
+      }
+    }
+
+    .body-wrapper {
+      overflow: auto;
+      height: 70vh;
+
+      .email {
+        background: #ffffff;
+        border-radius: 14px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+
+        margin: 13px;
+
+        .email-body {
+          padding: 22px;
+
+          .email-header {
+            display: flex;
+            margin-top: 64px 5px;
+
+            .avatar {
+              border-radius: 50%;
+              width: 40px;
+              height: 40px;
+              margin-right: 12px;
+            }
+
+            .bold-text {
+              font-size: 13px;
+              color: #434343;
+              font-weight: 600;
+            }
+
+            .menu-icon {
+              font-size: 20px;
+              padding-right: 0px !important;
+            }
+
+            .btn-icon {
+              height: 20px;
+              width: 20px;
+              margin: 0px;
+              justify-content: center;
+            }
+          }
+
+          .body {
+            margin: 22px 0px;
+            line-height: 21px;
+            color: #1e293b;
+            font-size: 13px;
+            letter-spacing: 0.1px;
+            font-weight: 500;
+          }
+        }
+
+        .email-footer {
+          border-top: 1px solid #d7d7d7;
+          padding: 30px 25px;
+
+          background-color: #f8fafc;
+          border-radius: 0px 0px 14px 14px;
+          .action-buttons {
+            display: flex;
+
+            .footer-action {
+              border: 1px solid #d7d7d7;
+              padding: 6px 18px;
+
+              border-radius: 25px;
+              margin-right: 16px;
+              color: var(--primary-base);
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .empty-email-view {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+
+    .mailbox-image {
+      text-align: center;
+
+      .select-mail-text {
+        color: #64748b;
+        font-size: 18px;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .menu-icon {
+    margin-right: 18px;
+    color: #64748b;
+    font-size: 27px;
+    margin: 2px 0px 0px 1px;
+  }
+
+  .btn-icon {
+    border: none;
+    display: flex;
+    border-radius: 50%;
+    height: 40px;
+    text-align: center;
+    width: 40px;
+    align-items: center;
+    margin-right: 3px;
+    background-color: transparent;
+    .imp-mail-icon {
+      color: rgb(221 67 11);
+    }
+  }
+
+  .btn-icon:hover {
+    background-color: #a1a1a136;
+  }
+  .reply-btn {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 20px;
+  }
+}
+.icon-label-wrapper {
+  display: inline-flex;
+  align-items: center;
+  .top-bar-menu {
+    margin-right: 10px !important;
+    color: #64748b;
+    font-size: 22px;
+    &.menu-checkbox {
+      margin-top: -5px;
+    }
+  }
+  .menu-items {
+    font-size: 15px;
+    font-weight: 600;
+    color: #707985e6;
+  }
+}
+.email-detail-menu {
+  padding: 5px 25px;
+  .email-info {
+    display: flex;
+    font-size: 13px;
+    font-weight: 500;
+    .info-label {
+      color: #1e293b;
+      min-width: 50px;
+      max-width: 50px;
+      text-align: right;
+      margin-right: 7px;
+      margin-bottom: 3px;
+    }
+    .info-value {
+      color: #74797f;
+      font-size: 12.5px;
+      display: flex;
+      align-items: center;
+      .material-icons-outlined {
+        font-size: 10px;
+        padding: 0px 1px !important;
+      }
+    }
+  }
+}

@@ -1,0 +1,182 @@
+@import '../variables';
+
+#dxfilter {
+  .mat-dialog-container {
+    padding: 0;
+    border-radius: 10px;
+    background: $light;
+    margin-bottom: 50px;
+  }
+
+  .cdk-overlay-pane {
+    width: auto !important;
+    height: auto;
+  }
+
+  .cdk-global-scrollblock {
+    overflow-y: hidden;
+  }
+
+  .cdk-global-overlay-wrapper {
+    max-height: 100vh;
+    overflow: auto;
+    padding: 50px 0;
+  }
+
+  .mat-select-arrow-wrapper .mat-select-arrow::after {
+    display: none;
+  }
+
+  .col-3 {
+    flex: 1 0 25%;
+    max-width: 35%;
+  }
+
+  .row {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+}
+
+.filter-wrapper {
+  min-width: 635px;
+
+  .filter-title {
+    font-weight: 800;
+    font-size: 20px;
+    line-height: 26px;
+    color: $text-color;
+  }
+
+  .filter-header {
+    border-bottom: 1px solid $boder-color;
+    padding: 20px 20px 15px 20px;
+  }
+
+  .filter-container {
+    background-color: $container-bg-color;
+    padding: 20px 20px 25px 20px;
+  }
+}
+
+.filter-field-row {
+  .select-field {
+    min-width: 148px;
+    width: 100%;
+    padding-left: 10px;
+
+    &:first-child {
+      padding-left: 0;
+    }
+  }
+}
+
+.field-select {
+  background: $light;
+  border: 1px solid $boder-color;
+  box-sizing: border-box;
+  border-radius: 4px;
+  padding: 9px 10px;
+  margin-bottom: 15px;
+  // ::ng-deep {
+  // .mat-select-value-text,.mat-select-placeholder {
+  //     font-weight: 500;
+  //     font-size: 12px;
+  //     line-height: 16px;
+  //     background: $light;
+  //     color: $titile-color-dark;
+  // }
+  // }
+}
+
+.select-field {
+  position: relative;
+  padding-left: 0px;
+
+  .material-icons {
+    position: absolute;
+    color: $tooltip;
+    right: 14px;
+    top: 7px;
+  }
+
+  // ::ng-deep .mat-select-arrow-wrapper{
+
+  // }
+}
+
+.btn-delete {
+  width: 26px;
+  height: 26px;
+  background-color: $badge-red-color;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  text-align: center;
+  font-size: 12px;
+  line-height: 11px;
+  color: $light;
+  display: block;
+  min-width: 26px;
+  margin: 6px 0 0 10px;
+
+  &:hover {
+    color: $light;
+  }
+
+  .material-icons {
+    font-size: 16px;
+  }
+}
+
+.add-btn {
+  border: none;
+  background-color: transparent;
+
+  .material-icons {
+    color: $badge-lightblue-color;
+    font-size: 24px;
+    margin-right: 9px;
+  }
+
+  .add-btn-text {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 20px;
+    color: $text-light;
+    vertical-align: top;
+  }
+}
+
+.filter-save-btn {
+  background: $primary;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 17px;
+  color: $light;
+  padding: 14px 24px;
+  border: none;
+  margin-left: 10px;
+}
+
+.filter-cancel-btn {
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 17px;
+  color: $primary;
+  border: 1px solid $primary;
+  box-sizing: border-box;
+  border-radius: 4px;
+  padding: 13px 24px;
+  background-color: transparent;
+}
+
+.filter-btn-wrapper {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.check {
+  margin-bottom: 20px;
+}

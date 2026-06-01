@@ -1,0 +1,92 @@
+.flex-chip-wrapper {
+  width: 100%;
+
+  .flex-chips {
+    display: flex !important;
+    align-items: center;
+
+    .flex-chip-badge {
+      padding: 7px 12px;
+      border-radius: 20px;
+      align-items: center;
+      white-space: nowrap;
+      width: 94px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-flex;
+      justify-content: center;
+
+      .table-chip-icons {
+        cursor: pointer;
+        color: #fff;
+        font-size: 20px;  
+        &.margin-right-5{
+          margin-right: 5px;
+        }      
+      }
+
+      .chip-img {
+        border-radius: 50%;
+        height: 18px;
+        width: 18px;
+        margin-right: 5px;
+      }
+
+      .table-chip-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+    .icon-shadow{
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+    }
+    .reason {
+      background: #FEDDAD;
+      border-radius: 50%;
+      padding: 3px;
+      font-size: 22px;
+      color: #d39234;
+    }
+  }
+
+  .extra-total {
+    cursor: pointer;
+  }
+
+  .icon-text {
+    width: auto !important;
+    padding: 0px !important;
+    margin-right: 3px !important;
+  }
+}
+
+.extra-chips {
+  padding: 0px;
+  margin: 0px;
+  width: 168px;
+
+  li {
+    display: flex;
+    align-items: center;
+
+    .chip-icons {
+      width: 23px;
+      margin-right: 5px;
+      font-size: 20px;
+    }
+
+    .chip-img {
+      border-radius: 50%;
+      height: 30px;
+      width: 30px;
+      margin-right: 5px;
+    }
+
+    p {
+      margin: 0px 5px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+}

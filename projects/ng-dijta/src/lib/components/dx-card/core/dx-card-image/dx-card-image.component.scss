@@ -1,0 +1,65 @@
+.dx-card-image-wrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  position: relative;
+  
+  .image-placeholder{    
+    visibility: hidden;
+  }
+  .image-preview {
+    border: 1px solid #ccc;
+    padding: 2px;
+    border-radius: 5px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 1px;
+
+    p {
+      padding: 0px 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 109px;
+    }
+
+    .edit-btn {
+      position: absolute;
+      top: 0px;
+      right: 2px;
+      border: none;
+      display: none;
+      background: #fff;
+      box-shadow: rgba(71, 73, 74, 0.29) -1px 0px 2px 0px, rgba(194, 188, 188, 0.48) 0px 0;
+      border-bottom-right-radius: 5px;
+      border-top-right-radius: 5px;
+
+      .material-icons-outlined {
+
+        font-size: 19px;
+        cursor: pointer;
+        border-left: 1px solid #ccc;
+        padding: 5px 4px;
+
+        &.delete {
+          color: #FF3D00;
+        }
+
+        &.edit {
+          color: #3f8cf4;
+        }
+        &.download {
+          color: #075f6c;
+        }
+      }
+    }
+
+    &:hover {
+      .edit-btn {
+        display: block;
+      }
+    }
+  }
+
+}

@@ -1,0 +1,235 @@
+<div class="criteria-filter-wrapper">
+    <form [formGroup]="criteriaForm">
+        <div formArrayName="rules">
+            <div *ngFor="let citeria of getCiterias.controls; let i=index">
+                <div class="d-flex w-90" [formGroupName]="i">
+                    <div *ngIf="!singleSelection" class="criteria-selection">
+                        <span *ngIf="getCiterias.controls.length-1 !==i" class="veritical-line-connector"></span>
+                        <div>
+                            <div class="criteria-index">
+                                <span>{{i+1}}</span>
+                            </div>
+                            <div *ngIf="getCiterias.controls.length-1 !==i" class="criteria-checkbox"
+                                for="logical-operator">
+                                <label id="logical-operator">
+                                    <input type="checkbox" formControlName="logicalOperator"
+                                        (change)="onChangeLogicalOperator(i,citeria?.controls?.logicalOperator?.value)">
+                                    <span>
+                                        <span *ngIf="citeria?.controls?.logicalOperator?.value">AND</span>
+                                        <span *ngIf="!citeria?.controls?.logicalOperator?.value">OR</span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-100 d-flex mb-2">
+                        <div class="w-100 d-flex">
+                            <div class="criteria-column">
+                                <dx-autocomplete-select [required]="checkCriteria()" ngDefaultControl
+                                    formControlName="field" [options]="columns"
+                                    (onSelectChange)="onColumnChange($event, i)">
+                                    <dx-label> Column</dx-label>
+                                    <dx-error>It is required field</dx-error>
+                                </dx-autocomplete-select>
+                            </div>
+                            <div class="criteria criteria-operator" [attr.inert]="citeria?.controls?.field?.value === 'None' ? '' : null">
+                                <dx-autocomplete-select (onSelectChange)="clearValue(i)"
+                                    [required]="citeria?.controls?.field?.value != ''" ngDefaultControl
+                                    [disabled]="citeria?.controls?.field?.value === 'None'" formControlName="operator"
+                                    [options]="getOperators(citeria?.controls?.field?.value)">
+                                    <dx-label>Operation</dx-label>
+                                    <dx-error>It is required field</dx-error>
+                                </dx-autocomplete-select>
+                            </div>
+                            <div *ngIf="!(operatorsToHideValueField?.includes(citeria?.controls?.operator?.value))"
+                                class="criteria-value">
+                                <ng-container
+                                    *ngIf="citeria?.controls?.field?.value !=='None' && !operationTypes.includes(citeria?.controls?.operator?.value)"
+                                    [ngSwitch]="getFieldType(citeria?.controls?.field?.value)">
+                                    <!-- Text -->
+                                    <ng-container *ngSwitchCase="'Text'">
+                                        <dx-input [required]="citeria?.controls?.field?.value != ''" ngDefaultControl
+                                            formControlName="value">
+                                            <dx-label>Value</dx-label>
+                                            <dx-error>It is required field</dx-error>
+                                        </dx-input>
+                                    </ng-container>
+                                    <!-- number -->
+                                    <ng-container *ngSwitchCase="'Number'">
+                                        <dx-number [required]="citeria?.controls?.field?.value != ''" ngDefaultControl
+                                            formControlName="value" [precision]="0">
+                                            <dx-label>Value</dx-label>
+                                            <dx-error>It is required field</dx-error>
+                                        </dx-number>
+                                    </ng-container>
+                                    <!-- Boolean -->
+                                    <ng-container *ngSwitchCase="'Boolean'">
+                                        <dx-select ngDefaultControl formControlName="value"
+                                            [options]="booleanValueOptions">
+                                            <dx-label>Value</dx-label>
+                                            <dx-error>It is required field</dx-error>
+                                        </dx-select>
+                                    </ng-container>
+                                    <!-- Picklist -->
+                                    <ng-container *ngSwitchCase="'Picklist'">
+                                        <dx-select [multiSelect]="true"
+                                            [required]="citeria?.controls?.field?.value != ''" ngDefaultControl
+                                            formControlName="value"
+                                            [options]="getPicklistOptions(citeria?.controls?.field?.value)">
+                                            <dx-label>Value</dx-label>
+                                            <dx-error>It is required field</dx-error>
+                                        </dx-select>
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="'MultiPicklist'">
+                                        <dx-select [multiSelect]="true"
+                                            [required]="citeria?.controls?.field?.value != ''" ngDefaultControl
+                                            formControlName="value"
+                                            [options]="getPicklistOptions(citeria?.controls?.field?.value)">
+                                            <dx-label>Value</dx-label>
+                                            <dx-error>It is required field</dx-error>
+                                        </dx-select>
+                                    </ng-container>
+                                    <!-- Date -->
+                                    <ng-container *ngSwitchCase="'Date'">
+                                        <ng-container [ngSwitch]="citeria?.controls?.operator?.value">
+                                            <ng-container *ngSwitchCase="'between'">
+                                                <dx-daterange [required]="citeria?.controls?.field?.value != ''"
+                                                    ngDefaultControl formControlName="value">
+                                                    <dx-label>Value</dx-label>
+                                                    <dx-error>It is required field</dx-error>
+                                                </dx-daterange>
+                                            </ng-container>
+                                            <ng-container *ngSwitchCase="'not_between'">
+                                                <dx-daterange [required]="citeria?.controls?.field?.value != ''"
+                                                    ngDefaultControl formControlName="value">
+                                                    <dx-label>Value</dx-label>
+                                                    <dx-error>It is required field</dx-error>
+                                                </dx-daterange>
+                                            </ng-container>
+                                            <ng-container *ngSwitchDefault>
+                                                <dx-datepicker [required]="citeria?.controls?.field?.value != ''"
+                                                    ngDefaultControl formControlName="value">
+                                                    <dx-label>Value</dx-label>
+                                                    <dx-error>It is required field</dx-error>
+                                                </dx-datepicker>
+                                            </ng-container>
+                                        </ng-container>
+                                    </ng-container>
+                                    <!-- Date Time -->
+                                    <ng-container *ngSwitchCase="'DateTime'">
+                                        <ng-container [ngSwitch]="citeria?.controls?.operator?.value">
+                                            <ng-container *ngSwitchCase="'between'">
+                                                <dx-daterange [required]="citeria?.controls?.field?.value != ''"
+                                                    ngDefaultControl formControlName="value">
+                                                    <dx-label>Value</dx-label>
+                                                    <dx-error>It is required field</dx-error>
+                                                </dx-daterange>
+                                            </ng-container>
+                                            <ng-container *ngSwitchCase="'not_between'">
+                                                <dx-daterange [required]="citeria?.controls?.field?.value != ''"
+                                                    ngDefaultControl formControlName="value">
+                                                    <dx-label>Value</dx-label>
+                                                    <dx-error>It is required field</dx-error>
+                                                </dx-daterange>
+                                            </ng-container>
+                                            <ng-container *ngSwitchDefault>
+                                                <dx-datetime-picker [required]="citeria?.controls?.field?.value != ''"
+                                                    ngDefaultControl formControlName="value">
+                                                    <dx-label>Value</dx-label>
+                                                    <dx-error>It is required field</dx-error>
+                                                </dx-datetime-picker>
+                                            </ng-container>
+                                        </ng-container>
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="'User'">
+                                        <dx-lookup formControlName="value"
+                                            [required]="citeria?.controls?.field?.value != ''"
+                                            [lookupModalConfig]="userModalConfig" ngDefaultControl>
+                                            <dx-label>Value</dx-label>
+                                            <dx-error>
+                                                It is required field
+                                            </dx-error>
+                                        </dx-lookup>
+                                    </ng-container>
+                                    <ng-container *ngSwitchDefault>
+                                        <dx-input [required]="citeria?.controls?.field?.value != ''" ngDefaultControl
+                                            formControlName="value">
+                                            <dx-label>Value</dx-label>
+                                            <dx-error>It is required field</dx-error>
+                                        </dx-input>
+                                    </ng-container>
+                                </ng-container>
+                                <ng-container
+                                    *ngIf="citeria?.controls?.field?.value  === 'None' || operationTypes.includes(citeria?.controls?.operator?.value)">
+                                    <dx-input ngDefaultControl formControlName="value"
+                                        [disabled]="citeria?.controls?.field?.value === 'None' || operationTypes.includes(citeria?.controls?.operator?.value)">
+                                        <dx-label>Value</dx-label>
+                                    </dx-input>
+                                </ng-container>
+                            </div>
+                            <div *ngIf="getCiterias.controls.length > 1                             
+                            || citeria?.controls?.field?.value !== 'None'" class="criteria-actions">
+                                <button *ngIf="getCiterias.controls.length > 1 " class="remove-criteria" type="button"
+                                    (click)="deleteciteria(i)" (keyup.enter)="deleteciteria(i)">
+                                    <span class="material-icons">
+                                        delete
+                                    </span>
+                                </button>
+                                <!-- Add Button -->
+                                 <ng-container *ngIf="!singleSelection">
+                                    <ng-container *ngIf="maxConditions; else addCriteria">
+                                        <ng-container *ngIf="getCiterias.controls.length < maxConditions;else maxLimitReachedInfo"
+                                            [ngTemplateOutlet]="addCriteria"></ng-container>
+                                    </ng-container>
+                                </ng-container>
+                                <ng-template #addCriteria>
+                                    <button *ngIf="getCiterias.controls.length-1 === i" class="add-criteria" type="button"
+                                        (click)="addciteria()" (keyup.enter)="addCriteria()">
+                                        <span class="material-icons">
+                                            add_circle
+                                        </span>
+                                    </button>
+                                </ng-template>
+                                <ng-template #maxLimitReachedInfo>
+                                    <button *ngIf="getCiterias.controls.length-1 === i" class="transparent-btn criteria-limit-info" dx-tooltip
+                                        dxTooltipTitle="A maximum of {{maxConditions}} {{maxConditions > 1 ? 'conditions':'condition'}} limit is reached.">
+                                        <span class="material-icons">
+                                            info
+                                        </span>
+                                    </button>
+                                </ng-template>
+                                <!-- Cancel -->
+                                <button *ngIf="citeria?.controls?.field?.value !== 'None'" class="add-criteria"
+                                    type="button" (click)="removeCriteria(i)" (keyup.enter)="removeCriteria(i)">
+                                    <span class="material-icons close-icon">
+                                        cancel
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="criteria-pattern" *ngIf="criteriaForm?.controls['rules']?.length > 1 && enablePattern">
+            <div class="criteria-pattern-text-box g-0">
+                <dx-textarea [required]="criteriaForm?.controls['rules']?.length > 1" formControlName="expression"
+                    labelPosition="top" outline="outer-label" dxBalancedBrackets [readonly]="readonlyCriteria">
+                    <div dxLabel>Criteria Pattern</div>
+                    <dx-error>
+                        <span *ngIf="criteriaForm?.controls?.expression?.errors?.required">
+                            Please enter valid Criteria Pattern
+                        </span>
+                        <span *ngIf="criteriaForm?.controls?.expression?.errors?.inValidBrackets">
+                            Pattern Brackets are not matching
+                        </span>
+                        <span *ngIf="criteriaForm?.controls?.expression?.errors?.inValidData">
+                            Invalid Criteria Pattern
+                        </span>
+                    </dx-error>
+                </dx-textarea>
+            </div>
+        </div>
+    </form>
+</div>

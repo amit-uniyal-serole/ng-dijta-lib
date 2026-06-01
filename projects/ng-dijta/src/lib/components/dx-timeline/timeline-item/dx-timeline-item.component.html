@@ -1,0 +1,27 @@
+<ng-template #template>
+  <li class="dx-timeline-item" [class.dx-timeline-item-right]="(dxPosition || position) === 'right'"
+    [class.dx-timeline-item-left]="(dxPosition || position) === 'left'" [class.dx-timeline-item-last]="isLast">
+    <div *ngIf="dxLabel" class="dx-timeline-item-label">
+      <ng-container *dxStringTemplateOutlet="dxLabel">{{ dxLabel | transloco }}</ng-container>
+    </div>
+    <div class="dx-timeline-item-tail" [class.is-line]="calenderData?.isSameDate || calenderData?.isParent"></div>
+    <div class="dx-timeline-item-tail-label body text-capitalize">{{timelineItemTileLabel | transloco}}
+    </div>
+    <div class="dx-timeline-item-head" [class.dx-background-none]="backgroundNone"
+      [class.is-line]="calenderData?.isSameDate" [class.dx-timeline-item-head-red]="dxColor === 'red'"
+      [class.dx-timeline-item-head-blue]="dxColor === 'blue'" [class.dx-timeline-item-head-green]="dxColor === 'green'"
+      [class.dx-timeline-item-head-gray]="dxColor === 'gray'" [class.dx-timeline-item-head-custom]="!!dxDot"
+      [style.border-color]="borderColor">
+      <ng-container *dxStringTemplateOutlet="dxDot">{{ dxDot }}</ng-container>
+      <ng-container *dxStringTemplateOutlet="dxCustom">{{dxCustom}}</ng-container>
+      <div class="timeline-calender" [class.active]="calenderData?.active" [class.is-line]="calenderData?.isSameDate"
+        *ngIf="calenderData">
+        <h3 class="heading-5 fw-bold text-center mb-0">{{calenderData?.date ?? 'NA'}}</h3>
+        <p class="caption fw-semibold text-center mb-0">{{calenderData?.month ?? '-'}}</p>
+      </div>
+    </div>
+    <div class="dx-timeline-item-content">
+      <ng-content></ng-content>
+    </div>
+  </li>
+</ng-template>

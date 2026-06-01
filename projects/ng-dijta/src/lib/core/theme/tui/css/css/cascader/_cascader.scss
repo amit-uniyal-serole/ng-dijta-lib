@@ -1,0 +1,232 @@
+.dx-dropdown-menu {
+    padding-bottom: 0;
+  }
+  
+  .dx-dropdown-item {
+    height: 2.4em;
+    line-height: 3em;
+    padding: 0px 12px;
+    &:hover {
+      background: rgba(0, 0, 0, .04);
+      color: #000000de;
+    }
+  }
+  
+  .dx-dropdown-open {
+    input {
+      border: 1px solid #5e7ce0;
+  
+      &::-webkit-input-placeholder {
+        color: #252b3a;
+      }
+    }
+  
+    .dx-drop-icon {
+      svg {
+        transform: rotate(180deg);
+      }
+    }
+  
+    .dx-tags-input-wrapper {
+      border-color: #5e7ce0;
+      border-radius: 2px;
+    }
+  }
+  
+  .dx-input {
+    padding-right: 16px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: default;
+  }
+  
+  :host ::ng-deep .dx-tag-item.tag-disabled {
+    cursor: not-allowed;
+    background-color: #f5f5f5;
+    color: #babbc0;
+  }
+  
+  .dx-search-cascader {
+    cursor: text;
+  }
+  
+  .dx-cascader-list {
+    .back {
+      width: 100%;
+      border: none;
+      padding: 3px;
+      text-align: start;
+      padding-left: 6px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+      position: sticky;
+      top: 0;
+      z-index: 9;
+      .material-icons {
+        font-size: 20px;
+      }
+    }
+    padding: 0px;
+    background-color: #fff;
+    border-left: 1px solid #eef0f5;
+    height: 180px;
+    overflow-y: auto;
+    overflow-y: overlay;
+    display: inline-block;
+    font-size: 14px;
+    position: absolute;
+    width: 100% !important;
+    transition: z-index 0.5s ease;
+    &:first-of-type {
+      border-left: none;
+    }
+  
+    &-item {
+      height: 32px;
+      padding: 8px 12px;
+      cursor: pointer;
+      display: block;
+  
+      &:hover {
+        background-color: #f2f2f3;
+        color: #526ecc;
+      }
+    }
+  
+    .active-li {
+      background-color: #f2f2f3;
+      color: #526ecc;
+    }
+  }
+  
+  ::ng-deep {
+    .dx-dropdown-top .dx-cascader-list {
+      border-top-color: #5e7ce0 !important;
+      border-bottom-color: #eef0f5 !important;
+      box-shadow: unset;
+    }
+  }
+  
+  .dx-drop-no-data {
+    height: auto;
+    display: block;
+  }
+  
+  .dx-drop-icon {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    line-height: 1em;
+    vertical-align: middle;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(-50%, -50%);
+    svg path {
+      fill: #252b3a;
+    }
+  
+    &-animation svg {
+      transition: transform 300ms cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+  }
+  
+  .dx-cascader-close-icon {
+    display: none;
+    font-size: 12px;
+    cursor: pointer;
+    width: 12px;
+    height: 12px;
+    line-height: 12px;
+    background-color: #d7d8da;
+    border-radius: 50%;
+    text-align: center;
+  
+    svg path {
+      fill: #ffffff;
+    }
+  }
+  
+  .dropdown-show-clear {
+    &:hover {
+      .dx-drop-icon {
+        display: none;
+      }
+  
+      .dx-cascader-close-icon {
+        display: block;
+      }
+    }
+  }
+  
+  .dx-single-drop-icon-wrapper {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 4px;
+    width: 1em;
+    display: flex;
+  }
+  
+  :host:not(.dx-glow-style) .dx-tags-input-wrapper:hover {
+    border-color: #71757f;
+  }
+  
+  .dx-tags-input-wrapper {
+    border: none;
+    display: inline-flex;
+    width: 100%;
+    border-radius: 2px;
+  
+    .dx-tags-input {
+      flex: 1;
+      min-height: 0px;
+      overflow: auto;
+      padding: 0px;
+      overflow: visible;
+  
+      d-tag {
+        margin-right: 4px;
+        margin-bottom: 2px;
+        margin-top: 2px;
+      }
+    }
+  
+    .dx-drop-icon-wrapper {
+      flex: 0 0 20px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+  
+    .inner-input {
+      max-width: 150px;
+      height: 21px;
+      border: none;
+      outline: 0;
+      background: #fff;
+      color: #252b3a;
+      padding: 0 8px;
+    }
+  }
+  
+  .dx-dropdown-placeholder {
+    line-height: 22px;
+    margin-left: 8px;
+    color: #babbc0;
+  }
+  
+  .dx-drop-menu-wrapper {
+    white-space: nowrap;
+    font-size: 0;
+  }
+  
+  :host ::ng-deep {
+    .dx-max-width-tag {
+      height: 16px;
+    }
+  }
+  

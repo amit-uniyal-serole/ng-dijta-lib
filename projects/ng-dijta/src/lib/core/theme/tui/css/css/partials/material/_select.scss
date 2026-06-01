@@ -1,0 +1,46 @@
+.mat-select-arrow-wrapper {
+  position: relative;
+  top: -21px;
+  right: -5px;
+
+  .mat-select-arrow {
+    border: none;
+    position: relative;
+
+    &::after {
+      content: "keyboard_arrow_down";
+      font-family: "Material Icons";
+      font-weight: normal;
+      font-size: 25px;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+    }
+  }
+}
+
+.cdk-overlay-pane.dx-mat-select-cdk-overlay-pane {
+  transform: translateX(-10px) translateY(-15px) !important;
+
+  .mat-select-search-panel {
+    min-width: calc(100% + 20px) !important;
+  }
+}
+
+.outer-label {
+  .mat-select-arrow-wrapper {
+    position: relative;
+    top: -17px;
+    right: -5px;
+  }
+
+  .mat-select-arrow-wrapper .mat-select-arrow::after {
+    content: "keyboard_arrow_down";
+    font-family: "Material Icons";
+    font-weight: normal;
+    font-size: 20px;
+    position: absolute;
+    top: 11px;
+    right: 0px;
+  }
+}

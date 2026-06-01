@@ -1,0 +1,23 @@
+.tile-footer {
+    padding: 7px 8px;
+    .counter {
+        display: flex;
+        align-items: center;
+        .icon {
+            span {
+                font-size: 40px;
+            }
+        }
+        .count {
+            font-size: 30px;
+            font-weight: 500;
+        }
+    }
+    .description {
+        .main {
+            font-size: 17px;
+            font-weight: 400;
+            color: #727272;
+        }
+    }
+}

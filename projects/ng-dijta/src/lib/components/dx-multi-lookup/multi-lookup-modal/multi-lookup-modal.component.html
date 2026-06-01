@@ -1,0 +1,104 @@
+<div mat-dialog-title class="lookup-header">
+    <h6 class="heading-6 pb-2">{{lookUpHeaderSettings?.title}}</h6>
+    <span class="material-icons popup-close" (click)="onClose()">
+        close
+    </span>
+</div>
+<mat-dialog-content class="mat-dialog-content">
+    <dx-loader [name]="'lookup-modal-loader'"
+        [show]="(popupLoader$ | async) || (customViewloader$ | async) || (moduleDetailsLoader$|async) || picklistLoading"
+        [fullScreen]=" false">
+    </dx-loader>
+    <div class="row mt-2" *ngIf="!!lookupApiConfig?.searchBasedOn">
+        <div class="col-md-4">
+            <dx-input *ngIf="(!selectedRecordsItems?.length) && (!isEdit || isAddMore)" [formControl]="searchControl">
+                <dx-label>{{lookUpHeaderSettings?.searchInputLabel}}</dx-label>
+                <dx-suffix>
+                    <div class="d-flex">
+                        <span class="material-icons-outlined cursor-pointer form-builder-list-search-icon mx-1"
+                            (click)="search()">
+                            search
+                        </span>
+                        <span class="mx-2"></span>
+                        <span *ngIf="searchControl?.value?.length"
+                            class="material-icons-outlined cursor-pointer form-builder-list-close-icon icon-color"
+                            (click)="clear()">
+                            cancel
+                        </span>
+                    </div>
+                </dx-suffix>
+
+            </dx-input>
+        </div>
+        <!-- Action Buttons -->
+        <div *ngIf="isEdit && !isAddMore" class="col-md-8  text-align-end my-3">
+            <ng-container *ngIf="unassignedList?.length;else addMorActionsRef">
+                <button mat-button class="confirm-unassign" (click)="unAssignedRecords()">Unassign</button>
+            </ng-container>
+            <ng-template #addMorActionsRef>
+                <dx-button class="secondary-btn" (onActionSelect)="onUnassignAll()" title="Unassign All"></dx-button>
+                <span class="mx-1"></span>
+                <dx-button (onActionSelect)="onClickAddMore()" title="Add More"></dx-button>
+            </ng-template>
+        </div>
+    </div>
+    <div class="lookup-modal-table mb-4">
+        <!-- All Records -->
+        <ng-container *ngIf="(!selectedRecordsItems?.length || isEdit);else confirmationRef">
+            <dx-table *ngIf="!(popupLoader$ | async) && !(customViewloader$ | async)"
+                [isBusy]="(skeletonLoader$ | async)!"
+                [columns]="columns && columns?.length >0 ? columns :temparoryColumns" [dataSource]="dataSource"
+                [setting]="setting" (onPaginationClick)="onPaginate($event)" (onSort)="onSort($event)"
+                (onClickTablePageSize)="onClickTablePageSize($event)" (onRowSelection)="onSelect($event)"
+                (onFilterClick)="onHeaderActionClick($event)" (onCheckboxChange)="onCheckboxChange($event,isEdit)"
+                [SelectedRows]="singleRowSelection" [SelectedCheckboxes]="isEdit? {}: multiRowSelection"
+                (onCheckboxSelectionChange)="onCheckboxSelectionChange($event)">
+                <table-content *ngIf="!dataSource?.length && (skeletonLoader$ | async)===false">
+                    <div class="lookup-table-icon-wrapper">
+                        <span class="material-icons-outlined primary-icon">
+                            search_off
+                        </span>
+                        <div class="subtitle fw-semibold my-2">
+                            No records found
+                        </div>
+                    </div>
+                </table-content>
+            </dx-table>
+        </ng-container>
+        <!-- Confirmation Records  -->
+        <ng-template #confirmationRef>
+            <dx-table [pageSizeList]="pageSizeList" *ngIf="!(popupLoader$ | async) && !(customViewloader$ | async)"
+                [isBusy]="(skeletonLoader$ | async)!"
+                [columns]="columns && columns?.length >0 ? columns :temparoryColumns"
+                [dataSource]="selectedRecordsItems" [setting]="setting" (onPaginationClick)="onPaginate($event)"
+                (onSort)="onSort($event)" (onClickTablePageSize)="onClickTablePageSize($event)"
+                (onRowSelection)="onSelect($event)" (onFilterClick)="onHeaderActionClick($event)"
+                (onCheckboxChange)="onCheckboxChange($event)" [SelectedRows]="singleRowSelection"
+                [SelectedCheckboxes]="multiRowSelection">
+                <table-content *ngIf="!selectedRecordsItems?.length && (skeletonLoader$ | async)===false">
+                    <div class="lookup-table-icon-wrapper">
+                        <span class="material-icons-outlined primary-icon">
+                            search_off
+                        </span>
+                        <div class="subtitle fw-semibold my-2">
+                            No records found
+                        </div>
+                    </div>
+                </table-content>
+            </dx-table>
+        </ng-template>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end" *ngIf="actions?.enable">
+    <ng-container *ngIf="(!selectedRecordsItems?.length) && (!isEdit || isAddMore) && enableTwoStepConfirmation">
+        <dx-button [disabled]="!selectedRecords?.length" (onActionSelect)="onClickNext()" title="Next"></dx-button>
+    </ng-container>
+    <ng-container *ngIf="selectedRecordsItems?.length || !enableTwoStepConfirmation">
+        <dx-button *ngIf="enableTwoStepConfirmation" (onActionSelect)="onClickBack()" title="Back"
+            class="secondary-btn"></dx-button>
+        <dx-button (onActionSelect)="onClose()" title="Cancel" class="secondary-btn"></dx-button>
+        <dx-button (onActionSelect)="onClickConfirm()"
+            [disabled]="(popupLoader$ | async) || (customViewloader$ | async) || (moduleDetailsLoader$|async) || picklistLoading || (skeletonLoader$ | async)"
+            [title]="submitButtonTitle && submitButtonTitle?.trim() !=='' ? submitButtonTitle : 'Add'"></dx-button>
+    </ng-container>
+</mat-dialog-actions>

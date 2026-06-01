@@ -1,0 +1,99 @@
+// @import "tui-calendar/dist/tui-calendar.css";
+
+// If you use the default popups, use this.
+// @import 'tui-date-picker/dist/tui-date-picker.css';
+// @import 'tui-time-picker/dist/tui-time-picker.css';
+// #calendar {
+//     position: absolute;
+//     left: 0;
+//     right: 0;
+//     bottom: 5px;
+//     top: 64px;
+// }
+#dxCalender {
+
+  .cal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+
+  .cal-action-btns {}
+
+  .cal-dxBtn-primary {
+    background-color: var(--primary-base);
+    color: var(--primary-on-base);
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 17px;
+    padding: 7px 18px;
+    border: 1px solid var(--primary-base);
+    margin-right: 5px;
+  }
+
+  .cal-secondary-btn {
+    background-color: var(--background-base);
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 17px;
+    color: inherit;
+    padding: 11px 23px;
+    border: 1px solid var(--primary-base);
+    margin-right: 5px;
+  }
+
+  .cal-current-date {
+    font-size: 21px;
+    font-weight: 600;
+  }
+
+  .material-icons {
+    font-size: 18px;
+    display: inline-flex;
+    vertical-align: text-bottom;
+  }
+}
+
+.cal-menu-item {
+  display: flex;
+  align-items: center;
+
+  .material-icons-outlined {
+    font-size: 18px;
+    display: inline-flex;
+    vertical-align: text-bottom;
+    margin-right: 8px;
+  }
+}
+
+.dx-calendar-more-actions {
+  background: #fff;
+  height: 35px;
+  display: flex;
+  align-items: center;  
+  border-radius: 2px;  
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+  justify-content: center;
+  padding: 0px !important;
+  min-width: 40px;
+  border: 1px solid var(--primary-base) !important;
+  .material-icons-outlined {
+    color: var(--primary-base);
+  }
+}
+
+.calendar-change-btns{
+  display: flex;
+  align-items: center;  
+  padding: 0px !important;
+  min-width: 35px;
+  justify-content: center;
+  line-height: 0px;
+  height: 30px;
+  .material-icons{
+    font-size: 20px !important;
+  }
+}

@@ -1,0 +1,134 @@
+// media querry mixins
+$mobile-width: 620px;
+$min-mobile-width: 320px;
+$max-mobile-width: 480px;
+$min-low-resolution-tab-mob: 481px;
+$max-low-resolution-tab-mob: 767px;
+$min-resolution-tab-mob: 768px;
+$max-resolution-tab-mob: 1024px;
+$top-resolution: 1281px;
+$max-desktop-laptop: 1280px;
+$min-desktop-laptop: 1025px;
+$max-ipads: 1024px;
+$min-ipads: 768px;
+$laptop: 1366px;
+$sm-laptop: 1230px;
+$cm-sm-laptop: 1260px;
+$lg-tab: 1030px;
+$tab: 960px;
+$sm-tab: 820px;
+$custom-max-size: 821px;
+$custom-min-size: 481px;
+@mixin custom-small-size {
+    @media (min-width: $custom-min-size) and (max-width: $custom-max-size) {
+        @content;
+    }
+}
+
+
+/* 
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  ##Screen = B/w 320px to 479px
+*/
+
+@mixin mobile {
+    @media (min-width: $min-mobile-width) and (max-width: $max-mobile-width) {
+        @content;
+    }
+}
+
+
+/* 
+  ##Device = Low Resolution Tablets, Mobiles (Landscape)
+  ##Screen = B/w 481px to 767px
+*/
+
+@mixin low-resolution-tab-mob {
+    @media (min-width: $min-low-resolution-tab-mob) and (max-width: $max-low-resolution-tab-mob) {
+        @content;
+    }
+}
+
+
+/* 
+  ##Device = Tablets, Ipads (landscape)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@mixin resolution-tab-mob {
+    @media (min-width: $min-resolution-tab-mob) and (max-width: $max-resolution-tab-mob) and (orientation: landscape) {
+        @content;
+    }
+}
+
+
+/* 
+  ##Device = Desktops
+  ##Screen = 1281px to higher resolution desktops
+*/
+
+@mixin top-resolution {
+    @media (min-width: $top-resolution) {
+        @content;
+    }
+}
+
+
+/* 
+  ##Device = Laptops, Desktops
+  ##Screen = B/w 1025px to 1280px
+*/
+
+@mixin desktop-laptop {
+    @media (min-width: $min-desktop-laptop) and (max-width: $max-desktop-laptop) {
+        @content;
+    }
+}
+
+
+/* 
+  ##Device = Tablets, Ipads (portrait)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@mixin ipdas {
+    @media (min-width: $min-ipads) and (max-width: $max-ipads) {
+        @content;
+    }
+}
+
+@mixin sm-tab {
+    @media (max-width: $sm-tab) {
+        @content;
+    }
+}
+
+@mixin tab {
+    @media (max-width: $tab) {
+        @content;
+    }
+}
+
+@mixin lg-tab {
+    @media (max-width: $lg-tab) {
+        @content;
+    }
+}
+
+@mixin sm-laptop {
+    @media (max-width: $sm-laptop) {
+        @content;
+    }
+}
+
+@mixin cm-sm-laptop {
+    @media (max-width: $cm-sm-laptop) {
+        @content;
+    }
+}
+
+@mixin laptop {
+    @media (max-width: $laptop) {
+        @content;
+    }
+}

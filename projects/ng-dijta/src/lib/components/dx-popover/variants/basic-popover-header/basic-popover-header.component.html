@@ -1,0 +1,15 @@
+<div class="d-flex align-items-center">
+  <span *ngIf="popoverHeaderData?.avatarSettings" class="m-2">
+    <ndx-avatar [avatarSettings]="popoverHeaderData?.avatarSettings" [name]="popoverHeaderData?.title | transloco"
+      [src]="popoverHeaderData?.avatarSettings?.avatarSrc"></ndx-avatar>
+  </span>
+  <div class="dx-header-title">
+    <div class="header-items-flex-center">
+      <span *ngIf="popoverHeaderData?.title" class="body"><span
+          class="fw-semibold header-title-style">{{popoverHeaderData?.title | transloco}}</span></span>
+      <span *ngIf="popoverHeaderData?.showDetailIcon" (click)="sendData()"
+        class="material-icons-outlined m-2 icon-align">open_in_new</span>
+    </div>
+    <div class="subtitle-align">{{popoverHeaderData?.subtitle | transloco}}</div>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+#userProfile {
+  .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 0.25em 0 0.7em 0;
+  }
+  .mat-select-value-text {
+    font-size: 15px;
+    line-height: 18px;
+  }
+  .mat-form-field-infix input {
+    font-weight: 500;
+  }
+  dx-mobile-input-mask .mat-select-arrow-wrapper .mat-select-arrow::after {
+    top: 0px;
+  }
+  .mat-select-arrow-wrapper .mat-select-arrow::after {
+    top: 7px;
+  }
+  .mat-form-field-appearance-outline .mat-form-field-outline-thick {
+    color: rgb(220, 220, 220) !important;
+  }
+  .mat-form-field-appearance-outline .mat-form-field-outline {
+    background: $light !important;
+    border-radius: 5px;
+  }
+  .mat-form-field:not(.mat-form-field-appearance-legacy)
+    .mat-form-field-prefix
+    .mat-icon-button,
+  .mat-form-field:not(.mat-form-field-appearance-legacy)
+    .mat-form-field-suffix
+    .mat-icon-button {
+    top: 4px;
+  }
+  .mat-card-header-text {
+    margin: 9px 16px;
+  }
+  mat-card-title.org-name {
+    margin-top: 10px;
+  }
+  dx-title {
+    .title {
+      font-size: 24px !important;
+    }
+  }
+  .content-wrapper {
+    dx-title {
+      .title {
+        font-size: 21px !important;
+      }
+    }
+  }
+  .agent-branch {
+    .mat-select-arrow-wrapper .mat-select-arrow::after {
+      top: 0px !important;
+    }
+  }
+}
+.image-upload-menu .mat-menu-content::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background: rgb(255, 255, 255);
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  margin: auto;
+  top: 3px;
+  transform: rotate(45deg);
+}

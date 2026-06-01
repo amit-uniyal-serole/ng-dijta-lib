@@ -1,0 +1,26 @@
+.layout {
+  min-height: 100vh;
+}
+
+
+dx-layout-header {
+  position: fixed;
+  width: 100%;
+  z-index: 9;
+}
+
+dx-layout-content {
+  margin-top: 64px;
+}
+
+.inner-content-area {
+  padding: 0px;
+  width: 100%;
+  transition: 0.15s all ease;
+}
+
+.side {
+  position: absolute;
+  top: 0px;
+  height: inherit;
+}

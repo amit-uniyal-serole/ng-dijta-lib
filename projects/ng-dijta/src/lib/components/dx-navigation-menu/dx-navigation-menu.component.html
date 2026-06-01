@@ -1,0 +1,22 @@
+<div class="dx-navigation-menu">
+  <div class="dx-navigation-menu-container" *ngFor="let menuData of menu;let i=index">
+    <span class="menu-vertical-line" [class.is-menu-last-child]="(menu?.length-1===i)"></span>
+    <dx-menu-accordian routerLinkActive="is-menu-group-active"
+      [hideArrows]="config?.hideArrows || !menuData?.children?.length" [tooltipPosition]="config?.tooltipPosition"
+      [showTooltip]="config?.showTooltip" [title]="menuData?.title | transloco" [showContent]="config?.expandMenu">
+      <dx-menu-accordian-content>
+        <ul class="menu-content-wrapper" *ngIf="menuData?.children && menuData?.children?.length>0">
+          <ng-container *ngFor="let item of menuData?.children">
+            <li [class.disabled]="item?.disabled" [matTooltip]="item?.label && config?.showTooltip?item?.label:null"
+              [matTooltipPosition]="config?.tooltipPosition??'right'" *ngIf="item?.label"
+              class="content-menu-item menu-elipsis-text" routerLinkActive="is-menu-active"
+              [routerLinkActiveOptions]="{exact: true}" [routerLink]="item?.path?.routerLink"
+              [queryParams]="item?.path?.params" (click)="onClickMenuItem(item)">
+              <span>{{item?.label | transloco}}</span>
+            </li>
+          </ng-container>
+        </ul>
+      </dx-menu-accordian-content>
+    </dx-menu-accordian>
+  </div>
+</div>

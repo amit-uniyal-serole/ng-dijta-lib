@@ -1,0 +1,35 @@
+<div class="fix-header">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <ng-container *ngFor="let col of columns">
+          <th scope="col">{{ col?.title }}</th>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody class="inner_table">
+      <ng-container *ngFor="let element of dataSource">
+        <tr>
+          <ng-container *ngFor="let col of columns">
+            <td>
+              <dx-table-field-wrapper
+                *ngIf="element"
+                [isBusy]="isBusy"
+                [column]="col"
+                [source]="element"
+                [expandData]="expandedElement"
+                (onExpand)="onTableExpand($event)"
+                (onEventChange)="eventChange($event)"
+                (onToggleEventChange)="onToggleChange($event)"
+                (onAction)="action($event)"
+                (onMenuAction)="onMenuAction($event)"
+                (onEditRowAction)="onEditRowAction($event)"
+              >
+              </dx-table-field-wrapper>
+            </td>
+          </ng-container>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,42 @@
+.tableSkeleton {
+  background: #ffffff;
+  box-shadow: 0 4px 8px #00000008;
+  border-radius: 4px;
+  margin: 8px 0px;
+  border: none;
+  padding: 5px 12px 2px 12px;
+  .wrapper {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    height: 36px;
+  }
+  .progressLoader {
+    width: 100%;
+  }
+  .avatarLoader {
+    flex: 5%;
+  }
+
+  .avatarGroup {
+    flex: 9%;
+  }
+  .avatar-list {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    .avatar-item {
+      margin-right: -22px;
+    }
+  }
+  .checkboxLoader {
+    flex: 4%;
+    padding-left: 13px;
+  }
+  .rowSelectLoader {
+    flex: 2%;
+    padding-left: 19px;
+  }
+}

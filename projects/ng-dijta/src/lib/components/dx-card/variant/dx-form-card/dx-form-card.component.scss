@@ -1,0 +1,35 @@
+.dx-form-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 0 solid #00000020;
+  border-radius: .25rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 2px #38414a26;
+
+  &.hide-form-card {
+    box-shadow: none;
+    margin-bottom: 0px;
+  }
+
+  .dx-form-card-header:first-child {
+    border-radius: 0.25rem 0.25rem 0 0;
+  }
+
+  .dx-form-card-header {
+    border-bottom: 1px solid #e9ebec;
+    padding: 0.7rem 0.7rem;
+    margin-bottom: 0;
+    color: #000;
+    background-color: #fff;
+  }
+
+  .dx-form-card-body {
+    flex: 1 1 auto;
+    padding: 0.7rem 0.7rem;
+  }
+}

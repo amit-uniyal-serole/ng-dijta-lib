@@ -1,0 +1,13 @@
+<div mat-dialog-title class="lookup-header">
+    <h2 class="heading-6 pb-2">{{title | transloco}}</h2>
+    <span class="material-icons-outlined popup-close" (keydown)="onKeyDown($event)" (click)="onClose()">
+        close
+    </span>
+</div>
+<mat-dialog-content>
+    <ul class="d-flex flex-column gap-1 ordered-list">
+        <li *ngFor="let desc of description">
+            {{desc}}
+        </li>
+    </ul>
+</mat-dialog-content>

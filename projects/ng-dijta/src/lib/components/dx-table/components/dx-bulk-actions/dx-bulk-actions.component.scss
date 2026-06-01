@@ -1,0 +1,264 @@
+.bulk-action-wrapper {
+  display: inline-flex;
+  position: relative;
+
+  .multi-action-menu {
+    font-weight: 500;
+    border-radius: 10px;
+    padding: 5px 14px;
+    background: transparent;
+    display: flex;
+    border: 0.1px solid rgb(11 15 50 / 9%);
+    font-size: 13px;
+    line-height: 25px;
+  }
+
+  .bulkMenuLabel {
+    margin-right: 5px;
+    min-width: 24px;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+
+
+
+
+  .filter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 9px;
+    border: 0.5px solid rgba(11, 15, 50, 0.25);
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    text-transform: capitalize;
+
+    &.rectangular {
+      border-radius: 9px;
+      padding: 3px 7px;
+    }
+
+    .mat-icon {
+      height: 13px;
+      width: 13px;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      margin-left: 5px;
+    }
+  }
+
+  .is-button {
+    &.bulk-menu-position {
+      &-right {
+        &::before {
+          right: 9px !important;
+        }
+      }
+
+      &-left {
+        &::before {
+          left: 9px !important;
+        }
+      }
+    }
+  }
+
+  .bt-filter {
+    &.mat-flat-button {
+      line-height: 24px;
+      padding: 1px;
+      border-radius: 6px;
+      margin: 0px 5px;
+    }
+  }
+
+  .mat-button-disabled {
+    .filter {
+      cursor: not-allowed;
+    }
+  }
+
+
+}
+
+.search-bulk-action-wrapper {
+  padding: 12px 12px 5px 12px;
+
+  .search-bulk-action-menu {
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #e7e7eb;
+    padding: 6px 5px;
+    font-size: 14px;
+
+    &:focus {
+      outline: 0.5px solid #b0c6cc;
+      ;
+    }
+  }
+
+  .bulk-action-search-no-match {
+    color: #00000061;
+  }
+}
+
+
+.bulk-menu-btns {
+  display: block;
+  align-items: center;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  color: #000000;
+  height: 35px;
+  font-size: 14px !important;
+  // &:last-child {
+  //   padding-bottom: 5px;
+  // }
+
+  &:hover {
+    color: var(--primary-base);
+  }
+
+  &:disabled {
+    border: none;
+    background-color: #ebebeb;
+    color: #000000ce;
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  .bulk-action-item-active {
+    color: var(--primary-base) !important;
+  }
+
+  .bulk-action-items {
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: 0.15px;
+    width: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: inherit;
+  }
+
+
+}
+
+
+.bulk-action-create-new-option {
+  padding: 5px 9px 5px;
+  background: #f2f7fc;
+  color: #338cf0;
+  cursor: pointer;
+  position: sticky;
+  bottom: -1px;
+  height: 40px !important;
+  width: 100% !important;
+  z-index: 2;
+
+  .create-new-options-add-icon {
+    font-size: 19px;
+  }
+}
+
+.multi-action-icon {
+  font-size: 20px !important;
+  align-items: center;
+}
+
+.bulk-action-sub-menu {
+  font-size: 17px;
+  margin: 0px 10px;
+  cursor: pointer;
+  padding: 3px;
+  border-radius: 3px;
+}
+
+.bulk-action-submenu {
+  display: block;
+
+  background-color: transparent;
+  border: none;
+  color: #000000;
+
+  padding-left: 10px;
+  font-size: 15px !important;
+}
+
+.bulk-action-icons {
+  margin-right: 9px;
+  font-size: 20px;
+  min-width: 20px;
+  color: #ccc;
+}
+
+.unique-action {
+  width: 22px;
+  margin-left: 5px;
+}
+
+.blk-action-submenu-btn {
+  border: none;
+  background: transparent;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: 0px;
+
+}
+
+.blk-action-sub-menu-items {
+  display: flex;
+  &.submenu-border-top{
+    border-top: 1px solid #d3d3d3;
+  }
+}
+
+.blk-action-border-top {
+  border-top: 1px solid #e3e3e3 !important
+}
+
+.blk-action-btn-wrapper {
+  position: relative;
+  padding-left: 10px;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.062);
+  }
+}
+
+.bulk-default-action {
+  position: absolute;
+  left: 5px;
+  z-index: 1;
+  cursor: pointer;
+  margin-left: 7px;
+
+  &:hover {
+    color: var(--primary-base) !important;
+  }
+}
+
+.blk-action-padding {
+  padding-left: 30px;
+}
+
+.default-bulk-action {
+  color: var(--primary-base) !important;
+}
+
+.bulk-action-group-title {
+  color: #4d4d4d;
+}

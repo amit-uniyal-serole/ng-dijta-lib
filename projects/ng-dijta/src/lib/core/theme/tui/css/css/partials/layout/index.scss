@@ -1,0 +1,132 @@
+.dx-layout {
+  display: flex;
+  flex: auto;
+  flex-direction: column;
+
+  /* fix firefox can't set height smaller than content on flex item */
+  min-height: 0;
+  background: inherit;
+
+  &,
+  * {
+    box-sizing: border-box;
+  }
+
+  &-has-sider {
+    flex-direction: row;
+
+    >.dx-layout,
+    >.dx-layout-content {
+      width: 0; // https://segmentfault.com/a/1190000019498300
+    }
+  }
+
+  &-header,
+  &-footer {
+    flex: 0 0 auto;
+  }
+
+  &-header {
+    height: 100;
+    padding: 0;
+    color: #000;
+    height: 64px;
+    background: #f0f2f5;
+  }
+
+  &-footer {
+    padding: 24px 50px;
+    color: #000;
+    font-size: 15px;
+    background: #f0f2f5;
+  }
+
+  &-content {
+    flex: auto;
+
+    /* fix firefox can't set height smaller than content on flex item */
+    min-height: 0;
+  }
+
+  &-sider {
+    position: relative;
+
+    /* fix firefox can't set width smaller than content on flex item */
+    min-width: 0;
+   // background: #001529;
+    transition: all 550ms;
+
+    &-children {
+      height: 100%;
+      margin-top: -0.1px;
+      padding-top: 0.1px;
+    }
+
+    &-has-trigger {
+      padding-bottom: 48px;
+    }
+
+    &-right {
+      order: 1;
+    }
+
+    &-trigger {
+      position: fixed;
+      bottom: 0;
+      z-index: 1;
+      height: 48px;
+      color: #fff;
+      line-height: 48px;
+      text-align: center;
+      background: #002140;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    &-zero-width {
+      >* {
+        overflow: hidden;
+      }
+
+      &-trigger {
+        position: absolute;
+        top: 64px;
+        right: -36px;
+        z-index: 1;
+        width: 36px;
+        height: 42px;
+        color: #fff;
+        font-size: 18px;
+        line-height: 42px;
+        text-align: center;
+        background: #001529;
+        border-radius: 0 2px 2px 0;
+        cursor: pointer;
+        transition: background 0.3s ease;
+
+        &::after {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background: transparent;
+          transition: all 0.3s;
+          content: '';
+        }
+
+        &:hover::after {
+          background: rgba(255, 255, 255, 0.1);
+        }
+
+        &-right {
+          left: -36px;
+          border-radius: 2px 0 0 2px;
+        }
+      }
+    }
+  }
+}
+
+@import './light';
+// @import './rtl';

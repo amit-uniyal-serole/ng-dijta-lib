@@ -1,0 +1,14 @@
+<div class="example-tel-input-container" [attr.aria-labelledby]="_formField.getLabelId()" (focusin)="onFocusIn($event)"
+  (focusout)="onFocusOut($event)">
+  <input #hiddenInput type="text" class="example-tel-input-element hiddenInput" [formControl]="control"
+    aria-label="Area code" #area [required]="required">
+  <ng-container *ngFor="let item of options; let i = index">
+    <input class="custom-select" [type]="multi ?'checkbox':'radio'" name="{{id}}-{{i}}" [required]="required"
+      id="{{id}}-{{i}}" [disabled]="disabled || readonly" #chipSelection (change)="toggleSelection(item.keyTt)"
+      [checked]="check(item)">
+    <label class="custom-label" for="{{id}}-{{i}}"
+      [changeChipColor]="check(item) ? item.color ?? '#1f9b9d' : undefined">
+      <div [innerHTML]="item?.valueTt  | transloco"></div>
+    </label>
+  </ng-container>
+</div>

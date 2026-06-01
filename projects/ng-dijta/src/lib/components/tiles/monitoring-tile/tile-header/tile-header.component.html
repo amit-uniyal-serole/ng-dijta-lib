@@ -1,0 +1,9 @@
+<div class="tile-header" *ngIf="header">
+    <ng-container *ngIf="isContentHeightSmall;else detail_content">
+        <h3 class="title" *ngIf="header?.title">{{header?.oneLineTitle}}</h3>
+    </ng-container>
+    <ng-template #detail_content>
+        <h3 class="title" [ngStyle]="{ 'color': header?.titleClr }" *ngIf="header?.title">{{header?.title}}</h3>
+        <p class="sub-title" [ngStyle]="{ 'color': header?.subTitleClr }" *ngIf="header?.subTitle">{{header?.subTitle}}</p>
+    </ng-template>
+</div>

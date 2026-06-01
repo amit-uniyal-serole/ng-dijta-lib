@@ -1,0 +1,39 @@
+<div class="dx-details-card-v2">
+  <div class="row dx-details-card-wrapper">
+    <div [class]="data?.col ?? 'col-md-6'" *ngFor="let card of data?.cards">
+      <div *dxIf="this.values;
+      config:{
+        condition:showHideCondition,
+        field:card.title,
+        type:'Show_Sections'
+      }" class="dx-details-card" [class.details-card-border]="isBorder">
+        <h3 [class.details-card-title-border]="isBorder" class="heading-6 mb-1 details-card-title">
+          {{card?.title | transloco}}
+        </h3>
+        <div class="row mt-1 details-card-content-wrapper">
+          <ng-container *ngFor="let content of card?.content">
+            <div *dxIf="this.values;config:{
+              condition:showHideCondition,
+              field:content.fieldName,
+              type:'Show_Fields'
+            }" [ngClass]="card?.col === 'col-md-12' ? 'col-md-12' : 'col-md-6'"
+              class="dx-details-card-label-value-wrapper" [class]="position" [class.bottom-separator]="borderButtom">
+              <h3
+                [ngClass]="{'right-align':card?.labelAlignment === 'right','left-align':card?.labelAlignment === 'left' || !card?.labelAlignment}"
+                class="dx-details-card-content-label body" dx-tooltip dxTooltipTitle="{{content?.label | transloco}}">
+                {{content?.label | transloco}}
+              </h3>
+              <!-- different types -->
+              <span class="body">
+                <dx-card-content [enableTextCopy]="card?.enableTextCopy" [content]="content"
+                  (cardContentAction)="sendDetailData($event)"></dx-card-content>
+              </span>
+            </div>
+            <div *ngIf="card?.col === 'col-md-12'" class="col-md-6">
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

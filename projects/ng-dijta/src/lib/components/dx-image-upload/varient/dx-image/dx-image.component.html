@@ -1,0 +1,39 @@
+<div class="example-tel-input-container" [attr.aria-labelledby]="_formField.getLabelId()" (focusin)="onFocusIn($event)"
+  (focusout)="onFocusOut($event)">
+  <input type="hidden" class="example-tel-input-element" [formControl]="parts" aria-label="Area code" #area value="bu">
+  <div class="image-custom-input">
+    <!-- Placeholder -->
+    <div *ngIf="!value || value?.length===0" class="image-preview image-placeholder"
+      [class.hide-placeholder]="!_placeholder">
+      <p class="paragraph mb-0">{{_placeholder ?? 'Empty Placeholder' }}</p>
+    </div>
+
+    <!-- Selected Images -->
+    <ng-container *ngIf="value">
+      <ng-container *ngFor="let item of value;let i = index">
+        <div class="image-preview">
+          <dx-image-preview [fileItem]="item"></dx-image-preview>
+          <p class="paragraph mb-0">{{item.fileName}}</p>
+
+          <div class="edit-btn">
+            <span class="material-icons-outlined edit" (click)="openImageUploader()">
+              edit
+            </span>
+            <span class="material-icons-outlined delete" (click)="remove(i)">
+              delete
+            </span>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+    <!-- File Explorer Opener -->
+    <button  [tabIndex]="tabIndex" type="button" class="image-upload-btn" [class.img-upload-btn-flex]="value?.length>1"
+      (click)="openImageUploader()">
+      <span class="material-icons upload-image-opener-btn">
+        upload
+      </span>
+      {{uploadBtnTitle}}
+    </button>
+
+  </div>
+</div>

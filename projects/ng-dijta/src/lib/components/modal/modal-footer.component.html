@@ -1,0 +1,6 @@
+<div class="modal-footer">
+  <d-button *ngFor="let button of buttons" [bsSize]="'md'" [attr.id]="button.id" (btnClick)="button.handler($event)"
+    [bsStyle]="button.cssClass" circled="true" [width]="button.btnwidth" [autofocus]="button.autofocus"
+    [disabled]="button.disabled">{{ button.text | transloco }}
+  </d-button>
+</div>

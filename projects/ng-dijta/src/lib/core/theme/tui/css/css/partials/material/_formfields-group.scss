@@ -1,0 +1,121 @@
+#formFieldGroup {
+  .mat-form-field {
+    width: 100%;
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: 4px 0;
+  }
+
+  .mat-form-field-wrapper {
+    padding-bottom: 0em;
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-outline {
+    background: $light !important;
+    border-radius: 5px;
+  }
+  .mat-form-field-appearance-outline.mat-form-field-disabled
+    .mat-form-field-outline {
+    background: $disabled-field-color !important ;
+  }
+  .mat-form-field-appearance-outline.mat-form-field-disabled {
+    cursor: not-allowed;
+    input {
+      cursor: not-allowed;
+    }
+  }
+
+  .mat-form-field-appearance-legacy {
+    .mat-form-field-wrapper {
+      padding-bottom: 20px;
+    }
+
+    .mat-form-field-infix {
+      padding: 0;
+      border-top: none;
+      height: 100%;
+      background: rgb(249, 249, 251);
+      font-weight: 600;
+      font-size: 13px;
+    }
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-outline-thick {
+    color: rgb(220, 220, 220);
+  }
+  .mat-form-field-appearance-outline
+    .mat-form-field-outline-thick.HighLight-border {
+    color: rgba(81, 203, 238, 1);
+  }
+  .mat-form-field-underline {
+    display: none;
+  }
+
+  .mat-select-arrow {
+    margin: -6px 4px;
+  }
+
+  .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+    background-color: $primary !important;
+  }
+
+  .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+    background-color: $primary !important;
+  }
+
+  .mat-card {
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+  }
+
+  .mat-card-header {
+    padding-bottom: 20px;
+    margin-left: -22px;
+  }
+
+  .mat-error {
+    // background: #ff00001c !important;
+    margin-top: 12px;
+    font-size: 12px;
+    padding-bottom: 3px;
+  }
+
+  button .mat-button-wrapper {
+    font-size: 20px;
+  }
+
+  .mat-form-field-appearance-legacy .mat-form-field-label {
+    top: 8px !important;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 17px;
+    position: relative;
+    display: inline-block;
+    color: $field-label-color;
+  }
+
+  label {
+    color: $field-label-color;
+    font-size: 13px;
+    font-weight: 600;
+    padding-bottom: 3px;
+  }
+  .mat-form-field-infix {
+    input {
+      line-height: 0px;
+    }
+  }
+
+  .row {
+    margin: 0px auto;
+  }
+
+  #mobileInputFlag {
+    .label {
+      margin-left: 72px;
+    }
+  }
+}

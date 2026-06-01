@@ -1,0 +1,114 @@
+.criteria-filter-wrapper {    
+    margin-right: 10px;
+    .criteria-selection {
+        margin-right: 0.6rem;
+        flex-direction: column;
+        display: flex;
+        padding-top: 0.5rem;
+        align-items: center;
+        position: relative;
+
+        .veritical-line-connector {
+            position: absolute;
+            border-left: 1px solid #adadad;
+            height: 100%;
+            z-index: 2;
+            left: 51%;
+        }
+
+        .criteria-index {
+            border: 1px solid #ccc;
+            padding: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 32px;
+            width: 32px;
+            background: #f5f5f5;
+            border-radius: 50%;
+            z-index: 2;
+            position: relative;
+        }
+
+        .criteria-checkbox {
+            color: #0d6efd;
+            width: 30px;
+            text-align: center;
+            margin-left: 2px;
+            z-index: 2;
+            background-color: #fff;
+            font-size: 14px !important;
+            position: relative;
+            top: 29%;
+
+            input[type=checkbox] {
+                display: none;
+            }
+
+            span {
+                cursor: pointer;
+            }
+        }
+    }
+
+    .criteria-pattern {
+        .placeholder-space {
+            width: 65px;
+        }
+
+        .criteria-pattern-text-box {
+            margin-left: 2.5rem;
+            width: 36%;
+        }
+    }
+
+    .add-criteria {
+        background: transparent;
+        border: none;
+        .close-icon {
+            color: #64748b !important;
+        }
+
+        .material-icons {
+            color: green;
+        }
+    }
+    .remove-criteria {
+        background: transparent;
+        border: none;
+
+        .material-icons {
+            color: rgb(240, 33, 6) !important;
+        }
+    }
+    .transparent-btn{
+        background: transparent;
+        border: none;
+    }
+    .criteria-limit-info{
+        .material-icons {
+            color: #2091EB !important;
+        }
+    }
+    .criteria-actions{
+        width: 100px;
+        margin-left: 5px;
+        display: flex;
+        align-items: flex-start;
+        margin-top: 12px;
+    }
+
+    .criteria{
+        margin-right: 12px;
+        margin-left: 12px;
+        &-column{
+            width: 35%;
+        }
+        &-operator{
+            width: 25%;
+        }
+        &-value{
+            width: 40%;
+        }
+    }
+}

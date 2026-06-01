@@ -1,0 +1,26 @@
+<div>
+    <ng-container *ngIf="!!data?.displayValue">
+        <div class="text-with-icon">
+            <ndx-avatar *ngIf="column?.avatarType=='avatar_with_text'" [avatarSettings]="avatarSettings"
+                [name]="data?.displayValue | transloco" [src]="avatarSettings?.avatarSrc"></ndx-avatar>
+            <a (click)="$event.stopPropagation();onClickLookupLink(data)" dx-popover
+                [dxHeader]="data?.displayPopoverConfig?.header" [dxPopoverTitle]="titleTemplateRef"
+                [dxPopoverTitleContext]="{$implicit: data}" [dxPopoverContent]="templateRef"
+                [dxPopoverContentContext]="{$implicit: data}"
+                [dxPopoverTrigger]="data?.displayPopoverConfig?.isShow && data?.displayPopoverConfig?.popover?.trigger"
+                [dxPopoverPlacement]="data?.displayPopoverConfig?.popover?.placement" [routerLink]="data?.path"
+                [queryParams]="data?.params" [class.path-color]="data?.path">{{data?.displayValue | transloco}}</a>
+        </div>
+    </ng-container>
+</div>
+
+
+<ng-template #titleTemplateRef let-popoverTitleConfig>
+    <dx-popover-variant-wrapper section="HEADER" [popoverTitleConfig]="popoverTitleConfig"
+        (onPopoverAction)="onClickOpenIcon($event)"></dx-popover-variant-wrapper>
+</ng-template>
+
+
+<ng-template #templateRef let-popoverContent>
+    <dx-popover-variant-wrapper section="CONTENT" [popoverContent]="popoverContent"></dx-popover-variant-wrapper>
+</ng-template>

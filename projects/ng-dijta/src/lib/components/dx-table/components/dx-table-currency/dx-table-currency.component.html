@@ -1,0 +1,8 @@
+<dx-currency dxTooltipTitle="{{data | dxcurrency: setting?.display: setting?.digitsInfo}}" dx-tooltip [amount]="data"
+  [currencyCode]="setting?.currencyCode" [digitsInfo]="setting?.digitsInfo" [display]="setting?.display"></dx-currency>
+<div *ngIf="currencySetting" class="info d-flex align-items-center gap-1" [style.color]="currencySetting?.infoColor">
+  <span class="material-icons-outlined icon" [style.color]="currencySetting?.iconColor" *ngIf="currencySetting?.icon">
+    {{currencySetting?.icon}}
+  </span>
+  <span>{{currencySetting?.info}}</span>
+</div>

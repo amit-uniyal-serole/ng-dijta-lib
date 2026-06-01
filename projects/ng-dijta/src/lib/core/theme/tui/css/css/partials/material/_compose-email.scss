@@ -1,0 +1,30 @@
+#composeEmail {
+  .quill-editor-wrapper {
+    height: auto !important;
+  }
+  .remove-quill-toolbar {
+    .ql-toolbar.ql-snow {
+      display: none;
+    }
+    .ql-container.ql-snow {
+      border: 1px solid rgb(204, 204, 204);
+      border-radius: 10px;
+    }
+  }
+  .ql-toolbar.ql-snow {
+    border-radius: 10px 10px 0px 0px !important;
+  }
+  .ql-container.ql-snow {
+    border-radius: 0px 0px 10px 10px;
+  }
+  #dxInput .mat-form-field-infix input {
+    color: rgb(49, 50, 51);
+    font-weight: 600;
+  }
+}
+.email-compose-container {
+  .mat-dialog-container {
+    padding: 0px !important;
+    border-radius: 15px !important;
+  }
+}

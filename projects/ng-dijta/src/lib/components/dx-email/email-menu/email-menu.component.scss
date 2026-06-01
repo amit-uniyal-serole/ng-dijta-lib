@@ -1,0 +1,90 @@
+// @import '../../../core/theme/tui/css/css/partials/default';
+@import "../../../core/theme/tui/css/css/partials/mixins";
+.email-menu {
+  padding: 15px 5px 18px 15px;
+
+  .title {
+    font-weight: 700;
+    font-size: 28px;
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 9px;
+    button {
+      border: none;
+      background-color: transparent;
+      color: #787f89;
+      width: 30px;
+      height: 30px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      display: none;
+      @include mobile {
+        display: flex;
+      }
+      .material-icons-outlined {
+        font-size: 20px;
+      }
+    }
+    button:hover {
+      background-color: #ececec;
+    }
+  }
+
+  .compose-button {
+    background: var(--primary-base);
+    padding: 10px 50px;
+    border-radius: 20px;
+    color: #ffffff;
+    margin: 7px 0px;
+    cursor: pointer;
+    .btn-icon {
+      margin-right: 12px;
+      padding-right: 0px !important;
+    }
+  }
+
+  .mailbox-items-wrapper {
+    margin: 25px 0px;
+
+    .menu-item {
+      padding: 10px 0px;
+      color: #787f89;
+    }
+
+    .menu-icon {
+      margin-right: 18px;
+      font-size: 24px;
+      padding-right: 0px !important ;
+    }
+
+    .mail-menu-items {
+      width: 100%;
+      padding-left: 7px;
+      cursor: pointer;
+    }
+
+    .mail-menu-items:hover {
+      background: #f5f5f5;
+
+      .menu-item {
+        color: #000000;
+      }
+    }
+  }
+
+  .icon-label-wrapper {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .menu-title {
+    color: var(--primary-base);
+    font-size: 12px;
+    letter-spacing: 1px;
+    font-weight: 500;
+    margin: 30px 0px 20px 0px;
+  }
+}

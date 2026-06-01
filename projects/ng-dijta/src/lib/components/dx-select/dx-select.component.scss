@@ -1,0 +1,26 @@
+.options-trigger {
+    min-width: 40px;
+    vertical-align: top;
+    max-width: 98% !important;
+    background: #E7F2FF;
+    color: #313949;
+    border: gray;
+    border-radius: 9px;
+    padding: 3px 10px;
+    display: inline-block;
+    position: relative;
+    margin: 5px 3px 0px 0px;
+}
+
+.options-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.search-pointer {
+    cursor: pointer;
+}
+
+#search-input.mat-form-field.mat-focused {
+    padding-top: 0.3em !important;
+}

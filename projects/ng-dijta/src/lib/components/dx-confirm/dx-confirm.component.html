@@ -1,0 +1,13 @@
+<div (click)="closeDialog(false)" *ngIf="data?.header?.closeIcon" class="material-icons-outlined close-icon">close</div>
+<div class="text-align-center">
+    <div *ngIf="data?.header?.icon?.isShow"
+        [ngStyle]="{'border-color': data?.header?.icon?.color+40, 'color': data?.header?.icon?.color, 'background-color': data?.header?.icon?.color+10}"
+        class="material-icons-outlined action-icon">{{data?.header?.icon?.icon}}</div>
+    <div *ngIf="data?.header?.title" class="heading-6">{{data?.header?.title | transloco}}</div>
+    <div class="confirm-message  body">{{data?.content?.message | transloco}}</div>
+</div>
+
+<div class="dx-action-confirmation">
+    <button (click)="closeDialog(false)">{{data?.actions?.secondary?.title | transloco}}</button>
+    <button class="submit" (click)="closeDialog(true)">{{data?.actions?.primary?.title | transloco}}</button>
+</div>

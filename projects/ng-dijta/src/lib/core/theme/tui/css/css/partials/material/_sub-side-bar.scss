@@ -1,0 +1,13 @@
+@import '../../partials/variables';
+
+#sub-side-bar {
+
+  .material-icons,
+  .material-icons-two-tone,
+  .material-icons-sharp,
+  .material-icons-round,
+  .material-icons-outlined {
+    font-size: 20px;
+    color: var(--primary-base);
+  }
+}

@@ -1,0 +1,22 @@
+<li *ngIf="item?.label" class="content-menu-item subbody" [routerLink]="item?.path? [item.path] : undefined"
+    [routerLinkActiveOptions]="{exact: true}" routerLinkActive='is-active' [queryParams]="item?.params"
+    [queryParamsHandling]="item?.isMerge ? 'merge':null" [fragment]="item?.fragment">
+    <div class="page-menu-label-wrapper" (click)="onClickMenuItem(item)">
+        <div class="page-menu-label"><span class="mx-3 fw-medium">{{item?.label | transloco}}</span>
+        </div>
+        <div *ngIf="item?.children?.length" [@rotate]="showContent?'default':'rotated'">
+            <span class="material-icons-outlined dx-menu-accordian-dropdown-arrow">
+                expand_more
+            </span>
+        </div>
+    </div>
+    <ng-conatiner *ngIf="item?.children?.length>0">
+        <ul class="child-route-wrapper" [@expandCollapse]="showContent?'expand':'collapse'">
+            <ng-container *ngFor="let child of item?.children">
+                <li class="subody menu-child-route" [routerLink]="child?.path? [child?.path] : undefined"
+                    [routerLinkActiveOptions]="{exact: true}" routerLinkActive='child-active'
+                    [queryParams]="child?.params">{{child?.label | transloco}}</li>
+            </ng-container>
+        </ul>
+    </ng-conatiner>
+</li>

@@ -1,0 +1,40 @@
+<!-- Popover Header -->
+<ng-container *ngIf="section==='HEADER'">
+    <span [ngSwitch]="popoverTitleConfig?.[popoverConfigName ?? 'displayPopoverConfig']?.variantType">
+        <div *ngSwitchCase="'basicVariant'">
+            <dx-basic-popover-header (openInNew)="sendDetailData(popoverTitleConfig)"
+                [popoverHeaderData]="popoverTitleConfig?.[popoverConfigName ?? 'displayPopoverConfig']?.header"></dx-basic-popover-header>
+        </div>
+        <div *ngSwitchDefault class="mx-2">
+            <div class="dx-header-title">
+                <div class="header-items-flex-center">
+                    <span *ngIf="popoverTitleConfig?.[popoverConfigName ?? 'displayPopoverConfig']?.header?.title"
+                        class="body"><span
+                            class="fw-semibold header-title-style">{{popoverTitleConfig?.[popoverConfigName ??
+                            'displayPopoverConfig']?.header?.title | transloco}}</span></span>
+                </div>
+            </div>
+        </div>
+    </span>
+</ng-container>
+<!-- Popover Content -->
+<ng-container *ngIf="section==='CONTENT'">
+    <span [ngSwitch]="popoverContent?.[popoverConfigName ?? 'displayPopoverConfig']?.variantType">
+        <div *ngSwitchCase="'basicVariant'">
+            <dx-basic-popover [popoverConfigName]="popoverConfigName"
+                [popoverContentData]="popoverContent"></dx-basic-popover>
+        </div>
+        <div *ngSwitchDefault>
+            <div *ngIf="popoverContent?.[popoverConfigName ?? 'displayPopoverConfig']?.content; else displayString">
+                <div class="row align-items-center"
+                    *ngFor="let content of popoverContent?.[popoverConfigName ?? 'displayPopoverConfig']?.content">
+                    <div class="label-styles fw-medium col-md-4">{{content?.label | transloco}}</div>
+                    <div class="value-styles col-md-4">{{content?.value | transloco}}</div>
+                </div>
+            </div>
+            <ng-template #displayString>
+                {{popoverContent?.value | transloco}}
+            </ng-template>
+        </div>
+    </span>
+</ng-container>

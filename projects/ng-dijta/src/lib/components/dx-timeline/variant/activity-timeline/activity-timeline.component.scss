@@ -1,0 +1,222 @@
+.v3-timeline {
+  height: 100%;
+  overflow-y: scroll;
+  padding-top: 20px;
+
+  .dx-timeline.dx-timeline-label .dx-timeline-item-label {
+    text-align: inherit;
+  }
+
+  .dx-timeline.dx-timeline-label .dx-timeline-item-head,
+  .dx-timeline.dx-timeline-label .dx-timeline-item-head-custom {
+    left: 9%;
+  }
+
+  .dx-timeline.dx-timeline-label .dx-timeline-item-tail {
+    left: 9%;
+  }
+
+  .dx-timeline.dx-timeline-label .dx-timeline-item-left .dx-timeline-item-content {
+    left: calc(10% - 4px);
+    top: -9px;
+  }
+
+  .datetime-bordertop{
+    border-top: 0.3px solid #c3c3c3;
+  }
+
+  .parent {
+    background: #f4f7ff;
+    padding: 5px 18px !important;
+    border-radius: 6px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+  }
+
+  .v3-content {
+    border: 1px solid #c3c3c3;  
+    border-radius: 5px;
+
+    .v3-content-header {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #c3c3c3;
+      padding: 7px;
+      
+      .owner {
+        color: #4d4d4d;
+        margin-right: 3px;
+        cursor: pointer;
+      }
+
+      .action {
+        padding: 2px 10px;        
+        color: #fff;
+        border-radius: 5px;
+        text-transform: capitalize;
+        line-height: 20px;
+      }
+    }
+  }
+
+  .v3-content-icon {
+    // background: #8b9ab9;
+    border-radius: 50%;
+    color: #fff;
+    padding: 3px;
+
+    mat-icon {
+      font-size: 16px;;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+    }
+  }
+
+  // Generic classes
+
+  .timeLineHistDataList {
+    color: #2c7bcf;
+  }
+
+  .TimeLineHighTxt {
+    font-weight: bold;
+    font-size: 13px;
+    color: #2c7bcf;
+  }
+
+  .timeline-container {
+    padding: 9px 0px;
+  }
+
+  .tl_from,
+  .tl_to {
+    font-size: 14px;
+  }
+
+
+  // badge
+
+  .activity-action{
+    background-color: #0a7263;
+    &-unlinked {
+      background-color: #fd7e14;
+    }
+
+    &-linked {
+      background-color: #20c997;
+    }
+
+    &-updated {
+      background-color: #007bff;
+    }
+
+    &-created {
+      background-color: #28a745;
+    }
+
+    &-tagAdded {
+      background-color: #6f42c1;
+    }
+
+    &-tagRemoved {
+      background-color: #dc3545;
+    }
+  }
+  .dx-timeline-item-tail{
+    border-left: 1px dashed #c3c3c3;   
+  
+  }
+
+  .v3label{
+    transform:translateX(25px);
+    text-align: end;
+  }
+
+  .dx-timeline.dx-timeline-label .dx-timeline-item-label{
+    width: unset;
+  }
+
+  @media only screen and (max-width: 1500px) {
+    .desktop-screen{
+      display: none;
+    }
+    .mobile-screen{
+      display: block;
+    }
+    .record-datetime{
+      color: #757373;
+    }
+}
+
+  @media only screen and (min-width: 1500px) {
+    .desktop-screen{
+      display: block;
+    }
+    .mobile-screen{
+      display: none;
+    }
+  }
+  @media only screen and (max-width: 800px){
+    .dx-timeline.dx-timeline-label .dx-timeline-item-head,
+    .dx-timeline.dx-timeline-label .dx-timeline-item-head-custom {
+      left: 18%;
+    }
+  
+    .dx-timeline.dx-timeline-label .dx-timeline-item-tail {
+      left: 18%;
+    }
+  
+    .dx-timeline.dx-timeline-label .dx-timeline-item-left .dx-timeline-item-content {
+      left: calc(18% - 4px);
+      top: -9px;
+    }
+  }
+  @media only screen and (max-width: 720px){
+    .v3-content {
+      .v3-content-header {
+        display: block;
+        align-items: center;
+        border-bottom: 1px solid #c3c3c3;
+        padding: 7px;
+        padding-bottom: 10px;
+        .action {
+          display: inline;
+          padding: 6px 10px;        
+          color: #fff;
+          border-radius: 5px;
+          text-transform: capitalize;
+          line-height: 20px;
+        }
+      }
+    }
+    .avatar-owner{
+      display: flex;
+      margin-bottom: 15px;
+    }
+    .dx-timeline.dx-timeline-label .dx-timeline-item-head,
+    .dx-timeline.dx-timeline-label .dx-timeline-item-head-custom {
+      left: 25%;
+    }
+  
+    .dx-timeline.dx-timeline-label .dx-timeline-item-tail {
+      left: 25%;
+    }
+  
+    .dx-timeline.dx-timeline-label .dx-timeline-item-left .dx-timeline-item-content {
+      left: calc(25% - 4px);
+      top: -9px;
+    }
+  }
+
+  @media only screen and (min-width: 720px){
+    .avatar-owner{
+      display: flex;
+    }
+    .activity-action{
+      margin-left: 5px;
+    }
+  }
+
+
+}

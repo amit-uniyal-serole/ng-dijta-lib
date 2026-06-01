@@ -1,0 +1,106 @@
+div.dx-tree-v2.dx-tree-line div.tree-children::before,
+div.dx-tree-v2.dx-tree-line:not(:first-child) ::before {
+  content: "";
+  position: absolute;
+  border-left: 0.3px dotted rgb(165, 165, 165);
+  height: 100%;
+  top: -16px;
+  left: 12px;
+}
+
+div.dx-tree-v2.dx-tree-line {
+  padding-left: 0;
+  margin-left: -5px;
+}
+
+div.dx-tree-v2.dx-tree-line div.tree-children {
+  position: relative;
+  padding-left: 0;
+  margin-left: 16px;
+}
+
+div.dx-tree-v2.dx-tree-line div.tree-children::before {
+  left: 5px;
+}
+
+div.dx-tree-v2.dx-tree-line tree-node > div > .node-wrapper {
+  margin-left: 24px;
+}
+
+div.dx-tree-v2.dx-tree-line
+  tree-node
+  > div
+  > .node-wrapper
+  > .node-content-wrapper {
+  margin-left: 4px;
+}
+
+div.dx-tree-v2.dx-tree-line tree-node > div.tree-node-leaf > .node-wrapper {
+  margin-left: 0;
+}
+
+div.dx-tree-v2.dx-tree-line .tree-node-level-1 tree-node > div::before {
+  content: "";
+  position: absolute;
+  border-bottom: 0.3px dotted rgb(165, 165, 165);
+  width: 10px;
+  margin-top: 12px;
+  left: 5px;
+}
+
+// div.tree tree-node > div .toggle-children-wrapper {
+//   width: 13px;
+//   height: 13px;
+//   border: 1px solid #23527c;
+//   position: absolute;
+//   left: 15px;
+//   margin-top: 5px;
+//   margin-left: 0;
+//   display: inline-block;
+//   background-color: #fff;
+//   z-index: 1;
+// }
+
+// div.tree tree-node > div .toggle-children-wrapper::before {
+//   content: "";
+//   display: inline-block;
+//   width: 7px;
+//   border-top: 1px solid #23527c;
+//   position: absolute;
+//   top: 5px;
+//   left: 2px;
+// }
+
+// div.tree
+//   tree-node
+//   > div
+//   .toggle-children-wrapper.toggle-children-wrapper-collapsed::after {
+//   content: "";
+//   display: inline-block;
+//   height: 7px;
+//   border-left: 1px solid #23527c;
+//   position: absolute;
+//   top: 2px;
+//   left: 5px;
+// }
+
+// div.tree tree-node > div .toggle-children-wrapper .toggle-children {
+//   display: none;
+// }
+
+div.dx-tree-v2.dx-tree-line tree-node > div .node-content-wrapper {
+  margin-left: 4px;
+}
+
+div.dx-tree-v2.dx-tree-line > tree-node > div::before {
+  left: 14px;
+}
+
+div.dx-tree-v2.dx-tree-line
+  > tree-node
+  > div
+  > .node-wrapper
+  > tree-node-expander
+  > .toggle-children-wrapper {
+  left: 22px;
+}

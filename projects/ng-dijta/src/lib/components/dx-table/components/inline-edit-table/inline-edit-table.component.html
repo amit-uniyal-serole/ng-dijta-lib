@@ -1,0 +1,47 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th *ngFor="let col of columns">{{ col?.title }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of dataSource; let i = index">
+      <td *ngFor="let col of columns">
+        <!-- Editable field -->
+        <ng-container *ngIf="isEditing(i); else staticView">
+          <!-- Structured Dropdown -->
+          <select *ngIf="col.type === 'dropdown'" class="form-control" [(ngModel)]="row[col.columnDef]">
+            <option *ngFor="let option of col?.options" [value]="option?.keyTt">{{ option?.valueTt }}</option>
+          </select>
+
+          <!-- Text / Number -->
+          <input *ngIf="col.type !== 'dropdown'" [(ngModel)]="row[col.columnDef]" class="form-control"
+            [type]="getInputType(row[col.columnDef])" />
+        </ng-container>
+        <ng-template #staticView>
+          <ng-container *ngIf="col?.type === 'dropdown'; else normalText">
+            {{ getDisplayValue(row[col?.columnDef], col?.options) }}
+          </ng-container>
+          <ng-template #normalText>
+            {{ row[col?.columnDef] }}
+          </ng-template>
+        </ng-template>
+      </td>
+
+      <td class="d-flex">
+        <button *ngIf="!isEditing(i)  && isActionVisible(row, 'EDIT')" class="btn btn-sm btn-primary me-2 btn-secondary"
+          (click)="onEdit(i)">
+          Edit
+        </button>
+
+        <button *ngIf="isEditing(i)" class="btn btn-sm btn-success me-2" (click)="onSave(i)">
+          Save
+        </button>
+
+        <button *ngIf="isEditing(i)" class="btn btn-sm btn-outline-dark" (click)="onCancel(i)">
+          Cancel
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

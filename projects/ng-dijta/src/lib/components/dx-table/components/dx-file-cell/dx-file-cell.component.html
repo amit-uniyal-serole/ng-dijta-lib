@@ -1,0 +1,29 @@
+<div class="image-container">
+  <ng-container *ngIf="displayFile?.imageSizeUrl?.sm;else defaultImage">
+    <img [src]="displayFile?.imageSizeUrl?.sm" [alt]="displayFile?.fileOriginalName" (click)="open()" />
+  </ng-container>
+  <ng-template #defaultImage>
+    <dx-svg [type]="displayFile?.fileOriginalName?.split('.').pop().toUpperCase()"></dx-svg>
+  </ng-template>
+  {{displayFile?.fileOriginalName | transloco}}
+  <span class="material-icons more_icon" [matMenuTriggerFor]="imageaction">
+    more_vert
+  </span>
+  <div class="spinner" *ngIf="isLoading">
+    <h3><span class="visually-hidden">visuallyhidden</span></h3>
+  </div>
+  <span *ngIf="!!error" @fadeIn @fadeOut class="download-error">{{message}}</span>
+</div>
+<mat-menu #imageaction="matMenu">
+  <ul class="file-action-menu">
+    <li *ngIf="displayFile?.imageSizeUrl?.lg">
+      <p class="paragraph m-0" (click)="view()">{{'View' | transloco}}</p>
+    </li>
+    <li>
+      <p class="paragraph m-0" (click)="download()">{{'Download' | transloco}}</p>
+    </li>
+  </ul>
+</mat-menu>
+<div style="display: none;" dImagePreview [customSub]="customSub" [disableDefault]="true">
+  <img *ngFor="let image of images" [attr.src]="image | safe: 'url'" alt="image">
+</div>

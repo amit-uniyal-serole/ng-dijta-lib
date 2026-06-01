@@ -1,0 +1,40 @@
+.dx-canvas {
+  .body-container,
+  .footer-container {
+    margin-top: 5px;
+  }
+  .dx-pagination-card {
+    #dx-form .mat-form-field-appearance-legacy .mat-form-field-infix {
+      padding: 7px 15px 7px 15px !important;
+    }
+    .select-wrapper {
+      min-height: 0px !important;
+    }
+    .mat-select-arrow-wrapper .mat-select-arrow::after {
+      top: 9px;
+    }
+  }
+  .mat-paginator-page-size {
+    display: none;
+  }
+  .mat-slide-toggle-thumb-container {
+    top: 1px;
+  }
+  .mat-slide-toggle.mat-checked {
+    .mat-slide-toggle-thumb {
+      background-color: rgb(255, 255, 255) !important;
+    }
+    .mat-slide-toggle-bar {
+      background-color: var(--primary-base) !important;
+    }
+    .mat-slide-toggle-thumb-container {
+      left: -2px;
+    }
+  }
+  .mat-slide-toggle-bar {
+    height: 24px;
+    border-radius: 15px;
+    border: 0.5px solid rgba(181, 178, 178, 0.412);
+    background-color: rgb(0 0 0 / 14%);
+  }
+}

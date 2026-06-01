@@ -1,0 +1,34 @@
+<!-- 
+    Documentation for the CSS classes used in the label-value-wrapper component:
+    - label-value-wrapper: Base class for the wrapper element.
+    - d-flex: Applies flexbox layout to the element.
+    - flex-wrap: Ensures child elements wrap onto the next line if they exceed the container's width.
+    - border-end: Adds a border to the end side of the element.
+    - border-0: Removes all borders from the element.
+    - border-md: Applies a medium-width border to the element.
+    - border-sm: Applies a small-width border to the element.
+    - border-dark-subtle: Adds a subtle dark border color to the element.
+    - gap-1: Adds spacing between child elements within the flex container.
+    - full-width: Conditional class applied based on the `fullWidth` property to make the wrapper span the full width of its container.
+-->
+<div class="label-value-wrapper d-flex flex-wrap border-end border-dark-subtle gap-1 border-mobile" [class.full-width]="fullWidth" *ngFor="let item of content?.source">
+    <div class="material-icons" [class.remove-margin]="canvasViewType !=='canvas-1'" [ngStyle]=" setColor(item?.color)"
+        *ngIf="item?.icon">{{item?.icon}}</div>
+    <!-- 
+        title-color: A CSS class applied to style the text color of the label. 
+        Typically used to ensure the label text aligns with the theme or design specifications.
+    -->
+    <div class="canvas-label subbody fw-medium title-color" [class.hide-label]="content?.hideLabel" *ngIf="item?.labelTt">{{item?.labelTt |
+        transloco}}:&nbsp;</div>
+
+    <!-- 
+        subtitle-color: 
+        This class is used to apply styling for subtitles within the component. 
+        It typically defines the color and appearance of text that serves as a subtitle, 
+        ensuring consistency and visual hierarchy in the UI design.
+    -->
+    <div class="canvas-value subbody fw-medium subtitle-color" [class.add-margin]="!item?.icon && columnOrientation && content?.hideLabel">
+        <dx-canvas-field-wrapper [data]="item"></dx-canvas-field-wrapper>
+    </div>
+    <div class="line" [class.hide-border]="content?.hideSeparator || hideSeparator"></div>
+</div>

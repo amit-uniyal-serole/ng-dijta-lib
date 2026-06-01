@@ -1,0 +1,20 @@
+#intlprefix {
+
+  .mat-select-value {
+    max-width: 100%;
+    padding-right: 8px;
+  }
+
+  .mat-select-trigger {
+    display: inline-block;
+    padding-right: 8px;
+  }
+
+  .mat-select-arrow-wrapper .mat-select-arrow::after {
+    top: 2px;
+  }
+
+  .mat-form-field {
+    display: block !important;
+  }
+}

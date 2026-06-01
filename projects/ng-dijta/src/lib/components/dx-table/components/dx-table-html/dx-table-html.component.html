@@ -1,0 +1,44 @@
+<ng-container *ngIf="type === 'ONLY_HTML';else defaultHTML">
+    <div class="html-content">
+        <div class="html-content-length-table" [class.path-color]="!!links" [class.more]="dataLen >= 200"
+            [style.max-height.px]="200" [innerHTML]="shortText"></div>
+
+        <div class="show_more_container" (click)="$event.stopPropagation()">
+            <span dx-tooltip [dxTooltipTitle]="'View Full Details' | transloco"
+                class="material-icons-outlined show_more" *ngIf="dataLen >= 200" (click)="openTemplateModal()">
+                visibility
+            </span>
+        </div>
+    </div>
+
+</ng-container>
+
+<ng-template #defaultHTML>
+    <div class="paragraph html-cell overflow-hidden" [@expandCollapse]="(!showMore)? 'expanded' : 'collapsed'"
+        [innerHtml]="data"></div>
+    <a *ngIf="dataLen > 200" class="show px-0 text-decoration-none py-2" (click)="showMore=!showMore">
+        {{(showMore)? ('Show More' | transloco) : ('Show Less' | transloco)}}
+    </a>
+</ng-template>
+
+<ng-template #modalContent let-modalInstance="modalInstance">
+    <div class="card-model">
+        <div class="card-model-header">
+            <h3 class="heading-6">{{ title ?? 'Detail'}}</h3>
+            <button *ngIf="links" (click)="close()">
+                <span class="material-icons-outlined">
+                    open_in_new
+                </span>
+                <dx-table-text-cell (onClick)="close()" [link]="links"></dx-table-text-cell>
+            </button>
+        </div>
+        <div class="card-model-body">
+            <div class="display-text" [innerHtml]="data | transloco"></div>
+        </div>
+        <div class="card-model-footer">
+            <button type="button" (click)="close()">Close</button>
+        </div>
+    </div>
+
+</ng-template>
+<dx-default [show]="!data"></dx-default>

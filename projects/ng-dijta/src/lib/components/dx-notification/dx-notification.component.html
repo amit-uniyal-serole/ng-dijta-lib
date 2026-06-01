@@ -1,0 +1,28 @@
+<div class="notifications-wrapper">
+    <div>
+        <div class="notification-header">
+            <h3 class="heading-6">{{'Notification' | transloco}}</h3>
+            <div class="notification-actions">
+                <div class="box-notification-action" (click)="markAsRead()">
+                    <span class="material-icons-outlined notification-action-icon" dxTooltip
+                        dxTooltipTitle="Mark all as read">
+                        mark_as_unread
+                    </span>
+                    <p class="paragraph mb-0">{{'Mark all read' | transloco}}</p>
+                </div>
+
+                <label class="action box-notification-action">
+                    <input type="checkbox" [(ngModel)]="toggleAllAsRead" (change)="showUnread()">
+                    <span class="material-icons-outlined notification-action-icon">
+                        mark_email_unread
+                    </span>
+                    <p class="paragraph mb-0">{{'Show unread' | transloco}}</p>
+                </label>
+            </div>
+        </div>
+        <div class="notifications-body">
+            <ng-content class="notification-content"></ng-content>
+        </div>
+    </div>
+
+</div>

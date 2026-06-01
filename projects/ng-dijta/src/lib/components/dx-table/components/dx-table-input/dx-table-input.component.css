@@ -1,0 +1,18 @@
+.input {
+    border: 1px solid #ccc;
+    /* background: #f8f8f8; */
+    padding: 6px;
+    border-radius: 4px;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+}
+input:disabled { 
+    cursor: not-allowed;
+    color: #00000040;
+    background-color: #f5f5f5;
+}

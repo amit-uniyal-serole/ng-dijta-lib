@@ -1,0 +1,47 @@
+.mat-option.create-option-wrapper {
+  position: sticky;
+  bottom: 0px;
+  z-index: 9999;
+  background: #ffffff;
+  width: 100%;
+  min-width: calc(100% + 32px);
+  &:hover:not(.mat-option-disabled){
+    background-color: #fff;
+  }
+  .align-material-icon-text {
+    display: inline-flex;
+    align-items: center;
+    padding: 0px 5px;
+    color: #338cf0;
+
+    .material-icons {
+      font-size: 18px;
+      margin-right: 5px;
+    }
+
+    .create-option-label {
+      font-size: 15px;
+      font-weight: 500;
+    }
+  }
+  
+}
+.autcomplete-dropdown-option{
+  position: relative;
+  display: flex;
+  .autcomplete-subtitle{
+    position: absolute;
+    left: 5px;
+    top: 14px;
+    color: #4b5670;
+    font-size: 12px;
+    font-weight: 400;
+  }
+  &.dropdown-option-padding-bottom{
+    padding-bottom: 12px;
+  }
+  
+}
+.dx-disable {
+  pointer-events: none !important;
+}

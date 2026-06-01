@@ -1,0 +1,10 @@
+<div class="bottom-bar">
+  <ul class="bottom-bar-list">
+    <li *ngFor="let action of bottomBarActions">
+      <a (click)="submit(action)" style="cursor: pointer;">
+        <img [src]="action?.src" *ngIf="action?.src" class="bottom-bar-icon img-fluid">
+        <span class="bottom-bar-txt">{{action?.name | transloco}}</span>
+      </a>
+    </li>
+  </ul>
+</div>

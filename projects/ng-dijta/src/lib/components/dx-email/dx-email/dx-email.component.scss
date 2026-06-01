@@ -1,0 +1,92 @@
+@import "../../../core/theme/tui/css/css/partials/mixins";
+.email-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  background-color: #f1f5f9;
+  position: relative;
+  font-weight: 600 !important;
+  #backdrop {
+    background-color: rgba(26, 25, 25, 0.637);
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+    display: none;
+    @include mobile {
+      display: block;
+    }
+  }
+  .menu {
+    background-color: #ffffff;
+    min-width: 250px;
+    max-width: 250px;
+    height: 100vh;
+    overflow: auto;
+    transition: all 0.5s;
+    display: block;
+    @include mobile {
+      display: none;
+      position: fixed;
+      z-index: 5;
+      min-width: 80% !important;
+      max-width: 80% !important;
+      height: 90vh;
+    }
+  }
+  .expand-menu {
+    min-width: 250px;
+    max-width: 250px;
+    transition: all 0.5s;
+  }
+  @keyframes openMenu {
+    from {
+      min-width: 0;
+    }
+    to {
+      min-width: 250px;
+    }
+  }
+  .collapse-menu {
+    min-width: 0;
+    max-width: 0;
+    transition: all 0.5s;
+  }
+
+  // @keyframes closeMenu {
+  //   from {
+  //     min-width: 250px;
+  //   }
+
+  //   to {
+  //     min-width: 0;
+  //   }
+  // }
+
+  .list {
+    background-color: #ffffff;
+    min-width: 410px;
+    max-width: 410px;
+    border: 1px solid #d7d7d7;
+    // height: 99vh;
+    // overflow: auto;
+    display: block;
+    @include mobile {
+      width: 100%;
+      // min-width: 350px;
+      // max-width: 350px;
+      min-width: 100%;
+      max-width: 100%;
+    }
+  }
+
+  #detailView {
+    width: 100%;
+    @include mobile {
+      display: none;
+    }
+  }
+  .table-view{
+    width: 100%;
+  }
+}

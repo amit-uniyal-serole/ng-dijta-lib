@@ -1,0 +1,18 @@
+<ng-container [ngSwitch]="canvasViewType">
+    <ng-container *ngSwitchCase="'canvas-1'">
+        <dx-canvas-one [canvasViewType]="canvasViewType" [content]="content">
+        </dx-canvas-one>
+    </ng-container>
+    <ng-container *ngSwitchCase="'canvas-2'">
+        <dx-canvas-two [canvasViewType]="canvasViewType" [content]="content">
+        </dx-canvas-two>
+    </ng-container>
+    <ng-container *ngSwitchCase="'canvas-3'">
+        <dx-canvas-three [canvasViewType]="canvasViewType" [content]="content">
+        </dx-canvas-three>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+        <dx-canvas-one [canvasViewType]="canvasViewType" [content]="content">
+        </dx-canvas-one>
+    </ng-container>
+</ng-container>

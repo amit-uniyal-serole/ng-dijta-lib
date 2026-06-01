@@ -1,0 +1,5 @@
+<span *ngIf="setting" class="dxSlideToggle">
+  <mat-slide-toggle [(ngModel)]="setting.checked" [disabled]="setting.disable" (ngModelChange)="onChange($event)">
+    <span *ngIf="setting?.label">{{setting?.label | transloco}}</span>
+  </mat-slide-toggle>
+</span>

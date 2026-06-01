@@ -1,0 +1,39 @@
+@import '../../core/theme/tui/css/css/partials/variables';
+.alert {
+  width: 100%;
+  margin: 10px 0 0 0;
+  padding: 0px;
+  border-radius: 6px;
+
+  p {
+    font-size: 13px;
+  }
+
+  &.success {
+    background: $succesClr;
+    border-color: $succesBrClr;
+
+    p {
+      color: $succesBrClr;
+    }
+  }
+
+  &.warning {
+    background: $warningClr;
+    border-color: $warningBrClr;
+
+    p {
+      color: $warningBrClr;
+    }
+  }
+
+  &.error {
+    background: $errorClr;
+    border-color: $error-border-clr;
+
+    p {
+      color: $error-border-clr;
+      margin: 4px;
+    }
+  }
+}

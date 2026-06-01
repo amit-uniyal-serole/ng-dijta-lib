@@ -1,0 +1,608 @@
+
+
+.dx-upload {
+ 
+  outline: 0;
+
+  p {
+    margin: 0;
+  }
+
+  &-btn {
+    display: block;
+    width: 100%;
+    outline: none;
+  }
+
+  input[type='file'] {
+    cursor: pointer;
+  }
+
+  &-select {
+    display: inline-block;
+  }
+
+  &-disabled {
+    cursor: not-allowed;
+  }
+
+  &-select-picture-card {
+    width: 104px;
+    height: 104px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    text-align: center;
+    vertical-align: top;
+    background-color: hsv(0, 0, 98%);
+    border: 1px dashed hsv(0, 0, 85%);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+
+    .dx-upload {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+    }
+
+    &:hover {
+      border-color: var(--primary-base);
+      .dx-upload-disabled & {
+        border-color: hsv(0, 0, 85%);
+      }
+    }
+  }
+
+  &-drag {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background: hsv(0, 0, 98%);
+    border: 1px dashed hsv(0, 0, 85%);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+
+    .dx-upload {
+      padding: 16px 0;
+    }
+
+    &.dx-upload-drag-hover:not(.dx-upload-disabled) {
+      border-color: red;
+    }
+
+    &.dx-upload-disabled {
+      cursor: not-allowed;
+    }
+
+    .dx-upload-btn {
+      display: table;
+      height: 100%;
+    }
+
+    .dx-upload-drag-container {
+      display: table-cell;
+      vertical-align: middle;
+    }
+
+    &:not(.dx-upload-disabled):hover {
+      border-color: var(--primary-base);
+    }
+
+    p.dx-upload-drag-icon {
+      .anticon {
+        color: var(--primary-base);
+        font-size: 48px;
+      }
+
+      margin-bottom: 20px;
+    }
+    p.dx-upload-text {
+      margin: 0 0 4px;
+      color: fade(#000, 85%);
+      font-size: 16px;
+    }
+    p.dx-upload-hint {
+      color: fade(#000, 45%);
+      font-size: 14px;
+    }
+
+    .anticon-plus {
+      color: fade(#000, 25%);
+      font-size: 30px;
+      transition: all 0.3s;
+
+      &:hover {
+        color: fade(#000, 45%);
+      }
+    }
+    &:hover .anticon-plus {
+      color: fade(#000, 45%);
+    }
+  }
+
+  &-picture-card-wrapper {
+
+    display: inline-block;
+    width: 100%;
+  }
+}
+
+.dx-upload-list {
+  line-height: 1.5715;
+  .material-icons-outlined {
+    font-size: 20px;
+  }
+  .btn-transparent {
+    border: none;
+    background: transparent;
+    padding: 0px;
+    height: auto;
+    width: auto;
+  }
+  // ============================ Item ============================
+  &-item {
+    position: relative;
+    border-radius: 6px;
+    margin-top: 2px;
+
+    &-name {
+      display: inline-block;
+      width: 100%;
+      padding-left: 8px;
+      overflow: hidden;
+      line-height: 1.5715;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &-card-actions {
+      position: absolute;
+      right: 0;
+      top: 4px;
+      &-btn {
+        opacity: 0;
+      }
+
+      &-btn.dx-btn-sm {
+        height: 1.5715 * 14px;
+        line-height: 1;
+        vertical-align: top;
+      }
+
+      &.picture {
+        top: 22px;
+        line-height: 0;
+      }
+
+      &-btn:focus,
+      &.picture &-btn {
+        opacity: 1;
+      }
+
+      .anticon {
+        color: fade(#000, 45%);
+        transition: all 0.3s;
+      }
+
+      &:hover .anticon {
+        color: fade(#000, 85%);
+      }
+    }
+
+    &-info {
+      height: 100%;
+      transition: background-color 0.3s;
+
+      > span {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;                
+        border-bottom: 1px solid #ebebeb;
+      }
+
+      .anticon-loading,
+      .dx-upload-text-icon {
+        display: flex;
+        .anticon {
+          position: absolute;
+          top: 5px;
+          color: fade(#000, 45%);
+          font-size: 14px;
+        }
+      }
+    }
+
+    &:hover &-info {
+      background-color: #f5f5f5;
+    }
+
+    &:hover &-card-actions-btn {
+      opacity: 1;
+    }
+
+    &-error,
+    &-error .dx-upload-text-icon > .anticon,
+    &-error &-name {
+      color: red !important;
+    }
+
+    &-error &-card-actions {
+      .anticon {
+        color: red !important;
+      }
+
+      &-btn {
+        opacity: 1;
+      }
+    }
+
+    &-progress {
+      position: absolute;
+      bottom: -12px;
+      width: 100%;
+      padding-left: 14px + 12px;
+      font-size: 14px;
+      line-height: 0;
+    }
+  }
+
+  // =================== Picture & Picture Card ===================
+  &-picture,
+  &-picture-card {
+    .dx-upload-list-item {
+      position: relative;      
+      padding: 3px;
+      border: 1px solid hsv(0, 0, 85%);
+      border-radius: 2px;
+
+      &:hover {
+        background: transparent;
+      }
+
+      &-error {
+        border-color: red;
+      }
+    }
+
+    .dx-upload-list-item-info {
+      padding: 0;
+    }
+
+    .dx-upload-list-item:hover .dx-upload-list-item-info {
+      background: transparent;
+    }
+
+    .dx-upload-list-item-uploading {
+      border-style: none; // changes dashed to none
+    }
+
+    .dx-upload-list-item-thumbnail {
+      width: 30px;
+      height: 30px;
+      line-height: 40px;
+      text-align: center;
+      opacity: 0.8;
+
+      .anticon {
+        font-size: 26px;
+      }
+    }
+
+    .dx-upload-list-item-error .dx-upload-list-item-thumbnail {
+      .anticon {
+        svg path {
+          &[fill='#e6f7ff'] {
+            fill: red-deprecated-bg;
+          }
+
+          &[fill='#1890ff'] {
+            fill: red;
+          }
+        }
+      }
+    }
+
+    .dx-upload-list-item-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      font-size: 26px;
+      transform: translate(-50%, -50%);
+
+      .anticon {
+        font-size: 26px;
+      }
+    }
+
+    .dx-upload-list-item-image {
+      max-width: 100%;
+    }
+
+    .dx-upload-list-item-thumbnail img {
+      display: block;
+      width: 30px;
+      height: 30px;
+      overflow: hidden;
+    }
+
+    .dx-upload-list-item-name {
+      display: inline-block;
+      box-sizing: border-box;
+      max-width: 100%;
+      margin: 0 0 0 8px;
+      padding-right: 8px;
+      padding-left: 48px;
+      overflow: hidden;
+      line-height: 44px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      transition: all 0.3s;
+    }
+
+    .dx-upload-list-item-uploading .dx-upload-list-item-name {
+      margin-bottom: 12px;
+    }
+
+    .dx-upload-list-item-progress {
+      bottom: 14px;
+      width: calc(100% - 24px);
+      margin-top: 0;
+      padding-left: 56px;
+    }
+  }
+
+  // ======================== Picture Card ========================
+  &-picture-card {
+    &-container {
+      display: inline-block;
+      width: 104px;
+      height: 104px;
+      margin: 08px8px 0;
+      vertical-align: top;
+    }
+
+    .dx-upload-list-item {
+      height: 100%;
+      margin: 0;
+    }
+
+    .dx-upload-list-item-info {
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+
+      &::before {
+        position: absolute;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        background-color: fade(#000, 50%);
+        opacity: 0;
+        transition: all 0.3s;
+        content: ' ';
+      }
+    }
+
+    .dx-upload-list-item:hover .dx-upload-list-item-info::before {
+      opacity: 1;
+    }
+
+    .dx-upload-list-item-actions {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      z-index: 10;
+      white-space: nowrap;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: all 0.3s;
+
+      .anticon-eye,
+      .anticon-download,
+      .anticon-delete {
+        z-index: 10;
+        width: 16px;
+        margin: 0 4px;
+        color: fade(#000, 85%)-dark;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s;
+
+        &:hover {
+          color: fade(#000, 85%)-inverse;
+        }
+      }
+    }
+
+    .dx-upload-list-item-info:hover + .dx-upload-list-item-actions,
+    .dx-upload-list-item-actions:hover {
+      opacity: 1;
+    }
+
+    .dx-upload-list-item-thumbnail,
+    .dx-upload-list-item-thumbnail img {
+      position: static;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .dx-upload-list-item-name {
+      display: none;
+      margin: 8px 0 0;
+      padding: 0;
+      line-height: 1.5715;
+      text-align: center;
+    }
+
+    .dx-upload-list-item-file + .dx-upload-list-item-name {
+      position: absolute;
+      bottom: 10px;
+      display: block;
+    }
+
+    .dx-upload-list-item-uploading {
+      &.dx-upload-list-item {
+        background-color: hsv(0, 0, 98%);
+      }
+
+      .dx-upload-list-item-info {
+        height: auto;
+
+        &::before,
+        .anticon-eye,
+        .anticon-delete {
+          display: none;
+        }
+      }
+    }
+
+    .dx-upload-list-item-progress {
+      bottom: 32px;
+      width: calc(100% - 14px);
+      padding-left: 0;
+    }
+  }
+
+  // ======================= Picture & Text =======================
+  &-text,
+  &-picture {
+    &-container {
+      transition: opacity 0.3s, height 0.3s;
+
+      &::before {
+        display: table;
+        width: 0;
+        height: 0;
+        content: '';
+      }
+
+      // Don't know why span here, just stretch it
+      .dx-upload-span {
+        display: block;
+        flex: auto;
+      }
+    }
+
+    // text & picture no need this additional element.
+    // But it used for picture-card, let's keep it.
+    .dx-upload-span {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      > * {
+        flex: none;
+      }
+    }
+
+    .dx-upload-list-item-name {
+      flex: auto;
+      margin: 0;
+      padding: 0 8px;
+      font-weight: 500;
+      font-size: 13px;
+      color: #07074d;
+      padding-right: 12px;
+      text-decoration: auto;
+    }
+
+    .dx-upload-list-item-card-actions {
+      position: static;
+    }
+  }
+
+  // ============================ Text ============================
+  &-text {
+    .dx-upload-text-icon {
+      .anticon {
+        position: static;
+      }
+    }
+  }
+
+  // =========================== Motion ===========================
+  .dx-upload-animate-inline-appear,
+  .dx-upload-animate-inline-enter,
+  .dx-upload-animate-inline-leave {
+    animation-duration: 0.3s;
+    animation-fill-mode: cubic-bezier(0.78, 0.14, 0.15, 0.86);
+  }
+
+  .dx-upload-animate-inline-appear,
+  .dx-upload-animate-inline-enter {
+    animation-name: uploadAnimateInlineIn;
+  }
+
+  .dx-upload-animate-inline-leave {
+    animation-name: uploadAnimateInlineOut;
+  }
+}
+
+@keyframes uploadAnimateInlineIn {
+  from {
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes uploadAnimateInlineOut {
+  to {
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+  }
+}
+
+// Variant
+.upload {
+  background-color: #F6F7F8;
+  border: 1px dashed #e3e3e3;
+  position: relative;
+  font-size: 15px;
+  padding: 7px 10px;
+  
+}
+.upload-button {
+  border: none;
+  padding: 7px 0px;
+  width: 200px;
+  border-radius: 5px;
+  background: var(--primary-base);
+  color: var(--primary-on-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  span {
+    color: var(--primary-on-base);
+  }
+}
+.upload-mat-menu {
+  width: 200px;
+  .mat-menu-item {
+    min-height: 40px;
+    height: 40px;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: baseline;
+    justify-content: center;
+  }
+    .mat-menu-content:not(:empty) {
+      padding-top: 0px;
+      padding-bottom: 0px;
+  }
+}
+.dx-upload-select {
+  width: 100%;
+}

@@ -1,0 +1,21 @@
+@import './deep-map';
+@import './typography';
+
+
+@mixin theme-builder($theme-name, $theme-map) {
+
+  .#{$theme-name} {
+
+    // Loop through each of the keys (sections)
+    @each $section,
+    $map in $theme-map {
+
+      @if($section==font) {
+
+        // To make class contain typography
+        @include dx-typography($map);
+
+      }
+    }
+  }
+}

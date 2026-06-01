@@ -1,0 +1,755 @@
+.dx-dropdown-menu {
+    &:not(.dx-dropdown-menu-cdk) {
+      width: calc(100% + 2px);
+      left: -1px;
+      margin: 4px 0;
+    }
+  
+    &.dx-custom-right,
+    &.dx-custom-left,
+    &.dx-custom-top {
+      display: flex !important;
+  
+      & > .dx-dropdown-menu-wrap {
+        display: inline-block;
+      }
+  
+      & > .dx-select-custom-area {
+        display: inline-block;
+        overflow: auto;
+      }
+  
+      &:not(.dx-custom-top) > .dx-dropdown-menu-wrap {
+        width: calc(50% - 1px);
+      }
+  
+      &:not(.dx-custom-top) > .dx-select-custom-area {
+        width: 50%;
+      }
+  
+      & > .dx-select-custom-area::before {
+        display: none;
+      }
+    }
+  
+    &.dx-custom-top {
+      flex-direction: column-reverse;
+    }
+  
+    &.dx-custom-left > .dx-select-custom-area {
+      border-right: 1px solid #eef0f5;
+      order: -1;
+    }
+  
+    &.dx-custom-right > .dx-select-custom-area {
+      border-left: 1px solid #eef0f5;
+    }
+  
+    &.dx-custom-top > .dx-select-custom-area {
+      border-bottom: 1px solid #eef0f5;
+    }
+  
+    .dx-dropdown-menu-wrap {
+      position: initial;
+    }
+  }
+  
+  .dx-dropdown-menu-cdk {
+    position: static;
+    display: block;
+    width: 100%;
+  }
+  
+  .dx-form-group.dx-has-feedback[tabindex] {
+    outline: none;
+  }
+  
+  .dx-select-placeholder,
+  .dx-select-list-wrapper.dx-form-control,
+  .dx-select-selected-item-with-template {
+    font-size: 12px;
+  }
+  
+  .dx-form-group > input.dx-form-control.dx-select-input {
+    cursor: pointer;
+    padding-right: 2em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  
+    &.dx-select-search {
+      padding-right: 2em;
+      cursor: text;
+  
+      &.dx-search-filter {
+        padding-right: 4em;
+      }
+    }
+  }
+  
+  .dx-dropdown-item {
+    clear: both;
+    color: #252b3a;
+    font-size: 14px;
+  
+    input[name='search'] {
+      font-size: 12px;
+    }
+  }
+  
+  .dx-dropdown-item ::ng-deep .dx-select-checkbox {
+    label {
+      max-width: calc(100%);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+  
+  .dx-select-lg {
+    font-size: 14px;
+    min-height: 46px;
+    line-height: 46px;
+  
+    .dx-form-control:not(.dx-select-list-wrapper) {
+      height: 44px;
+    }
+  
+    .dx-select-placeholder,
+    .dx-select-list-wrapper.dx-form-control,
+    .dx-select-selected-item-with-template {
+      font-size: 14px;
+    }
+  
+    .dx-dropdown-item {
+      font-size: 14px;
+      min-height: 40px;
+      line-height: 28px;
+      padding: 11px 10px;
+  
+      input[name='search'] {
+        font-size: 14px;
+      }
+    }
+  
+    ::ng-deep .dx-checkbox,
+    ::ng-deep .dx-select-checkbox label,
+    ::ng-deep .dx-select-checkbox label .checkbox-label {
+      font-size: 14px;
+      height: 18px;
+    }
+  
+    ::ng-deep .dx-checkbox-material {
+      width: 16px;
+      height: 16px;
+    }
+  }
+  
+  .dx-select-sm {
+    font-size: 12px;
+    line-height: 14px;
+    height: unset;
+  
+    &.dx-dropdown-origin:not(d-button):not(.icon):not([class^='icon-']) {
+      min-height: 26px;
+    }
+  
+    .dx-form-control:not(.dx-select-list-wrapper) {
+      height: 24px;
+    }
+  
+    .dx-select-placeholder,
+    .dx-select-list-wrapper.dx-form-control,
+    .dx-select-selected-item-with-template {
+      font-size: 12px;
+    }
+  
+    .dx-dropdown-item {
+      font-size: 12px;
+      min-height: 26px;
+      line-height: 14px;
+  
+      input[name='search'] {
+        font-size: 12px;
+      }
+    }
+  
+    ::ng-deep .dx-select-checkbox label .checkbox-label {
+      font-size: 12px;
+      line-height: 16px;
+    }
+  
+    ::ng-deep .dx-checkbox-material {
+      width: 12px;
+      height: 12px;
+  
+      & > svg {
+        width: 12px;
+        height: 12px;
+      }
+    }
+  }
+  
+  .dx-dropdown-menu-lg {
+    .dx-dropdown-item {
+      font-size: 14px;
+      min-height: 40px;
+      line-height: 28px;
+  
+      input[name='search'] {
+        font-size: 14px;
+      }
+    }
+  
+    ::ng-deep .dx-checkbox,
+    ::ng-deep .dx-select-checkbox label .checkbox-label {
+      font-size: 14px;
+      line-height: 28px;
+    }
+  
+    ::ng-deep .dx-checkbox-material {
+      width: 16px;
+      height: 16px;
+  
+      & > svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+  
+  .dx-dropdown-menu-sm {
+    .dx-dropdown-item {
+      font-size: 12px;
+      min-height: 26px;
+      line-height: 14px;
+  
+      input[name='search'] {
+        font-size: 12px;
+      }
+    }
+  
+    ::ng-deep .dx-select-checkbox label .checkbox-label {
+      font-size: 12px;
+      line-height: 16px;
+    }
+  
+    ::ng-deep .dx-checkbox-material {
+      width: 12px;
+      height: 12px;
+    }
+  }
+  
+  div.dx-dropdown-menu {
+    // margin-bottom: 5px;
+    cursor: pointer;
+    min-width: auto;
+    box-shadow: 0 2px 12px 0 rgba(37, 43, 58, 0.24);
+  }
+  
+  div.dx-dropdown-menu .dx-select-list-unstyled,
+  div.dx-dropdown-menu > ul.dx-select-list-unstyled {
+    & li:hover:not(.active):not(.disabled) {
+      background-color: #f2f2f3;
+      color: #252b3a;
+    }
+  }
+  
+  div.dx-dropdown-menu .dx-select-list-unstyled li.selected,
+  div.dx-dropdown-menu > ul.dx-select-list-unstyled li.selected {
+    background-color: #f2f2f3;
+    color: #252b3a;
+  }
+  
+  div.dx-dropdown-menu:not(.dx-dropdown-menu-multiple) .dx-select-list-unstyled li.active,
+  div.dx-dropdown-menu:not(.dx-dropdown-menu-multiple) .dx-select-list-unstyled li.active:hover,
+  div.dx-dropdown-menu:not(.dx-dropdown-menu-multiple) > ul.dx-select-list-unstyled li.active,
+  div.dx-dropdown-menu:not(.dx-dropdown-menu-multiple) > ul.dx-select-list-unstyled li.active:hover {
+    background-color: #e9edfa;
+    color: #252b3a;
+  }
+  
+  :host ::ng-deep .dx-dropdown-menu.dx-dropdown-menu-multiple .dx-select-list-unstyled li:not(.disabled):hover,
+  :host ::ng-deep .dx-dropdown-menu.dx-dropdown-menu-multiple > ul.dx-select-list-unstyled li:not(.disabled):hover {
+    .dx-checkbox {
+      & > label {
+        color: #252b3a;
+  
+        & > .dx-checkbox-material {
+          border-color: #5e7ce0;
+        }
+      }
+    }
+  }
+  
+  div.dx-dropdown-menu.dx-dropdown-menu-multiple .dx-select-list-unstyled li.active:not(.disabled),
+  div.dx-dropdown-menu.dx-dropdown-menu-multiple > ul.dx-list-unstyled li.active:not(.disabled) {
+    background-color: transparent;
+    color: #252b3a;
+  
+    &:hover {
+      background-color: #f2f2f3;;
+      color: #252b3a;
+    }
+  }
+  
+  .dx-has-feedback {
+    z-index: 1;
+  }
+  
+  .dx-dropdown-menu ul.dx-dropdown-menu-wrap .dx-form-group.dx-has-feedback {
+    & > input.dx-form-control.dx-select-search.dx-select-input {
+      background-color: #f2f2f3;
+  
+      &:focus {
+        background-color: #ffffff;
+        border-color: #5e7ce0;
+      }
+  
+      &:hover,
+      &:hover:focus {
+        background-color: #ffffff;
+        border-color: #5e7ce0;
+      }
+  
+      &::placeholder {
+        color: #babbc0;
+      }
+    }
+  }
+  
+  .dx-form-control,
+  .dx-form-group .dx-form-control {
+    border-radius: 2px;
+    box-shadow: none;
+  }
+  
+  .dx-select-underlined-border {
+    border: 0;
+    border-bottom: 1px solid #d7d8da;
+    border-radius: 0;
+  }
+  
+  .dx-select-list-wrapper.dx-form-control {
+    cursor: pointer;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    padding-right: 30px;
+  
+    + .dx-form-control-feedback {
+      height: 100%;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  
+  .dx-form-control {
+    &.dx-select-input {
+      line-height: 14px;
+      height: 26px;
+      border-color: transparent;
+      outline: none;
+      width: 100%;
+  
+      + .dx-form-control-feedback {
+        height: 100%;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  
+    &.dx-select-input-lg {
+      line-height: 32px;
+      // height: 44px;
+    }
+  
+    &.dx-select-input-sm {
+      line-height: 12px;
+      // height: 24px;
+    }
+  }
+  
+  .dx-select-list-wrapper {
+    .dx-select-selected-item-with-template {
+      height: 24px;
+      line-height: 24px;
+      padding: 0 10px;
+      cursor: pointer;
+    }
+  
+    .dx-select-placeholder {
+      height: 24px;
+      line-height: 24px;
+      color: #babbc0;
+      padding-left: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+  
+    .dx-select-tag-list {
+      height: 26px;
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+      overflow: hidden;
+    }
+  
+    .dx-select-tag-list.normal {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  
+    .dx-select-tag-list.scroll-y {
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+  
+    .dx-select-tag-list.multiple-line {
+      height: auto;
+      overflow-y: auto;
+      overflow-x: hidden;
+      line-height: 1.5;
+      max-height: 48px;
+    }
+  
+    .dx-select-tag-item {
+      display: inline-block;
+      margin: 2px 0 0 2px;
+  
+      &.disabled {
+        background: #f5f5f5;
+        border-color: #f5f5f5;
+        cursor: not-allowed;
+      }
+    }
+  
+    .over-flow-ellipsis {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      height: 20px;
+      line-height: 20px;
+      vertical-align: middle;
+    }
+  
+    &.dx-select-input-lg {
+      line-height: 1.5;
+  
+      .dx-select-selected-item-with-template,
+      .dx-select-placeholder,
+      .dx-select-tag-list {
+        height: 42px;
+  
+        &.multiple-line {
+          max-height: 74px;
+          height: unset;
+        }
+      }
+  
+      .dx-select-selected-item-with-template,
+      .dx-select-placeholder {
+        line-height: 42px;
+      }
+    }
+  
+    &.dx-select-input-sm {
+      line-height: 1.5;
+  
+      .dx-select-selected-item-with-template,
+      .dx-select-placeholder,
+      .dx-select-tag-list {
+        height: 24px;
+  
+        &.multiple-line {
+          max-height: 48px;
+          height: unset;
+        }
+      }
+  
+      .dx-select-selected-item-with-template,
+      .dx-select-placeholder {
+        line-height: 22px;
+      }
+    }
+  }
+  
+  .disabled .dx-select-list-wrapper .dx-select-tag-item span {
+    padding-right: 0;
+  }
+  
+  /* 选项disabled */
+  .dx-dropdown-item.disabled,
+  .dx-dropdown-item.disabled:hover,
+  div.dx-dropdown-menu li.disabled:hover,
+  div.dx-dropdown-menu .dx-select-list-unstyled li.disabled:hover,
+  div.dx-dropdown-menu > ul.dx-select-list-unstyled li.disabled:hover {
+    cursor: not-allowed;
+    color: #babbc0;
+  }
+  
+  div.dx-dropdown-menu .dx-select-list-unstyled li.active.disabled,
+  div.dx-dropdown-menu > ul.dx-select-list-unstyled li.active.disabled,
+  div.dx-dropdown-menu .dx-select-list-unstyled li.active.disabled:hover,
+  div.dx-dropdown-menu > ul.dx-select-list-unstyled li.active.disabled:hover {
+    background: #f5f5f5;
+    color: #babbc0;
+  }
+  
+  /* checkbox的label灰化 */
+  :host ::ng-deep li.disabled .dx-checkbox.disabled label,
+  :host ::ng-deep .li.disabled .dx-checkbox.disabled label,
+  li.disabled ::ng-deep .dx-checkbox.disabled label,
+  li.disabled ::ng-deep .dx-checkbox.disabled label {
+    color: #babbc0;
+  }
+  
+  .dx-dropdown-origin.disabled,
+  .dx-dropdown-origin.disabled:hover {
+    cursor: not-allowed;
+    background-color: #f5f5f5;
+    border-color: #dfe1e6;
+    color: #babbc0;
+  
+    .dx-select-list-wrapper.dx-form-control,
+    .dx-form-control.dx-select-input {
+      cursor: not-allowed;
+      background-color: #f5f5f5;
+      color: #babbc0;
+    }
+  
+    .dx-select-list-wrapper.dx-form-control.disabled {
+      color: #babbc0;
+    }
+  
+    &.dx-gray-style {
+      background-color:#f5f5f5 !important;
+      border-color: transparent !important;
+  
+      .dx-select-list-wrapper.dx-form-control,
+      .dx-form-control.dx-select-input {
+        background-color:#f5f5f5 !important;
+        border-color: transparent !important;
+      }
+    }
+  }
+  
+  .dx-dropdown-origin,
+  .dx-dropdown-origin:hover {
+    &.disabled .dx-select-tag-list .dx-select-tag-item,
+    .dx-select-tag-list .dx-select-tag-item.disabled {
+      background-color: #f5f5f5;
+      border-color: #dfe1e6;
+  
+      & > span {
+        color: #babbc0;
+      }
+  
+      & > .dx-select-tag-remove-button {
+        background-color: #dfe1e6;
+      }
+    }
+  }
+  
+  .dx-select-list-wrapper.dx-form-control.disabled + .dx-form-control-feedback,
+  .dx-form-control.dx-select-input:disabled + .dx-form-control-feedback {
+    cursor: not-allowed;
+    background-color: #f5f5f5;
+  
+    .dx-select-clear-icon svg path,
+    .dx-select-chevron-icon svg path {
+      fill: #babbc0;
+    }
+  }
+  
+  .dx-select-custom-area::before {
+    display: block;
+    content: '';
+    width: calc(100% - 20px);
+    margin: 0 10px;
+    height: 1px;
+    border-top: 1px solid #eef0f5;
+  }
+  
+  svg.svg-icon-search path {
+    fill: #71757f;
+  }
+  
+  .open .dx-select-chevron-icon {
+    transform: rotate(180deg);
+  }
+  
+  .dx-select-chevron-icon {
+    display: inline-flex;
+    vertical-align: middle;
+  
+    &-animation {
+      transition: transform 300ms cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+  }
+  
+  .dx-select-chevron-icon svg path {
+    fill: #71757f;
+  }
+  
+  .disabled {
+    .dx-select-chevron-icon svg path {
+      fill: #babbc0;
+    }
+  }
+  
+  .dx-form-group.dx-has-feedback:hover {
+    .dx-form-control-feedback.dx-clear-icon-show {
+      .dx-select-chevron-icon {
+        display: none;
+      }
+  
+      .dx-select-clear-icon {
+        display: inline-flex;
+        vertical-align: middle;
+      }
+    }
+  }
+  
+  .dx-form-group.dx-has-feedback > .dx-form-control-feedback.dx-search-clear,
+  .dx-form-control-feedback.dx-search-clear {
+    right: 28px;
+    cursor: pointer;
+    pointer-events: initial;
+  
+    & > svg {
+      vertical-align: middle;
+  
+      path {
+        fill: #d7d8da;
+      }
+    }
+  
+    &:hover {
+      svg path {
+        fill: #babbc0;
+      }
+    }
+  
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      right: 0;
+      top: 15%;
+      height: 70%;
+      width: 1px;
+      border-left: 1px solid #d7d8da;
+    }
+  
+    &.dx-search-clear-lg {
+      right: 30px;
+      width: 32px;
+      height: 44px;
+      line-height: 44px;
+    }
+  
+    &.dx-search-clear-sm {
+      right: 26px;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+    }
+  }
+  
+  .dx-select-clear-icon {
+    width: 14px;
+    height: 14px;
+    display: none;
+    transition: transform 0.2s ease;
+    pointer-events: auto;
+    cursor: pointer;
+  
+    &::after,
+    &::before {
+      position: absolute;
+      content: '';
+      height: 14px;
+      width: 2px;
+      background-color: #71757f;
+      left: 50%;
+    }
+  
+    &::before {
+      transform: rotate(45deg);
+    }
+  
+    &::after {
+      transform: rotate(-45deg);
+    }
+  }
+  
+  .dx-form-control-feedback.dx-search-clear:hover g > g > polygon {
+    fill: #252b3a;
+  }
+  
+  .dx-select-clear-icon:hover::before,
+  .dx-select-clear-icon:hover::after {
+    background-color: #252b3a;
+  }
+  
+  input::-ms-clear {
+    display: none;
+  }
+  
+  .dx-dropup .dx-dropdown-menu {
+    top: auto;
+    bottom: 100%;
+  }
+  
+  .dx-dropdown {
+    height: unset;
+  }
+  
+  :host ::ng-deep .dx-select-tag-item {
+    max-width: 100%;
+  
+    d-tag {
+      width: 100%;
+  
+      .dx-tag-item > span {
+        vertical-align: top;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+        width: 100%;
+      }
+    }
+  
+    &.disabled {
+      line-height: 18px;
+  
+      d-tag .dx-tag-item {
+        border: solid 1px #dfe1e6;
+        line-height: 18px;
+        background-color: #f5f5f5;
+        color: #babbc0;
+        cursor: not-allowed;
+      }
+    }
+  }
+  
+  .dx-gray-style {
+    border-radius: 2px;
+  
+    .dx-select-list-wrapper.dx-form-control {
+      background-color: transparent;
+    }
+  }
+  
+  :host .dx-no-data-tip {
+    border-radius: 2px;
+    padding: 12px;
+  }
+  

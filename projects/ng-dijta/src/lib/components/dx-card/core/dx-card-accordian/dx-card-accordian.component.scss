@@ -1,0 +1,50 @@
+.dx-card-generic {
+  background-color: #fff;
+  margin: 10px 0px;
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+
+  .dx-card-generic-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px;
+    color: #000000d9;
+    background: #fff;
+    border-bottom: 1px solid #dfdfdff0;
+    border-radius: 6px 6px 0px 0px;
+    position: relative;
+
+    .card-collapse-icon {
+      margin-top: 5px
+    }
+  }
+
+  .dx-card-generic-body {
+    flex-grow: 1;
+    padding: 18px;
+    overflow: auto;
+    font-size: 13px;
+    line-height: 17px;
+    word-wrap: break-word;
+  }
+
+}
+
+.custom-accordian-action-icon {
+  display: flex;
+  font-size: 22px;
+  margin: 0px 7px;
+  cursor: pointer;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.acc-action-label {
+  margin-top: 2px;
+}

@@ -1,0 +1,37 @@
+.profile {
+  width: 300px;
+  .profile-img {
+    width: 80px;
+    height: 80px;
+    background-color: var(--primary-hover);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 19px auto;
+    font-size: 25px;
+  }
+  .profile-basic-info {
+    text-align: center;
+    h3 {
+      font-size: 25px;
+      font-style: inherit;
+      font-weight: normal;
+      color: #212121;
+      margin-bottom: 3px;
+    }
+    p {
+      font-size: 16px;
+      color: #969292;
+      text-transform: capitalize;
+      font-weight: normal;
+    }
+  }
+  .profile-footer {
+    text-align: center;
+    button {
+      margin: 10px auto;
+      width: 80%;
+    }
+  }
+}

@@ -1,0 +1,22 @@
+<!-- {{toggle}}&nbsp;{{isMobileScreen}} -->
+<div>
+  <div class="email-wrapper">
+    <!-- <div id="backdrop" *ngIf="emailMenu?.style.display=='block'"></div> -->
+    <div id="emailMenu" class="menu" [ngClass]="toggle?'expand-menu':'collapse-menu'">
+
+      <dx-email-menu (toggleMenu)="toggleMenu($event)" (newEmail)="newEmail($event)"
+        (menuItemClicked)="menuItemClicked($event)"></dx-email-menu>
+    </div>
+    <div id="emailList" class="list">
+      <dx-email-list (toggleMenu)="toggleMenu($event)" [title]="emailListType" [emailsList]="emailsList"
+        (selectedEmail)="selectedEmail($event)">
+      </dx-email-list>
+    </div>
+    <div id="detailView" class="detail-view">
+      <dx-email-detail-view [email]="email"></dx-email-detail-view>
+    </div>
+    <!-- <div class="table-view">
+      <dx-email-list-table-view [emailsList]="emailsList"></dx-email-list-table-view>
+    </div> -->
+  </div>
+</div>

@@ -1,0 +1,133 @@
+<div class="tree-wrapper" [class.tree-border]="isBorder">
+  <span *ngIf="treeDataSource && isAllCollapseBtn">
+    <span class="material-icons-outlined toggle-icons" *ngIf="!isExpanded" (click)="toggleTree(true)">
+      expand_circle_down
+    </span>
+    <span>
+      <span class="material-icons-outlined toggle-icons" *ngIf="isExpanded" (click)="toggleTree(false)">
+        expand_less
+      </span>
+    </span>
+  </span>
+  <div>
+    <mat-tree #treeSelector *ngIf="treeDataSource" [dataSource]="dataSource" [treeControl]="treeControl">
+      <mat-tree-node (click)="onNodeClick(node);selectedNode = node"
+        [class.highlight-node-second]="selectedNode ? selectedNode?.data?.keyTt === node?.data?.keyTt: selected ===node?.data?.keyTt"
+        [ngClass]="{'change-bg':node.level!==0}" *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding
+        [matTreeNodePaddingIndent]="treeNodePadding">
+        <!-- parent toggle actions -->
+        <button *ngIf="node?.data?.isParentNode" class="expand-icon" mat-icon-button matTreeNodeToggle
+          [attr.aria-label]="'toggle ' + node.filename">
+          <span class="material-icons">
+            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+          </span>
+          <span class="folder" *ngIf="!treeControl.isExpanded(node) && !hideIcons"> <svg
+              xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="feather feather-folder">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+            </svg></span>
+          <span class="folder" *ngIf="treeControl.isExpanded(node) && !hideIcons"> <svg width="14" height="14"
+              viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M3 5C2.44772 5 2 5.44772 2 6V15.2878L3.55831 11.7816C4.03982 10.6982 5.11418 10 6.29975 10H19V9C19 8.44771 18.5523 8 18 8H11C10.7348 8 10.4804 7.89464 10.2929 7.70711L7.87868 5.29289C7.69114 5.10536 7.43679 5 7.17157 5H3ZM21 10.001C23.1278 10.0534 24.5351 12.2583 23.6639 14.2184L21.4417 19.2184C20.9602 20.3018 19.8858 21 18.7003 21H3C1.34315 21 0 19.6569 0 18V6C0 4.34315 1.34315 3 3 3H7.17157C7.96722 3 8.73028 3.31607 9.29289 3.87868L11.4142 6H18C19.6569 6 21 7.34315 21 9V10.001ZM6.29975 12C5.90456 12 5.54644 12.2327 5.38593 12.5939L2.57979 18.9077C2.70754 18.9669 2.84991 19 3 19H18.7003C19.0954 19 19.4536 18.7673 19.6141 18.4061L21.8363 13.4061C22.1302 12.7449 21.6461 12 20.9225 12H6.29975Z"
+                fill="#293644" />
+            </svg></span>
+        </button>
+        <!--  -->
+        <div class="checklist-leaf-node tree-nodes"
+          [ngClass]="{'drop-above': dragNodeExpandOverArea === 'above' && dragNodeExpandOverNode === node,
+                                'drop-below': dragNodeExpandOverArea === 'below' && dragNodeExpandOverNode === node,
+                                'drop-center': dragNodeExpandOverArea === 'center' && dragNodeExpandOverNode === node,'folder-icons':!hideIcons}"
+          [draggable]="draggable" (dragstart)="handleDragStart($event, node);"
+          (dragover)="handleDragOver($event, node);" (drop)="handleDrop($event, node);"
+          (dragend)="handleDragEnd($event);">
+          <div class="node-flex">
+            <div class="node-wrapper">
+              <div class="node-left-section">
+                <!-- isCompleted -->
+                <span class="material-icons icon completed-icon" *ngIf="node?.data?.isCompleted">
+                  done
+                </span>
+                <!-- mat icon -->
+                <span *ngIf="node?.data?.matIcon && !node?.data?.imgSrc" class="material-icons-outlined icon"
+                  [class.fade-icon]="node?.data?.isCompleted">
+                  {{node?.data?.matIcon}}
+                </span>
+                <!-- image -->
+                <div class="dx-tree-node-img" *ngIf="node?.data?.imgSrc">
+                  <img [src]="node?.data?.imgSrc" width="100%" height="100%">
+                </div>
+              </div>
+              <div class="node-right-section">
+                <div>
+                  <label *ngIf="node?.data?.label" class="label">{{node?.data?.label | transloco}}</label>
+                  <p class="node-description"><span [class]="node?.data?.nodeClasses">{{node.item | transloco}}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tree-node>
+      <mat-tree-node (click)="onNodeClick(node);selectedNode = node" [ngClass]="{'change-bg':node.level!==0}"
+        *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding
+        [class.highlight-node]="!selectedNode && node?.data?.isActive"
+        [class.highlight-node-second]="selectedNode === node" [matTreeNodePaddingIndent]="treeNodePadding">
+        <button class="expand-icon" mat-icon-button matTreeNodeToggle
+          [attr.aria-label]="'toggle ' + (node.filename | transloco)">
+          <span class="material-icons">
+            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+          </span>
+          <span class="folder" *ngIf="!treeControl.isExpanded(node) && !hideIcons"> <svg
+              xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="feather feather-folder">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+            </svg></span>
+          <span class="folder" *ngIf="treeControl.isExpanded(node) && !hideIcons"> <svg width="14" height="14"
+              viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M3 5C2.44772 5 2 5.44772 2 6V15.2878L3.55831 11.7816C4.03982 10.6982 5.11418 10 6.29975 10H19V9C19 8.44771 18.5523 8 18 8H11C10.7348 8 10.4804 7.89464 10.2929 7.70711L7.87868 5.29289C7.69114 5.10536 7.43679 5 7.17157 5H3ZM21 10.001C23.1278 10.0534 24.5351 12.2583 23.6639 14.2184L21.4417 19.2184C20.9602 20.3018 19.8858 21 18.7003 21H3C1.34315 21 0 19.6569 0 18V6C0 4.34315 1.34315 3 3 3H7.17157C7.96722 3 8.73028 3.31607 9.29289 3.87868L11.4142 6H18C19.6569 6 21 7.34315 21 9V10.001ZM6.29975 12C5.90456 12 5.54644 12.2327 5.38593 12.5939L2.57979 18.9077C2.70754 18.9669 2.84991 19 3 19H18.7003C19.0954 19 19.4536 18.7673 19.6141 18.4061L21.8363 13.4061C22.1302 12.7449 21.6461 12 20.9225 12H6.29975Z"
+                fill="#293644" />
+            </svg></span>
+        </button>
+        <span class="tree-nodes"
+          [ngClass]="{'drop-above': dragNodeExpandOverArea === 'above' && dragNodeExpandOverNode === node,
+                                'drop-below': dragNodeExpandOverArea === 'below' && dragNodeExpandOverNode === node,
+                                'drop-center': dragNodeExpandOverArea === 'center' && dragNodeExpandOverNode === node,'folder-icons':!hideIcons}"
+          [draggable]="draggable" (dragstart)="handleDragStart($event, node);"
+          (dragover)="handleDragOver($event, node);" (drop)="handleDrop($event, node);"
+          (dragend)="handleDragEnd($event);">
+          <div class="node-flex">
+            <div class="parent-wrapper">
+              <div class="node-left-section">
+                <span class="material-icons icon completed-icon" *ngIf="node?.data?.isCompleted">
+                  done
+                </span>
+                <span *ngIf="node?.data?.matIcon && !node?.data?.imgSrc" class="material-icons-outlined icon"
+                  [class.fade-icon]="node?.data?.isCompleted">
+                  {{node?.data?.matIcon}}
+                </span>
+                <div class="dx-tree-node-img" *ngIf="node?.data?.imgSrc">
+                  <img [src]="node?.data?.imgSrc" width="100%" height="100%">
+                </div>
+              </div>
+              <div class="node-right-section">
+                <div>
+                  <label *ngIf="node?.data?.label" class="label">{{node?.data?.label | transloco}}</label>
+                  <p class="node-description"><span [class]="node?.data?.nodeClasses">
+                      {{node?.item | transloco}}</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </span>
+
+      </mat-tree-node>
+    </mat-tree>
+    <div class="no-records" *ngIf="!treeDataSource">
+      {{'No Records' | transloco}}
+    </div>
+  </div>
+</div>

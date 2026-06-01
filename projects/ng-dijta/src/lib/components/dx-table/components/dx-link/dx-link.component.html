@@ -1,0 +1,20 @@
+<ng-container *ngIf="column.htmlView;else default_text_internal">
+  <dx-table-html type="ONLY_HTML" [links]="data" [data]="data?.displayLabel" [title]="column?.title"></dx-table-html>
+</ng-container>
+<ng-template #default_text_internal>
+  <div class="link-wrapper" (click)="$event.stopPropagation()">
+    <ng-container *ngIf="data?.type === 'internal';else external">
+      <a dx-tooltip dxTooltipTitle="{{data?.displayLabel}}" [target]="data.openInNewTab ? '_blank': '_self'"
+        [routerLink]="data?.path" [queryParams]="data?.params">
+        {{data?.displayLabel | transloco}}
+      </a>
+    </ng-container>
+
+    <ng-template #external>
+      <a dx-tooltip dxTooltipTitle="{{data?.displayLabel}}" [target]="data.openInNewTab ? '_blank': '_self'"
+        href="{{prepareExtranalLink(data)}}">{{data?.displayLabel |
+        transloco}}</a>
+    </ng-template>
+  </div>
+  <dx-default [show]="!data"></dx-default>
+</ng-template>

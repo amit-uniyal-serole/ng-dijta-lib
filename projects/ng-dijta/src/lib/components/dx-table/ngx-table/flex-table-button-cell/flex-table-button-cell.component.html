@@ -1,0 +1,5 @@
+<button mat-flat-button class="view elevation-z-2 w-100"
+        (click)="onClick($event)">
+    <i class="material-icons-outlined" *ngIf="!!icon">{{icon}}</i>
+    <span class="ml-1 text">{{label}}</span>
+</button>

@@ -1,0 +1,30 @@
+<div class="dx-tree-v2" [class.dx-tree-line]="showLine">
+    <tree-root [nodes]="nodes" [options]="options" (toggleExpanded)="fireEvent($event)" (activate)="fireEvent($event)"
+        (deactivate)="fireEvent($event)" (focus)="fireEvent($event)" (blur)="fireEvent($event)"
+        (updateData)="fireEvent($event)" (initialized)="fireEvent($event)" (moveNode)="fireEvent($event)"
+        (copyNode)="fireEvent($event)" (loadNodeChildren)="fireEvent($event)" (changeFilter)="fireEvent($event)"
+        (stateChange)="fireEvent($event)">
+        <ng-template #treeNodeFullTemplate let-node let-index="index" let-templates="templates">
+
+            <div [class]="node.getClass()" [class.tree-node]="true"
+                [class.tree-node-expanded]="node.isExpanded && node.hasChildren"
+                [class.tree-node-collapsed]="node.isCollapsed && node.hasChildren" [class.tree-node-leaf]="node.isLeaf"
+                [class.tree-node-active]="node.isActive" [class.tree-node-focused]="node.isFocused">
+
+                <tree-node-drop-slot *ngIf="index === 0" [dropIndex]="node.index" [node]="node.parent">
+                </tree-node-drop-slot>
+
+                <tree-node-wrapper (click)="node.mouseAction('expanderClick', $event)" [node]="node" [index]="index"
+                    [templates]="templates">
+                </tree-node-wrapper>
+
+
+                <tree-node-children [node]="node" [templates]="templates">
+                </tree-node-children>
+
+                <tree-node-drop-slot [dropIndex]="node.index + 1" [node]="node.parent">
+                </tree-node-drop-slot>
+            </div>
+        </ng-template>
+    </tree-root>
+</div>

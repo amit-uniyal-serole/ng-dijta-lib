@@ -1,0 +1,124 @@
+#dxChipSelect {
+  .mat-form-field {
+    width: 100%;
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-outline {
+    background: $light !important;
+    border-radius: 5px;
+  }
+  .mat-form-field-appearance-outline.mat-form-field-disabled
+    .mat-form-field-outline {
+    background: $disabled-field-color !important ;
+  }
+  .mat-form-field-appearance-outline.mat-form-field-disabled {
+    cursor: not-allowed;
+    input {
+      cursor: not-allowed;
+    }
+  }
+
+  .mat-error {
+    font-size: 12px;
+  }
+
+  .mat-form-field-appearance-legacy {
+    .mat-form-field-wrapper {
+      padding-bottom: 20px;
+    }
+
+    .mat-form-field-infix {
+      padding: 0;
+      border-top: none;
+      height: 100%;
+      background: rgb(249, 249, 251);
+      // font-weight: 600;
+      // font-size: 13px;
+    }
+
+    .mat-form-field-label {
+      top: 8px;
+      font-weight: 800;
+      font-size: 100%;
+      line-height: 17px;
+      position: relative;
+      display: inline-block;
+      color: $field-label-color;
+    }
+  }
+
+  .mat-form-field-infix {
+    padding-top: 0.75em !important;
+  }
+  mat-select.mat-select-empty {
+    padding: 3px !important;
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-outline-thick {
+    color: rgb(220, 220, 220);
+  }
+
+  .mat-form-field-underline {
+    display: none;
+  }
+
+  label {
+    color: $field-label-color;
+    font-size: 13px;
+    font-weight: 600;
+    padding-bottom: 3px;
+  }
+  .mat-form-field-infix {
+    input {
+      line-height: 0px;
+    }
+  }
+
+  .mat-select-arrow {
+    margin: -6px 4px;
+  }
+  .mat-form-field-appearance-outline.mat-form-field-disabled {
+    cursor: not-allowed;
+
+    mat-select {
+      cursor: not-allowed;
+      .mat-select-trigger {
+        cursor: not-allowed !important;
+      }
+    }
+
+    .mat-primary .mat-pseudo-checkbox-checked,
+    .mat-primary .mat-pseudo-checkbox-indeterminate {
+      background: $targetTxt;
+    }
+
+    .mat-select-panel {
+      min-width: 0px !important;
+    }
+  }
+  mat-chip-list {
+    .mat-chip-list-wrapper {
+      display: block;
+      overflow-x: auto;
+    }
+  }
+  .mat-chip.mat-standard-chip {
+    background-color: transparent !important;
+
+    border: 1px solid rgba(128, 128, 128, 0.361) !important;
+  }
+  .mat-standard-chip {
+    min-height: 22px !important;
+  }
+  .mat-chip.mat-standard-chip .mat-chip-remove {
+    color: #2a2929eb;
+    font-weight: 600;
+  }
+  .mat-select-arrow-wrapper {
+    padding-left: 3px;
+  }
+}
+
+// ::-webkit-scrollbar {
+//   height: 0px !important;
+// }

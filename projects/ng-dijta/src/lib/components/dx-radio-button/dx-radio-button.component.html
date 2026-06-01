@@ -1,0 +1,28 @@
+<div class="dx-field-wrapper">
+  <div class="radio-button-wrapper" [class.display-view]="viewOnly">
+    <mat-label class="subbody radio-label">
+      <ng-content select="dx-label"></ng-content>
+    </mat-label>
+    <mat-radio-group [id]="id" [ngClass]="displayType == 'vertical' ? 'dx-radio-vertical' : 'dx-radio-horizantal'"
+      [formControl]="control?.control" [required]="required" (ngModelChange)="inputChange($event)"
+      (change)="onOptionSelect($event)" [disabled]="disabled">
+      <ng-container *ngFor="let option of options">
+        <mat-radio-button [value]="option?.keyTt"
+          *ngIf="option?.permission ? (option?.permission?.permission | ablePure: option?.permission?.apiName | async) : true">
+          <div>
+            <span class="label fw-medium"> {{option?.valueTt | transloco}}</span>
+          </div>
+          <div *ngIf="option?.subtitle" class="radio-option-subtitle ">
+            <span class="paragraph m-0 fw-semibold">{{option?.subtitle | transloco}}</span>
+          </div>
+        </mat-radio-button>
+      </ng-container>
+
+    </mat-radio-group>
+    <mat-error>
+      <div class="dx-error">
+        <ng-content select="dx-error"> </ng-content>
+      </div>
+    </mat-error>
+  </div>
+</div>

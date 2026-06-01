@@ -1,0 +1,18 @@
+<div class="dx-widget-content bg-surface-base">
+  <div class="dx-widget-head">
+    <div class="icon-title-wrp">
+      <div class="icon-wrp bg-primary-base" *ngIf="widgetSource?.icon">
+        <span class="material-icons-outlined">
+          {{widgetSource?.icon}}
+        </span>
+      </div>
+      <p class="header-title-text font-weight-bold">{{widgetSource?.title | transloco}}</p>
+    </div>
+    <ng-container *ngFor="let actionlist of widgetSource?.action">
+      <div class="caption action-link" (click)="onClickViewAll(actionlist)">{{actionlist?.label | transloco}}</div>
+    </ng-container>
+  </div>
+  <div class="dx-widget-container h-100">
+    <ng-content></ng-content>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+.dx-field-wrapper {
+  .mat-checkbox-mixedmark {
+    background-color: var(--secondary-on-base);
+  }
+
+  .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
+  .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    background-color: var(--secondary-base);
+  }
+}
+.mat-checkbox-inner-container {
+  overflow: initial !important;
+}

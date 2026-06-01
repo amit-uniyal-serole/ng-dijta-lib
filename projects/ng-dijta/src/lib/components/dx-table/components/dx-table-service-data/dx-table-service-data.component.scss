@@ -1,0 +1,21 @@
+.table-service-data {  
+  .service-data-text{
+   border: 1px solid #64748b99;
+   height: 30px;
+   border-radius: 50%;
+   width: 30px;
+   display: flex;
+   padding: 0px 15px;
+   align-items: center;
+   justify-content: center;
+  }   
+ .error {
+   color: #e23636;
+   display: -webkit-box;
+   -webkit-line-clamp: 2;
+   -webkit-box-orient: vertical;
+   overflow: hidden;
+   text-overflow: ellipsis;
+ }
+}
+

@@ -1,0 +1,55 @@
+<div id="tableFilter" [dir]="langaugeSelected === 'ar' ? 'rtl' : 'ltr'">
+  <div class="popup-wrapper">
+    <div class="popup-header d-flex justify-content-between align-items-center">
+      <div class="title">
+        {{title | transloco}}
+      </div>
+      <button class="material-icons popup-close" (click)="onClose()">
+        close
+      </button>
+    </div>
+    <div class="popup-container">
+      <div *ngIf="filterSettings && filterSettings?.length>0;else noFilterSettings">
+        <form [formGroup]="filterForm">
+          <div class="row">
+            <ng-container *ngFor="let field of filterSettings">
+              <div [class]="field?.width ?? 'col-md-4'">
+                <dx-input [formControlName]="field?.name" *ngIf="field?.type==='input'">
+                  <dx-label>{{field?.label | transloco}}</dx-label>
+                </dx-input>
+                <dx-input [formControlName]="field?.name" *ngIf="field?.type==='number'" type="number">
+                  <dx-label>{{field?.label | transloco}}</dx-label>
+                </dx-input>
+                <dx-datepicker [formControlName]="field?.name" *ngIf="field?.type==='date'">
+                  <dx-label>{{field?.label | transloco}}</dx-label>
+                </dx-datepicker>
+                <dx-select [formControlName]="field?.name" [options]="field?.options" *ngIf="field?.type==='select'">
+                  <dx-label>{{field?.label | transloco}}</dx-label>
+                </dx-select>
+              </div>
+            </ng-container>
+          </div>
+          <br />
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <span class="clear-filter" (click)="resetFilterForm()">
+                <span class="material-icons-round">
+                  {{'cancel' | transloco}}
+                </span>&nbsp;
+                {{'Reset Filters' | transloco}}</span>
+            </div>
+            <div class="d-flex">
+              <dx-button title="Clear" class="secondary-btn" (onActionSelect)="onClear()"></dx-button>&nbsp;
+              <dx-button title="Search" (onActionSelect)="onSearch()"></dx-button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <ng-template #noFilterSettings>
+        <div class="filter-settings d-flex justify-content-center align-items-center">
+          <div>{{'No Filter Settings' | transloco}}</div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

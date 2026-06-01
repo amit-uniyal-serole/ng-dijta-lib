@@ -1,0 +1,31 @@
+<div class="email-menu">
+
+  <div class="title">
+    <div>{{title}}</div>
+    <div>
+      <button (click)="onClickToggleMenu()">
+        <span class="material-icons-outlined">keyboard_backspace</span>
+      </button>
+    </div>
+  </div>
+  <div class="compose-button icon-label-wrapper" (click)="composeEmail()">
+    <span class="material-icons-outlined btn-icon">
+      add
+    </span><span>Compose</span>
+  </div>
+
+  <!--mailbox items  -->
+  <div class="mailbox-items-wrapper">
+    <div>
+      <div *ngFor="let menu of mailMenu">
+        <div class="menu-title">{{menu.title}}</div>
+        <div *ngFor="let item of menu?.items" class="mail-menu-items" (click)="onClickMenu(item)">
+          <div class="icon-label-wrapper menu-item"><span
+              [ngClass]="item.icon=='star_outline'?'material-icons-round':'material-icons-outlined'" class=" menu-icon">
+              <span [ngStyle]="iconColor(item)?iconColor(item):''">{{item.icon}}</span>
+            </span><span>{{item.label}}</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<div class="dx-field-wrapper input-variant-layout dx-datepicker-aligment" [class.none-label]="noneLabel"
+  [ngClass]="outline" [class.error]="control?.invalid && (control.touched || control.dirty)" [class.required]="required"
+  [class.none-border]="noneBorder">
+  <mat-form-field appearance="outline">
+    <mat-label class="dx-input-label" *ngIf="!onTouched && placeholder">{{placeholder}}</mat-label>
+    <input [formControl]="control?.control" (ngModelChange)="inputChange($event)" matInput [max]="maxDate"
+      [min]="minDate" [matDatepicker]="picker" [placeholder]="placeholder" (dateInput)="dateChange('input', $event)"
+      (dateChange)="dateChange('change', $event)" [disabled]="disabled" ngDefaultControl />
+    <mat-datepicker-toggle matSuffix [for]="picker" [disabled]="disabled">
+      <mat-icon>calendar_today</mat-icon>
+    </mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <span matSuffix>
+      <ng-content select="dx-suffix"></ng-content>
+    </span>
+    <mat-hint>
+      <ng-content select="dx-hint"> </ng-content>
+    </mat-hint>
+    <mat-error>
+      <ng-content select="dx-error"> </ng-content>
+    </mat-error>
+  </mat-form-field>
+
+</div>

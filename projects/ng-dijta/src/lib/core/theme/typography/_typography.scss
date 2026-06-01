@@ -1,0 +1,12 @@
+@mixin dx-typography($size) {
+
+  @each $section,
+  $map in $size {
+    .#{$section} {
+      $keys:  map-keys($map);
+      @each $var in $keys {
+        #{$var}: map-deep-get($map, $var);
+      }
+    }
+  }
+}

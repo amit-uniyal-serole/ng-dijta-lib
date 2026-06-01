@@ -1,0 +1,30 @@
+<div class="ad-fi-btn-wrapper">
+  <ng-container *ngIf="!isMainBtn" [ngSwitch]="btnType">
+    <ng-container *ngSwitchCase="'and'">
+      <button #adFiToggle (click)="toggleAdvanceFilterBtnMenu()" class="ad-fi-panel-btn and-btn"
+        [class.ad-fi-margin-neg-15]="class">AND<span #plusIcon class="circle"></span></button>
+    </ng-container>
+    <ng-container *ngSwitchCase="'or'">
+      <button #adFiToggle (click)="toggleAdvanceFilterBtnMenu()" class="ad-fi-panel-btn or-btn"
+        [class.ad-fi-margin-neg-15]="class">
+        <span #plusIcon class="circle"></span>OR</button>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      <button #adFiToggle (click)="toggleAdvanceFilterBtnMenu()" [class.ad-fi-margin-neg-15]="class"
+        class="ad-fi-button" type="button">
+        <span class="btn-icon" #plusIcon>&plus;</span> ADD
+      </button>
+    </ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="isMainBtn">
+    <button #adFiToggle (click)="toggleAdvanceFilterBtnMenu()" [class.ad-fi-margin-neg-15]="class" class="ad-fi-button"
+      type="button">
+      <span class="btn-icon" #plusIcon>&plus;</span> ADD
+    </button>
+  </ng-container>
+  <div #adFiMenu *ngIf="isAdFiDropdownOpen" id="adFiBtnPanel" class="ad-fi-btn-panel">
+    <button (click)="onClickAction('and')" class="ad-fi-panel-btn and-btn">AND <span class="circle"></span></button>
+    <button (click)="onClickAction('or')" class="ad-fi-panel-btn or-btn"> <span class="circle"></span>OR</button>
+  </div>
+</div>

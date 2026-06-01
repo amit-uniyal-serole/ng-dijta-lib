@@ -1,0 +1,41 @@
+<div class="avatar-container">
+  <ul class="avatar-list">
+    <li class="avatar-item" *ngFor="let avatar of displayedAvatar; let i = index;">
+      <ndx-avatar dx-popover [dxHeader]="avatar?.lookup?.displayPopoverConfig?.header"
+        [dxPopoverTitle]="titleTemplateRef" [dxPopoverTitleContext]="{$implicit: avatar?.lookup}"
+        [dxPopoverContent]="templateRef" [dxPopoverContentContext]="{$implicit: avatar?.lookup}"
+        [dxPopoverTrigger]="avatar?.lookup?.displayPopoverConfig?.isShow && avatar?.lookup?.displayPopoverConfig?.popover?.trigger"
+        [dxPopoverPlacement]="avatar?.lookup?.displayPopoverConfig?.popover?.placement"
+        [routerLink]="avatar?.lookup?.path" [avatarStatus]="avatar?.statusSetting" [avatarSettings]="avatarSettings"
+        [value]="avatar?.avatarValue" [name]="avatar?.avatarName" [src]="avatar?.src">
+      </ndx-avatar>
+    </li>
+  </ul>
+  <ng-container *ngIf="extraAvatar?.length > 0">
+    <ndx-avatar [avatarSettings]="avatarSettings" [value]="extraTotal?.shortName" (clickOnAvatar)="showMore()">
+    </ndx-avatar>
+    <button class="hidden-btn" [matMenuTriggerFor]="languageMenu" #languageMenuTrigger="matMenuTrigger"></button>
+  </ng-container>
+  <mat-menu #languageMenu="matMenu">
+    <div mat-menu-item *ngFor="let avatar of extraAvatar; let i = index;">
+      <ul class="extra-avatar">
+        <li>
+          <ndx-avatar [avatarStatus]="avatar?.statusSetting" [avatarSettings]="avatarSettings"
+            [value]="avatar?.avatarValue" [name]="avatar?.avatarName" [src]="avatar?.src">
+          </ndx-avatar>
+          <p>{{avatar?.avatarName}}</p>
+        </li>
+      </ul>
+    </div>
+  </mat-menu>
+</div>
+
+<ng-template #titleTemplateRef let-popoverTitleConfig>
+  <dx-popover-variant-wrapper section="HEADER" [popoverTitleConfig]="popoverTitleConfig"
+    (onPopoverAction)="onClickOpenIcon($event)"></dx-popover-variant-wrapper>
+</ng-template>
+
+
+<ng-template #templateRef let-popoverContent>
+  <dx-popover-variant-wrapper section="CONTENT" [popoverContent]="popoverContent"></dx-popover-variant-wrapper>
+</ng-template>

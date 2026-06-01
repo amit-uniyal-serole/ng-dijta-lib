@@ -1,0 +1,131 @@
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+  <div class="d-flex align-items-center justify-content-between">
+    <span *ngIf="!(isSmall$ | async)" class="material-icons menu-toggle" (click)="toggleMenu()">
+      reorder
+    </span>
+    <ng-container *ngIf="
+                companyInfo?.companyList && companyInfo?.companyList?.length > 0
+              ">
+      <a href="#" class="logo d-flex align-items-center">
+        <ng-container *ngIf="
+      selectedCompany && selectedCompany?.logo;
+      else defaultCompName
+    ">
+          <img [src]="selectedCompany?.logo" alt="">
+        </ng-container>
+        <span class="d-none d-lg-block" *ngIf="!selectedCompany?.hideName">{{ selectedCompany?.name | transloco
+          }}</span>
+        <ng-template #defaultCompName>
+          <div class="selected-company-avatar">
+            <ndx-avatar [avatarSettings]="logoAvatarSettings" [name]="(selectedCompany?.name | transloco) ?? ''">
+            </ndx-avatar>
+          </div>
+        </ng-template>
+      </a>
+    </ng-container>
+
+  </div><!-- End Logo -->
+
+  <div class="search-bar">
+  </div>
+  <!-- End Search Bar -->
+
+  <nav class="header-nav ms-auto">
+    <ul class="d-flex align-items-center">
+      <li class="nav-item dropdown current-app" *ngIf="(app$ | async) && (app$ | async)?.position === 'custom'"
+        dx-tooltip [dxTooltipTitle]="(app$ | async)?.fullName | transloco">
+        <div class="app-preview me-2">
+          <span class="material-icons-outlined">
+            {{(app$ | async)?.icon ?? 'apps'}}
+          </span>
+        </div>
+        <div class="app-details mt-1">
+          <p class="subbody mb-0" *ngIf="(app$ | async)?.title">{{(app$ | async)?.title}}</p>
+          <p class="body mb-0" *ngIf="(app$ | async)?.shortName">{{(app$ | async)?.shortName | transloco}}</p>
+        </div>
+      </li>
+      <ng-container *ngIf="(isSmall$ | async)">
+        <ng-container *ngIf="headerIcons && headerIcons?.length > 0">
+          <ng-container *ngFor="let item of headerIcons">
+            <li class="nav-item dropdown">
+
+              <a class="nav-link nav-icon" [id]="item.event" (click)="onClickIcon(item?.event)">
+                <div class="header-icons">
+                  <span class="material-icons header-icon">
+                    {{ item?.icon }}
+                  </span>
+
+
+                </div>
+
+              </a><!-- Extra Icon -->
+
+            </li><!-- Extra Nav -->
+          </ng-container>
+        </ng-container>
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon">
+            <div class="header-icons" id="dx-notification" [matMenuTriggerFor]="notificationMenu" #t="matMenuTrigger"
+              (click)="matMenuTrigger(t?.menuOpen)" (menuClosed)="isClosed()" aria-label="Notifications button">
+              <span class="material-icons header-icon" [class.ball-ring]="latestNotificationCount">
+                notifications
+              </span>
+              <span class="bedge " *ngIf="latestNotificationCount">
+                {{latestNotificationCount > 0 ? latestNotificationCount : null}}
+              </span>
+            </div>
+            <div>
+              <mat-menu id="notificationMenu" class="notification-menu" #notificationMenu="matMenu">
+                <div (click)="$event.stopPropagation()" class="notification-main-wrapper">
+                  <dx-notification *ngIf="!isNewNotification" [unReadNotificationCount]="unReadNotificationCount"
+                    [topBarNotificationData]="topBarNotificationData" (onReadNotification)="readNotification($event)"
+                    (onClickLoadMore)="loadMore($event)"
+                    (onClickMarkAllasRead)="markAllAsRead($event)"></dx-notification>
+                  <ng-content *ngIf="isNewNotification" class="notification"></ng-content>
+                </div>
+              </mat-menu>
+            </div>
+          </a><!-- End Notification Icon -->
+
+        </li><!-- End Notification Nav -->
+
+      </ng-container>
+
+
+      <li class="nav-item dropdown header-nav-profile pe-2">
+
+        <a class="nav-link nav-profile d-flex align-items-center cursor-pointer pe-0">
+          <div class="profile-box" (click)="showProfile()" id="profile-nav">
+
+            <ndx-avatar [avatarSettings]="avatarSettings" [src]="currentUser?.profileBasic?.imgSrc"
+              [name]="getUserName()">
+            </ndx-avatar>
+            <div class="header-profile text-color">
+              <div class="text-start mx-2">
+                <p class="subtitle mb-0 profile-name">
+                  {{ getUserName() }}
+                </p>
+                <p class="caption mb-0">{{ currentUser?.profileBasic?.email }}</p>
+              </div>
+            </div>
+          </div>
+        </a><!-- End Profile Iamge Icon -->
+
+      </li><!-- End Profile Nav -->
+      <li class="nav-item dropdown header-nav-profile p-3"
+        *ngIf="(app$ | async) && (app$ | async)?.position === 'default'" id="app-name">
+        <div *ngIf="(app$ | async)?.svg;else default_app_icon" class="svg" dx-tooltip
+          [dxTooltipTitle]="(app$ | async)?.fullName | transloco" [innerHTML]="(app$ | async)?.svg | dxsafe: 'html'">
+        </div>
+        <ng-template #default_app_icon>
+          <ndx-avatar [avatarSettings]="appSettings" [name]="(app$ | async)?.fullName"> </ndx-avatar>
+        </ng-template>
+      </li>
+    </ul>
+  </nav><!-- End Icons Navigation -->
+
+</header>
+<!-- End Header -->

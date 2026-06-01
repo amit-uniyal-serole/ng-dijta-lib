@@ -1,0 +1,19 @@
+<div *ngFor="let record of numberOfRecords" class="tableSkeleton">
+  <div class="wrapper">
+    <div *ngIf="isRowArrange" class="rowSelectLoader">
+      <dx-skeleton-loader [theme]="rowSelectLoader">
+      </dx-skeleton-loader>
+    </div>
+    <div *ngIf="isMultiCheckbox" class="checkboxLoader">
+      <dx-skeleton-loader [theme]="checkBox">
+      </dx-skeleton-loader>
+    </div>
+    <div class="avatarLoader" *ngIf="isAvatar">
+      <dx-skeleton-loader appearance="circle" [theme]="avatarTheme">
+      </dx-skeleton-loader>
+    </div>
+    <div class="progressLoader">
+      <dx-skeleton-loader [theme]="lineTheme"></dx-skeleton-loader>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<ng-container [ngSwitch]="column?.type">
+  <ng-container *ngSwitchCase="'avatar'">
+    <ndx-avatar [avatarStatus]="data[0]?.statusSetting" *ngIf="data?.length>0"
+      [avatarSettings]="column?.setting?.avatarSettings" [value]="data[0]?.avatarValue | transloco"
+      [name]="data[0]?.avatarName | transloco" [src]="data[0]?.src"></ndx-avatar>
+  </ng-container>
+  <ng-container *ngSwitchCase="'avatar_group'">
+    <dx-avatar-group *ngIf="data?.length>0" [avatarSettings]="column?.setting?.avatarSettings" [data]="data">
+    </dx-avatar-group>
+  </ng-container>
+  <ng-container *ngSwitchDefault>
+    <ndx-avatar></ndx-avatar>
+  </ng-container>
+</ng-container>

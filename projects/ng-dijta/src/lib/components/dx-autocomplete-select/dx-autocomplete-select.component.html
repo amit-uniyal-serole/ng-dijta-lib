@@ -1,0 +1,75 @@
+<div class="dx-field-wrapper position-relative dx-autocomplete" [class.none-label]="noneLabel" [ngClass]="outline"
+  [class.display-view]="viewOnly" [class.dx-disable]="disabled" [class.left-align-label]="labelPosition === 'left'"
+  floatLabel="never" [class.required]="required || ctrRequired" [class]="outerLabelErrorType"
+  [class.none-border]="noneBorder">
+  <mat-label class="dx-outer-label-wrapper">
+    <span class="dx-outer-label">
+      <ng-content select="[dxLabel]"></ng-content>
+      <span *ngIf="required || ctrRequired" class="astrict">*</span>
+    </span>
+  </mat-label>
+  <mat-form-field appearance="outline">
+    <mat-label class="dx-input-label">
+      <ng-content select="dx-label"></ng-content>
+    </mat-label>
+    <mat-select [tabIndex]="tabIndex" [id]="id" [multiple]="multiple" [formControl]="control" [required]="required || ctrRequired"
+      #singleSelect (selectionChange)="onUserSelect($event)" (ngModelChange)="onDropDownChange($event)"
+      [disabled]="disabled || readonly || viewOnly">
+      <mat-option>
+        <ngx-mat-select-search #selectSearch [formControl]="searchCtrl" placeholderLabel="Search"
+          noEntriesFoundLabel="no match found"></ngx-mat-select-search>
+      </mat-option>
+
+      <div>
+        <mat-option class="loading" *ngIf="loading">
+          <mat-spinner diameter="35"></mat-spinner>
+        </mat-option>
+        <mat-option *ngIf="emptyOption && !multiple" [value]="undefined">
+          <div class="item autcomplete-dropdown-option">&nbsp;{{'None' | transloco}}</div>
+        </mat-option>
+        <ng-container *ngFor="let option of filteredOptions | async">
+          <mat-option [disabled]="disabled || readonly || viewOnly" [value]="option?.keyTt" *ngIf="
+              option?.permission
+                ? (option?.permission?.permission
+                  | ablePure : option?.permission?.apiName
+                  | async)
+                : true
+            ">
+            <div *ngIf="!loading" class="item autcomplete-dropdown-option"
+              [class.dropdown-option-padding-bottom]="option?.subtitle">
+              <span *ngIf="country" class="fi fi-{{ option?.keyTt?.toLowerCase() }}"></span>&nbsp;
+              <span matTooltipPosition="left" [matTooltip]="
+                  option?.valueTt && showToolTip ? option?.valueTt : null
+                ">
+                {{ option?.valueTt }}
+              </span>
+              <span *ngIf="option?.subtitle" class="autcomplete-subtitle">{{
+                option?.subtitle
+                }}</span>
+            </div>
+          </mat-option>
+        </ng-container>
+
+        <div class="mat-option create-option-wrapper" *ngIf="createOption?.isShow"
+          (click)="onClickCreateCustomOption()">
+          <div class="item">
+            <span class="align-material-icon-text">
+              <span class="material-icons">{{ "add" | transloco }}</span><span class="create-option-label">{{
+                createOption?.label | transloco
+                }}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </mat-select>
+    <span matSuffix>
+      <ng-content select="dx-suffix"></ng-content>
+    </span>
+    <mat-hint>
+      <ng-content select="dx-hint"> </ng-content>
+    </mat-hint>
+    <mat-error>
+      <ng-content select="dx-error"></ng-content>
+    </mat-error>
+  </mat-form-field>
+</div>

@@ -1,0 +1,20 @@
+.dx-tag-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    .dx-tag-more {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        margin-left: 4px;
+        &:hover {
+            text-decoration: underline;
+        }
+        .paragraph-align {
+          white-space: nowrap;
+          margin: inherit;
+        }
+    }
+}

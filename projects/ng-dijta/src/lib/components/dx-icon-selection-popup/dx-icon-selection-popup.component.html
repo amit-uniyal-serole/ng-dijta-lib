@@ -1,0 +1,60 @@
+<div mat-dialog-title class="icon-picker-header">
+  <h3 class="heading-6">{{'Select Icon' | transloco}}</h3>
+  <div class="icon-picker-close">
+    <span (click)="close()" class="material-icons-outlined">
+      cancel
+    </span>
+  </div>
+  <div class="row pt-2">
+    <div class="col-md-4">
+      <dx-autocomplete-select [(ngModel)]="selectedCategory" [options]="iconCategoryList"
+        (ngModelChange)="onChangeCategory($event)">
+        <dx-label>{{'Select Category' | transloco}}</dx-label>
+      </dx-autocomplete-select>
+    </div>
+    <div class="col-md-7">
+      <dx-input type="text" [(ngModel)]="search" (onEnter)="filterItem()">
+        <dx-label>{{'Search' | transloco}}</dx-label>
+        <dx-suffix>
+          <button class="search-icon" (click)="filterItem()">
+            <span class="material-icons-outlined">
+              search
+            </span>
+          </button>
+        </dx-suffix>
+      </dx-input>
+    </div>
+
+  </div>
+</div>
+<div>
+  <div mat-dialog-content class="icon-picker-wrapper">
+    <div class="icon-search" *ngIf="isBusy; else iconListRef">
+      <ng-container *ngFor="let item of loaderArray">
+        <dx-skeleton-loader [theme]="chipSkeleton"></dx-skeleton-loader>
+      </ng-container>
+    </div>
+    <ng-template #iconListRef>
+      <div class="dx-error text-center" *ngIf="iconList.length === 0">
+        <dx-empty [dxNotFoundContent]="'No Records Found' | transloco"></dx-empty>
+      </div>
+
+
+      <div class="icon-area-column" *ngIf="iconList.length > 0">
+        <div class="icon-box" *ngFor="let icon of iconList" [@listAnimation]="iconList.length"
+          (click)="onSelectAction(icon.iconKey)">
+          <p class="material-icons mb-0">{{ icon.iconKey }}</p>
+          <p class="mb-0">{{ icon.iconName | transloco }}</p>
+        </div>
+
+      </div>
+
+    </ng-template>
+
+  </div>
+  <div mat-dialog-actions class="justify-content-end">
+    <mat-paginator class="icon-paginator" [length]="icons?.totalElements" [pageSize]="listPaginationRequest.pageSize"
+      aria-label="Select page" role="table" (page)="onPage($event)">
+    </mat-paginator>
+  </div>
+</div>

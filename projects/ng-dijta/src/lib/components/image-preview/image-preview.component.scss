@@ -1,0 +1,139 @@
+
+$component-scope: 'dx-image-preview';
+
+::ng-deep .dx-fullscreen {
+  overflow: hidden !important;
+}
+
+::ng-deep #dx-image-preview-modal .modal-content {
+  overflow: hidden !important;
+  transform: none !important;
+  background-color: transparent;
+}
+
+.dx-image-preview-wrapper {
+  display: flex;
+  width: 100vw;
+    height: 100vh;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  .dx-image-preview-main-image {
+    width: auto;
+    height: auto;
+    cursor: grab;
+    margin-top: -20px;
+  }
+
+  .dx-optimal-proportion {
+    max-width: 90%;
+    max-height: 90%;
+  }
+}
+
+@mixin fixed-button() {
+  position: fixed;
+  z-index: var(--dx-z-index-modal, 1050);
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  background: var(--dx-highlight-overlay, rgba(255, 255, 255, 0.8));
+  box-shadow: var(--dx-shadow-length-base, 0 2px 6px 0) var(--dx-light-shadow, rgba(37, 43, 58, 0.12));;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+
+  &:hover {
+    background: #f5f5f5;
+  }
+
+  svg polygon {
+    fill: #71757f;
+  }
+
+  svg {
+    width: 38px;
+    height: 18px;
+  }
+}
+
+.dx-fixed-arrow-left {
+  @include fixed-button();
+
+  top: calc(50% - 18px);
+  left: 20px;
+}
+
+.dx-fixed-arrow-right {
+  @include fixed-button();
+
+  top: calc(50% - 18px);
+  right: 20px;
+}
+
+svg,
+polygon,
+g,
+path {
+  fill: #71757f;
+}
+
+.dx-image-preview-close-btn {
+  @include fixed-button();
+  border: none;
+  top: 15px;
+  right: 20px;
+}
+
+.dx-image-preview-toolbar {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--dx-highlight-overlay, rgba(255, 255, 255, 0.8));
+  box-shadow: var(--dx-shadow-length-fullscreen-overlay, 0 10px 24px 0) var(--dx-light-shadow, rgba(37, 43, 58, 0.12));;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+
+  button {
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+    align-items: center;
+    justify-content: center;
+    color: #252b3a;
+    border: none;
+    background: transparent;
+
+    &.disabled svg path {
+      fill: #babbc0;
+    }
+  }
+
+  .dx-image-preview-index {
+    display: inline-flex;
+    width: 100px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    d-input-number {
+      width: 65px;
+      margin-right: 4px;
+    }
+  }
+
+  & > :not(:first-child) {
+    margin-left: 20px;
+  }
+
+  .dx-image-preview-index,
+  .dx-next {
+    margin-left: 4px;
+  }
+}

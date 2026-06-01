@@ -1,0 +1,144 @@
+.html-cell {
+    padding-top: 0.9rem;
+    span {
+        display: contents !important;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: inherit !important;
+    }
+}
+
+.show {
+    cursor: pointer;
+}
+.html-content-length-table {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+    white-space: pre-line;
+    max-width: 40rem;
+    width: max-content;
+    max-height: 200px;
+    cursor: pointer;
+    &.path-color {
+        color: #0d6efd;
+    }
+    &.more {
+        &:after {
+            content: "\02026";
+            position: relative;
+            bottom: 0;
+            left: 0rem;
+            width: 3em;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0), #fff 81%, #fff);
+            text-align: right;
+            vertical-align: bottomm;
+            width: 100%;
+            cursor: pointer;
+        }
+    }
+   
+}
+
+.html-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .show_more {
+        background: #fff;
+        width: fit-content;
+        border-radius: 50%;
+        padding: 4px;
+        color: var(--primary-base);
+        font-size: 18px;
+        line-height: 18px;
+        cursor: pointer;
+        visibility: hidden;
+        transition: visibility 0s linear 0s, opacity 300ms;
+        box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    }
+    &:hover {
+        .show_more {
+            visibility: visible;
+        }
+    }
+}
+
+.content {
+    box-sizing: border-box;
+    position: relative;
+    width: 200px;
+    max-height: 3.75em;
+    overflow: hidden;
+    padding: 0 5px;
+    //this is just for spacing out the two content divs
+    float: left;
+    margin-right: 50px;
+  
+    &:after {
+      content: "\02026";
+      position: absolute;
+        top: 2.4em; 
+        right: 5px;
+        width: 3em;
+        background: linear-gradient(to right, rgba(255, 255, 255, 0), #fff 50%, #fff);
+        text-align: right;
+      vertical-align: bottomm;
+    }
+}
+.display-text {
+    padding: 20px;
+    white-space: pre-line;
+}
+.card-model {
+    position: relative;
+    max-height: 40rem;
+    overflow: auto;
+    .card-model-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        position: sticky;
+        top: 0;
+        background-color: #fff;
+        width: 100%;
+        border-bottom: 1px solid #dedcdc;
+        button {
+            border: none;
+            padding: 3px 23px;
+            border-radius: 5px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+            font-size: 14px;
+            // background: var(--primary-base);
+            a {
+                color: #000 !important;
+            }
+            span {
+                font-size: 15px;
+            }
+        }
+    }
+    .card-model-footer {
+        position: sticky;
+        bottom: 0;
+        background-color: #fff;
+        padding: 10px;
+        border-top: 1px solid #dedcdc;
+        display: flex;
+        justify-content: end;
+        button {
+            border: none;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            border-radius: 5px;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+            padding: 5px 21px;
+        }
+    }
+}

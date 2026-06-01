@@ -1,0 +1,22 @@
+
+.custom-select {
+    display: none;
+  }
+  .custom-label {
+    display: inline-block;
+    border: 1px solid rgb(7, 7, 7);
+    padding: 5px 20px;
+    margin: 2px 5px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #fff;
+    color: #000;
+  }
+  .hiddenInput {
+    padding: 0px;
+    margin: 0px;
+    height: 0px;
+    width: 0px;
+    border: none;
+  }

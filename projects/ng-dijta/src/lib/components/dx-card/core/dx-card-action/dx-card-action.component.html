@@ -1,0 +1,8 @@
+<div>
+  <dx-button [confirmationPopover]="actions?.confirmationPopover" [condition]="actions?.classCondition"
+    [show]="actions?.show" [data]="data" [src]="actions?.src"
+    [disabled]="actions?.disabled || (actions?.permission?.permission ?  !(actions?.permission | ablePure: actions?.permission?.apiName | async) : false)"
+    [title]="actions?.title" [class]="actions?.class" [multiActionDropDown]="actions?.multiActionDropDown"
+    [icon]="actions?.icon" (onActionSelect)="onEvent(actions?.type)" (onClickMenuAction)="onEvent($event)">
+  </dx-button>
+</div>

@@ -1,0 +1,11 @@
+<div class="tile-head" *ngIf="title">
+  <div class="heading-6 header-title-text font-weight-bold" #tooltip="matTooltip" [matTooltip]="title"
+    matTooltipPosition="above">
+    {{ title | transloco }}
+  </div>
+  <div class="icon-wrp" *ngIf="icon">
+    <span class="material-icons custom-mat-icon">
+      {{ icon }}
+    </span>
+  </div>
+</div>

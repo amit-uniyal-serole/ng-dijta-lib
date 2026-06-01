@@ -1,0 +1,16 @@
+@import '../mixins';
+#avatarId {
+  @include mobile {
+    .avatar-container {
+      width: 30px !important;
+      height: 30px !important;
+    }
+    .avatar-content {
+      min-width: 30px !important;
+      max-width: 30px !important;
+      width: 30px !important;
+      height: 30px !important;
+      line-height: 30px !important;
+    }
+  }
+}

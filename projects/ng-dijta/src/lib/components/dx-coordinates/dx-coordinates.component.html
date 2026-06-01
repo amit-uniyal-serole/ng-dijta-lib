@@ -1,0 +1,40 @@
+<div class="dx-field-wrapper" [class.none-label]="noneLabel" [ngClass]="outline" [class.display-view]="viewOnly"
+    [class.dx-disable]="disabled" [class.left-align-label]="labelPosition==='left'"
+    [class.required]="required || ctrRequired" [class]="outerLabelErrorType">
+    <mat-label class="dx-outer-label-wrapper">
+        <span class="dx-outer-label">
+            <ng-content select="[dxLabel]"></ng-content>
+            <span *ngIf="required || ctrRequired" class="astrict">*</span>
+        </span>
+    </mat-label>
+    <mat-form-field appearance="outline" floatLabel='never'>
+        <mat-label class="dx-input-label">
+            <ng-content select="dx-label"></ng-content>
+        </mat-label>
+        <span matPrefix>
+            <div>
+                <ng-content select="dx-prefix"></ng-content>
+            </div>
+        </span>
+        <input [tabIndex]="tabIndex" [id]="id" *ngIf="coordinateFormat === 'DMS'" type="text" [direction]="direction === 'latitude' ? 1 : 2"
+            [transformationType]="transformationType?.ToDigit" matInput dxCoordinates latitudeMask
+            [formControl]="control" (ngModelChange)="inputChange($event)" (blur)="onBlur($event)"
+            [readonly]="readonly || viewOnly || disabled" [required]="required || ctrRequired" ngDefaultControl
+            [placeholder]="tooltip" />
+        <input [tabIndex]="tabIndex" [id]="id" *ngIf="coordinateFormat === 'DD'" [direction]="direction === 'latitude' ? 1 : 2" appNumericOnly
+            dxCoordinates [transformationType]="transformationType?.ToDegrees" type="text" matInput
+            [formControl]="control" [placeholder]="tooltip" [isCoordinate]="true" [required]="required || ctrRequired"
+            (ngModelChange)="inputChange($event)" [disabled]="disabled" (blur)="onBlur($event)"
+            [readonly]="readonly || viewOnly" ngDefaultControl />
+        <span matSuffix>
+            <ng-content select="dx-suffix"></ng-content>
+        </span>
+        <mat-hint>
+            <ng-content select="dx-hint"> </ng-content>
+        </mat-hint>
+        <mat-error>
+            <span *ngIf="control?.errors?.dxCoordinates">{{'Enter valid value' | transloco}}</span>
+            <ng-content select="dx-error"></ng-content>
+        </mat-error>
+    </mat-form-field>
+</div>

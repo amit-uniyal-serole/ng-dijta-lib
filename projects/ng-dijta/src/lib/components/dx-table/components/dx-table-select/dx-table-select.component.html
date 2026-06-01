@@ -1,0 +1,3 @@
+<select class="form-select" [value]="selectedValue" (change)="onSelectionChange($event.target.value)">
+  <option *ngFor="let option of (options | async)" [value]="option?.keyTt">{{ option?.valueTt }}</option>
+</select>

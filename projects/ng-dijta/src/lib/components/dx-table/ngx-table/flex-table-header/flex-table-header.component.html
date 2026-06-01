@@ -1,0 +1,8 @@
+<div class='disc-flex-table-header'>
+    <div class='disc-flex-table-header-col subtitle-3'
+         *ngFor="let column of columns; trackBy: trackByFn"
+         [class.disc-flex-table-currency-header-col]="column.type === 'currency'"
+         (click)="onHeaderClick(column)">
+        {{ column.title }}
+    </div>
+</div>

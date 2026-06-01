@@ -1,0 +1,29 @@
+<div class="dx-field-wrapper ngx-ip-container-wrapper" [class.left-align-label]="labelPosition === 'left'"
+  [ngClass]="containerClass" floatLabel="never" [class.required]="required" [class]="outerLabelErrorType">
+  <mat-label class="dx-outer-label-wrapper">
+    <span class="dx-outer-label d-flex">
+      <ng-content select="[dxLabel]"></ng-content>
+      <span *ngIf="required" class="astrict">*</span>
+    </span>
+  </mat-label>
+  <div class="ngx-ip-table" [@inputAnim]="inputAnim">
+    <ng-template ngFor let-idx [ngForOf]="blocksRef" ; let-isLast="last">
+      <div class="ngx-ip-table-cell" [class.ngx-ip-disabled]="isBlockDisabled(idx)" [ngClass]="{
+            'ngx-ip-error': highlightInvalidBlocks && invalidBlocks[idx]
+          }">
+        <input [tabIndex]="tabIndex" #input type="text" [required]="required" [readonly]="readonly" [value]="blocks[idx] || ''"
+          (change)="onChange($event.target.value, idx)" (blur)="onBlur(idx)" (focus)="onFocus(idx)"
+          [disabled]="isBlockDisabled(idx)" (paste)="onPaste($event, idx)" (copy)="onCopy($event, idx)"
+          (keypress)="onKeyPress($event, idx)" (keyup)="onKeyUp($event, idx)" />
+      </div>
+      <span class="ngx-ip-table-cell ngx-ip-sep">{{ separatorMap[idx] }}</span>
+    </ng-template>
+  </div>
+  <div class="ngx-ip-copy-overlay" *ngIf="resolveCopyMethod">
+    <div class="ngx-ip-table" [@copyAnim]="">
+      <div class="ngx-ip-copy-title">{{'Copy?' | transloco}}</div>
+      <a (click)="onCopyDecision('block')">{{'Block' | transloco}}</a>
+      <a (click)="onCopyDecision('address')">{{'Address' | transloco}}</a>
+    </div>
+  </div>
+</div>

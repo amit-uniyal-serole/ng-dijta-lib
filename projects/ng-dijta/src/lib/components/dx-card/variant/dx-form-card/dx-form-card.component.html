@@ -1,0 +1,8 @@
+<div class="dx-form-card" [class.hide-form-card]="hideCardStyle">
+  <div class="dx-form-card-header align-items-center d-flex" *ngIf="title">
+    <h3 class="dx-form-card-header-card-title subtitle mb-0">{{title | transloco}}</h3>
+  </div>
+  <div class="dx-form-card-body">
+    <ng-content></ng-content>
+  </div>
+</div>

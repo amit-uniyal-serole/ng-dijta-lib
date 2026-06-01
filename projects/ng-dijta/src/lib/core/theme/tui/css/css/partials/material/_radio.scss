@@ -1,0 +1,26 @@
+.dx-field-wrapper {
+
+  .mat-radio-button.mat-primary .mat-radio-inner-circle,
+  .mat-radio-button.mat-primary .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple),
+  .mat-radio-button.mat-primary.mat-radio-checked .mat-radio-persistent-ripple,
+  .mat-radio-button.mat-primary:active .mat-radio-persistent-ripple {
+    background-color: var(--secondary-base) !important;
+  }
+
+  .mat-radio-button.mat-primary.mat-radio-checked .mat-radio-outer-circle {
+    border-color: var(--secondary-base) !important;
+  }
+
+
+  .mat-radio-group {
+    .mat-radio-button {
+      padding: 0px 2px;
+
+      .mat-radio-label {
+        .mat-radio-label-content {
+          font-weight: normal;
+        }
+      }
+    }
+  }
+}

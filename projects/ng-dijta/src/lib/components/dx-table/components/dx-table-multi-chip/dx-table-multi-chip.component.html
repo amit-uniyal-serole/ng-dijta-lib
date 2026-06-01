@@ -1,0 +1,42 @@
+<span class="flex-chip-wrapper" (click)="$event.stopPropagation()">
+  <span class="flex-chips">
+    <ng-container *ngFor="let chip of displayedChips"><span dx-tooltip
+        [dxTooltipTitle]="chip?.toolTip?chip?.toolTip:chip?.name && chip?.name !=''&& chip?.name !=='-' ?chip?.name:null"
+        class="flex-chip-badge flex-badge-live" [ngStyle]="showBackgroundColor(chip)"
+        [class.icon-text]="column?.type === 'icon-text'" [class.icon-shadow]="chip?.name">
+        <span [class]="chip?.iconClass ?? 'material-icons-outlined'" class="table-chip-icons"
+          [ngStyle]="chipColor(chip)" [class.margin-right-5]="chip?.name" *ngIf="chip?.icon" (click)="iconClick(chip.type)">{{chip?.icon}}</span>
+        <img class="chip-img" [src]="chip?.src" *ngIf="chip?.src" alt="chip">
+        <span class="table-chip-text" *ngIf="chip?.name">{{chip?.name && chip?.name !=='' ? (chip?.name |
+          transloco):''}}</span>
+
+      </span>&nbsp;
+    </ng-container>
+    <ng-container *ngIf="extraChips?.length > 0">
+      <ndx-avatar class="extra-total" [avatarSettings]="avatarSettings" [matMenuTriggerFor]="chipsMenu"
+        [value]="extraTotal?.shortName | transloco">
+      </ndx-avatar>
+    </ng-container>
+    <mat-menu #chipsMenu="matMenu">
+      <div mat-menu-item *ngFor="let chip of extraChips; let i = index;">
+        <ul class="extra-chips">
+          <li dx-tooltip
+            [dxTooltipTitle]="chip?.toolTip?chip?.toolTip:chip?.name && chip?.name !=''&& chip?.name !=='' ?chip?.name:null">
+            <span [class]="chip?.iconClass ?? 'material-icons-outlined'" class="chip-icons"
+              *ngIf="chip?.icon">{{chip?.icon}}</span>
+            <img class="chip-img" [src]="chip?.src" *ngIf="chip?.src" alt="chip">
+            <p>{{chip?.name && chip?.name !=''? (chip?.name | transloco):''}}
+            </p>
+          </li>
+        </ul>
+      </div>
+    </mat-menu>
+    <span *ngIf="reason" class="reason material-icons-outlined" dx-tooltip [dxTooltipTitle]="reasonMessage"
+      [changeChipColor]="reason?.color" [isIcon]="true">
+      {{ reason?.icon ?? 'priority_high' }}
+    </span>
+    <ng-template #reasonMessage>
+      <div class="paragraph mb-0" [innerHTML]="(reason?.message | transloco)"></div>
+    </ng-template>
+  </span>
+</span>

@@ -1,0 +1,44 @@
+<div class="file-picker-wrapper">
+  <div class="uploader-wrapper">
+    <div class="upload-container">
+      <ng-template #dxFileListRender></ng-template>
+
+      <dx-upload [(dxFileList)]="files" [dxAccept]="imgAcceptType" [dxFileType]="imgFileType" dxListType="picture"
+        dxType="drag" [dxFileListRender]="dxFileListRender" (dxChange)="handleFileChange($event)"
+        [dxBeforeUpload]="beforeUpload" [dxDisabled]="files?.length === fileMaxCount"
+        [dxMultiple]="uploadType ==='multi'" [dxFileMaxCount]="fileMaxCount">
+        <div dx-button class="file-drop-wrapper" *ngIf="showeDragDropZone">
+          <ng-content select=".dropzoneTemplate"> </ng-content>
+        </div>
+      </dx-upload>
+      <div class="cropperJsOverlay" *ngIf="currentCropperFile">
+        <div class="cropperJsBox">
+          <img [src]="safeCropImgUrl" id="cropper-img" (load)="cropperImgLoaded($event)" alt="cropper-image" />
+          <div class="cropper-actions">
+            <button class="cropSubmit" (click)="onCropSubmit()" [disabled]="isCroppingBusy" type="button"
+              [ngClass]="{'is-loading':isCroppingBusy }">
+              {{ captions?.cropper?.crop }}
+            </button>
+            <button class="cropCancel" type="button" (click)="
+              closeCropper({
+                file: currentCropperFile,
+                fileName: currentCropperFile.name
+              })
+            ">
+              {{ captions?.cropper?.cancel }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="files-preview-wrapper" *ngIf="files?.length > 0"
+      [ngClass]="{ 'visually-hidden': !showPreviewContainer }">
+      <file-preview-container *ngIf="files" [totalMaxSize]="totalMaxSize" [fileMaxCount]="fileMaxCount"
+        [previewFiles]="files" (removeFile)="removeFile($event)" (uploadSuccess)="onUploadSuccess($event)"
+        (uploadFail)="onUploadFail($event)" [adapterData]="adapterData" [itemTemplate]="itemTemplate"
+        [captions]="captions" [enableAutoUpload]="enableAutoUpload" [variant]="variant" [isUpload]="isUpload">
+      </file-preview-container>
+    </div>
+
+  </div>
+</div>

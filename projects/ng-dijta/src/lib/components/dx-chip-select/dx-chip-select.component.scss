@@ -1,0 +1,26 @@
+.chip-selection {
+  .mat-form-field-appearance-outline {
+    .mat-form-field-flex {
+      padding: 0px;
+    }
+    .mat-form-field-outline-end {
+      border-width: 0px !important; 
+    }
+    .mat-form-field-outline-gap {
+      border-width: 0px !important; 
+    }
+    .mat-form-field-outline-start {
+      border-width: 0px !important;
+    }
+    .mat-form-field-outline {
+      color: transparent;
+    }
+ 
+  }
+  &.dx-disable {
+    .mat-form-field-appearance-outline .mat-form-field-outline {
+        background-color: transparent;
+    }
+  }
+ 
+}

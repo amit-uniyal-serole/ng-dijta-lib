@@ -1,0 +1,30 @@
+<div class="dx-field-wrapper" [class.none-label]="noneLabel" [ngClass]="outline" [class.dx-disable]="disabled"
+  [class.none-border]="noneBorder">
+  <mat-form-field appearance="outline">
+    <mat-label class="dx-input-label">
+      <ng-content select="dx-label"></ng-content>
+    </mat-label>
+    <span matPrefix>
+      <ng-content select="dx-prefix"></ng-content>
+    </span>
+    <mat-chip-list [id]="id" #chipList [formControl]="control.control" (ngModelChange)="inputChange($event)"
+      [disabled]="disabled">
+      <mat-chip *ngFor="let chip of chips" [selectable]="selectable" [removable]="removable" (removed)="remove(chip)">
+        {{chip | transloco}}
+        <span matChipRemove class="material-icons" *ngIf="removable">cancel</span>
+      </mat-chip>
+      <input (blur)="onBlur($event)" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
+    </mat-chip-list>
+    <span matSuffix>
+      <ng-content select="dx-suffix"></ng-content>
+    </span>
+    <mat-hint>
+      <ng-content select="dx-hint"> </ng-content>
+    </mat-hint>
+    <mat-error>
+      <ng-content select="dx-error"> </ng-content>
+    </mat-error>
+  </mat-form-field>
+
+</div>

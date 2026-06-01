@@ -1,0 +1,24 @@
+<div *ngIf="content">
+    <div class="body-container">
+        <!-- CSS classes added for responsive design -->
+         <!-- 
+                Documentation:
+                The applied CSS classes are used for responsive layout and styling:
+                - `d-md-flex`: Enables flexbox layout for medium screens and above.
+                - `d-block`: Sets the element to block display for smaller screens.
+                - `flex-md-wrap`: Allows wrapping of flex items for medium screens and above.
+                - `gap-1`: Adds a small gap between flex items.
+                - `flex-sm-wrap`: Enables wrapping of flex items for small screens.
+                - `d-sm-flex`: Enables flexbox layout for small screens.
+            -->
+        <dx-canvas-label-value-wrapper 
+            class="d-md-flex d-block flex-md-wrap gap-1 flex-sm-wrap d-sm-flex" 
+            [canvasViewType]="canvasViewType" 
+            [content]="content?.body">
+        </dx-canvas-label-value-wrapper>
+    </div>
+    <div class="footer-container">
+        <dx-canvas-label-value-wrapper [canvasViewType]="canvasViewType" [content]="content?.footer">
+        </dx-canvas-label-value-wrapper>
+    </div>
+</div>

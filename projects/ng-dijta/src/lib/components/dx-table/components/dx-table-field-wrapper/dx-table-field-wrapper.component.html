@@ -1,0 +1,213 @@
+<ng-container [ngSwitch]="column?.type">
+  <ng-container *ngSwitchCase="'text'">
+    <dx-table-text-cell *ngIf="!isBusy;else showTextLoader" [data]="source?.data[column?.field]"
+      [avatarSrc]="source?.data[column?.avatarSrc]" [color]="source?.data?.color" [column]="column"
+      [toolTip]="source?.tooltip ? source?.tooltip[column.field] : undefined"
+      [reasons]="source?.statusReasons" [link]="source?.link ? source?.link[column.field] : undefined">
+    </dx-table-text-cell>
+  </ng-container>
+  <ng-container *ngSwitchCase="'checkbox'">
+    <dx-table-checkbox *ngIf="!isBusy;else checkboxLoader" [data]="source?.data[column?.field]">
+    </dx-table-checkbox>
+  </ng-container>
+  <ng-container *ngSwitchCase="'file'">
+    <dx-file-cell *ngIf="!isBusy;else AvatarSkeletonLoader" [column]="column" [files]="source?.dxFiles">
+    </dx-file-cell>
+  </ng-container>
+  <ng-container *ngSwitchCase="'currency'">
+    <dx-table-currency *ngIf="!isBusy;else showTextLoader" [data]="source?.data[column?.field]"
+      [setting]="column?.setting?.currency" [column]="column" [currencySetting]="source?.currency?.[column?.field]">
+    </dx-table-currency>
+  </ng-container>
+  <ng-container *ngSwitchCase="'date'">
+    <dx-table-date *ngIf="!isBusy;else showTextLoader" [data]="source?.data[column?.field]"
+      [setting]="column?.setting?.date"></dx-table-date>
+  </ng-container>
+  <ng-container *ngSwitchCase="'datetime'">
+    <dx-table-date *ngIf="!isBusy;else showTextLoader" [withTime]="true" [data]="source?.data[column?.field]"
+      [setting]="column?.setting?.date"></dx-table-date>
+  </ng-container>
+  <ng-container *ngSwitchCase="'action'">
+    <dx-action [isBusy]="isBusy" (onExpand)="onExpandToggle($event)" (onExternalAction)="externalAction($event)"
+      [selectedData]="expandData" [data]="source" [columns]="column">
+    </dx-action>
+  </ng-container>
+  <ng-container *ngSwitchCase="'avatar'">
+    <dx-avatar-wrapper *ngIf="!isBusy;else AvatarSkeletonLoader" [column]="column" [data]="source?.ngDxAvatar">
+    </dx-avatar-wrapper>
+  </ng-container>
+  <ng-container *ngSwitchCase="'input'">
+    <dx-table-input *ngIf="!isBusy;else showTextLoader" [(ngModel)]="source?.data[column?.field]" [key]="column?.field"
+      (onUpdate)="updateInput()" [setting]="source?.input" [isEditable]="source?.isEditable"></dx-table-input>
+  </ng-container>
+  <ng-container *ngSwitchCase="'select'">
+    <dx-table-select [(ngModel)]="source?.data[column?.field]" [options]="column?.options"
+      (ngModelChange)="updateInput($event)">
+    </dx-table-select>
+  </ng-container>
+
+  <!-- toggle -->
+  <ng-container *ngSwitchCase="'slide-toggle'">
+    <dx-table-slide-toggle *ngIf="!isBusy;else chipSkeletonLoader" (onToggleUpdate)="onToggleChange()"
+      [setting]="source?.toggle"></dx-table-slide-toggle>
+  </ng-container>
+  <!--  -->
+  <ng-container *ngSwitchCase="'avatar_group'">
+    <dx-avatar-wrapper *ngIf="!isBusy;else AvatarSkeletonLoader" [column]="column" [data]="source?.ngDxAvatar">
+    </dx-avatar-wrapper>
+  </ng-container>
+  <ng-container *ngSwitchCase="'multi_chip'">
+    <dx-table-multi-chip *ngIf="!isBusy;else chipSkeletonLoader" [column]="column"
+      [data]="source?.data[column?.multiChipSetting]  ? source?.data[column?.multiChipSetting] : source?.multiChip">
+    </dx-table-multi-chip>
+  </ng-container>
+  <ng-container *ngSwitchCase="'icon-text'">
+    <dx-table-multi-chip *ngIf="!isBusy;else iconTextSkeletonLoader" [column]="column"
+      [data]="source?.data[column?.iconTextSetting]  ? source?.data[column?.iconTextSetting] : source?.multiChip"
+      (onIconClick)="onIconClick($event)">
+    </dx-table-multi-chip>
+  </ng-container>
+  <ng-container *ngSwitchCase="'link'">
+    <dx-link *ngIf="!isBusy;else showTextLoader" [data]="source?.link[column.field]" [column]="column"></dx-link>
+  </ng-container>
+  <ng-container *ngSwitchCase="'service_data'">
+    <dx-table-service-data *ngIf="!isBusy;else showTextLoader" [data]="source?.data[column?.field]" [column]="column">
+    </dx-table-service-data>
+  </ng-container>
+  <ng-container *ngSwitchCase="'button'">
+    <dx-bulk-actions [data]="source?.data" [bulkAction]="source?.button"
+      (onClickBulkMenuAction)="onClickRowAction($event)">
+    </dx-bulk-actions>
+  </ng-container>
+  <ng-container *ngSwitchCase="'number'">
+    <dx-number-cell *ngIf="!isBusy;else showTextLoader" [data]="source?.data[column?.field]">
+    </dx-number-cell>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="'tag'">
+    <dx-tag-cell [data]="source?.data[column?.field]"></dx-tag-cell>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="'dropdown'">
+    <dx-dropdown *ngIf="!isBusy;else showTextLoader" [data]="source?.dropdown" [column]="column"></dx-dropdown>
+  </ng-container>
+  <ng-container *ngSwitchCase="'flat-action'">
+    <dx-flat-action [menu]="source?.menu" [data]="source?.data" (onClickBulkMenuAction)="onClickRowAction($event)">
+    </dx-flat-action>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="'filled_dropdown'">
+    <dx-dropdown *ngIf="!isBusy;else showTextLoader" [data]="source?.dropdown" [column]="column"></dx-dropdown>
+  </ng-container>
+  <ng-container *ngSwitchCase="'lookup'">
+    <ng-container *ngIf="!isBusy;else showTextLoader ">
+      <dx-table-lookup *ngIf="source?.lookup && source?.lookup[column?.field]" [column]="column"
+        (onLookupLink)="onLookupLink($event)" [data]="source?.lookup[column?.field]"></dx-table-lookup>
+    </ng-container>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="'percentage'">
+    <dx-cell-progress-bar *ngIf="!isBusy;else showTextLoader" [data]="source?.data[column?.field]" [source]="source"
+      [column]="column">
+    </dx-cell-progress-bar>
+  </ng-container>
+  <ng-container *ngSwitchCase="'menu'">
+    <dx-table-menu [menu]="source?.menu" [data]="source?.data"
+      (onClickBulkMenuAction)="onClickRowAction($event)"></dx-table-menu>
+  </ng-container>
+  <ng-container *ngSwitchCase="'email'">
+    <ng-container *ngIf="source?.data[column?.field]">
+      <div class="text-with-icon">
+        <span class="material-icons mail-icon">
+          mail
+        </span>
+        <a (click)="$event.stopPropagation()" dx-tooltip dxTooltipTitle="{{source?.data[column?.field]}}"
+          href="mailto:{{source?.data[column?.field]}}">
+          {{source?.data[column?.field]}}
+        </a>
+      </div>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngSwitchCase="'contact'">
+    <div *ngIf="!isBusy;else showTextLoader">
+      <ng-container *ngIf="source?.data[column?.field]">
+        <div class="text-with-icon">
+          <span class="material-icons phone-icon">
+            phone
+          </span>
+          <a (click)="$event.stopPropagation()" dx-tooltip dxTooltipTitle="{{source?.data[column?.field]}}"
+            href="tel:{{source?.data[column?.field]}}">{{source?.data[column?.field]}}</a>
+        </div>
+
+      </ng-container>
+    </div>
+  </ng-container>
+  <!-- URL -->
+  <ng-container *ngSwitchCase="'URL'">
+    <div *ngIf="!isBusy;else showTextLoader">
+      <ng-container *ngIf="source?.data[column?.field]">
+        <div class="text-with-icon">
+          <span class="material-icons url-icon">
+            open_in_new
+          </span>
+          <a (click)="$event.stopPropagation()" dx-tooltip dxTooltipTitle="{{source?.data[column?.field]}}"
+            rel="noopener noreferrer" [href]="source?.data[column?.field]"
+            target="_blank">{{source?.data[column?.field]}}</a>
+        </div>
+      </ng-container>
+    </div>
+
+  </ng-container>
+  <ng-container *ngSwitchCase="'context-menu'">
+    <dx-context-menu *ngIf="!isBusy;else showTextLoader" [setting]="source?.contextMenuSetting"
+      [serviceSetting]="column?.contextMenuSettings"></dx-context-menu>
+  </ng-container>
+  <ng-container *ngSwitchCase="'inline-dropdown'">
+    <dx-inline-dropdown [isEditable]="source?.isEditable" [(ngModel)]="source?.data[column?.field]"
+      [data]="source?.data" [settingsField]="column?.inlineDropdownSetting"
+      [settings]="source?.data[column?.inlineDropdownSetting]" (onUpdate)="updateInput()"></dx-inline-dropdown>
+  </ng-container>
+  <ng-container *ngSwitchCase="'edit-row'">
+    <dx-edit-table-row [isRowDelete]="source?.isRowDelete" [isEditable]="source?.isEditable"
+      (onClickEditRowAction)="onClickEditRowAction($event,source?.data)"></dx-edit-table-row>
+  </ng-container>
+  <ng-container *ngSwitchCase="'html'">
+    <dx-table-html *ngIf="!isBusy;else showTextLoader" type="HTML" [data]="source?.data[column?.field]"
+      [title]="column?.title"></dx-table-html>
+  </ng-container>
+  <ng-container *ngSwitchCase="'ONLY_HTML'">
+    <dx-table-html *ngIf="!isBusy;else showTextLoader" type="ONLY_HTML" [data]="source?.data[column?.field]"
+      [title]="column?.title"></dx-table-html>
+  </ng-container>
+  <ng-container *ngSwitchCase="'custom'">
+    <ng-container *ngComponentOutlet="column.component;injector: getInjector(source, column);">
+    </ng-container>
+  </ng-container>
+  <ng-container *ngSwitchDefault>
+    <dx-flex-table-text-cell></dx-flex-table-text-cell>
+  </ng-container>
+</ng-container>
+
+<!-- Loader's -->
+<ng-template #showTextLoader>
+  <dx-skeleton-loader [theme]="TextSkeleton"></dx-skeleton-loader>
+</ng-template>
+
+<ng-template #checkboxLoader>
+  <dx-skeleton-loader [theme]="checkBoxLoader"></dx-skeleton-loader>
+</ng-template>
+<ng-template #chipSkeletonLoader>
+  <dx-skeleton-loader [theme]="chipSkeleton"></dx-skeleton-loader>
+</ng-template>
+<ng-template #AvatarSkeletonLoader>
+  <dx-skeleton-loader appearance="circle" [theme]="AvatarSkeleton"></dx-skeleton-loader>
+</ng-template>
+
+<ng-template #iconTextSkeletonLoader>
+  <div class="icon-text-wrapper">
+    <dx-skeleton-loader appearance="circle" [theme]="iconTextSkeleton"></dx-skeleton-loader>
+  </div>
+</ng-template>
+
+
+<!--  -->

@@ -1,0 +1,27 @@
+.text-with-icon {
+  display: flex;
+  align-items: center;
+}
+
+.text-with-icon a {
+  text-decoration: none;
+}
+
+.text-with-icon a:hover {
+  text-decoration: underline;
+  color: #0d6efd;
+}
+
+.text-with-icon .material-icons {
+  font-size: 20px;
+  margin-right: 1px;
+  &.mail-icon{
+    color: #2d6da7;
+  }
+  &.phone-icon{
+    color: #009688;
+  }
+  &.url-icon{
+    color: #3478b8;
+  }
+}

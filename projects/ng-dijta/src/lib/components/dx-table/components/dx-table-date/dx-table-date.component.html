@@ -1,0 +1,10 @@
+<div *ngIf="withTime;else other_time_format" dxTooltipTitle="{{data | dxdate:customTimeFormat:setting?.timezone}}"
+  dx-tooltip dxTooltipPlacement="topLeft">
+  {{setting?.dateAgo ? (data | dateAgo:setting?.timezone) : (data | dxdate:customTimeFormat:setting?.timezone)}}
+</div>
+<ng-template #other_time_format>
+  <span dxTooltipTitle="{{data | dxdate:setting?.format:setting?.timezone}}" dxTooltipPlacement="topLeft"
+    dx-tooltip>{{setting?.dateAgo ? (data | dateAgo:setting?.timezone) : (data |
+    dxdate:setting?.format:setting?.timezone)}}</span>
+</ng-template>
+<dx-default [show]="!data"></dx-default>

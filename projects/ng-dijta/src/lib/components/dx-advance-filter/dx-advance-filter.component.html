@@ -1,0 +1,83 @@
+<div *ngIf="filterData && filterData?.columns?.length>0" class="p-5 ad-fi-wrapper m-3">
+  <div class="row">
+    <div class="pb-1" *ngIf="title">
+      <h2 class="ad-fi-title">{{title | transloco}}</h2>
+    </div>
+    <div [formGroup]="filterForm" id="pf-form">
+      <div formArrayName="groups">
+        <ng-container *ngFor="let group of filterForm?.get('groups')?.controls;
+        let groupIndex = index" [formGroupName]="groupIndex">
+          <div class="ad-fi-container d-flex" *ngIf="group?.get('sections')?.controls?.length>0">
+            <div class="ad-fi-drag-Icon">
+              <span class="material-icons-outlined">
+                drag_indicator
+              </span>
+            </div>
+            <div formArrayName="sections" class=" w-100">
+              <div class="row ad-fi-filters" *ngFor="let section of group?.get('sections')?.controls;
+               let sectionIndex=index" [formGroupName]="sectionIndex">
+                <div class="col-md-4 top-unset">
+                  <dx-autocomplete-select formControlName="column" [options]="filterData?.columns">
+                    <dx-label>{{'Column' | transloco}}</dx-label>
+                  </dx-autocomplete-select>
+                </div>
+                <div class="col-md-2 top-unset">
+
+                  <dx-autocomplete-select *ngIf="section?.controls?.column?.value" formControlName="condition"
+                    [options]="getConditions(group,sectionIndex)">
+                    <dx-label>{{'Conditions' | transloco}}</dx-label>
+                  </dx-autocomplete-select>
+                </div>
+                <div class="col-md-4">
+                  <dx-input *ngIf="section?.controls?.condition?.value" formControlName="criteria">
+                    <dx-label>{{'Criteria'| transloco}}</dx-label>
+                  </dx-input>
+                </div>
+                <div *ngIf="section?.controls?.column.value"
+                  class="col-md-2  d-flex align-items-center ad-fi-section-btn">
+
+                  <dx-filter-add-button [isMainBtn]="group?.get('sections')?.controls?.length-1 === sectionIndex"
+                    (onClickBtn)="addSection($event,group,sectionIndex)">
+                  </dx-filter-add-button>
+                  <button class="ad-fi-close-btn" (click)="deleteSection(group,sectionIndex,groupIndex)">
+                    <mat-icon>
+                      close
+                    </mat-icon>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+            <button *ngIf="groupIndex>0" class="ad-fi-delete" (click)="deleteGroup(groupIndex)">
+              <mat-icon>
+                delete
+              </mat-icon>
+            </button>
+          </div>
+          <div *ngIf="groupIndex+1 !== filterForm?.get('groups')?.controls?.length" class="ad-fi-group-btn">
+            <dx-filter-add-button [btnType]="filterForm
+            ?.get('groups')
+            ?.controls[groupIndex].controls?.groupBy?.value" class="ad-fi-margin-neg-15"
+              (onClickBtn)="modifyGrouping($event,groupIndex)">
+            </dx-filter-add-button>
+          </div>
+        </ng-container>
+        <div class="ad-fi-new-group">
+          <dx-filter-add-button isMainBtn="true" class="ad-fi-margin-neg-15" (onClickBtn)="addGroups($event)">
+          </dx-filter-add-button>
+        </div>
+
+      </div>
+    </div>
+    <div class="d-flex justify-content-end p-3">
+      <dx-button *ngIf="filterButtons?.secondaryBtn?.title && filterButtons?.secondaryBtn?.show" class="secondary-btn"
+        (onActionSelect)="onClickFilterAction('cancel')" [title]="filterButtons?.secondaryBtn?.title"></dx-button>
+      &nbsp;&nbsp;
+      &nbsp;
+      <dx-button *ngIf="filterButtons?.primaryBtn?.title && filterButtons?.primaryBtn?.show"
+        (onActionSelect)="onClickFilterAction()" [title]="filterButtons?.primaryBtn?.title"></dx-button>
+    </div>
+
+  </div>
+</div>

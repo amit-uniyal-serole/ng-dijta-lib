@@ -1,0 +1,15 @@
+#emaiList {
+  .mat-paginator-container {
+    background: rgba(217, 217, 217, 0.31);
+  }
+
+  .mat-paginator-page-size {
+    display: none !important;
+  }
+
+  .mat-paginator-range-label {
+    font-weight: 700 !important;
+    color: rgb(82, 82, 82) !important;
+  }
+
+}

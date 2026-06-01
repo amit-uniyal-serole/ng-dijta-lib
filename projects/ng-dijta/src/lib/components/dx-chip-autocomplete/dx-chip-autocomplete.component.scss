@@ -1,0 +1,55 @@
+.mat-option.create-option-wrapper {
+  position: sticky;
+  bottom: 0px;
+  z-index: 9999;
+  background: #ffffff;
+  width: 100%;
+  min-width: calc(100% + 32px);
+
+  &:hover:not(.mat-option-disabled) {
+    background-color: #fff;
+  }
+
+  .align-material-icon-text {
+    display: inline-flex;
+    align-items: center;
+    padding: 0px 5px;
+    color: #338cf0;
+
+    .material-icons {
+      font-size: 18px;
+      margin-right: 5px;
+    }
+
+    .create-option-label {
+      font-size: 15px;
+      font-weight: 500;
+    }
+  }
+}
+.mat-standard-chip.mat-chip-with-trailing-icon {
+  padding: 0px 9px !important;
+}
+.mat-chip-list-wrapper {
+  overflow: auto;
+  display: block !important;
+}
+
+.mat-chip.mat-standard-chip {
+  background-color: #e4e5e53b !important;
+  border: 1px solid #8080805c !important;
+}
+
+.mat-standard-chip {
+  min-height: 25px !important;
+}
+
+.mat-chip.mat-standard-chip .mat-chip-remove {
+  color: #2a2929eb;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.mat-select-arrow-wrapper {
+  padding-left: 3px;
+}

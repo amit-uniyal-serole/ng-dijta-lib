@@ -1,0 +1,14 @@
+  ngx-mat-month-view {
+    .mat-calendar-body-cell {
+      position: relative;
+    }
+  }
+
+  .ngx-mat-timepicker form .ngx-mat-timepicker-table .ngx-mat-timepicker-tbody tr td .mat-form-field {
+    padding: 0px !important;
+  }
+
+  ngx-mat-calendar.mat-calendar {
+    width: 296px !important;
+    height: auto;
+  }

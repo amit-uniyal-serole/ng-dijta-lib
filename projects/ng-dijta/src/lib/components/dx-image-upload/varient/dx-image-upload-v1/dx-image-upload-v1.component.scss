@@ -1,0 +1,70 @@
+.dx-image-upload-v1 {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+
+  .drag-drop-content {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+
+    .body {
+      margin-top: 5px;
+    }
+
+    .material-icons-outlined {
+      font-size: 4rem;
+    }
+  }
+
+  .support {}
+}
+
+#dropZone {
+  max-width: unset !important;
+  padding: 10px 0 !important;
+}
+
+.file-drop-wrapper {
+  padding: 0px;
+}
+
+.uploader-wrapper {
+  height: 100%;
+  display: flex;
+
+  .upload-container {
+    flex: 1;
+  }
+
+  .upload-preview {
+    flex: 0 0 30%;
+    margin: 2px 5px;
+    border-radius: 10px;
+    background: #fff;
+
+    .card {
+      height: 100%;
+
+      .card-header {
+        background-color: transparent;
+      }
+
+      .card-body {
+        padding: 0px;
+
+        ul {
+          padding: 0px;
+
+          li {
+            list-style: none;
+          }
+        }
+      }
+    }
+  }
+}

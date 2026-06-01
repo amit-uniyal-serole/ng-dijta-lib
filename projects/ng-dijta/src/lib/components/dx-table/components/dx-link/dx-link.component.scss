@@ -1,0 +1,16 @@
+.link-wrapper {
+  a {
+    color: #338cf0;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    text-overflow: ellipsis !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    max-width: 22rem !important;
+    width: max-content;
+    max-height: 200px !important;
+    display: block !important;
+  }
+}

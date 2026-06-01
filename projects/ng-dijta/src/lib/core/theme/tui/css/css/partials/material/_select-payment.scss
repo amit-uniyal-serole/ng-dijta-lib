@@ -1,0 +1,56 @@
+@import '../../partials/variables';
+
+#selectPayment {
+
+  .mat-checkbox-layout {
+
+    white-space: normal !important;
+
+    font-weight: 500;
+
+    font-size: 13px;
+
+    line-height: 18px;
+
+    color: rgb(11, 15, 50);
+
+  }
+
+  .mat-checkbox-inner-container {
+
+    margin: 0;
+
+    margin-right: 16px;
+
+  }
+
+  .mat-checkbox-layout .mat-checkbox-label {
+
+    font-weight: 500;
+
+    font-size: 12px;
+
+    line-height: 16px;
+
+    color: $text-light;
+
+  }
+
+
+  .sendInvoice {
+
+    padding: 9px;
+
+    .mat-checkbox-layout .mat-checkbox-label {
+
+      font-size: 15px;
+
+      line-height: 16px;
+
+
+
+    }
+
+  }
+
+}

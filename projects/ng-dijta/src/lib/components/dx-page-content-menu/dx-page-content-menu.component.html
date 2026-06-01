@@ -1,0 +1,13 @@
+<div class="dx-page-content-menu">
+  <div *ngIf="title" class="subtitle dx-page-menu-title fw-semibold"><span class="fw-medium">{{title |
+      transloco}}</span></div>
+  <ul *ngIf="menuList && menuList?.length>0;else noRecords">
+    <ng-container *ngFor="let item of menuList">
+      <dx-content-menu-accrodian [item]="item" (onClickMenu)="onClickMenuItem($event)"></dx-content-menu-accrodian>
+    </ng-container>
+  </ul>
+  <ng-template #noRecords>
+    <div class="no-menu-items"><span class="subbody"> <span class="fw-semibold">{{'No Records' |
+          transloco}}</span></span></div>
+  </ng-template>
+</div>

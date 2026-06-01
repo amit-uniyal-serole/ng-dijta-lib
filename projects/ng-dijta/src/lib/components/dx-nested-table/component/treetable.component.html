@@ -1,0 +1,54 @@
+<div class="dx-nested-table" [style.height.px]="height">
+  <table mat-table [dataSource]="dataSource">
+
+    <div *ngFor="let column of columns; first as isFirst;">
+      <ng-container [matColumnDef]="column?.columnDef">
+        <th mat-header-cell *matHeaderCellDef class="vertical-separator">
+          <p class="custom-font-family mb-0 subtitle table-header-text">{{column?.title | transloco}}</p>
+        </th>
+        <td mat-cell *matCellDef="let element" class="vertical-separator">
+
+          <div class="center-icon" *ngIf="column?.isNestedCol">
+
+            <div class="value-cell">
+              <div class="left-border" [innerHTML]="formatIndentation(element)"></div>
+              <span class="material-icons-outlined" *ngIf="element.children.length > 0 && column?.isNestedCol">
+                expand_more
+              </span>
+              <dx-table-field-wrapper [isBusy]="isBusy" [column]="column"
+                [source]="element.value"></dx-table-field-wrapper>
+            </div>
+          </div>
+          <div class="center-icon" *ngIf="!column?.isNestedCol">
+            <span class="material-icons-outlined" *ngIf="element.children.length > 0 && column?.isNestedCol">
+              expand_more
+            </span>
+            <dx-table-field-wrapper [isBusy]="isBusy" [column]="column"
+              [source]="element.value"></dx-table-field-wrapper>
+          </div>
+        </td>
+        <ng-container *ngIf="footer">
+          <td mat-footer-cell *matFooterCellDef="let element"> {{ column?.footerCalculate ?
+            column?.footerCalculate(column, element)
+            :''
+            }} </td>
+        </ng-container>
+
+      </ng-container>
+    </div>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <ng-container *ngIf="footer">
+      <tr mat-footer-row *matFooterRowDef="displayedColumns;sticky: true"></tr>
+    </ng-container>
+
+  </table>
+  <div dLoading *ngIf="isBusy" [loading]="isBusy" [backdrop]="true" [message]="'Loading...'" [style.height.px]="150">
+  </div>
+  <!-- <d-loading *ngIf="isBusy"></d-loading> -->
+  <ng-container *ngIf="!tree && !isBusy && dataSource?._filterData.length <= 0">
+    <dx-empty></dx-empty>
+  </ng-container>
+
+</div>

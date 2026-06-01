@@ -1,0 +1,11 @@
+<div class="row" *ngIf="content">
+    <div class="col-md-12 body-container">
+        <dx-canvas-label-value-wrapper [hideSeparator]="true" [fullWidth]="true" [canvasViewType]="canvasViewType"
+            [content]="content?.body">
+        </dx-canvas-label-value-wrapper>
+    </div>
+    <div class=" col-md-12 footer-container">
+        <dx-canvas-label-value-wrapper [canvasViewType]="canvasViewType" [content]="content?.footer">
+        </dx-canvas-label-value-wrapper>
+    </div>
+</div>

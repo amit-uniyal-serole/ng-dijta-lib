@@ -1,0 +1,9 @@
+<div class="d-flex gap-1 dx-flat-action">
+    <ng-container *ngFor="let btn of menu?.actions">
+        <dx-button *ngIf="btn.show" [condition]="btn?.classCondition" [permission]="btn?.permission" [id]="btn?.id"
+            [class.flat-cls]="!btn.label && !!btn.icon" [onlyBorder]="btn.onlyBorder"
+            [class.override-color]="btn?.color" [changeChipColor]="btn?.color" [same]="true" [class]="btn?.buttonType"
+            [title]="btn?.label" [icon]="btn?.icon" [src]="btn?.src"
+            (onActionSelect)="bulkActionMenuClick(btn, btn?.confirmationPopover)" [disabled]="btn?.disable"></dx-button>
+    </ng-container>
+</div>

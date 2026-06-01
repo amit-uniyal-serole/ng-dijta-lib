@@ -1,0 +1,41 @@
+.dx-flat-action {
+    dx-button {
+        width: 100%;
+        border-radius: 4px;
+        height: 35px;
+    }
+    .mat-flat-button {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+        height: 100%;
+        border-radius: 4px;
+    }
+    .mat-button-wrapper {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        height: 100%;
+        white-space: nowrap !important;
+    }   
+    .flat-cls {
+        width: 70px;
+        .dx-btn-mat-icons {
+            margin: 0px !important;
+        }
+    }
+    .override-color {
+        .mat-flat-button {
+            color: inherit !important;
+            border-color: inherit !important;
+            background-color: inherit !important;
+            border-width: 2px !important;
+            border-radius: 5px;
+            border: 1px solid;
+        }
+        .dx-btn-mat-icons {
+            color: inherit !important;
+        }
+    }
+    
+}

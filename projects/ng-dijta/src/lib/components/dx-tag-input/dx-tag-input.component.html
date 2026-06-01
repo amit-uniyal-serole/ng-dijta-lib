@@ -1,0 +1,84 @@
+<div class="dx-field-wrapper dx-field-textarea dx-tag" [class.none-label]="noneLabel" [ngClass]="outline"
+  [class.display-view]="viewOnly" [class.dx-disable]="disabled" [class.left-align-label]="labelPosition === 'left'"
+  [class.required]="required || ctrRequired" [class]="outerLabelErrorType" #getHeight>
+  <mat-label class="dx-outer-label-wrapper">
+    <span class="dx-outer-label">
+      <ng-content select="[dxLabel]"></ng-content>
+      <span *ngIf="required || ctrRequired" class="astrict">*</span>
+    </span>
+  </mat-label>
+  <mat-form-field appearance="outline" (click)="trigger1.closePanel();">
+    <mat-label class="dx-input-label">
+      <ng-content select="dx-label"></ng-content>
+    </mat-label>
+    <span matPrefix>
+      <div>
+        <ng-content select="dx-prefix"></ng-content>
+      </div>
+    </span>
+    <mat-chip-list #chipList aria-label="Tag" [formControl]="control">
+      <mat-chip *ngFor="let tag of value" class="tag" [changeChipColor]="tag.colorCode" [same]="true"
+        [removable]="false">
+        <div class="tag">
+          <span class="material-icons-outlined tag-icon">
+            tag
+          </span>
+          {{ tag.name }}
+          <span (click)="remove(tag)" *ngIf="(allowDelete || (!allowDelete && !tag?.recordId))"
+            class="material-icons-outlined tag-close" matChipRemove>
+            close
+          </span>
+        </div>
+      </mat-chip>
+      <input #myInput [id]="id" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="addOnBlur" [formControl]="tagName" (ngModelChange)="onSearch($event)"
+        [maxlength]="maxlength" [autofocus]="autofocus" (blur)="onBlur($event)" [required]="required || ctrRequired"
+        [disabled]="disableCreate" [readonly]="readonly || viewOnly || disabled" [placeholder]="tooltip"
+        [matAutocomplete]="auto" />
+    </mat-chip-list>
+    <mat-autocomplete #auto="matAutocomplete" [id]="id+'-select'" [autoActiveFirstOption]="true"
+      (opened)="onAutoComplete()" (closed)="handleClose()" (optionSelected)="onSelect($event)">
+      <div (click)="$event.stopPropagation()">
+        <ng-container *ngIf="(filterTags.length === 0 && !!tagName.value) || !isFilter">
+          <mat-option *ngIf="!disableTagCreation" [value]="{
+            name: tagName.value,
+            colorCode: color
+          }">
+            <div class="tag-create">
+              <div class="color-picker">
+                <dx-colors [(ngModel)]="color" [palette]="palette" (click)="$event.stopPropagation()"
+                  (keydown)="$event.stopPropagation()" (open)="isColorPickerOpen = true" dx-colors-trigger></dx-colors>
+              </div>
+              <p class="subbody mb-0">{{ tagName.value }}</p>
+            </div>
+          </mat-option>
+          <mat-option *ngIf="disableTagCreation" disabled class="no-tag-result">
+            <p class="subbody mb-0"> <span class="fw-semibold">No results found</span></p>
+          </mat-option>
+        </ng-container>
+      </div>
+
+      <mat-option *ngFor="let tag of filterTags" [value]="{
+        name: tag.name,
+        colorCode: tag.colorCode,
+        pkId: tag.pkId
+      }">
+        <div class="tag-create">
+          <div class="color-picker">
+            <dx-colors [(ngModel)]="tag.colorCode" dx-colors-trigger (click)="$event.stopPropagation()"></dx-colors>
+          </div>
+          <p>{{ tag.name }}</p>
+        </div>
+      </mat-option>
+    </mat-autocomplete>
+    <span matSuffix>
+      <ng-content select="dx-suffix"></ng-content>
+    </span>
+    <mat-hint>
+      <ng-content select="dx-hint"> </ng-content>
+    </mat-hint>
+    <mat-error>
+      <ng-content select="dx-error"></ng-content>
+    </mat-error>
+  </mat-form-field>
+</div>

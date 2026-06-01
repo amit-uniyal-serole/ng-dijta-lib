@@ -1,0 +1,32 @@
+<label #labelRef class="upload-input" [tabIndex]="tabIndex" (keydown)="onKeyDown($event)" [@zoomAnimation]="zoomText"
+    (@zoomAnimation.done)="zoomAnimationDone($event)">
+
+    <ng-container
+        *ngTemplateOutlet="templateRef ? templateRef : defaultTemplate; context: templateContext"></ng-container>
+
+    <ng-template #defaultTemplate let-isFileDragDropAvailable="isFileDragDropAvailable">
+        <file-upload-drop-zone>
+            <ng-container *ngIf="isFileDragDropAvailable; else isNotDragDropAvailable">
+                <b>{{'Drag and drop' | transloco}}</b> {{'files' | transloco}}<br>{{'or click here' | transloco}}
+            </ng-container>
+            <ng-template #isNotDragDropAvailable>
+                <b>{{'Click here' | transloco}}</b> {{'to' | transloco}}<br> {{'choose a files' | transloco}}
+            </ng-template>
+        </file-upload-drop-zone>
+    </ng-template>
+
+    <input #inputRef type="file" class="files-input" tabindex="-1" multiple (change)="onInputChange($event)">
+</label>
+
+<div class="upload-list" *ngIf="(control.listVisibilityChanges | async) && control.size > 0 && listVisible"
+    [@insertAnimation]="control.size" (@insertAnimation.done)="animationListFinished($event)">
+    <ng-template ngFor let-file let-i="index" [ngForOf]="control.valueChanges | async" [ngForTrackBy]="trackByFn">
+        <ng-container
+            *ngTemplateOutlet="listItem ? listItem : defaultItemTemplate; context: { $implicit: file, file: file, index: i, control: control }"></ng-container>
+    </ng-template>
+
+    <ng-template #defaultItemTemplate let-i="index" let-file="file" let-control="control">
+        <file-upload-list-item [index]="i" [file]="file" [control]="control">{{'Remove' |
+            transloco}}</file-upload-list-item>
+    </ng-template>
+</div>

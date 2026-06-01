@@ -1,0 +1,27 @@
+<div class="uploader-wrapper">
+  <dx-awesome-uploader #uploader [uploadType]="uploadType" [fileMaxSize]="fileMaxSize" [enableCropper]="enableCropper"
+    [totalMaxSize]="totalMaxSize" [fileMaxCount]="fileMaxCount" [cropperOptions]="cropperOptions"
+    (fileRemoved)="onRemoveSuccess($event)" (fileAdded)="onFileAdded($event)" [adapterData]="adapterData"
+    [enableAutoUpload]="enableAutoUpload" [accept]="accept" [fileTypes]="fileTypes">
+    <div class="dropzoneTemplate h-100">
+      <div class="dx-image-upload-v1">
+        <div class="drag-drop-content">
+          <span class="material-icons-outlined">
+            cloud_upload
+          </span>
+          <p class="content body">Drag and Drop files to upload</p>
+          <p>Or</p>
+          <p class="content body">Browse files</p>
+        </div>
+      </div>
+    </div>
+    <ng-template #myItemTemplate let-fileItem="fileItem" let-uploadProgress="uploadProgress">
+      <p>File Size: {{ fileItem.file.size }}</p>
+      <p>File Name: {{ fileItem.fileName }}</p>
+      <p>Upload Progress: {{ uploadProgress }} %</p>
+      <button (click)="uploader.removeFile(fileItem)">Remove</button>
+    </ng-template>
+  </dx-awesome-uploader>
+
+
+</div>

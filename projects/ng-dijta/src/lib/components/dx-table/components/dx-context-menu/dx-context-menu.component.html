@@ -1,0 +1,27 @@
+<span *ngIf="setting?.label" [class]="setting?.class">{{setting?.label}}</span>
+<!-- <div class="d-flex cursor-pointer text-primary align-items-center" [matMenuTriggerFor]="showMenu" 
+  *ngIf="!isMenuOpen && setting?.dropDown?.list?.length>0">
+  <span class="material-icons-round" *ngIf="!isMenuOpen">
+    expand_more
+  </span>
+  <span>show {{setting?.dropDown?.label}}</span>
+</div> -->
+<ng-container *ngIf="!setting?.hide">
+  <div class="d-flex content-menu-cursor-pointer text-primary align-items-center" [matMenuTriggerFor]="showMenu"
+    (menuOpened)="toggleMenu()">
+    <span class="material-icons-round">
+      {{isMenuOpen?'expand_less':'expand_more'}}
+    </span>
+    <span class="content-menu-default-label">
+      <span *ngIf="setting?.dropDown?.defaultLabel">{{isMenuOpen?'Hide':'Show'}}&nbsp;</span>
+      <span *ngIf="setting?.dropDown?.label">{{setting?.dropDown?.label | transloco}}</span></span>
+  </div>
+  <mat-menu class="context-menu-panel" #showMenu="matMenu" yPosition="below" (closed)="toggleMenu()">
+    <ng-container *ngIf="!error && !isBusy">
+      <span class="context-menu-items" mat-menu-item *ngFor="let item of list"><span [matTooltip]="item?.label"
+          matTooltipPosition="after">{{item?.label | transloco}}</span></span>
+    </ng-container>
+    <span *ngIf="error && !isBusy">{{error}}</span>
+    <dx-skeleton-loader *ngIf="isBusy" appearance="line" [theme]="TextSkeleton"></dx-skeleton-loader>
+  </mat-menu>
+</ng-container>

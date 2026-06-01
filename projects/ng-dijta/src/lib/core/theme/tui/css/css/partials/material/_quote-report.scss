@@ -1,0 +1,8 @@
+@import "../../partials/variables";
+
+#quoteReport {
+  .mat-expansion-panel-body {
+    background-color: $quoteReportBackgroundColor;
+    border-bottom: 1px solid $quoteReportBottomborderColor;
+  }
+}

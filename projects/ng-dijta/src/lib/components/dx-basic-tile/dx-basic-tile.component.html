@@ -1,0 +1,7 @@
+<div class="tile-content" (click)="onBtnClick(tile)">
+  <div class="tile-body">
+    <dx-title [title]="tile?.titleTt" [icon]="tile?.applicationIcon"></dx-title>
+    <dx-content [content]="tile?.descriptionTt"></dx-content>
+  </div>
+  <dx-footer [tile]="tile"></dx-footer>
+</div>

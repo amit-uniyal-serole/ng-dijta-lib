@@ -1,0 +1,43 @@
+<div class="d-flex align-items-center justify-content-between mb-2">
+    <div>
+        <span class="fw-semibold">
+            {{content?.header?.title | transloco}}
+        </span>
+    </div>
+    <div>
+        <span *ngIf="content?.header?.actions?.length" [matMenuTriggerFor]="menu"
+            class="material-icons-outlined cursor-pointer">
+            more_horiz
+        </span>
+    </div>
+</div>
+<ng-container *ngFor="let data of content?.data">
+    <ng-container [ngSwitch]="type">
+        <!-- standard -->
+        <ng-container *ngSwitchCase="'standard'">
+            <dx-kanban-board-card [data]="data"></dx-kanban-board-card>
+        </ng-container>
+        <!-- default -->
+        <ng-container *ngSwitchDefault>
+            <dx-kanban-board-card [data]="data"></dx-kanban-board-card>
+        </ng-container>
+    </ng-container>
+</ng-container>
+<div class="d-flex align-items-center justify-content-between" *ngIf="content?.footer">
+    <div>{{content?.footer?.title | transloco}}</div>
+    <div>
+        <dx-card-content [content]="content?.footer?.content"></dx-card-content>
+    </div>
+</div>
+
+<!-- actions -->
+
+<mat-menu #menu="matMenu" class="action-menu-panel">
+    <ng-container *ngFor="let action of content?.header?.actions">
+        <button mat-menu-item class="kanban-action-button" (click)="onSelectAction(action?.type)">
+            <span [style.color]="action?.iconColor" *ngIf="action?.icon"
+                class="material-icons-outlined mx-2">{{action?.icon}}</span>
+            <span [style.color]="action?.textColor" class="subbody">{{action?.label | transloco}}</span>
+        </button>
+    </ng-container>
+</mat-menu>

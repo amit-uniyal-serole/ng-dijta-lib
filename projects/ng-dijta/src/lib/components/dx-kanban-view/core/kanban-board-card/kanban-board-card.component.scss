@@ -1,0 +1,24 @@
+.dx-kanban-card-label-value-wrapper {
+    display: flex;
+    min-height: 25px;
+    height: auto;
+    hyphens: auto;
+    align-items: center;
+
+    .dx-kanban-card-content-label {
+        flex: 0 0 30%;
+        min-width: 130px;
+        margin-right: 20px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #616e88 !important;
+    }
+
+    .dx-kanban-card-content-value {
+      font-size: 14px;
+      font-weight: 500;
+      color: #0B0F32;
+      margin-left: 5px;
+    }
+  }

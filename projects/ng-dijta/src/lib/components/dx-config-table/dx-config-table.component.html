@@ -1,0 +1,6 @@
+<dx-table
+*ngIf="tableConfig?.col" 
+[columns]="tableConfig?.col ?? []" [dataSource]="(data$) ?? []" 
+[setting]="tableConfig?.setting"   [pageSizeList]="tableConfig?.pageSizeList"
+(onPaginationClick)="onPaginationClick($event)" (onSort)="onSort($event)" (onClickTablePageSize)="onClickTablePageSize($event)"
+ (onFilterClick)="onClickHeaderActions($event)" (onAction)="onSelectAction($event)" (onCheckboxChange)="onClickCheckbox($event)"></dx-table>

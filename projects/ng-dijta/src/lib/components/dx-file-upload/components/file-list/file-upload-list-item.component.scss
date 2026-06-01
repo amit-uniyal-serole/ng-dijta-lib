@@ -1,0 +1,40 @@
+:host {
+    display: block;
+    font-size: 14px;
+    color: #646464;
+}
+
+:host:after {
+    clear: both;
+    content: "\0A0";
+    display: block;
+    height: 0;
+    line-height: 0;
+    visibility: hidden;
+    zoom: 1;
+}
+
+file-upload-icon {
+    float: left;
+    width: 30px;
+    height: 36px;
+    margin: 0 10px 0 0;
+}
+
+.file-info {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.remove-btn {
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.remove-btn svg {
+    display: inline-block;
+    vertical-align: -20%;
+    height: 18px;
+    width: 18px;
+}

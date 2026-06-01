@@ -1,0 +1,12 @@
+import { Injectable } from '@angular/core';
+import { ReplaySubject } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DxTimelineService {
+  check$ = new ReplaySubject(1);
+  markForCheck(): void {
+    this.check$.next(undefined);
+  }
+}

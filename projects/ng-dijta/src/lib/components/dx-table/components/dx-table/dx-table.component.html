@@ -1,0 +1,202 @@
+<dx-paginator *ngIf="setting" [showSeparator]="setting?.colArrange" [multiViewTable]="multiViewTable"
+  [pageSizeList]="pageSizeList" [setting]="setting" [pageSize]="setting?.pageSize" (onFilter)="onFilter($event)"
+  (onPagination)="onPagination($event)" (onClickViewSwitcher)="onClickViewSwitcher($event)"
+  (onClickPageSize)="onClickPageSize($event)" (onClickChangeView)="onClickChangeView($event)"
+  (onClickCreateCustomView)="clickCreateCustomView()" (onSubMenuClick)="onSubMenuClick($event)"
+  (onLeftDropDownSearch)="leftDropDownSearch($event)" (onMarkAsDefault)="onMarkAsDefault($event)" (activeTabChange)="activeTabChange.emit($event)">
+  <ng-container action-bar-items>
+    <button class="arrange-columns" matTooltip="Arrange Columns" matTooltipPosition="below"
+      *ngIf="setting?.colArrange && displayedColumns && displayedColumns?.length > 0" dx-column-sorter
+      [(columns)]="displayedColumns" [columnNames]="displayedColumnsNames" [saveName]="'example-table'">
+      <mat-icon>view_column</mat-icon>
+    </button>
+  </ng-container>
+</dx-paginator>
+
+<div *ngIf="type === 'canvas'; else noCanvasView">
+  <div
+    class="dx-table w-100 table-responsive"
+    [style.max-height.px]="tableHeight"
+    *ngFor="let data of dataSource; trackBy: trackByData"
+  >
+    <ng-template
+      [ngTemplateOutlet]="recordTemplateRef"
+      [ngTemplateOutletContext]="{ $implicit: data, columns: columns }"
+    ></ng-template>
+  </div>
+</div>
+
+<ng-template #noCanvasView>
+  <div class="dx-table table-responsive position-relative" [style.max-height.px]="tableHeight">
+    <ng-container>
+
+      <table *ngIf="displayedColumns && displayedColumns?.length > 0" aria-describedby="mydesc" mat-table #table
+        [dataSource]="dataSource" matSort cdkDropList cdkDropListOrientation="horizontal"
+        (cdkDropListDropped)="drop($event)" (matSortChange)="announceSortChange($event)" matTableResponsive
+        multiTemplateDataRows matSortDisableClear class="dx-table-drag-drop-container">
+        <ng-container *ngIf="setting?.rowArrange" matColumnDef="dragHandler">
+          <th scope="col" mat-header-cell class="flex-3" *matHeaderCellDef></th>
+          <td mat-cell class="flex-3" *matCellDef="let row">
+            <mat-icon *ngIf="!isBusy;else rowSelect" style="pointer-events: all;" cdkDragHandle>drag_indicator
+            </mat-icon>
+          </td>
+          <ng-container>
+            <td mat-footer-cell *matFooterCellDef>
+            </td>
+          </ng-container>
+        </ng-container>
+
+        <!-- radio Column -->
+        <ng-container *ngIf="setting?.singleRowSelect" matColumnDef="radio" [sticky]="true">
+          <th scope="col" mat-header-cell class="flex-3" *matHeaderCellDef [style.width]="'50px'">
+          </th>
+          <td mat-cell class="flex-3" *matCellDef="let row" [style.width]="'50px'">
+            <mat-radio-button (change)="clickedRows?.toggle(row)" [disabled]="row?.multiRadioButton?.disable"
+              [checked]="clickedRows.isSelected(row) && (setting?.singleRowSelect)"></mat-radio-button>
+          </td>
+          <ng-container>
+            <td mat-footer-cell *matFooterCellDef>
+            </td>
+          </ng-container>
+        </ng-container>
+
+
+        <!-- Checkbox Column -->
+        <ng-container *ngIf="setting?.multiSelect" matColumnDef="select" [sticky]="true">
+          <th scope="col" mat-header-cell class="flex-3" *matHeaderCellDef [style.width]="'50px'">
+
+            <ng-container *ngIf="setting?.multiSelectWithLabel;else multiSelectWithLabel">
+              <p class="custom-font-family mb-0 subtitle table-header-text ">{{setting?.multiSelectWithLabel |
+                transloco}}
+              </p>
+            </ng-container>
+            <ng-template #multiSelectWithLabel>
+              <mat-checkbox (change)="$event ? masterToggle() : null"
+                [checked]="selection.hasValue() && isAllSelected()"
+                [indeterminate]="selection.hasValue() && !isAllSelected()">
+              </mat-checkbox>
+            </ng-template>
+
+          </th>
+          <td mat-cell class="flex-3" *matCellDef="let row" [style.width]="'50px'">
+            <mat-checkbox *ngIf="!isBusy;else checkboxLoader" (click)="$event.stopPropagation()"
+              (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+              [disabled]="row?.multiCheckbox?.disable" dx-tooltip [dxTooltipTitle]="row?.multiCheckbox?.message">
+            </mat-checkbox>
+          </td>
+          <ng-container>
+            <td mat-footer-cell *matFooterCellDef>
+            </td>
+          </ng-container>
+        </ng-container>
+
+
+        <ng-container *ngFor="let col of columns;let i = index" [matColumnDef]="col?.columnDef"
+          [sticky]="col.sticky === 'start' ? true : false"
+          [stickyEnd]="col.type === 'action' || col.type === 'menu' || col.type === 'flat-action' || col.sticky === 'end'">
+          <th [class.avatar-width]="col?.noSpace" scope="col" mat-header-cell mat-header-cell *matHeaderCellDef
+            mat-sort-header [resizeColumn]="setting?.resize" [index]="i" [disabled]="!col?.sortable">
+            <p class="custom-font-family mb-0 subtitle table-header-text">{{col?.title | transloco}}</p>
+          </th>
+          <td mat-cell mat-cell *matCellDef="let element" [attr.data-label]="col?.title | transloco"
+            [class.avatar-width]="col?.noSpace" [style.width]="col.width ?? '150px'">
+            <dx-table-field-wrapper *ngIf="element" [isBusy]="isBusy" [column]="col" [source]="element"
+              [expandData]="expandedElement" (onExpand)="onTableExpand($event)" (onEventChange)="eventChange($event)"
+              (onToggleEventChange)="onToggleChange($event)" (onAction)="action($event)"
+              (onMenuAction)="onMenuAction($event)" (onEditRowAction)="onEditRowAction($event)"
+              (onClickLookupLink)="onLookupLink($event)" (onRowIconClick)="onRowIconClick($event)">
+            </dx-table-field-wrapper>
+          </td>
+          <td mat-footer-cell *matFooterCellDef>
+            <span *ngIf="col?.footer?.title">{{col?.footer?.title | transloco}}</span>
+
+            <span *ngIf="col?.footer?.showAsFooterValue">
+
+              <dx-table-currency *ngIf="col?.type==='currency';else showAsText" [data]="getTotal(col?.columnDef)"
+                [setting]="col?.setting?.currency" [column]="col">
+              </dx-table-currency>
+              <ng-template #showAsText>
+                <p class="custom-font-family"> {{getTotal(col?.columnDef) | transloco}}</p>
+              </ng-template>
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="expandedDetail">
+          <td mat-cell class="expanded-row" *matCellDef="let detail" [attr.colspan]="displayedColumns?.length">
+            <div class="w-100">
+              <ng-template [ngTemplateOutlet]="templateRef"></ng-template>
+            </div>
+          </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <!-- Overlay row for disabled rows -->
+        <tr [ngClass]="row?.disableRow?.isDisabled && !isBusy ? 'dx-table-overlay-row  show-overlay': 'd-none'" mat-row
+          *matRowDef="let row; columns: ['overlay']">
+        </tr>
+
+
+        <tr class="table-row" mat-row matRipple *matRowDef="let row; columns: displayedColumns;" cdkDrag
+          [cdkDragDisabled]="!setting?.rowArrange" [ngClass]="{
+          hovered: row.hovered && (setting?.singleRowSelect || setting?.multiRowSelect),
+          highlighted: clickedRows.isSelected(row) && (setting?.multiRowSelect),
+          highlightRowBg: row?.styleTableRowBg?.isHighLightRow}" (mouseover)="row.hovered = true"
+          (mouseout)="row.hovered = false" [cdkDragData]="row" cdkDragLockAxis="y"
+          cdkDragBoundary=".dx-table-drag-drop-container"
+          [class.disabled]="row?.multiCheckbox?.disable || row?.multiRadioButton?.disable"
+          [class.enable-row-click]="setting?.enableRowClick" (click)="onRowClick(row)">
+        </tr>
+        <!-- Overlay column for disabled rows -->
+        <ng-container matColumnDef="overlay">
+          <div mat-cell class="d-flex w-100 justify-content-between" *matCellDef="let element">
+            <span class="body fw-semibold">
+              {{element?.disableRow?.msgPrefix}} | {{element?.disableRow?.message}}
+            </span>
+            <button class="btn-change me-3" (click)="onClickOverlayButtonAction(element)">
+              {{element?.disableRow?.buttonTitle}}
+            </button>
+          </div>
+        </ng-container>
+
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']"
+          [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'" style="overflow: hidden">
+        </tr>
+        <ng-container *ngIf="footerColumns&&footerColumns?.length > 0">
+          <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+        </ng-container>
+      </table>
+    </ng-container>
+    <div *ngIf="(!dataSource || dataSource?.length === 0)">
+      <dx-table-skeleton *ngIf="isBusy" [loaderPageSize]="setting?.pageSize" [isAvatar]="isAvatar"
+        [isRowArrange]="setting?.rowArrange" [isMultiCheckbox]="setting?.multiSelect">
+      </dx-table-skeleton>
+    </div>
+    <div>
+      <ng-content select="table-content"></ng-content>
+      <ng-container *ngIf="(!dataSource || dataSource?.length === 0) && showDefaultEmptyContent && !isBusy">
+        <div class="dx-table-empty" *ngIf="!dxEmptyTemplate;else emptyContent">
+          <dx-empty></dx-empty>
+        </div>
+      </ng-container>
+
+      <ng-template #emptyContent>
+        <ng-container *dxStringTemplateOutlet="dxEmptyTemplate">
+          {{ isContentString ? dxNotFoundContent : ('No Data' | transloco) }}
+        </ng-container>
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- Skeleton Loader's -->
+  <ng-template #checkboxLoader>
+    <dx-skeleton-loader [theme]="checkBoxLoader"></dx-skeleton-loader>
+  </ng-template>
+
+  <ng-template #rowSelect>
+    <dx-skeleton-loader [theme]="rowSelectLoader"></dx-skeleton-loader>
+  </ng-template>
+</ng-template>
+
+<!--  -->

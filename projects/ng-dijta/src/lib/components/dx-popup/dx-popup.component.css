@@ -1,0 +1,8 @@
+mat-dialog-content {
+  border-bottom: none !important;
+  padding: 0 0 0 6px !important;
+}
+
+.ordered-list {
+  list-style-type: decimal; /* same as type="1" */
+}

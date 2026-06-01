@@ -1,0 +1,33 @@
+<div class="d-flex content-menu-cursor-pointer  align-items-center cursor-pointer">
+  <span (menuOpened)="toggleMenu()" class="material-icons expand-less-more-icons" *ngIf="isEditable"
+    [matMenuTriggerFor]="showMenu">
+    {{isMenuOpen?'expand_less':'expand_more'}}
+  </span>
+  <div class="inline-dropdown-default-label">
+    <span [matTooltip]="input" matTooltipPosition="below">
+      <input [(ngModel)]="input" (ngModelChange)="onChange($event)" (change)="change()" (blur)="onTouch()">
+    </span>
+  </div>
+
+</div>
+<mat-menu class="inline-dropdown-menu-panel" #showMenu="matMenu" yPosition="below" (closed)="toggleMenu()">
+  <ng-container *ngIf="!isBusy && list?.length>0">
+    <div *ngFor="let item of list" [matTooltip]="item?.valueTt" matTooltipPosition="after"
+      class="inline-dropdown-overflow-text">
+      <button (click)="onClickMenuItem(item);onChange(item?.keyTt)" class="context-menu-items" mat-menu-item><span>
+          <span>{{item?.valueTt | transloco}}</span></span>
+      </button>
+    </div>
+  </ng-container>
+  <span *ngIf="error && !isBusy && !list?.length" class="inline-dropdown-error body">
+    <span class="material-icons-outlined inline-dropdown-error-icon" matTooltip="Error">
+      error_outline
+    </span>
+    <span class="fw-medium">{{error | transloco}}</span>
+  </span>
+  <ng-container *ngIf="isBusy && !list?.length">
+    <ng-container *ngFor="let skel of [1,2,3]">
+      <dx-skeleton-loader appearance="line" [theme]="TextSkeleton"></dx-skeleton-loader>
+    </ng-container>
+  </ng-container>
+</mat-menu>

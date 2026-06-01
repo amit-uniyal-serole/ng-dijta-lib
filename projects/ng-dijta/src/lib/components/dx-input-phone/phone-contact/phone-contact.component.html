@@ -1,0 +1,42 @@
+<div class="dx-mat-tel-input-container d-flex">
+  <button type="button" mat-button [matMenuTriggerFor]="!hideSelection ? menu : undefined" class="country-selector"
+    [disabled]="disabled || readonly" (click)="countryBtn()">
+    <span class="country-selector-flag flag" [ngClass]="selectedCountry?.flagClass"></span>
+    <span class="country-selector-code" *ngIf="selectedCountry?.dialCode">+{{ selectedCountry.dialCode }}</span>
+  </button>
+  <mat-menu #menu="matMenu" class="dx-mat-tel-input-mat-menu-panel" backdropClass="dx-mat-tel-input-overlay-backdrop"
+    overlayPanelClass="dx-mat-tel-input-overlay-pane">
+    <input *ngIf="enableSearch" class="country-search" [(ngModel)]="searchCriteria" type="text"
+      [placeholder]="searchPlaceholder" (click)="$event.stopPropagation()" />
+    <ng-container *ngIf="!searchCriteria">
+      <button type="button" mat-menu-item class="country-list-button"
+        *ngFor="let country of preferredCountriesInDropDown" (click)="onCountrySelect(country, focusable)">
+        <div class="icon-wrapper">
+          <div class="flag" [ngClass]="country.flagClass"></div>
+        </div>
+        <div class="label-wrapper">
+          {{ country.name | transloco }}
+          <span *ngIf="country?.dialCode">+{{ country.dialCode }}</span>
+        </div>
+      </button>
+      <mat-divider *ngIf="preferredCountriesInDropDown?.length"></mat-divider>
+    </ng-container>
+    <ng-container *ngFor="let country of allCountries">
+      <button type="button" mat-menu-item class="country-list-button" *ngIf="country | search: searchCriteria"
+        (click)="onCountrySelect(country, focusable)">
+        <div class="icon-wrapper">
+          <div class="flag" [ngClass]="country.flagClass"></div>
+        </div>
+        <div class="label-wrapper">
+          {{ country.name }} +{{ country.dialCode }}
+        </div>
+      </button>
+    </ng-container>
+  </mat-menu>
+
+  <input [tabIndex]="tabIndex" matInput type="tel" autocomplete="tel" [id]="id" [ngClass]="cssClass" (blur)="onTouched()"
+    (keypress)="onInputKeyPress($event)" (copy)="onInputKeyPress($event)" (paste)="onPhoneNumberChange()"
+    [(ngModel)]="phoneNumber" (ngModelChange)="onPhoneNumberChange()" [errorStateMatcher]="errorStateMatcher"
+    [placeholder]="enablePlaceholder ? selectedCountry?.placeHolder : ''" [disabled]="disabled"
+    [aria-describedby]="describedBy" #focusable [readonly]="readonly" autocomplete="off" />
+</div>

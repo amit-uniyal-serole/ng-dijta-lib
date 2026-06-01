@@ -1,0 +1,220 @@
+<div class="dx-drop{{ popDirection === 'bottom' ? 'down' : 'up' }} 
+  {{ size ? 'dx-select-' + size : '' }} 
+  dx-dropdown-origin" [ngClass]="{
+    'dx-select-underlined-border': overview === 'underlined',
+    disabled: disabled,
+    open: isOpen,
+    'dx-gray-style': overview !== 'underlined' && styleType === 'gray'
+  }" #selectWrapper>
+  <div #selectBox class="dx-form-group dx-has-feedback" (click)="toggle()" (focus)="autoToggle($event)" [tabindex]="0"
+    (keydown.esc)="onEscKeyup($event)" (keydown.ArrowUp)="handleKeyUpEvent($event)"
+    (keydown.ArrowDown)="handleKeyDownEvent($event)" (keydown.enter)="handleKeyEnterEvent($event)">
+    <input #selectInput [placeholder]="placeholder" [disabled]="disabled"
+      [ngClass]="[size ? 'dx-select-input-' + size : '']" type="text" class="dx-form-control dx-select-input dx-input"
+      [minLength]="0" autocomplete="off" [tabindex]="-1" [readonly]="readonly" [value]="_inputValue || ''" *ngIf="
+        !(extraConfig?.labelization?.enable && multiple) &&
+        !(!extraConfig?.labelization?.enable && extraConfig?.selectedItemWithTemplate?.enable && (inputItemTemplate || itemTemplate))
+      " />
+    <div #selectInputWithTemplate
+      class="dx-select-list-wrapper dx-form-control {{ size ? 'dx-select-input-' + size : '' }}"
+      *ngIf="extraConfig?.selectedItemWithTemplate?.enable && (inputItemTemplate || itemTemplate) && !extraConfig?.labelization?.enable">
+      <div class="dx-select-placeholder" *ngIf="!_inputValue">
+        {{ placeholder }}
+      </div>
+      <div class="dx-select-selected-item-with-template" *ngIf="_inputValue">
+        <ng-template [ngTemplateOutlet]="inputItemTemplate || itemTemplate" [ngTemplateOutletContext]="{
+            option: value,
+            filterKey: filterKey,
+            position: 'result',
+            inputValue: _inputValue
+          }">
+        </ng-template>
+      </div>
+    </div>
+
+    <div #selectInputWithLabel
+      class="dx-select-list-wrapper dx-form-control {{ size ? 'dx-select-input-' + size : '' }}"
+      *ngIf="extraConfig?.labelization?.enable && multiple">
+      <div class="dx-select-placeholder" *ngIf="multiItems.length === 0">
+        {{ placeholder }}
+      </div>
+      <ul *ngIf="multiItems.length > 0" class="dx-select-tag-list {{ extraConfig?.labelization?.overflow }}"
+        [style.maxHeight]="extraConfig?.labelization?.containerMaxHeight || extraConfig?.labelization?.containnerMaxHeight">
+        <li class="dx-select-tag-item"
+          *ngFor="let item of showMoreTags ? [multiItems[0]] : multiItems; let index = index; trackBy: trackByOptionPointer"
+          [style.maxWidth]="extraConfig?.labelization?.labelMaxWidth" [ngClass]="{
+            disabled: optionDisabledKey && item.option[optionDisabledKey]
+          }">
+          <d-tag [deletable]="!(disabled || (optionDisabledKey && item.option[optionDisabledKey]))" [maxWidth]="'100%'"
+            [tag]="valueParser(item.option)" (tagDelete)="removeItem(item, $event?.event)"></d-tag>
+        </li>
+        <li *ngIf="showMoreTags" class="dx-select-tag-item">
+          <d-tag [tag]="moreTagsNum"></d-tag>
+        </li>
+      </ul>
+    </div>
+
+    <span class="dx-form-control-feedback dx-input-group-addon" [ngClass]="{ 'dx-clear-icon-show': isClearIconShow }">
+      <span class="dx-select-clear-icon" (mousedown)="$event.preventDefault()" (click)="valueClear($event)"> </span>
+      <span class="dx-select-chevron-icon" [ngClass]="{ 'dx-select-chevron-icon-animation': showAnimation }">
+        <svg width="1em" height="1em" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink">
+          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <path
+              d="M12.1464466,6.85355339 L8.35355339,10.6464466 C8.15829124,10.8417088 7.84170876,10.8417088 7.64644661,10.6464466 L3.85355339,6.85355339 C3.65829124,6.65829124 3.65829124,6.34170876 3.85355339,6.14644661 C3.94732158,6.05267842 4.07449854,6 4.20710678,6 L11.7928932,6 C12.0690356,6 12.2928932,6.22385763 12.2928932,6.5 C12.2928932,6.63260824 12.2402148,6.7597852 12.1464466,6.85355339 Z"
+              fill-rule="nonzero"></path>
+          </g>
+        </svg>
+      </span>
+    </span>
+  </div>
+  <ng-container *ngIf="appendToBody">
+    <ng-template cdk-connected-overlay [cdkConnectedOverlayOrigin]="cdkConnectedOverlayOrigin"
+      [cdkConnectedOverlayWidth]="dropDownWidth" [cdkConnectedOverlayOpen]="isOpen"
+      [cdkConnectedOverlayPositions]="overlayPositions" [cdkConnectedOverlayScrollStrategy]="scrollStrategy"
+      (positionChange)="onPositionChange($event)" (backdropClick)="isOpen = false"
+      (detach)="isOpen && (isOpen = false)">
+      <ng-template [ngTemplateOutlet]="selectDropdownTpl"></ng-template>
+    </ng-template>
+  </ng-container>
+  <ng-container *ngIf="!appendToBody">
+    <ng-template [ngTemplateOutlet]="selectDropdownTpl"></ng-template>
+  </ng-container>
+</div>
+
+<ng-template #selectDropdownTpl>
+  <div #selectMenu class="dx-dropdown-menu" [ngClass]="{
+      'dx-dropdown-menu-cdk': appendToBody,
+      'dx-custom-right': customViewTemplate && customViewDirection === 'right',
+      'dx-custom-left': customViewTemplate && customViewDirection === 'left',
+      'dx-custom-top': customViewTemplate && customViewDirection === 'top',
+      'dx-dropdown-menu-multiple': multiple
+    }" [@fadeInOut]="isOpen && startAnimation ? (appendToBody ? menuPosition : popDirection) : 'void'"
+    (@fadeInOut.done)="animationEnd($event)" [@.disabled]="!showAnimation">
+    <ul dLoading [showLoading]="showLoading" positionType="relative" [message]="i18nCommonText?.loading"
+      [loadingTemplateRef]="loadingTemplateRef" [backdrop]="true"
+      class="dx-dropdown-menu-wrap {{ size ? 'dx-dropdown-menu-' + size : '' }}"
+      (click)="$event.stopPropagation(); $event.preventDefault()">
+      <li [style.display]="isSearch ? 'block' : 'none'">
+        <div class="dx-form-group dx-has-feedback" [style.margin]="'0'">
+          <input #filterInput [ngClass]="[size ? 'dx-select-input-' + size : '', filter ? 'dx-search-filter' : '']"
+            name="select" type="text" [(ngModel)]="filter" autocomplete="off" [placeholder]="searchPlaceholder"
+            class="dx-form-control dx-select-search dx-select-input" (keydown.ArrowUp)="handleKeyUpEvent($event)"
+            (keydown.ArrowDown)="handleKeyDownEvent($event)" (keydown.enter)="handleKeyEnterEvent($event, true)"
+            (keydown.esc)="onEscKeyup($event)" />
+          <span class="dx-form-control-feedback">
+            <svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-icon-search" style="vertical-align: middle">
+              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <g transform="translate(-1.000000, -1.000000)">
+                  <path
+                    d="M7.30811922,1 C10.7919973,1 13.6162384,3.82424117 13.6162384,7.30811922 C13.6162384,8.72507634 13.149053,10.0329164 12.3603151,11.0860065 L14.7360564,13.4616238 C15.0879812,13.8135487 15.0879812,14.3841316 14.7360564,14.7360564 C14.3841316,15.0879812 13.8135487,15.0879812 13.4616238,14.7360564 L11.0860065,12.3603151 C10.0329164,13.149053 8.72507634,13.6162384 7.30811922,13.6162384 C3.82424117,13.6162384 1,10.7919973 1,7.30811922 C1,3.82424117 3.82424117,1 7.30811922,1 Z M7.31,2.51 C4.6590332,2.51 2.51,4.6590332 2.51,7.31 C2.51,9.9609668 4.6590332,12.11 7.31,12.11 C9.9609668,12.11 12.11,9.9609668 12.11,7.31 C12.11,4.6590332 9.9609668,2.51 7.31,2.51 Z"
+                    fill-rule="nonzero"></path>
+                </g>
+              </g>
+            </svg>
+          </span>
+          <span #clearIcon class="dx-form-control-feedback dx-search-clear"
+            [ngClass]="size ? 'dx-search-clear-' + size : ''" (click)="clearText()" *ngIf="filter">
+            <svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink">
+              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <path
+                  d="M8,1 C11.8659932,1 15,4.13400675 15,8 C15,11.8659932 11.8659932,15 8,15 C4.13400675,15 1,11.8659932 1,8 C1,4.13400675 4.13400675,1 8,1 Z M5.87867966,5.17157288 C5.68341751,4.97631073 5.36683502,4.97631073 5.17157288,5.17157288 C4.99800652,5.34513923 4.97872137,5.61456363 5.11371742,5.80943177 L5.17157288,5.87867966 L7.29218611,7.99929289 L5.17157288,10.1213203 C4.97631073,10.3165825 4.97631073,10.633165 5.17157288,10.8284271 C5.34513923,11.0019935 5.61456363,11.0212786 5.80943177,10.8862826 L5.87867966,10.8284271 L7.99929289,8.70639967 L10.1213203,10.8284271 C10.3165825,11.0236893 10.633165,11.0236893 10.8284271,10.8284271 C11.0019935,10.6548608 11.0212786,10.3854364 10.8862826,10.1905682 L10.8284271,10.1213203 L8.70710678,8 L10.8284271,5.87867966 C11.0236893,5.68341751 11.0236893,5.36683502 10.8284271,5.17157288 C10.6548608,4.99800652 10.3854364,4.97872137 10.1905682,5.11371742 L10.1213203,5.17157288 L8,7.29289322 L5.87867966,5.17157288 Z"
+                  fill-rule="nonzero"></path>
+              </g>
+            </svg>
+          </span>
+        </div>
+      </li>
+      <ul *ngIf="!virtualScroll || enableLazyLoad; else scrollViewTpl" class="dx-select-list-unstyled dx-scrollbar"
+        dLazyLoad [enableLazyLoad]="enableLazyLoad" (loadMore)="loadMoreEvent($event)"
+        [ngStyle]="{ 'max-height': scrollHight, width: '100%' }" #dropdownUl>
+        <ng-template [ngTemplateOutlet]="selectAllTpl"></ng-template>
+        <ng-container *ngFor="let item of availableOptions; let index = index; trackBy: trackByFn">
+          <ng-template [ngTemplateOutlet]="dropdownItemTpl"
+            [ngTemplateOutletContext]="{ item: item, index: index }"></ng-template>
+        </ng-container>
+      </ul>
+      <div *ngIf="availableOptions?.length === 0 && !noResultItemTemplate && !this.showLoading" class="dx-no-data-tip">
+        <span>{{ filter ? i18nCommonText?.noRecordsFound : i18nCommonText?.noData }}</span>
+      </div>
+      <div *ngIf="availableOptions?.length === 0 && noResultItemTemplate && !this.showLoading" class="dx-no-data-tip">
+        <ng-template [ngTemplateOutlet]="noResultItemTemplate"
+          [ngTemplateOutletContext]="{ options: options }"></ng-template>
+      </div>
+    </ul>
+    <ng-container *ngIf="customViewTemplate">
+      <div class="dx-select-custom-area">
+        <ng-template [ngTemplateOutlet]="customViewTemplate"
+          [ngTemplateOutletContext]="{ $implicit: this, choose: choose }"></ng-template>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>
+
+
+<ng-template #scrollViewTpl>
+  <cdk-virtual-scroll-viewport *ngIf="availableOptions?.length > 0" [ngStyle]="{
+      height: getVirtualScrollHeight(availableOptions?.length, size),
+      width: '100%',
+      'max-height': scrollHight,
+      'min-height': availableOptions?.length === 0 ? '46px' : showSelectAll ? '100px' : '60px'
+    }" [itemSize]="realVirtualScrollItemSize" [minBufferPx]="minBuffer" [maxBufferPx]="maxBuffer"
+    class="viewport-wrapper dx-select-list-unstyled dx-scrollbar" #dropdownUl>
+    <ng-template [ngTemplateOutlet]="selectAllTpl"></ng-template>
+    <ng-container *cdkVirtualFor="let item of availableOptions; let index = index; trackBy: trackByFn">
+      <ng-template [ngTemplateOutlet]="dropdownItemTpl"
+        [ngTemplateOutletContext]="{ item: item, index: index }"></ng-template>
+    </ng-container>
+  </cdk-virtual-scroll-viewport>
+</ng-template>
+
+
+<ng-template #selectAllTpl>
+  <li class="dx-dropdown-item" *ngIf="showSelectAll" (click)="selectAll()">
+    <span>
+      <d-checkbox [label]="i18nCommonText.checkAll" [isShowTitle]="false" [halfchecked]="halfChecked"
+        [(ngModel)]="allChecked"></d-checkbox>
+    </span>
+  </li>
+</ng-template>
+
+
+<ng-template #dropdownItemTpl let-item="item" let-index="index">
+  <li [title]="!showItemTitle && (inputItemTemplate || itemTemplate) ? '' : formatter(item.option)" [ngClass]="[
+      'dx-dropdown-item',
+      item.isChecked ? highlightItemClass : '',
+      selectIndex === index && item.id !== activeIndex ? 'selected' : '',
+      optionDisabledKey && item.option[optionDisabledKey] ? 'disabled' : ''
+    ]" (click)="choose(item.option, item.id, $event)">
+    <ng-template [ngTemplateOutlet]="inputItemTemplate || itemTemplate || (multiple ? checkBoxItem : defaultItem)"
+      [ngTemplateOutletContext]="
+        multiple
+          ? {
+              option: item.option,
+              checked: item.isChecked,
+              filterKey: filterKey,
+              position: 'list',
+              template: checkBoxItem
+            }
+          : {
+              option: item.option,
+              filterKey: filterKey,
+              position: 'list',
+              template: defaultItem
+            }
+      ">
+    </ng-template>
+  </li>
+</ng-template>
+
+<ng-template #defaultItem let-option="option">
+  {{ formatter(option) }}
+</ng-template>
+
+<ng-template #checkBoxItem let-option="option" let-checked="checked">
+  <d-checkbox [color]="color" [label]="formatter(option)" [cssClass]="'dx-select-checkbox'" [ngModel]="checked"
+    [disabled]="option[optionDisabledKey]">
+  </d-checkbox>
+</ng-template>

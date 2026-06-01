@@ -1,0 +1,106 @@
+<div class="dx-canvas">
+    <div class="dx-canvas-view">
+        <dx-paginator *ngIf="canvasSetting" [multiViewTable]="multiViewTable" [setting]="canvasSetting"
+            (onFilter)="onClickHeaderAction($event)" (onPagination)="onPagination($event)"
+            (masterToggle)="masterToggle()" [selection]="selection" [isAllSelected]="isAllSelected()"
+            (onClickChangeView)="onClickCanvasView($event)" (onClickViewSwitcher)="onClickViewSwitcher($event)"
+            (onClickPageSize)="onClickPageSize($event)">
+        </dx-paginator>
+        <ng-container *ngIf=" canvasDataSource && canvasDataSource?.length>0">
+            <ng-container *ngFor="let data of canvasDataSource;let i=index;">
+                <div class="dx-canvas-card-wrapper" [class.sticky-canvas-card]="data?.card?.isSticky">
+                    <div class="dx-canvas-card">
+                        <div class="canvas-flex">
+                            <div class="canvas-checkbox" *ngIf="canvasSetting?.paginatorMultiSelect">
+                                <mat-checkbox (click)="$event?.stopPropagation()"
+                                    (change)="$event ? selection?.toggle(data) : null"
+                                    [checked]="selection?.isSelected(data)">
+                                </mat-checkbox>
+                            </div>
+                            <div class="left-section" [class]="data?.card?.left?.class"
+                                *ngIf="data?.card?.left?.avatar?.src || data?.card?.left?.avatar?.avatarName">
+                                <ndx-avatar [avatarSettings]=" canvasSetting?.leftSectionAvatar"
+                                    [name]="data?.card?.left?.avatar?.avatarName" [src]="data?.card?.left?.avatar?.src"
+                                    [avatarStatus]="data?.card?.left?.avatar?.statusSetting">
+                                </ndx-avatar>
+                            </div>
+                            <div class="center-content-area">
+                                <div class="main-title">
+                                    <div [class.title-wrapper]="data?.card?.center?.subTitle?.align == 'right'">
+                                        <div class="d-flex align-items-center">
+                                            <span *ngIf="data?.card?.center?.title">{{data?.card?.center?.title |
+                                                transloco}}</span>
+                                            <ng-container
+                                                *ngIf="data?.card?.center?.subTitle?.align === 'bottom' || !data?.card?.center?.subTitle?.align">
+                                                <span class="badge title-badge"
+                                                    *ngIf="data?.card?.center?.badge">{{data?.card?.center?.badge}}</span>
+                                            </ng-container>
+                                        </div>
+
+                                        <div class="subtitle" *ngIf="data?.card?.center?.subTitle?.valueTt">
+                                            {{data?.card?.center?.subTitle?.valueTt | transloco}}
+                                        </div>
+                                    </div>
+                                    <ng-container *ngIf="data?.card?.center?.subTitle?.align === 'right'">
+                                        <span class="badge title-badge"
+                                            *ngIf="data?.card?.center?.badge">{{data?.card?.center?.badge}}</span>
+                                    </ng-container>
+                                </div>
+                                <dx-canvas-layout-wrapper [canvasViewType]="canvasViewType"
+                                    [content]="data?.card?.center">
+                                </dx-canvas-layout-wrapper>
+                            </div>
+                            <div class="canvas-right-section">
+                                <div class="sticky-toggle" [matTooltip]="'Pin to top'" matTooltipPosition="above"
+                                    *ngIf="canvasSetting?.toggleStickySettings">
+                                    <span
+                                        [@rotatedState]="data?.card?.isSticky && state === 'default' ? 'rotated' : 'default'"
+                                        class="material-icons-outlined"
+                                        [ngClass]="{'selected-card':data?.card?.isSticky}"
+                                        (click)="onSliderToggle(data?.card?.isSticky,data)">
+                                        push_pin
+                                    </span>
+                                </div>
+                                <div class="d-flex  mb-2" *ngIf="data?.card?.right?.title">
+                                    <div class="canvas-right-title"
+                                        [ngStyle]="setColor(data?.card?.right?.title?.color)">
+                                        <dx-canvas-field-wrapper [data]="data?.card?.right?.title">
+                                        </dx-canvas-field-wrapper>
+                                    </div>
+                                </div>
+                                <div class="canvas-right-body">
+                                    <div class="right-body-wrapper">
+                                        <div class="right-body-avatar" *ngIf="data?.card?.right?.body?.avatar">
+                                            <ndx-avatar [avatarSettings]="canvasSetting?.rightSectionAvatar"
+                                                [name]="data?.card?.right?.body?.avatar?.avatarName"
+                                                [src]="data?.card?.right?.body?.avatar?.src"
+                                                [avatarStatus]="data?.card?.right?.body?.avatar?.statusSetting">
+                                            </ndx-avatar>
+                                        </div>
+                                        <div>
+                                            <div class="canvas-right-content" *ngIf="data?.card?.right?.body?.content">
+                                                {{data?.card?.right?.body?.content | transloco}}
+                                            </div>
+                                            <div class="canvas-right-footer">
+                                                <span class="material-icons"
+                                                    *ngIf="data?.card?.right?.body?.footer?.icon">{{data?.card?.right?.body?.footer?.icon}}</span>
+                                                <dx-canvas-field-wrapper [data]="data?.card?.right?.body?.footer">
+                                                </dx-canvas-field-wrapper>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="right-section-action">
+                                        <dx-action [data]="data?.card" [columns]="cardActions"
+                                            (onExternalAction)="onActionClick($event)">
+                                        </dx-action>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+</div>

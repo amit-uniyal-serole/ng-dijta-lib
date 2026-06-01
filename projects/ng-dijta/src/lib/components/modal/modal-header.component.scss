@@ -1,0 +1,82 @@
+// @import '../style/theme/color';
+// @import '../style/core/_font';
+
+.modal-header {
+  padding: 20px 20px 0 20px;
+  position: relative;
+  border: none; // 覆盖bootStrap默认样式
+
+  .standard-title {
+    height: 26px;
+    line-height: 26px;
+    color: #252b3a;
+    letter-spacing: 0;
+    font-size:18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &.no-title {
+    height: 0;
+    padding: 0;
+
+    .standard-title {
+      display: none;
+    }
+  }
+}
+
+.header-alert-icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 8px;
+  width: 24px;
+  height: 24px;
+  line-height: 16px;
+  text-align: center;
+
+  .dx-icon {
+    width: 24px;
+    height: 24px;
+
+    circle,
+    polygon {
+      fill: #ffffff;
+    }
+
+    &.dx-icon-success path {
+      fill: #3ac295;
+    }
+
+    &.dx-icon-warning path {
+      fill: #fa9841;
+    }
+
+    &.dx-icon-info path {
+      fill: #5e7ce0;
+    }
+
+    &.dx-icon-error path {
+      fill: #f66f6a;
+    }
+  }
+}
+
+.title-text {
+  font-size: 18px;
+  font-weight: bold;
+  vertical-align: middle;
+}
+
+.modal-header-close {
+  position: absolute;
+  right: 20px;
+  top: 18px;
+}
+
+.modal-header-maximized {
+  position: absolute;
+  right: 56px;
+  top: 18px;
+}

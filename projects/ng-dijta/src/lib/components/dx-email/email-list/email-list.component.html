@@ -1,0 +1,28 @@
+<div id="emaiList" class="email-list-wrapper">
+  <div class="list-topbar">
+    <div class="icon-label-wrapper"><span class="material-icons-round menu-icon" (click)="onClickToggleMenu()">
+        menu
+      </span><span>{{title}}</span></div>
+    <div>
+      <mat-paginator [length]="100" [pageSize]="10">
+      </mat-paginator>
+    </div>
+  </div>
+
+  <div class="email-list-items" *ngIf="emailsList && emailsList.length>0">
+    <div class="email-items" *ngFor="let email of emailsList;let i=index" (click)="onClickEmail(email)">
+      <div class="email-header">
+        <div class="email-title icon-label-wrapper">{{email?.from?.name}} &nbsp;<span *ngIf="email?.isImportant"
+            class="material-icons-outlined imp-mail-icon">
+            error_outline
+          </span></div>
+        <div class="email-date">{{email?.date | date:'mediumDate'}}</div>
+      </div>
+      <div class="email-subject">
+        {{email?.subject? email?.subject: "(no subject)" }}
+      </div>
+      <div class="email-content">{{email?.content}}
+      </div>
+    </div>
+  </div>
+</div>

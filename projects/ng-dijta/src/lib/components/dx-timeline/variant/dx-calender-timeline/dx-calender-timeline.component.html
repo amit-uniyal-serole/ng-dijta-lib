@@ -1,0 +1,10 @@
+<dx-timeline [outline]="'calender'">
+  <ng-container *ngFor="let item of data">
+    <dx-timeline-item [calenderData]="item.box">
+      <div class="custom">
+        <h3 class="body fw-bold mb-0">{{item.title | transloco}}</h3>
+        <p class="paragraph fw-medium mb-0">{{item.description | transloco}}</p>
+      </div>
+    </dx-timeline-item>
+  </ng-container>
+</dx-timeline>

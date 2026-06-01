@@ -1,0 +1,25 @@
+<dx-tile-wrapper [header]="tileData?.header">
+  <div class="kpi-details">
+    <div class="kpi">
+      <div class="key-value">
+        <div class="kpi-content" [style.color]="details?.color">
+          <h3 class="heading-1">
+            {{details?.value}}
+          </h3>
+          <div class="measurement">
+            <span class="material-icons icon">
+              {{details?.icon}}
+            </span>
+            <span>{{details?.unit}}</span>
+          </div>
+        </div>
+        <p class="subbody mb-0">{{details?.title}}</p>
+      </div>
+    </div>
+    <div *ngIf="details?.chartType" class="kpi-chart">
+      <div [id]="id" [style.height.px]="height" [style.width.px]="width">
+        <dx-chart [chartData]="chart" [chartParentId]="id"></dx-chart>
+      </div>
+    </div>
+  </div>
+</dx-tile-wrapper>

@@ -1,0 +1,70 @@
+<div class="dx-field-wrapper dx-select" [class.none-label]="noneLabel" [ngClass]="outline"
+  [class.left-align-label]="labelPosition==='left'" [class.required]="required || ctrRequired"
+  [class.display-view]="viewOnly" [class.dx-disable]="disabled" [class]="outerLabelErrorType"
+  [class.none-border]="noneBorder">
+  <mat-label class="dx-outer-label-wrapper">
+    <span class="dx-outer-label">
+      <ng-content select="[dxLabel]"></ng-content>
+      <span *ngIf="required || ctrRequired" class="astrict">*</span>
+    </span>
+  </mat-label>
+  <mat-form-field appearance="outline">
+    <mat-label class="dx-input-label">
+      <ng-content select="dx-label"></ng-content>
+    </mat-label>
+    <span matPrefix>
+      <ng-content select="dx-prefix"></ng-content>
+    </span>
+
+    <mat-select [id]="id" *ngIf="!multiSelect" [formControl]="control" [required]="required || ctrRequired"
+      (ngModelChange)="inputChange($event)" [disabled]="disabled || readonly || viewOnly"
+      (selectionChange)="onUserSelection($event)">
+      <mat-option *ngIf="emptyOption" [value]="undefined">None</mat-option>
+      <ng-container *ngFor="let option of options">
+        <mat-option [disabled]="disabled || readonly || viewOnly" [value]="option?.keyTt"
+          [appOptionBackgroundColor]="option?.color"
+          *ngIf="option?.permission ? (option?.permission?.permission | ablePure: option?.permission?.apiName | async) : true">
+          <div [innerHTML]="option?.valueTt"></div>
+        </mat-option>
+      </ng-container>
+    </mat-select>
+    <mat-select [id]="id" *ngIf="multiSelect" [formControl]="control" [required]="required || ctrRequired"
+      (ngModelChange)="inputChange($event)" [disabled]="disabled || readonly || viewOnly" [changeChipColor]="'#3f51b5'"
+      multiple>
+      <mat-select-trigger>
+        <div class="options-container">
+          <div *ngFor="let optionValue of control?.value">
+            <div class="options-trigger" [style.color]="getBackgroundColor(optionValue) ? '#ffffff' : '#313949'"
+              [style.backgroundColor]="getBackgroundColor(optionValue)">{{getDisplayValue(optionValue)}}</div>
+          </div>
+        </div>
+      </mat-select-trigger>
+      <mat-optgroup>
+        <mat-form-field id="search-input" style="width:100%;">
+          <input #search autocomplete="off" placeholder="Search" aria-label="Search" matInput
+            [formControl]="searchTextboxControl" (input)="filterOptions()">
+          <div *ngIf="search?.value" matSuffix (click)="clearSearch($event)">
+            <span class="material-icons search-pointer">close</span>
+          </div>
+        </mat-form-field>
+      </mat-optgroup>
+      <mat-optgroup *ngIf="filteredList?.length === 0 && searchTextboxControl?.value">
+        <div>{{'No results found' | transloco}}!</div>
+      </mat-optgroup>
+      <mat-option [disabled]="disabled || readonly || viewOnly" [appOptionBackgroundColor]="option?.color"
+        *ngFor="let option of getOptions()" [value]="option?.keyTt">
+        {{option?.valueTt}}
+      </mat-option>
+    </mat-select>
+    <span matSuffix>
+      <ng-content select="dx-suffix"></ng-content>
+    </span>
+    <mat-hint>
+      <ng-content select="dx-hint"> </ng-content>
+    </mat-hint>
+    <mat-error>
+      <ng-content select="dx-error"> </ng-content>
+    </mat-error>
+  </mat-form-field>
+
+</div>
