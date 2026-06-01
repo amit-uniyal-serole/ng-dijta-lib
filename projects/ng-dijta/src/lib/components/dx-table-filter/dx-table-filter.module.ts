@@ -6,7 +6,7 @@ import { DxDatepickerModule } from '../dx-datepicker/dx-datepicker.module';
 import { DxInputModule } from '../dx-input/dx-input.module';
 import { DxSelectModule } from '../dx-select/dx-select.module';
 import { DxTableFilterComponent } from './dx-table-filter.component';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 @NgModule({
     declarations: [DxTableFilterComponent],
     imports: [

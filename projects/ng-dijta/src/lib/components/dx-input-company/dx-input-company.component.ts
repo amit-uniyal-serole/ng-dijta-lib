@@ -4,20 +4,19 @@ import {
   EventEmitter,
   HostListener,
   Inject,
+  Injector,
   Input,
   LOCALE_ID,
-  OnChanges,
   Optional,
   Output,
-  Self,
-  SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { AbstractControl, ControlValueAccessor, FormControl, NgControl, ValidationErrors, Validator, Validators } from '@angular/forms';
 import {
   UIConfigWrapper,
   UI_COMPONENT_CONFIG
 } from '../../core/UI/service/input/ui-component.config';
+import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'dx-input-company',
@@ -26,69 +25,67 @@ import {
   encapsulation: ViewEncapsulation.None,
 })
 export class DxInputCompanyComponent
-  implements OnChanges, ControlValueAccessor {
+  implements ControlValueAccessor, Validator {
   @Output() blur: EventEmitter<FocusEvent> = new EventEmitter<FocusEvent>();
   @Input() disabled: boolean = false;
-  @Input() required: boolean = false;
   @Input() noneLabel: boolean = false;
   @Input() viewOnly: boolean = false;
   @Input() readonly: boolean = false;
   @Input() mask: string = '';
   @Input() outline: 'floating' | 'none-floating' | 'outer-label' = 'none-floating';
-  @Input() placeholder: string = 'Company Name';
+  @Input() placeholder: string | undefined;
   @Input() pattern!: string;
   @Input() icon: string = 'apartment';
-  _NAME_REGEXP = /^[a-zA-Z0-9\s][^|=]{2,}$/;
-  value: string = '';
+  @Input() value: string | undefined;
+  ctrRequired: boolean | undefined;
+
+  // To get required 
+  @Input()
+  get required(): boolean {
+    return this._required ?? false;
+  }
+  // To set required 
+  set required(value: BooleanInput) {
+    this._required = coerceBooleanProperty(value);
+  }
+  protected _required: boolean | undefined;
 
   @HostListener('focusout', ['$event.target'])
   onFocusout() {
     this.onTouched();
   }
+  control: FormControl = new FormControl();
 
   onChange: Function = () => { };
   onTouched: Function = () => { };
   constructor(
-    @Self() @Optional() public control: NgControl,
     @Optional() @Inject(UI_COMPONENT_CONFIG) config: UIConfigWrapper,
     @Inject(LOCALE_ID) public locale: string,
-    private readonly cd: ChangeDetectorRef
+    private readonly cd: ChangeDetectorRef,
+    private readonly injector: Injector
   ) {
-    this.control && (this.control.valueAccessor = this);
     this.outline = config?.value?.outline ?? 'none-floating';
-  }
-  ngOnChanges(changes: SimpleChanges): void {
-    this.cd?.detectChanges();
-  }
-  public get invalid(): boolean {
-    return this.control ? this.control.invalid! : false;
-  }
-
-  public get showError(): boolean {
-    if (!this.control) {
-      return false;
-    }
-
-    const { dirty, touched } = this.control;
-
-    return this.invalid ? (dirty || touched)! : false;
   }
 
   inputChange(event: string): void {
     this.value = event;
     this.onChange(this.value);
-    if (this.value) {
-      if (!this.isValidName(this.value)) {
-        this.control.control?.setErrors({ invalid: true });
-      } else {
-        this.control.control?.setErrors(null);
-      }
+  }
+
+  ngAfterViewInit(): void {
+    const ngControl: NgControl = this.injector.get(NgControl);
+    if (ngControl) {
+      setTimeout(() => {
+        this.control = ngControl.control as FormControl;
+        this.control.markAsUntouched();
+        this.ctrRequired = this.control.hasValidator(Validators.required);
+        this.cd.detectChanges();
+      });
     }
   }
 
   writeValue(value: string): void {
     this.onTouched();
-    this.value = this.control.value;
     this.value = value;
   }
 
@@ -111,13 +108,17 @@ export class DxInputCompanyComponent
     }
   }
 
-  isValidName(nameString: string): boolean {
-    try {
-      let nameValidation = this.pattern || this._NAME_REGEXP;
-      let pattern = new RegExp(nameValidation);
-      return pattern.test(nameString);
-    } catch (TypeError) {
-      return false;
+
+  validate(control: AbstractControl): ValidationErrors | null {
+    if (!this.ctrRequired) {
+      this.ctrRequired = control.hasValidator(Validators.required);
+      this.cd.detectChanges();
     }
+
+    if (!control.valid) {
+      return control.errors; // Return validation errors
+    }
+
+    return null;
   }
 }

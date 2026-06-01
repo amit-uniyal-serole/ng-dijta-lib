@@ -1,0 +1,30 @@
+@import './screen';
+@mixin media($keys...) {
+    @each $key in $keys {
+        @if ($key==mobile) {
+            @include mobile {
+                @content
+            }
+        }
+        @else if ($key==ipads-tablets) {
+            @include ipads-tablets {
+                @content
+            }
+        }
+        @else if ($key==laptops-small-screen) {
+            @include laptops-small-screen {
+                @content
+            }
+        }
+        @else if ($key==large-screen-desktops) {
+            @include large-screen-desktops {
+                @content
+            }
+        }
+        @else if ($key==extra-large-screens) {
+            @include extra-large-screens {
+                @content
+            }
+        }
+    }
+}

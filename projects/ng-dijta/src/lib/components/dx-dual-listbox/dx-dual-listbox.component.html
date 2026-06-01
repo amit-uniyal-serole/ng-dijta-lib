@@ -1,43 +1,43 @@
 <div class="dual-list">
-  <div class="listbox" [ngStyle]="{ 'order' :  direction() ? 1 : 3}">
+  <dx-card class="listbox" [borderNone]="true" [ngStyle]="{ 'order' :  direction() ? 1 : 3}">
     <div *ngIf="!hideDefaulLabel" class="list-box-title-wrapper">
-      <h6 class="heading-6 dual-list-title"><b>{{availableListTitle | transloco}}</b></h6>
+      <h6 class="subtitle dual-list-title  mb-0">{{availableListTitle | transloco}}</h6>
     </div>
-    <form *ngIf="filter">
+    <form *ngIf="filter" class="p-2">
       <input placeholder="{{'search...' | transloco}}" class="form-control searchIcon" *ngIf="!config.serverFilter"
         name="filterSource" [(ngModel)]="available.picker" (ngModelChange)="onFilter(available)">
       <input class="form-control" *ngIf="config.serverFilter" name="filterSource" [(ngModel)]="serverFilterValS"
         (ngModelChange)="serverFilter($event,  'source')">
     </form>
-
     <div class="record-picker">
-      <ul [ngStyle]="{'max-height': height, 'min-height': height}" [ngClass]="{over:available.dragOver}"
+      <mat-list [ngStyle]="{'max-height': height, 'min-height': height}" [ngClass]="{over:available.dragOver}"
         (drop)="drop($event, confirmed)" (dragover)="allowDrop($event, available)" (dragleave)="dragLeave()">
-        <li *ngFor="let item of available.sift; let idx=index;"
+        <mat-list-item *ngFor="let item of available.sift; let idx=index;"
           (click)="disabled ? null : selectItem(available.pick, item); shiftClick($event, idx, available, item)"
           [ngClass]="{selected: isItemSelected(available.pick, item), disabled: disabled}"
           [draggable]="!disabled && format.draggable" (dragstart)="drag($event, item, available)"
           (dragend)="dragEnd(available)">
-          <div class="d-flex align-items-center ">
-            <div class="mx-1 d-flex align-items-center">
-              <span *ngIf="item?.icon" class="material-icons record-picker-display-icon">{{item?.icon}}</span>
-              <ndx-avatar *ngIf="showAvatar && item?._name" [name]="item?._name | transloco" [src]="item?.src"
-                [avatarSettings]="avatarSettings"></ndx-avatar>
-            </div>
-            <div class="record-picker-display-wrapper">
-              <span class="subtitle record-picker-display-text">{{item?._name | transloco}}</span>
-              <span class="body record-picker-display-text record-picker-display-subtitle">
-                <span *ngIf="!subtitleAsEmailFg;else subtitleAsEmail">{{item?.subtitle | transloco}}</span>
-              </span>
-              <ng-template #subtitleAsEmail>
-                <a href="mailto:{{item?.subtitle}}">{{item?.subtitle | transloco}}</a>
-              </ng-template>
-            </div>
+
+          <mat-icon *ngIf="item?.icon" matListItemIcon>{{item?.icon}}</mat-icon>
+          <div *ngIf="showAvatar && item?._name" matListItemIcon [style.width.px]="35" [style.height.px]="35">
+            <ndx-avatar [name]="item?._name" [src]="item?.src" [avatarSettings]="avatarSettings"></ndx-avatar>
           </div>
-        </li>
-      </ul>
+          <div *ngIf="item?._name" matListItemTitle>
+            <p class="body mb-0">{{item?._name}}</p>
+          </div>
+          <div *ngIf="item?.subtitle" matListItemLine>
+            <p class="paragraph mb-0">
+              <span *ngIf="!subtitleAsEmailFg;else subtitleAsEmail">{{item?.subtitle | transloco}}</span>
+              <ng-template #subtitleAsEmail>
+                <a [href]="'mailto:'+ item?.subtitle | dxsafe: 'url'">{{item?.subtitle | transloco}}</a>
+              </ng-template>
+            </p>
+          </div>
+
+        </mat-list-item>
+      </mat-list>
     </div>
-  </div>
+  </dx-card>
   <!-- actions -->
   <div class="dual-list-actions" [ngStyle]="{ 'order':2}">
     <div>
@@ -52,7 +52,7 @@
 
       <button type="button" name="addBtn" class="btn dual-list-action dual-list-action-primary btn-block"
         (click)="moveItem(available, confirmed)" [disabled]="available.pick.length === 0">
-        <span class="material-icons-outlined dual-btn-mat-icons ">
+        <span class="material-icons dual-btn-mat-icons ">
           {{direction()?'arrow_forward':'arrow_back'}}
         </span>
       </button>
@@ -60,7 +60,7 @@
       <!-- remove -->
       <button type="button" name="removeBtn" class="btn dual-list-action dual-list-action-secondary btn-block"
         (click)="moveItem(confirmed, available)" [disabled]="confirmed.pick.length === 0">
-        <span class="material-icons-outlined dual-btn-mat-icons dual-btn-mat-icons-secondary">
+        <span class="material-icons dual-btn-mat-icons dual-btn-mat-icons-secondary">
           {{direction()?'arrow_back':'arrow_forward'}}
         </span>
       </button>
@@ -74,14 +74,14 @@
 
     </div>
   </div>
-  <div class="listbox" [ngStyle]="{ 'order' : direction() ? 3 : 1}">
+  <dx-card class="listbox" [borderNone]="true" [ngStyle]="{ 'order' : direction() ? 3 : 1}">
     <div *ngIf="!hideDefaulLabel" class="count-display-align list-box-title-wrapper">
-      <h6 class="heading-6 dual-list-title"><b>{{confirmedListTitle | transloco}}</b></h6><span
+      <h6 class="subtitle dual-list-title mb-0">{{confirmedListTitle | transloco}}</h6><span
         *ngIf="displaySelectedCount?.isShowCount">{{confirmed.sift.length}}/{{displaySelectedCount?.totalCount ??
         confirmed?.sift?.length + available?.sift?.length}}</span>
     </div>
 
-    <form *ngIf="filter">
+    <form *ngIf="filter" class="p-2">
       <input placeholder="search..." class="form-control searchIcon" *ngIf="!config.serverFilter"
         name="filterDestination" [(ngModel)]="confirmed.picker" (ngModelChange)="onFilter(confirmed)">
       <input class="form-control" *ngIf="config.serverFilter" name="filterDestination" [(ngModel)]="serverFilterValD"
@@ -89,62 +89,9 @@
     </form>
 
     <div class="record-picker">
-      <ul [ngStyle]="{'max-height': height, 'min-height': height}" [ngClass]="{over:confirmed.dragOver}"
+      <mat-list [ngStyle]="{'max-height': height, 'min-height': height}" [ngClass]="{over:confirmed.dragOver}"
         (drop)="drop($event, available)" (dragover)="allowDrop($event, confirmed)" (dragleave)="dragLeave()">
-        <!-- Pinned -->
-        <!-- <div *ngIf="confirmed?.list?.length" class="m-2 flex-center-content-between">
-          <div>
-            <span class="body fw-semibold">Pinned</span>
-          </div>
-          <div >
-            <button class="list-tranparent-btn" (click)="moveUp()"
-              [disabled]="(confirmed?.pick[0] 
-              ? this.confirmed?.pick[0]._id :'') === (confirmed?.list[0] 
-              ? this.confirmed?.list[0]._id :'') || !confirmed?.pick?.length">
-              <span class="material-icons-outlined list-item-mover move-up">
-                arrow_upward
-              </span>
-            </button>
-            <button class="list-tranparent-btn" (click)="moveDown()"
-              [disabled]="(confirmed?.pick[confirmed?.pick?.length - 1] 
-                ? this.confirmed?.pick[confirmed?.pick?.length - 1]._id :'') === (confirmed?.list[confirmed?.list?.length - 1] 
-                ? this.confirmed?.list[confirmed?.list?.length - 1]._id :'') || !confirmed?.pick?.length">
-              <span class="material-icons-outlined list-item-mover move-down">
-                arrow_downward
-              </span>
-            </button>
-          </div>
-        </div>
-        <ng-container *ngFor="let item of confirmed.sift; let idx=index; trackBy: trackBy">
-          <li *ngIf="item?.pinned" class="list-item" #itmConf
-            (click)="disabled ? null : selectItem(confirmed.pick, item); shiftClick($event, idx, confirmed, item)"
-            [ngClass]="{selected: isItemSelected(confirmed.pick, item), disabled: disabled}"
-            [draggable]="!disabled && format.draggable" (dragstart)="drag($event, item, confirmed)"
-            (dragend)="dragEnd(confirmed)" [style.transform]="transform(idx)">
-            <div class="d-flex align-items-center justify-content-between">
 
-              <div class="d-flex align-items-center">
-                <div class="mx-1 d-flex align-items-center">
-                  <span class="material-icons-outlined " (click)="pinListItem(item)">
-                    push_pin
-                  </span>
-                  <span *ngIf="item?.icon" class="material-icons record-picker-display-icon">{{item?.icon}}</span>
-                  <ndx-avatar *ngIf="showAvatar && item?._name" [name]="item?._name" [src]="item?.src"
-                    [avatarSettings]="avatarSettings"></ndx-avatar>
-                </div>
-                <div class="record-picker-display-wrapper">
-                  <span class="subtitle record-picker-display-text">{{item?._name}}</span>
-                  <span class="body record-picker-display-text record-picker-display-subtitle">
-                    <span *ngIf="!subtitleAsEmailFg;else subtitleAsEmail">{{item?.subtitle}}</span>
-                  </span>
-                  <ng-template #subtitleAsEmail>
-                    <a href="mailto:{{item?.subtitle}}">{{item?.subtitle}}</a>
-                  </ng-template>
-                </div>
-              </div>              
-            </div>
-          </li>
-        </ng-container> -->
         <!-- All List config?.enableSelectedItemsSort-->
         <div *ngIf="false" class="m-2 flex-center-content-between">
           <div>
@@ -154,56 +101,44 @@
             <button class="list-tranparent-btn" (click)="moveUp()" [disabled]="(confirmed?.pick[0] 
               ? this.confirmed?.pick[0]._id :'') === (confirmed?.list[0] 
               ? this.confirmed?.list[0]._id :'') || !confirmed?.pick?.length">
-              <span class="material-icons-outlined list-item-mover move-up">
+              <span class="material-icons list-item-mover move-up">
                 arrow_upward
               </span>
             </button>
             <button class="list-tranparent-btn" (click)="moveDown()" [disabled]="(confirmed?.pick[confirmed?.pick?.length - 1] 
                 ? this.confirmed?.pick[confirmed?.pick?.length - 1]._id :'') === (confirmed?.list[confirmed?.list?.length - 1] 
                 ? this.confirmed?.list[confirmed?.list?.length - 1]._id :'') || !confirmed?.pick?.length">
-              <span class="material-icons-outlined list-item-mover move-down">
+              <span class="material-icons list-item-mover move-down">
                 arrow_downward
               </span>
             </button>
           </div>
         </div>
-        <div>
-          <ng-container *ngFor="let item of confirmed.sift; let idx=index; trackBy: trackBy">
-            <li class="list-item" #itmConf
-              (click)="disabled ? null : selectItem(confirmed.pick, item); shiftClick($event, idx, confirmed, item)"
-              [ngClass]="{selected: isItemSelected(confirmed.pick, item), disabled: disabled}"
-              [draggable]="!disabled && format.draggable" (dragstart)="drag($event, item, confirmed)"
-              (dragend)="dragEnd(confirmed)" [style.transform]="transform(idx)" claass="example-box">
-              <div class="d-flex align-items-center justify-content-between">
+        <ng-container *ngFor="let item of confirmed.sift; let idx=index; trackBy: trackBy">
+          <mat-list-item #itmConf
+            (click)="disabled ? null : selectItem(confirmed.pick, item); shiftClick($event, idx, confirmed, item)"
+            [ngClass]="{selected: isItemSelected(confirmed.pick, item), disabled: disabled}"
+            [draggable]="!disabled && format.draggable" (dragstart)="drag($event, item, confirmed)"
+            (dragend)="dragEnd(confirmed)" [style.transform]="transform(idx)" claass="example-box">
 
-                <div class="d-flex align-items-center">
-                  <div class="mx-1 d-flex align-items-center">
-                    <span *ngIf="item?.icon" class="material-icons record-picker-display-icon">{{item?.icon}}</span>
-                    <ndx-avatar *ngIf="showAvatar && item?._name" [name]="item?._name | transloco" [src]="item?.src"
-                      [avatarSettings]="avatarSettings"></ndx-avatar>
-                  </div>
-                  <div class="record-picker-display-wrapper">
-                    <span class="subtitle record-picker-display-text">{{item?._name | transloco}}</span>
-                    <span class="body record-picker-display-text record-picker-display-subtitle">
-                      <span *ngIf="!subtitleAsEmailFg;else subtitleAsEmail">{{item?.subtitle | transloco}}</span>
-                    </span>
-                    <ng-template #subtitleAsEmail>
-                      <a href="mailto:{{item?.subtitle}}">{{item?.subtitle | transloco}}</a>
-                    </ng-template>
-                  </div>
-                </div>
-
-                <!-- Single Sort -->
+            <mat-icon *ngIf="item?.icon" matListItemIcon>{{item?.icon}}</mat-icon>
+            <div *ngIf="showAvatar && item?._name" matListItemIcon [style.width.px]="35" [style.height.px]="35">
+              <ndx-avatar [name]="item?._name" [src]="item?.src" [avatarSettings]="avatarSettings"></ndx-avatar>
+            </div>
+            <div *ngIf="item?._name" matListItemTitle>
+              <p class="body mb-0">{{item?._name}}</p>
+              <!-- Single Sort -->
+              <div class="pining">
                 <div *ngIf="!item?.pinned" class="item-sort-actions">
                   <button *ngIf="config?.enableSingleItemSort" class="list-tranparent-btn" (click)="moveUp(item)"
                     [disabled]="idx===0 || (confirmed?.sift[0]?.pinned && idx === 1)">
-                    <span class="material-icons-outlined list-item-mover move-up">
+                    <span class="material-icons list-item-mover move-up">
                       arrow_upward
                     </span>
                   </button>
                   <button *ngIf="config?.enableSingleItemSort" class="list-tranparent-btn" (click)="moveDown(item)"
                     [disabled]="(idx===confirmed.sift?.length - 1)">
-                    <span class="material-icons-outlined list-item-mover move-down">
+                    <span class="material-icons list-item-mover move-down">
                       arrow_downward
                     </span>
                   </button>
@@ -221,12 +156,23 @@
                   </span>
                 </button>
               </div>
-            </li>
-          </ng-container>
-        </div>
-      </ul>
+            </div>
+            <div *ngIf="item?.subtitle" matListItemLine>
+              <p class="paragraph mb-0">
+                <span *ngIf="!subtitleAsEmailFg;else subtitleAsEmail">{{item?.subtitle}}</span>
+                <ng-template #subtitleAsEmail>
+                  <a [href]="'mailto:' + item?.subtitle | dxsafe: 'url'">{{item?.subtitle}}</a>
+                </ng-template>
+              </p>
+            </div>
+
+
+
+          </mat-list-item>
+        </ng-container>
+      </mat-list>
     </div>
 
 
-  </div>
+  </dx-card>
 </div>

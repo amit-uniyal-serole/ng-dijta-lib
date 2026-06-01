@@ -1,15 +1,15 @@
-<div class="dx-field-wrapper" [class.image-upload-input]="control?.value?.length <= 0" [class.none-label]="noneLabel"
-  [ngClass]="outline" [class.display-view]="viewOnly" [class.dx-disable]="disabled"
+<div class="ngdx-field-wrapper image-input" [class.image-upload-input]="control?.value?.length <= 0"
+  [class.none-label]="noneLabel" [ngClass]="outline" [class.display-view]="viewOnly" [class.dx-disable]="disabled"
   [class.left-align-label]="labelPosition === 'left'" floatLabel="never" [class.required]="required"
-  [class]="outerLabelErrorType" [class.none-border]="noneBorder">
-  <mat-label class="dx-outer-label-wrapper">
-    <span class="dx-outer-label">
+  [class]="outerLabelErrorType" [class.none-border]="noneBorder" [class.d-flex]="outline === 'outer-label'" [class.flex-column]="outline === 'outer-label'">
+  <mat-label class="dx-outer-label">
+    <div class="d-flex align-items-center">
       <ng-content select="[dxLabel]"></ng-content>
-      <span *ngIf="required" class="astrict">*</span>
-    </span>
+      <span *ngIf="required || ctrRequired" class="astrict">*</span>
+    </div>
   </mat-label>
   <mat-form-field appearance="outline">
-    <mat-label class="dx-input-label">
+    <mat-label *ngIf="outline !== 'outer-label'">
       <ng-content select="dx-label"></ng-content>
     </mat-label>
     <span matPrefix>
@@ -19,8 +19,8 @@
     </span>
     <dx-image [tabIndex]="tabIndex" [formControl]="control" (ngModelChange)="inputChange($event)" (blur)="onBlur($event)"
       [required]="required" [placeholder]="placeholder" [uploadType]="uploadType" [uploadBtnTitle]="uploadBtnTitle"
-      [adapterData]="adapterData" [enableAutoUpload]="enableAutoUpload" [fileMaxSize]="fileMaxSize"
-      [totalMaxSize]="totalMaxSize" [fileMaxCount]="fileMaxCount"></dx-image>
+      [adapterData]="adapterData" [readonly]="readonly" [enableAutoUpload]="enableAutoUpload" [fileMaxSize]="fileMaxSize"
+      [totalMaxSize]="totalMaxSize" [fileMaxCount]="fileMaxCount" [fileTypes]="fileTypes"></dx-image>
     <span matSuffix>
       <ng-content select="dx-suffix"></ng-content>
     </span>

@@ -1,149 +1,116 @@
-# DxConfirm
+---
+category: Components
+type: Feedback
+title: Confirm Dialog
+---
 
-A Material Dialog-based confirmation modal used internally by `DxButton` and openable directly via `MatDialog`.
+An opinionated confirmation dialog content component designed to be opened via `MatDialog`. Renders an icon, title, message, and primary/secondary action buttons from a structured `data` payload, closing the dialog with a boolean result.
 
-## Overview
+## When To Use
 
-`DxConfirmComponent` renders a styled confirmation dialog with an optional header icon, title, message, and two action buttons (cancel and confirm). It is declared inside `DxButtonModule` and used automatically when `confirmationPopover.isShow` is `true` on a `<dx-button>`. It can also be opened directly using Angular Material's `MatDialog` service for standalone confirmation flows.
+- When you need to confirm a destructive or irreversible action (delete, discard, sign out).
+- As the content component for a `MatDialog` opened from buttons, menus, or row actions.
+- When `dx-button`'s built-in `confirmationPopover` is not appropriate (e.g., triggered outside a button).
 
-## Module
-
-`DxConfirmComponent` is declared in `DxButtonModule`. Import `DxButtonModule` to make it available:
+## API
 
 ```typescript
-import { DxButtonModule } from 'ng-dijta';
-
-@NgModule({
-  imports: [DxButtonModule]
-})
+this.dialog.open(DxConfirmComponent, {
+  data: {
+    header: {
+      title: 'Confirm Delete',
+      closeIcon: true,
+      icon: { isShow: true, icon: 'warning', color: '#d32f2f' }
+    },
+    content: { message: 'Are you sure you want to delete this record?' },
+    actions: {
+      primary:   { title: 'Delete' },
+      secondary: { title: 'Cancel' }
+    }
+  }
+}).afterClosed().subscribe((confirmed: boolean) => {
+  if (confirmed) { this.delete(); }
+});
 ```
 
-To open it directly via `MatDialog`, also ensure `MatDialogModule` is imported in your module.
+### dx-confirm
 
-## Selector
+This component is not placed in a template directly; open it via `MatDialog.open(DxConfirmComponent, { data })`.
 
-`<dx-confirm>` (used as a dialog via `MatDialog.open()` — not typically placed directly in templates)
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `data` | Dialog payload (injected via `MAT_DIALOG_DATA`) | `DxConfirmData` | `-` |
 
-## Dialog Data Interface
+### Methods
 
-The component receives its configuration through Angular Material's `MAT_DIALOG_DATA` injection token. Pass a `ConfirmationPopover`-shaped object when opening:
+| Method | Description | Signature |
+|--------|-------------|-----------|
+| `closeDialog` | Closes the dialog, emitting the confirmation result | `closeDialog(isConfirmed: boolean): void` |
+
+### Types
 
 ```typescript
 interface DxConfirmData {
   header?: {
-    title?: string;          // Dialog heading text
-    closeIcon?: boolean;     // Show an X close icon in the top-right
-    icon?: {
-      isShow: boolean;       // Whether to show the icon circle
-      icon?: string;         // Material Icons ligature name
-      color?: string;        // Hex color for icon, border, and background (e.g. '#e53935')
-    };
+    title?: string;
+    closeIcon?: boolean;
+    icon?: { isShow: boolean; icon?: string; color?: string };
   };
-  content: {
-    message: string;         // Body message text
-  };
+  content: { message: string };
   actions: {
-    secondary: { title: string; }; // Cancel/dismiss button label
-    primary:   { title: string; }; // Confirm/submit button label
+    primary:   { title: string };
+    secondary: { title: string };
   };
 }
 ```
 
-## API
+## Examples
 
-### Inputs (via MAT_DIALOG_DATA)
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `data.header.title` | `string` | Optional dialog title displayed as a heading. |
-| `data.header.closeIcon` | `boolean` | When `true`, renders an X icon that closes the dialog without confirming. |
-| `data.header.icon.isShow` | `boolean` | Whether to render the header icon circle. |
-| `data.header.icon.icon` | `string` | Material Icons ligature name for the header icon. |
-| `data.header.icon.color` | `string` | Hex color applied to icon, border, and background (with opacity variants). |
-| `data.content.message` | `string` | Confirmation message body text. |
-| `data.actions.secondary.title` | `string` | Cancel button label. |
-| `data.actions.primary.title` | `string` | Confirm button label. |
-
-### Outputs (via MatDialogRef)
-
-| Method | Returns | Description |
-|--------|---------|-------------|
-| `dialogRef.afterClosed()` | `Observable<boolean>` | Emits `true` when the user confirms (primary button), `false` when cancelled or dismissed. |
-
-### Public Methods
-
-| Method | Signature | Description |
-|--------|-----------|-------------|
-| `closeDialog(isConfirmed)` | `(isConfirmed: boolean): void` | Closes the dialog and emits the boolean result to `afterClosed()`. |
-
-## Usage Examples
-
-### Via dx-button (Recommended)
-
-The simplest approach — `DxButton` handles opening and listening automatically:
+### Open from a service
 
 ```typescript
-confirmationPopover: ConfirmationPopover = {
-  isShow: true,
-  header: {
-    title: 'Delete Record',
-    closeIcon: true,
-    icon: { isShow: true, icon: 'warning', color: '#e53935' }
-  },
-  content: { message: 'This record will be permanently deleted.' },
-  actions: {
-    secondary: { title: 'Cancel' },
-    primary:   { title: 'Delete' }
-  }
-};
-```
-
-```html
-<dx-button
-  title="Delete"
-  [confirmationPopover]="confirmationPopover"
-  (onActionSelect)="onDelete()">
-</dx-button>
-```
-
-### Direct MatDialog Usage
-
-```typescript
-import { MatDialog } from '@angular/material/dialog';
-import { DxConfirmComponent } from 'ng-dijta';
-
-@Component({ ... })
-export class MyComponent {
-  constructor(private dialog: MatDialog) {}
-
-  confirmAndDelete(): void {
-    const dialogRef = this.dialog.open(DxConfirmComponent, {
-      panelClass: ['lookout-modal-box'],
-      id: 'confirm-dialog',
-      data: {
-        header: { title: 'Confirm Delete', closeIcon: true },
-        content: { message: 'Are you sure?' },
-        actions: {
-          secondary: { title: 'Cancel' },
-          primary:   { title: 'Confirm' }
-        }
+confirmDelete(): Observable<boolean> {
+  return this.dialog.open(DxConfirmComponent, {
+    data: {
+      header: { title: 'Delete item?', closeIcon: true },
+      content: { message: 'This action cannot be undone.' },
+      actions: {
+        primary:   { title: 'Delete' },
+        secondary: { title: 'Cancel' }
       }
-    });
-
-    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
-      if (confirmed) {
-        this.deleteRecord();
-      }
-    });
-  }
+    }
+  }).afterClosed();
 }
 ```
 
-## Features
+### Warning variant with icon
 
-- Material Dialog with `lookout-modal-box` panel class for consistent styling
-- Optional header with title, close icon, and colored icon circle
-- Hex-based icon coloring applied to icon, border, and background with opacity variants
-- Boolean result via `MatDialogRef.afterClosed()` — `true` for confirm, `false` for cancel/dismiss
-- Transloco i18n support on all text content (title, message, button labels)
-- Used automatically by `DxButton` when `confirmationPopover.isShow` is `true`
+```typescript
+this.dialog.open(DxConfirmComponent, {
+  data: {
+    header: {
+      title: 'Sign out?',
+      icon: { isShow: true, icon: 'logout', color: '#f57c00' }
+    },
+    content: { message: 'You will need to sign in again to continue.' },
+    actions: {
+      primary:   { title: 'Sign out' },
+      secondary: { title: 'Stay signed in' }
+    }
+  }
+});
+```
+
+## Import
+
+`DxConfirmComponent` is exported from the library and opened via `MatDialog`. Ensure `MatDialogModule` is available in the application.
+
+```typescript
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { DxConfirmComponent } from '@ngdx/dijta';
+
+@NgModule({
+  imports: [MatDialogModule]
+})
+export class YourModule { }
+```

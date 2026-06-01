@@ -9,6 +9,14 @@ documentation/
 dist/
 elements/
 demo/
+.angular/
+.nx/cache
+.nx/workspace-data
+.playwright-mcp/
+
+# Storybook
+storybook-static/
+documentation.json
 
 # Compiled Java class files
 *.class
@@ -72,3 +80,5 @@ testem.log
 
 /.vscode/
 /elements/
+
+local/

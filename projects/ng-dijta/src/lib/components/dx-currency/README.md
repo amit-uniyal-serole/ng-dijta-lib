@@ -1,231 +1,141 @@
-# dx-currency
-
-A currency display and formatting toolkit — display component, form input, pipe, and directives for handling monetary values.
-
-## Overview
-
-The `dx-currency` module provides four complementary tools for working with currency values in ng-dijta:
-
-1. **`<dx-currency>`** — Display-only component that renders a formatted currency amount using the `dxcurrency` pipe. Not a form control.
-2. **`<dx-input-currency>`** — Full form input component for entering currency values. Implements `ControlValueAccessor` — works with reactive and template-driven forms.
-3. **`dxcurrency` pipe** — Standalone Angular pipe for inline currency formatting in templates.
-4. **`DxCurrencyInputDirective` / `DxNumberInputDirective`** — Directives for adding currency or number formatting to plain `<input>` elements.
-
-Formatting behavior (currency code, display type, locale) can be configured globally via `UI_COMPONENT_CONFIG`.
-
-## Module Import
-
-```typescript
-import { DxCurrencyModule } from 'ng-dijta';
-
-@NgModule({
-  imports: [DxCurrencyModule]
-})
-export class AppModule {}
-```
-
-## Selectors
-
-| Export | Selector / Token | Description |
-|--------|-----------------|-------------|
-| `DxCurrencyComponent` | `<dx-currency>` | Display component |
-| `DxInputCurrencyComponent` | `<dx-input-currency>` | Form input component |
-| `DxCurrencyPipe` | `dxcurrency` | Pipe |
-| `DxCurrencyInputDirective` | `[dxCurrencyInput]` | Directive |
-| `DxNumberInputDirective` | `[dxNumberInput]` | Directive |
-
+---
+category: Components
+type: Data Entry
+title: Currency
 ---
 
-## `<dx-currency>` — Display Component
+Currency primitives for displaying and capturing monetary amounts with locale, symbol, and format awareness. `dx-currency` formats a number for read-only display; `dx-input-currency` is a reactive-forms-compatible input with optional localized number formatting, compact notations (K/M/B/T) and min/max validation.
 
-Renders a formatted currency amount using the `dxcurrency` pipe. This is a display-only element — it does not implement `ControlValueAccessor`.
+## When To Use
 
-### Inputs
+- When rendering a monetary value with a currency code, locale or custom number format.
+- When capturing an amount in a form with symbol prefix and numeric-only keys.
+- When the value must support compact shortcuts such as `1K`, `2.5M`, `3B`, `4T`.
+- When the display must degrade gracefully to a placeholder when no value is present.
+- When the field should match other `dx-*` form controls (outline, outer label, required).
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `amount` | `number` | — | The numeric amount to display |
-| `currencyCode` | `string` | config / locale | ISO 4217 currency code (e.g. `'USD'`, `'EUR'`) |
-| `display` | `'code' \| 'symbol' \| 'symbol-narrow'` | `'symbol'` | How the currency is displayed |
-| `digitsInfo` | `string` | config | Angular digits info string (e.g. `'1.2-2'`) |
-| `locale` | `string` | config / LOCALE_ID | Locale for formatting (e.g. `'en-US'`) |
-
-### Usage
+## API
 
 ```html
-<!-- Basic usage — uses global config for currency code and locale -->
-<dx-currency [amount]="1234.56"></dx-currency>
-<!-- Output: $1,235 (with default config) -->
-
-<!-- Explicit currency and format -->
+<!-- Read-only display -->
 <dx-currency
-  [amount]="9876.50"
-  currencyCode="EUR"
-  display="symbol-narrow"
-  digitsInfo="1.2-2"
-  locale="de-DE">
+  [amount]="order.total"
+  currencyCode="USD"
+  [appCurrencyConfig]="currencyConfig"
+  [decimal]="2">
 </dx-currency>
-<!-- Output: 9.876,50 EUR -->
 
-<!-- In a table cell -->
-<td>
-  <dx-currency [amount]="row.totalAmount" currencyCode="GBP"></dx-currency>
-</td>
+<!-- Input -->
+<dx-input-currency
+  formControlName="amount"
+  currencySymbol="$"
+  [decimalPlaces]="2">
+  <dx-label>Amount</dx-label>
+</dx-input-currency>
 ```
 
----
+### dx-currency
 
-## `<dx-input-currency>` — Form Input Component
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[amount]` | Amount to display | `number` | `-` |
+| `[currencyCode]` | ISO currency code (e.g. `USD`, `EUR`) | `string` | `-` |
+| `[display]` | Controls digit / symbol display | `DisplayDigitsType` | `-` |
+| `[digitsInfo]` | Angular `CurrencyPipe` digits-info string (e.g. `'1.2-2'`) | `string` | `-` |
+| `[locale]` | Locale id used when formatting | `string` | `-` |
+| `[appCurrencyConfig]` | Localized number format config; when set, enables compact notations | `NumberFormatVariant` | `-` |
+| `[decimal]` | Maximum number of decimal places for localized formatting | `number` | `-` |
 
-A full-featured currency input with automatic currency symbol display and locale-aware number handling.
+### dx-input-currency
 
-### Inputs
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[currencySymbol]` | Prefix symbol to show before the input | `NumberFormatVariant` | `-` |
+| `[appCurrencyConfig]` | Localized number format config | `NumberFormatVariant` | `-` |
+| `[decimalPlaces]` | Decimal places enforced for localized input | `number` | `-` |
+| `[minLength]` | Minimum input length | `number` | `-` |
+| `[maxLength]` | Maximum input length | `number` | `-` |
+| `[precision]` | Maximum number of digits | `number` | `0` |
+| `[seprater]` | Render thousands separator | `boolean` | `true` |
+| `[standard]` | Use standard symbol suffix when no `currencySymbol` is provided | `boolean` | `true` |
+| `[outline]` | Field outline / label style | `'floating' \| 'none-floating' \| 'outer-label'` | `'outer-label'` |
+| `[outerLabelErrorType]` | Error style for outer-label mode | `'astrict-error' \| 'filled-error'` | `'filled-error'` |
+| `[labelPosition]` | Label placement | `'left' \| 'top'` | `'top'` |
+| `[noneLabel]` | Hide the label slot | `boolean` | `false` |
+| `[noneBorder]` | Render without field border | `boolean` | `false` |
+| `[readonly]` | Render read-only | `boolean` | `false` |
+| `[viewOnly]` | Display-only mode | `boolean` | `false` |
+| `[disabled]` | Disabled state | `boolean` | `false` |
+| `[required]` | Marks as required | `boolean` | `false` |
+| `[tabIndex]` | Native tab index | `number` | `-` |
+| `[tooltip]` | Tooltip / placeholder | `string` | `-` |
+| `[id]` | Host element id | `string` | `dx-input-currency-{n}` |
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `disabled` | `boolean` | `false` | Disables the input |
-| `readonly` | `boolean` | `false` | Read-only mode (border visible) |
-| `viewOnly` | `boolean` | `false` | View-only mode — no border, no interaction |
-| `required` | `boolean` | `false` | Marks the field as required |
-| `noneLabel` | `boolean` | `false` | Hides the label |
-| `noneBorder` | `boolean` | `false` | Removes the input border |
-| `standard` | `boolean` | `true` | Shows the currency symbol suffix; hidden in `viewOnly` mode |
-| `precision` | `number` | `0` | Number of decimal places |
-| `seprater` | `boolean` | `true` | Enables thousands separator |
-| `outline` | `'floating' \| 'none-floating' \| 'outer-label'` | `'none-floating'` | Label style |
-| `labelPosition` | `'left' \| 'top'` | `'top'` | Position of outer label |
-| `outerLabelErrorType` | `'astrict-error' \| 'filled-error'` | `'filled-error'` | Error display style |
-| `tooltip` | `string` | — | Placeholder / tooltip text |
-| `minLength` | `number` | — | Minimum character length |
-| `maxLength` | `number` | — | Maximum character length |
-| `tabIndex` | `number` | — | Tab order index |
-| `id` | `string` | auto | Unique element ID (auto-generated) |
+### Events
 
-### Outputs
+| Event | Description | Type |
+|-------|-------------|------|
+| `(blur)` | Emitted by `dx-input-currency` on focus loss | `EventEmitter<FocusEvent>` |
 
-| Event | Type | Description |
-|-------|------|-------------|
-| `blur` | `EventEmitter<FocusEvent>` | Emitted when the input loses focus |
+### Content Slots (dx-input-currency)
 
-### Usage
+- `<dx-label>` / `[dxLabel]` — Field label
+- `<dx-prefix>` / `<dx-suffix>` — Prefix / suffix content
+- `<dx-hint>` — Helper text
+- `<dx-error>` — Error slot
 
-```typescript
-// component.ts
-form = this.fb.group({
-  amount: [null, Validators.required]
-});
-```
+## Examples
+
+### Basic read-only display
 
 ```html
-<!-- component.html -->
-<form [formGroup]="form">
-  <dx-input-currency formControlName="amount" [precision]="2">
-    <dx-label>Invoice Amount</dx-label>
-    <dx-error *ngIf="form.get('amount')?.invalid && form.get('amount')?.touched">
-      Amount is required
-    </dx-error>
-  </dx-input-currency>
-</form>
+<dx-currency [amount]="199.99" currencyCode="USD"></dx-currency>
 ```
 
+### Localized, compact notation
+
 ```html
-<!-- Template-driven -->
-<dx-input-currency [(ngModel)]="price" [seprater]="true" [precision]="2">
+<dx-currency
+  [amount]="1250000"
+  currencyCode="USD"
+  [appCurrencyConfig]="compactConfig"
+  [decimal]="1">
+</dx-currency>
+```
+
+### Form input with symbol
+
+```html
+<dx-input-currency
+  formControlName="price"
+  currencySymbol="€"
+  [decimalPlaces]="2"
+  [required]="true">
   <dx-label>Price</dx-label>
 </dx-input-currency>
 ```
 
----
+### Input with min / max length and shortcut multipliers
 
-## `dxcurrency` Pipe
-
-A standalone pipe for inline currency formatting in templates.
-
-### Signature
-
-```
-{{ value | dxcurrency: currencyCode: display: digitsInfo: locale }}
-```
-
-### Parameters
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `value` | `number \| undefined` | Numeric value; returns `'-'` for `undefined` |
-| `currencyCode` | `string` | ISO 4217 currency code |
-| `display` | `'code' \| 'symbol' \| 'symbol-narrow'` | Display format |
-| `digitsInfo` | `string` | Angular digits info (e.g. `'1.2-2'`) |
-| `locale` | `string` | Locale string (e.g. `'en-US'`) |
-
-### Usage
+Typing `5K`, `2M`, `3B` or `1T` auto-expands to the scaled number.
 
 ```html
-<!-- Basic — uses global config defaults -->
-{{ 5000 | dxcurrency }}
-<!-- Output: $5,000 -->
-
-<!-- With explicit options -->
-{{ product.price | dxcurrency:'USD':'symbol':'1.2-2':'en-US' }}
-
-<!-- INR with symbol -->
-{{ price | dxcurrency:'INR':'symbol' }}
-<!-- Output: ₹100.23 -->
-
-<!-- Undefined safely returns '-' -->
-{{ optionalAmount | dxcurrency }}
+<dx-input-currency
+  formControlName="amount"
+  [minLength]="1"
+  [maxLength]="15"
+  [precision]="12">
+  <dx-label>Amount</dx-label>
+</dx-input-currency>
 ```
 
----
-
-## Global Configuration
-
-Configure defaults for all currency components and the pipe via `UI_COMPONENT_CONFIG`:
+## Import
 
 ```typescript
-import { UI_COMPONENT_CONFIG } from 'ng-dijta';
+import { DxCurrencyModule } from '@ngdx/dijta';
 
 @NgModule({
-  providers: [
-    {
-      provide: UI_COMPONENT_CONFIG,
-      useValue: {
-        value: {
-          outline: 'floating',
-          currency: {
-            currencyCode: 'EUR',
-            display: 'symbol',
-            digitsInfo: '1.2-2'
-          },
-          locale: 'de-DE'
-        }
-      }
-    }
-  ]
+  imports: [DxCurrencyModule]
 })
-export class AppModule {}
+export class YourModule { }
 ```
-
-### Registering Non-Default Locales
-
-To format with a non-default locale, register it with Angular before use:
-
-```typescript
-import { registerLocaleData } from '@angular/common';
-import localeFr from '@angular/common/locales/fr';
-
-registerLocaleData(localeFr, 'fr');
-```
-
-Then pass `locale="fr"` to the pipe or `dx-currency` component.
-
-## Features
-
-- Four complementary exports: display component, form input, pipe, and directives
-- `dx-currency` is display-only — renders formatted amounts anywhere in templates
-- `dx-input-currency` implements `ControlValueAccessor` — reactive and template-driven forms
-- Shorthand entry in `dx-input-currency`: `5K` = 5,000 | `2M` = 2,000,000 | `1B` = 1,000,000,000 | `3T` = 3,000,000,000,000
-- `dxcurrency` pipe safely returns `'-'` for `undefined` values
-- All formatting options (currency code, display, locale, digits) configurable globally via `UI_COMPONENT_CONFIG`
-- Auto-detects `Validators.required` from FormControl in `dx-input-currency`
-- `disabled`, `readonly`, and `viewOnly` modes in `dx-input-currency`
-- Locale-aware symbol placement (e.g., EUR symbol on the right for European locales)

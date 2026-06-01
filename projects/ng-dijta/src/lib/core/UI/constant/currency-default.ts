@@ -18,3 +18,13 @@ export class DateDefault {
     static readonly DEFAULT_DATE_PICKER_FORMAT: string = 'YYYY/MM/DD';
     static readonly DEFAULT_TIME_PICKER_FORMAT: string = 'h:mm:ss a';
 }
+
+
+
+export interface NumberFormatVariant {
+    decimalSeparator: 'Period' | 'Comma';
+    numeralSystem: 'international' | 'indian';
+    thousand_separator: 'Comma' | 'Period' | 'Space';
+    locale?: string;
+    compactNumberNotations?: boolean; // Added temporary so it will not impact other
+}

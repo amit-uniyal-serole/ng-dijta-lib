@@ -4,23 +4,25 @@ import { DxAutocompleteSelectComponent } from './dx-autocomplete-select.componen
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslocoModule } from '@ngneat/transloco';
+import { DxMatSelectSearchModule } from './mat-select-search/ngx-mat-select-search.module';
+import { TranslocoModule } from '@jsverse/transloco';
 import { AbilityModule } from '@casl/angular';
+import { DxOptionBackgroundColorDirective } from './dx-option-background-color.directive';
+
 @NgModule({
-  declarations: [DxAutocompleteSelectComponent],
+  declarations: [DxAutocompleteSelectComponent,DxOptionBackgroundColorDirective],
   imports: [
     CommonModule,
     FormsModule,
     MatFormFieldModule,
     MatSelectModule,
-    NgxMatSelectSearchModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
     ReactiveFormsModule,
     TranslocoModule,
+    DxMatSelectSearchModule,
     AbilityModule
   ],
   exports: [DxAutocompleteSelectComponent],

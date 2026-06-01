@@ -1,3 +1,4 @@
+export * from './dropdown-divider.directive';
 export * from './dropdown-item.directive';
 export * from './dropdown-menu.directive';
 export * from './dropdown-toggle.directive';

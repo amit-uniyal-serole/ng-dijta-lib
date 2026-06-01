@@ -1,137 +1,94 @@
-# dx-input-url
+---
+category: Components
+type: Data Entry
+title: Input URL
+---
 
-URL input field with built-in URL format validation and link icon prefix.
+A URL text input that wraps Angular Material's `mat-form-field` + `matInput`, applies the `dxUrlValidator` directive and a no-leading/trailing-spaces rule, and integrates with Angular Forms as both a `ControlValueAccessor` and a `Validator`.
 
-## Overview
+## When To Use
 
-`dx-input-url` is a text input specialized for URL entry. It includes the `dxUrlValidator` directive, which validates that the entered value is a well-formed URL and shows an inline "URL Invalid" error message on failure. A `link` icon is displayed as a prefix. Implements `ControlValueAccessor` and `Validator` for full Angular Forms integration.
+- When capturing a website / link URL on a form.
+- When the value must reject malformed URLs and extraneous whitespace.
+- When min/max length constraints are needed alongside URL validation.
+- When the field should share the same outline / error / label behavior as other DX inputs.
 
-## Module Import
+## API
+
+```html
+<dx-input-url
+  formControlName="website"
+  [required]="true"
+  placeholder="https://example.com">
+</dx-input-url>
+```
+
+### dx-input-url
+
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[value]` | Current value of the input | `string` | - |
+| `[disabled]` | Disables the input | `boolean` | `false` |
+| `[readonly]` | Renders the input read-only | `boolean` | `false` |
+| `[viewOnly]` | Renders as static display-only text | `boolean` | `false` |
+| `[required]` | Marks the field as required | `boolean` | `false` |
+| `[noneLabel]` | Hides the field label | `boolean` | `false` |
+| `[outline]` | Label / outline rendering variant | `'floating' \| 'none-floating' \| 'outer-label'` | `'none-floating'` |
+| `[outerLabelErrorType]` | Error-indicator style for outer labels | `'astrict-error' \| 'filled-error'` | `'filled-error'` |
+| `[labelPosition]` | Outer-label placement | `'left' \| 'top'` | `'top'` |
+| `[minLength]` | Minimum character length | `number` | - |
+| `[maxLength]` | Maximum character length | `number` | - |
+| `[tabIndex]` | Native `tabindex` applied to the input | `number` | - |
+| `[tooltip]` | Tooltip / placeholder text rendered on the input | `string` | - |
+| `[mask]` | ngx-mask pattern applied to the input | `string` | `''` |
+| `[customUrlValidation]` | Enables the extended URL validation path | `boolean` | `false` |
+
+### Events
+
+| Event | Description | Type |
+|-------|-------------|------|
+| `(blur)` | Emitted when the input loses focus | `EventEmitter<FocusEvent>` |
+| `(onClickOption)` | Emitted when an option is selected in consumer-provided projection | `EventEmitter<KeyValueModel>` |
+
+## Examples
+
+### Basic
+
+```html
+<dx-input-url formControlName="website"></dx-input-url>
+```
+
+### Required with length validation
+
+```html
+<dx-input-url
+  formControlName="website"
+  [required]="true"
+  [minLength]="10"
+  [maxLength]="255"
+  tooltip="Full URL including https://">
+</dx-input-url>
+```
+
+### Outer-label with custom URL validation
+
+```html
+<dx-input-url
+  outline="outer-label"
+  formControlName="website"
+  [customUrlValidation]="true">
+  <span dxLabel>Company Website</span>
+  <dx-error>Please enter a valid URL</dx-error>
+</dx-input-url>
+```
+
+## Import
 
 ```typescript
-import { DxInputUrlModule } from 'ng-dijta';
+import { DxInputUrlModule } from '@ngdx/dijta';
 
 @NgModule({
   imports: [DxInputUrlModule]
 })
-export class AppModule {}
+export class YourModule { }
 ```
-
-## Selector
-
-`<dx-input-url>`
-
-## API
-
-### Inputs
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `disabled` | `boolean` | `false` | Disable the input |
-| `readonly` | `boolean` | `false` | Read-only mode — shows border, value cannot be edited |
-| `viewOnly` | `boolean` | `false` | View-only mode — no border, no interaction |
-| `required` | `boolean` | auto-detected | Mark as required. Auto-detected from `Validators.required` on the FormControl |
-| `noneLabel` | `boolean` | `false` | Hide the floating label |
-| `minLength` | `number` | — | Minimum URL length |
-| `maxLength` | `number` | — | Maximum URL length |
-| `mask` | `string` | `''` | Input mask pattern |
-| `outline` | `'floating' \| 'none-floating' \| 'outer-label'` | `'none-floating'` | Label/border outline style |
-| `labelPosition` | `'left' \| 'top'` | `'top'` | Label position |
-| `outerLabelErrorType` | `'astrict-error' \| 'filled-error'` | `'filled-error'` | Error display style when using `outer-label` outline |
-| `tooltip` | `string` | — | Placeholder text shown inside the input |
-| `tabIndex` | `number` | — | Tab index for keyboard navigation |
-| `id` | `string` | auto-generated | Element ID (auto-incremented `dx-input-url-N`) |
-
-### Outputs
-
-| Event | Type | Description |
-|-------|------|-------------|
-| `blur` | `EventEmitter<FocusEvent>` | Emitted when the input loses focus |
-| `onClickOption` | `EventEmitter<KeyValueModel>` | Emitted when an autocomplete option is selected (if used with autocomplete) |
-
-### Content Slots
-
-| Slot | Selector | Description |
-|------|----------|-------------|
-| Label | `<dx-label>` | Floating input label |
-| Outer label | `[dxLabel]` | Label used with `outer-label` outline style |
-| Prefix | `<dx-prefix>` | Content prepended before the input (after the link icon) |
-| Suffix | `<dx-suffix>` | Content appended after the input |
-| Hint | `<dx-hint>` | Helper text below the input |
-| Error | `<dx-error>` | Custom validation error message |
-
-## Validation
-
-The component includes the `dxUrlValidator` directive which automatically validates that the input value is a properly formatted URL. On failure, an inline error `"URL Invalid"` is shown.
-
-A custom error message can be added via `<dx-error>`:
-```html
-<dx-input-url formControlName="website">
-  <dx-label>Website</dx-label>
-  <dx-error>Please enter a valid URL (e.g. https://example.com)</dx-error>
-</dx-input-url>
-```
-
-## Usage Examples
-
-### Basic Reactive Form
-
-```typescript
-// component.ts
-form = this.fb.group({
-  website: ['', Validators.required]
-});
-```
-
-```html
-<!-- component.html -->
-<form [formGroup]="form">
-  <dx-input-url formControlName="website">
-    <dx-label>Website URL</dx-label>
-    <dx-error *ngIf="form.controls['website'].errors?.urlInvalid">
-      Please enter a valid URL
-    </dx-error>
-  </dx-input-url>
-</form>
-```
-
-### Template-Driven Form
-
-```html
-<dx-input-url [(ngModel)]="profileUrl" name="profileUrl" required>
-  <dx-label>Profile URL</dx-label>
-</dx-input-url>
-```
-
-### With Outer Label Style
-
-```html
-<dx-input-url
-  formControlName="repoUrl"
-  outline="outer-label"
-  outerLabelErrorType="astrict-error"
-  [required]="true">
-  <span dxLabel>Repository URL</span>
-</dx-input-url>
-```
-
-### With Hint and Suffix
-
-```html
-<dx-input-url formControlName="docUrl">
-  <dx-label>Documentation URL</dx-label>
-  <dx-hint>Must start with https://</dx-hint>
-  <dx-suffix>
-    <mat-icon>open_in_new</mat-icon>
-  </dx-suffix>
-</dx-input-url>
-```
-
-## Features
-
-- **Built-in URL validation** — `dxUrlValidator` directive validates format automatically
-- **Link icon prefix** — Material `link` icon displayed before the input text
-- **ControlValueAccessor + Validator** — full form integration including validation propagation
-- **Auto-detected required** — reads `Validators.required` from the parent `FormControl`
-- **Outline styles** — supports `floating`, `none-floating`, and `outer-label` label modes
-- **Content projection** — label, error, hint, prefix and suffix slots

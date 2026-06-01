@@ -25,9 +25,9 @@
           <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z" />
         </svg>
       </div>
-      <color-picker *ngIf="!hideColorPicker && this.colorPickerControls == 'only-alpha'"
+      <dx-color-picker *ngIf="!hideColorPicker && this.colorPickerControls == 'only-alpha'"
         [controls]="colorPickerControls" [color]="hsva" (colorChange)="onChangeColorPicker($event)"
-        (onAlphaChange)="onAlphaChange($event)"></color-picker>
+        (onAlphaChange)="onAlphaChange($event)"></dx-color-picker>
     </div>
   </ng-container>
   <ng-container *ngIf="menu == 2">
@@ -67,8 +67,8 @@
       </button> -->
     </div>
     <div class="color-picker-wrapper">
-      <color-picker [controls]="colorPickerControls" [color]="hsva"
-        (sliderChange)="onChangeColorPicker($event)"></color-picker>
+      <dx-color-picker [controls]="colorPickerControls" [color]="hsva"
+        (sliderChange)="onChangeColorPicker($event)"></dx-color-picker>
     </div>
 
   </ng-container>

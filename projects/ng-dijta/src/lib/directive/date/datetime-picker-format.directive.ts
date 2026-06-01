@@ -1,10 +1,10 @@
 
-import { NGX_MAT_DATE_FORMATS } from "@angular-material-components/datetime-picker";
 import { Directive, Inject, Input, Optional } from "@angular/core";
 import { NgControl, NgModel } from "@angular/forms";
 import { MomentDateAdapter } from "@angular/material-moment-adapter";
 import { DateAdapter } from "@angular/material/core";
 import { CustomDateFormat, DateDisplay, DateParse } from "./custom-date-format";
+import { NGX_MAT_DATE_FORMATS } from "../../core/datetime-picker";
 
 @Directive({
     selector: "[datetimePickerFormat]",

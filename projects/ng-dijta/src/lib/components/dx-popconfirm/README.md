@@ -1,39 +1,48 @@
-# DxPopconfirm
+---
+category: Components
+type: Feedback
+title: Popconfirm
+---
 
-An overlay-based popconfirm directive (work in progress — currently disabled).
+A compact confirmation prompt anchored to a trigger element. The module re-exports CDK overlay, outlet, and no-animation primitives to support confirmation popovers throughout the library.
 
-## Overview
+## When To Use
 
-`DxPopconfirmModule` is an infrastructure module for a popconfirm overlay trigger. The component and directive declarations are currently commented out pending completion. The module imports CDK Overlay, Bidirectional layout, accessibility, and internal overlay utilities. Once released, it will provide an inline confirmation popover that can be attached to any host element via directive.
+- When an action is potentially destructive or irreversible and a lightweight inline confirmation is preferred over a full modal dialog.
+- When the confirmation can be expressed in a single sentence with simple accept/decline actions.
+- Prefer `dx-popover` or `dx-button`'s built-in `confirmationPopover` configuration to render confirmation UI today.
 
-For a working inline confirmation today, use the `confirmationPopover` input on `<dx-button>`, which uses `DxConfirmComponent` as a Material dialog.
+## API
 
-## Module Import
-
-```typescript
-import { DxPopconfirmModule } from 'ng-dijta';
-
-@NgModule({
-  imports: [DxPopconfirmModule]
-})
+```html
+<!-- Confirmation UI is typically driven via dx-popover or dx-button [confirmationPopover] -->
+<dx-button
+  title="Delete"
+  [confirmationPopover]="confirmConfig"
+  (onActionSelect)="onDelete()">
+</dx-button>
 ```
 
-## Status
+### DxPopconfirmModule
 
-> **Work in progress.** The `NzPopconfirmComponent` and `NzPopconfirmDirective` are defined but not yet exported from this module. No public API is available at this time.
+This module provides the infrastructure (CDK overlay, outlet, and no-animation directives) used by confirmation flows in the library. It does not currently declare a public component directly — use it in combination with `DxPopoverModule` or `DxButtonModule`.
 
-## Alternative
+## Examples
 
-Use the `confirmationPopover` input of `<dx-button>` for immediate inline confirmation functionality:
+### Using a confirmation popover on a button
 
 ```typescript
-confirmationPopover: ConfirmationPopover = {
+confirmConfig: ConfirmationPopover = {
   isShow: true,
-  header: { title: 'Confirm Action', closeIcon: true },
-  content: { message: 'Are you sure you want to proceed?' },
+  header: {
+    title: 'Delete Item',
+    closeIcon: true,
+    icon: { isShow: true, icon: 'warning', color: '#ff0000' }
+  },
+  content: { message: 'Are you sure you want to delete this item?' },
   actions: {
-    secondary: { title: 'Cancel' },
-    primary:   { title: 'Confirm' }
+    confirm: { label: 'Delete', color: 'warn' },
+    cancel:  { label: 'Cancel' }
   }
 };
 ```
@@ -41,9 +50,33 @@ confirmationPopover: ConfirmationPopover = {
 ```html
 <dx-button
   title="Delete"
-  [confirmationPopover]="confirmationPopover"
+  class="secondary-btn"
+  [confirmationPopover]="confirmConfig"
   (onActionSelect)="onDelete()">
 </dx-button>
 ```
 
-See the [dx-button README](../dx-button/README.md) for the full confirmation popover API.
+### Using a popover as a confirmation surface
+
+```html
+<button
+  dx-popover
+  dxPopoverTitle="Confirm"
+  dxPopoverContent="Proceed with this action?"
+  dxPopoverTrigger="click"
+  [dxActionButton]="{ primary: { title: 'Yes' }, secondary: { title: 'No' } }"
+  (sendDetailData)="onConfirm()">
+  Submit
+</button>
+```
+
+## Import
+
+```typescript
+import { DxPopconfirmModule } from '@ngdx/dijta';
+
+@NgModule({
+  imports: [DxPopconfirmModule]
+})
+export class YourModule { }
+```

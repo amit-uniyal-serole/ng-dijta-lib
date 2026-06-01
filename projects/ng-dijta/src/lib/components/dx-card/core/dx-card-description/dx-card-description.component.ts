@@ -12,10 +12,13 @@ interface BgClass {
   styles: [
     `
       .card-title {
-        max-width: 20rem;
+        
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+      .max-card-title-width {
+        max-width: 20rem;
       }
     `
   ]

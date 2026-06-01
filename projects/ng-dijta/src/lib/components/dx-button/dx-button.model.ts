@@ -4,7 +4,7 @@ import { Actions } from "../dx-popover/model/popover.model";
 
 export type Type = 'normal' | 'raised' | 'stroked' | 'flat' | 'icon' | 'fab' | 'mini-fab';
 export type Color = 'primary' | 'accent' | 'warn' | '';
-export type ButtonClasses = 'dxBtn' | 'secondary-btn' | 'dxIconClass';
+export type ButtonClasses = 'dxBtn' | 'secondary-btn' | 'dxIconClass' | 'text';
 export type ButtonLoaderType = 'semi-circle' | 'arc' | 'dual-arc' | 'pulse' | 'refresh';
 export declare interface DxButtonOptions {
   type: Type,
@@ -35,6 +35,7 @@ export interface MultiActionMenuList {
   confirmationPopover?: ConfirmationPopover;
   classCondition?: ConditionClass;
   permission?: DxPermission;
+  btnType?: ButtonClasses;
 }
 export interface CustomLabelColor {
   color: string

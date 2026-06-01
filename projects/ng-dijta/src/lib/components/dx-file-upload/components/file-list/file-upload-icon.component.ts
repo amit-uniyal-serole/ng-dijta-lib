@@ -3,7 +3,7 @@ import { FileUploadService } from '../../services/file-upload.service';
 
 
 @Component({
-    selector: `file-upload-icon`,
+    selector: `dx-file-upload-icon`,
     templateUrl: `./file-upload-icon.component.html`,
     styleUrls: [`./file-upload-icon.component.scss`],
     changeDetection: ChangeDetectionStrategy.OnPush

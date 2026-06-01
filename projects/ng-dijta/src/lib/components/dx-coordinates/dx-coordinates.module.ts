@@ -10,10 +10,10 @@ import { CoordinatesDirective } from './directives/coordinates-directive/coordin
 import { CoordinatesService } from './directives/coordinates-directive/coordinates.service';
 import { DxCoordinatesComponent } from './dx-coordinates.component';
 import { LatitudeMaskDirective } from './directives/latitude.directive';
-import { DxPipeModule } from '../../core/pipe/pipe.module';
 import { CoordinateLatLongComponent } from './coordinate-lat-long/coordinate-lat-long.component';
 import { LatLongInput } from './coordinate-lat-long/lat-long.component';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
+import { DxTooltipListPipe } from '../../pipe/dx-tooltip-list.pipe';
 
 @NgModule({
   declarations: [
@@ -33,12 +33,12 @@ import { TranslocoModule } from '@ngneat/transloco';
     DxInputModule,
     DxNumberModule,
     DxDirectiveModule,
-    DxPipeModule,
+    DxTooltipListPipe,
     TranslocoModule
   ],
   exports: [
     DxCoordinatesComponent,
-    DxPipeModule,
+    DxTooltipListPipe,
     CoordinateLatLongComponent
   ],
   providers: [CoordinatesService],

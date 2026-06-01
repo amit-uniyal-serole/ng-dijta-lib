@@ -12,6 +12,7 @@ export interface KeyValueModel {
   data?: any;
   disabled?: boolean;
   permission?: DxPermission;
+  [key: string]: any;
   popupTitle?: string;
   popupDesc?: string[];
 }

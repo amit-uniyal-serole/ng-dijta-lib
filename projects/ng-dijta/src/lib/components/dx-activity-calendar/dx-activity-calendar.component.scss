@@ -1,15 +1,4 @@
-// @import "tui-calendar/dist/tui-calendar.css";
 
-// If you use the default popups, use this.
-// @import 'tui-date-picker/dist/tui-date-picker.css';
-// @import 'tui-time-picker/dist/tui-time-picker.css';
-// #calendar {
-//     position: absolute;
-//     left: 0;
-//     right: 0;
-//     bottom: 5px;
-//     top: 64px;
-// }
 #dxCalender {
 
   .cal-header {
@@ -18,9 +7,6 @@
     justify-content: space-between;
     margin-bottom: 5px;
   }
-
-  .cal-action-btns {}
-
   .cal-dxBtn-primary {
     background-color: var(--primary-base);
     color: var(--primary-on-base);

@@ -1,0 +1,30 @@
+@import "../mixins";
+
+.mat-tab-group {
+  font-family: inherit;
+}
+
+.notification-menu .mat-menu-content {
+  height: 100%;
+  width: 100%;
+}
+
+.notification-tab {
+  .mat-tab-header {
+    position: sticky;
+    top: -11px;
+    background: rgb(255, 255, 255);
+    z-index: 9;
+  }
+}
+
+.material-icons-outlined {
+  color: rgb(100, 116, 139);
+}
+
+.add-profile-menus {
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  padding: 10px;
+}

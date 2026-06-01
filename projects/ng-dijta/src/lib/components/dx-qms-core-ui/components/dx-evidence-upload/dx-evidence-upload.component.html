@@ -148,9 +148,9 @@
     <ng-template *ngTemplateOutlet="lineThemeRef"></ng-template>
   </ng-container>
   <ng-template #commentsRef>
-    <span *ngIf="!evidence.isEditing" dx-tooltip [dxTooltipTitle]="evidence.comments">
+    <ng-container *ngIf="!evidence.isEditing">
       {{evidence.comments ? evidence.comments : '-'}}
-    </span>
+    </ng-container>
     <ng-container *ngIf="evidence.isEditing">
       <form [formGroup]="form">
         <dx-input [noneLabel]="true" class="w-100" outline="outer-label" formControlName="comments" [required]="true"

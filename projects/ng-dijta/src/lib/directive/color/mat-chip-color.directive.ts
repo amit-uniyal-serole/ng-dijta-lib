@@ -10,13 +10,25 @@ export class ChangeChipColorDirective implements OnChanges {
     @Input('same') same: boolean = false;
     @Input('onlyBorder') onlyBorder: boolean = false;
     @Input('sameColor') sameColor: boolean = false;
-    constructor(private el: ElementRef, private renderer: Renderer2) { }
+    @Input('defaultColor') defaultColor:boolean = false; 
+    @Input('highlightWithDefaultColor') highlightWithDefaultColor:boolean = false;    
+    @Input('buttonTextColor') buttonTextColor: boolean = false;
+    @Input('buttonTextBg') buttonTextBg: boolean = false;
+    @Input('isButton') isButton: boolean = false;
+    constructor(private readonly el: ElementRef, private readonly renderer: Renderer2) { }
 
     ngOnChanges(): void {
         this.changeColor(this.color);
     }
 
     private changeColor(color: string) {
+        if(this.defaultColor && !color && this.highlightWithDefaultColor){
+            // `documentElement.style` only reads INLINE styles; the `--secondary-base`
+            // variable is set via a stylesheet rule, so we need the computed value.
+            color = getComputedStyle(document.documentElement)
+                .getPropertyValue("--secondary-base")
+                .trim();
+        }
         if (color) {
             if (this.isIcon) {
                 this.renderer.setStyle(this.el.nativeElement, 'background-color', this.getLighterColor(color, 0, 0.10));
@@ -25,7 +37,7 @@ export class ChangeChipColorDirective implements OnChanges {
             } else if (this.onlyBorder) {
                 this.renderer.setStyle(this.el.nativeElement, 'background-color', '#fff');
                 this.renderer.setStyle(this.el.nativeElement, 'color', color);
-                this.renderer.setStyle(this.el.nativeElement, 'border-color', color);
+                this.el.nativeElement.style.setProperty('border-color', color, 'important');
             } else if (this.dot) {
                 this.renderer.setStyle(this.el.nativeElement, 'background-color', this.getDarkerColor(color, 10));
             } else if (this.same) {
@@ -36,15 +48,23 @@ export class ChangeChipColorDirective implements OnChanges {
                 this.renderer.setStyle(this.el.nativeElement, 'background-color', this.getLighterColor(color, 0, 0.10));
                 this.renderer.setStyle(this.el.nativeElement, 'color', color);
                 this.renderer.setStyle(this.el.nativeElement, 'box-shadow', `${this.getLighterColor(color, 90)} 0px 2px 4px 0px inset`);
+            } else if (this.buttonTextColor) {
+                this.renderer.setStyle(this.el.nativeElement, 'color', `${color}`);
+            } else if (this.buttonTextBg) {
+                this.renderer.setStyle(this.el.nativeElement, 'background-color', this.getLighterColor(color, 0, 0.10));
+                this.renderer.setStyle(this.el.nativeElement, 'color', color);
             } else {
                 this.renderer.setStyle(this.el.nativeElement, 'background-color', this.getLighterColor(color, 0, 0.50));
                 this.renderer.setStyle(this.el.nativeElement, 'color', this.getContrastColor(color));
                 this.renderer.setStyle(this.el.nativeElement, 'border-color', this.getDarkerColor(color, 40));
             }
         } else {
-            this.renderer.setStyle(this.el.nativeElement, 'background-color', 'inherit');
-            this.renderer.setStyle(this.el.nativeElement, 'color', 'inherit');
-            this.renderer.setStyle(this.el.nativeElement, 'border-color', 'inherit');
+            if(!this.isButton) {
+                this.renderer.setStyle(this.el.nativeElement, 'background-color', 'inherit');
+                this.renderer.setStyle(this.el.nativeElement, 'color', 'inherit');
+                this.renderer.setStyle(this.el.nativeElement, 'border-color', 'inherit');
+            }
+           
         }
     }
 

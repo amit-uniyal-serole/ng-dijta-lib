@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DxTreeV2Component } from './dx-tree-v2.component';
 import { NzTreeV2Component } from './nz-tree-v2.component';
 import { TreeModule } from './angular-tree-component.module';
+import { DxDirectiveModule } from '../../directive';
 
 
 
@@ -13,7 +14,8 @@ import { TreeModule } from './angular-tree-component.module';
   ],
   imports: [
     CommonModule,
-    TreeModule
+    TreeModule,
+    DxDirectiveModule
   ],
   exports: [DxTreeV2Component,
     NzTreeV2Component, TreeModule]

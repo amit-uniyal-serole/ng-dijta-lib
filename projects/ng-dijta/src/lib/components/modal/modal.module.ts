@@ -12,10 +12,11 @@ import { ModalService } from './modal.service';
 import { MovableDirective } from './movable.directive';
 import { DocumentRef } from '../../core/window-ref';
 import { OverlayContainerModule } from '../../core/overlay-container';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
+import { DxDirectiveModule } from '../../directive';
 
 @NgModule({
-  imports: [CommonModule, OverlayContainerModule, ScrollingModule, TranslocoModule],
+  imports: [CommonModule, OverlayContainerModule, ScrollingModule, TranslocoModule, DxDirectiveModule],
   declarations: [
     ModalComponent,
     ModalContainerComponent,

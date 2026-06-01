@@ -1,6 +1,6 @@
-<div class="dx-field-wrapper ngx-ip-container-wrapper" [class.left-align-label]="labelPosition === 'left'"
-  [ngClass]="containerClass" floatLabel="never" [class.required]="required" [class]="outerLabelErrorType">
-  <mat-label class="dx-outer-label-wrapper">
+<div class="ngdx-field-wrapper ngx-ip-container-wrapper outer-label" [class.left-align-label]="labelPosition === 'left'"
+  [ngClass]="containerClass" floatLabel="never" [class.required]="required">
+  <mat-label class="dx-outer-label">
     <span class="dx-outer-label d-flex">
       <ng-content select="[dxLabel]"></ng-content>
       <span *ngIf="required" class="astrict">*</span>
@@ -20,7 +20,7 @@
     </ng-template>
   </div>
   <div class="ngx-ip-copy-overlay" *ngIf="resolveCopyMethod">
-    <div class="ngx-ip-table" [@copyAnim]="">
+    <div class="ngx-ip-table">
       <div class="ngx-ip-copy-title">{{'Copy?' | transloco}}</div>
       <a (click)="onCopyDecision('block')">{{'Block' | transloco}}</a>
       <a (click)="onCopyDecision('address')">{{'Address' | transloco}}</a>

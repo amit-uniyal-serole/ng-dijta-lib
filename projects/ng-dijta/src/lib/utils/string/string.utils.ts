@@ -5,6 +5,9 @@ export class StringUtil {
     }
 
     static isBlank(val: string): boolean {
+        if (val === "0") {
+            return false;
+        }
         return !val
             || (StringUtil.isString(val)
                 && val.trim().length === 0);

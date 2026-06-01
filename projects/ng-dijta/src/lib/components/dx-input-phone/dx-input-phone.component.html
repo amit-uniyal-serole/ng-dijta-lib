@@ -1,14 +1,12 @@
-<div class="dx-field-wrapper" [class.none-label]="noneLabel" [ngClass]="outline" [class.display-view]="viewOnly"
+<div class="ngdx-field-wrapper" [class.none-label]="noneLabel" [ngClass]="outline" [class.display-view]="viewOnly"
   [class.dx-disable]="disabled" [class.left-align-label]="labelPosition === 'left'" floatLabel="never"
-  [class.none-border]="noneBorder" [class.required]="required" [class]="outerLabelErrorType">
-  <mat-label class="dx-outer-label-wrapper">
-    <span class="dx-outer-label">
-      <ng-content select="[dxLabel]"></ng-content>
-      <span *ngIf="required" class="astrict">*</span>
-    </span>
+  [class.required]="required" [class]="outerLabelErrorType" [class.none-border]="noneBorder">
+  <mat-label class="dx-outer-label d-flex align-items-center" *ngIf="outline === 'outer-label'">
+    <ng-content select="[dxLabel]"></ng-content>
+    <span *ngIf="required || ctrRequired" class="astrict">*</span>
   </mat-label>
-  <mat-form-field appearance="outline" floatLabel="never">
-    <mat-label class="dx-input-label">
+  <mat-form-field appearance="outline" floatLabel="always">
+    <mat-label *ngIf="outline !== 'outer-label'">
       <ng-content select="dx-label"></ng-content>
     </mat-label>
     <dx-phone-contact [tabIndex]="tabIndex" [preferredCountries]="preferredCountries" [enablePlaceholder]="enablePlaceholder"

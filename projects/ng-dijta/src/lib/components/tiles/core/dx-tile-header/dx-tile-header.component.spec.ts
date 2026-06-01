@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DxTileHeaderComponent } from './dx-tile-header.component';
+import { DxTilesHeaderComponent } from './dx-tile-header.component';
 
-describe('DxTileHeaderComponent', () => {
-  let component: DxTileHeaderComponent;
-  let fixture: ComponentFixture<DxTileHeaderComponent>;
+describe('DxTilesHeaderComponent', () => {
+  let component: DxTilesHeaderComponent;
+  let fixture: ComponentFixture<DxTilesHeaderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DxTileHeaderComponent ]
+      declarations: [ DxTilesHeaderComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DxTileHeaderComponent);
+    fixture = TestBed.createComponent(DxTilesHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

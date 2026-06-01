@@ -1,30 +1,78 @@
-## Selector for config table
+---
+category: Components
+type: Data Entry
+title: Color Picker
+---
 
-`<dx-config-table></dx-config-table>`
+A color picker panel that attaches to a trigger element via the `dxColorsTrigger` directive and displays a color-picking UI. The selected color is synchronized two-way through the trigger directive.
 
-## Module
+## When To Use
 
-`DxConfigTableModule`
+- When users need to select a custom color (hex, rgb, hsl) from a visual picker.
+- When the picker should appear anchored to a trigger element (button, swatch, input).
+- For a preset palette only, consider building a simpler chip list instead.
 
-## Inputs
+## API
 
-| Input                  | Data need to be passed as input                                               |
-| ---------------------- | ----------------------------------------------------------------------------- |
-| **configUrl** (string) | `configuration url to get table(setting,col,pageable,pageSizeList and dataUrl)` |
+```html
+<button dxColorsTrigger [(color)]="selectedColor">
+  <dx-colors></dx-colors>
+</button>
+```
 
-## Events
+### dx-colors
 
-| Event                | Time of triggering                  | return type            |
-| -------------------- | ----------------------------------- | ---------------------- |
-| **onAction**         | `on click of action icons in table` | **OnAction<T>**        |
-| **onCheckboxChange** | `on click of checkbox`              | **DxTableColumn<T>[]** |
-| **onFilterClick**    | `on clicking Filter Icon`           | **DxFilter**           |
+The `<dx-colors>` component is projected inside an element that has the `dxColorsTrigger` directive applied. The directive owns the current color value; the component reacts to changes and renders the picker panel.
 
-## Sample selector After implementing all inputs and output Events
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `color` | Current color value, read from the host `dxColorsTrigger` directive | `string` | `-` |
 
-> `<dx-config-table configUrl="http://localhost:3000/tableConfig" (onFilterClick)="onFilterClick($event)" (onAction)="onAction($event)" (onCheckboxChange)="onCheckboxChange($event)"></dx-config-table>`
+### dxColorsTrigger (directive)
 
-## Material Icons link
->`<link
-    href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
-    rel="stylesheet" /> `
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[color]` | Two-way bound color value (hex / rgb / hsl string) | `string` | `-` |
+
+### Events
+
+| Event | Description | Type |
+|-------|-------------|------|
+| `(colorChange)` | Emitted when the selected color changes (two-way-binding output) | `EventEmitter<string>` |
+
+## Examples
+
+### Basic trigger + picker
+
+```typescript
+selectedColor = '#1976d2';
+```
+
+```html
+<button dxColorsTrigger [(color)]="selectedColor" class="color-swatch">
+  <span [style.background]="selectedColor"></span>
+  <dx-colors></dx-colors>
+</button>
+```
+
+### React to color changes
+
+```html
+<div
+  dxColorsTrigger
+  [color]="themeColor"
+  (colorChange)="applyTheme($event)">
+  <dx-colors></dx-colors>
+</div>
+```
+
+## Import
+
+```typescript
+import { DxColorsModule } from '@ngdx/dijta';
+
+@NgModule({
+  imports: [DxColorsModule]
+})
+export class YourModule { }
+```

@@ -5,7 +5,7 @@
   <button mat-button [disabled]="invalidSelection" [color]="color" (click)="okClickHandler()">{{okLabel}}</button>
 </ng-template>
 
-<mat-dialog-content>
+<mat-dialog-content [ngStyle]="{'padding': 'unset !important','margin.px': 0}">
   <div class="time-picker-dialog-root">
     <mat-toolbar [color]="color" class="time-picker-dialog-header">
       <div class="time-picker-placeholder"></div>
@@ -47,11 +47,11 @@
     </div>
   </div>
 </mat-dialog-content>
-<mat-dialog-actions>
+<div mat-dialog-actions class="col-md-12 mt-2 d-flex justify-content-end">
   <ng-container
     *ngTemplateOutlet="cancelButtonTemplate || defaultCancelButtonTemplate; context: { label: cancelLabel, $implicit: cancelClickHandler }">
   </ng-container>
   <ng-container
     *ngTemplateOutlet="okButtonTemplate || defaultOkButtonTemplate; context: { label: okLabel, $implicit: okClickHandler }">
   </ng-container>
-</mat-dialog-actions>
+</div>

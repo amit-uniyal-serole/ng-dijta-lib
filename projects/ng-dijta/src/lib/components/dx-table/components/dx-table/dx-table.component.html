@@ -1,34 +1,36 @@
-<dx-paginator *ngIf="setting" [showSeparator]="setting?.colArrange" [multiViewTable]="multiViewTable"
-  [pageSizeList]="pageSizeList" [setting]="setting" [pageSize]="setting?.pageSize" (onFilter)="onFilter($event)"
-  (onPagination)="onPagination($event)" (onClickViewSwitcher)="onClickViewSwitcher($event)"
-  (onClickPageSize)="onClickPageSize($event)" (onClickChangeView)="onClickChangeView($event)"
-  (onClickCreateCustomView)="clickCreateCustomView()" (onSubMenuClick)="onSubMenuClick($event)"
-  (onLeftDropDownSearch)="leftDropDownSearch($event)" (onMarkAsDefault)="onMarkAsDefault($event)" (activeTabChange)="activeTabChange.emit($event)">
-  <ng-container action-bar-items>
-    <button class="arrange-columns" matTooltip="Arrange Columns" matTooltipPosition="below"
-      *ngIf="setting?.colArrange && displayedColumns && displayedColumns?.length > 0" dx-column-sorter
-      [(columns)]="displayedColumns" [columnNames]="displayedColumnsNames" [saveName]="'example-table'">
-      <mat-icon>view_column</mat-icon>
-    </button>
-  </ng-container>
-</dx-paginator>
+<div class="dx-table-wrapper">
+  <dx-paginator *ngIf="setting && !setting.hideToolbar" [showSeparator]="setting?.colArrange" [multiViewTable]="multiViewTable"
+    [pageSizeList]="pageSizeList" [setting]="setting" (onFilter)="onFilter($event)"
+    (onPagination)="onPagination($event)" (onClickViewSwitcher)="onClickViewSwitcher($event)"
+    (onClickPageSize)="onClickPageSize($event)" (onClickChangeView)="onClickChangeView($event)"
+    (onClickCreateCustomView)="clickCreateCustomView()" (onSubMenuClick)="onSubMenuClick($event)"
+    (onLeftDropDownSearch)="leftDropDownSearch($event)" (onMarkAsDefault)="onMarkAsDefault($event)"
+    (activeTabChange)="activeTabChange.emit($event)">
+    <ng-container action-bar-items>
+      <button class="arrange-columns" matTooltip="Arrange Columns" matTooltipPosition="below"
+        *ngIf="setting?.colArrange && displayedColumns && displayedColumns?.length > 0" dx-column-sorter
+        [(columns)]="displayedColumns" [columnNames]="displayedColumnsNames" [saveName]="'example-table'">
+        <mat-icon>view_column</mat-icon>
+      </button>
+    </ng-container>
+  </dx-paginator>
+  @if (extraHeaderTemplateRef) {
+    <ng-template 
+      [ngTemplateOutlet]="extraHeaderTemplateRef" 
+      ></ng-template>
+  }
 
-<div *ngIf="type === 'canvas'; else noCanvasView">
-  <div
-    class="dx-table w-100 table-responsive"
-    [style.max-height.px]="tableHeight"
-    *ngFor="let data of dataSource; trackBy: trackByData"
-  >
-    <ng-template
-      [ngTemplateOutlet]="recordTemplateRef"
-      [ngTemplateOutletContext]="{ $implicit: data, columns: columns }"
-    ></ng-template>
-  </div>
-</div>
-
-<ng-template #noCanvasView>
-  <div class="dx-table table-responsive position-relative" [style.max-height.px]="tableHeight">
-    <ng-container>
+@if(type === 'canvas') {
+  <div class="table-cards-container">
+    @for (data of dataSource; track data) {
+        <ng-template 
+            [ngTemplateOutlet]="recordTemplateRef" 
+            [ngTemplateOutletContext]="{ $implicit: data, columns: columns }"></ng-template>
+    }
+   </div>
+} @else {
+  <form #f="ngForm">
+    <div *ngIf="!isKanbanView" [class]="type" class="dx-table table-responsive" [style.max-height.px]="tableHeight">
 
       <table *ngIf="displayedColumns && displayedColumns?.length > 0" aria-describedby="mydesc" mat-table #table
         [dataSource]="dataSource" matSort cdkDropList cdkDropListOrientation="horizontal"
@@ -66,13 +68,11 @@
           <th scope="col" mat-header-cell class="flex-3" *matHeaderCellDef [style.width]="'50px'">
 
             <ng-container *ngIf="setting?.multiSelectWithLabel;else multiSelectWithLabel">
-              <p class="custom-font-family mb-0 subtitle table-header-text ">{{setting?.multiSelectWithLabel |
-                transloco}}
+              <p class="custom-font-family mb-0 table-header-text ">{{setting?.multiSelectWithLabel | transloco}}
               </p>
             </ng-container>
             <ng-template #multiSelectWithLabel>
-              <mat-checkbox (change)="$event ? masterToggle() : null"
-                [checked]="selection.hasValue() && isAllSelected()"
+              <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
                 [indeterminate]="selection.hasValue() && !isAllSelected()">
               </mat-checkbox>
             </ng-template>
@@ -92,20 +92,86 @@
 
 
         <ng-container *ngFor="let col of columns;let i = index" [matColumnDef]="col?.columnDef"
-          [sticky]="col.sticky === 'start' ? true : false"
-          [stickyEnd]="col.type === 'action' || col.type === 'menu' || col.type === 'flat-action' || col.sticky === 'end'">
-          <th [class.avatar-width]="col?.noSpace" scope="col" mat-header-cell mat-header-cell *matHeaderCellDef
-            mat-sort-header [resizeColumn]="setting?.resize" [index]="i" [disabled]="!col?.sortable">
-            <p class="custom-font-family mb-0 subtitle table-header-text">{{col?.title | transloco}}</p>
+          [sticky]="col.sticky === 'start' ? true : false" 
+          [stickyEnd]="col.type === 'action' || col.type === 'menu' || col.type === 'flat-action' || col.sticky === 'end' || col.type === 'hove-menu'">
+          <th [class.avatar-width]="col?.noSpace"ser scope="col" mat-header-cell mat-header-cell *matHeaderCellDef
+            mat-sort-header  [resizeColumn]="setting?.resize" [index]="i" [disabled]="!col?.sortable" [class.hover-menu]="col.type === 'hove-menu'" class="table-header">
+            <p class="custom-font-family mb-0 table-header-text">{{col?.title | transloco}}</p>
+            <button
+              *ngIf="col?.sortable && getSortMenuOptions(col)?.length > 0"
+              mat-button
+              type="button"
+              class="dx-table-sort-trigger"
+              #sortMenuTrigger="matMenuTrigger"
+              [class.open]="sortMenuTrigger?.menuOpen"
+              [matMenuTriggerFor]="sortMenu"
+              (click)="$event.stopPropagation()"
+              [attr.aria-label]="'Sorting options for ' + (col?.title | transloco)">
+              <mat-icon>swap_vert</mat-icon>
+            </button>
+            <mat-menu #sortMenu="matMenu" class="dx-table-sort-menu" xPosition="before">
+              <button
+                mat-menu-item
+                type="button"
+                *ngFor="let option of getSortMenuOptions(col); trackBy: trackSortMenuOption"
+                (click)="applySortFromMenu(col, option.direction)"
+                [disabled]="isSortOptionDisabled(col, option.direction)"
+                [class.dx-sort-option-active]="isSortOptionSelected(col, option.direction)">
+                <div class="d-flex align-items-center justify-content-start gap-1">
+                    <mat-icon>{{getSortOptionIcon(option)}}</mat-icon>
+                    <span>{{option?.label}}</span>
+                    <mat-icon
+                      class="selected-check"
+                      *ngIf="!isSortOptionDisabled(col, option.direction) && isSortOptionSelected(col, option.direction)">done</mat-icon>
+                </div>
+              </button>
+            </mat-menu>
           </th>
-          <td mat-cell mat-cell *matCellDef="let element" [attr.data-label]="col?.title | transloco"
+          <td mat-cell *matCellDef="let element; let i = index" [attr.data-label]="col?.title | transloco"
             [class.avatar-width]="col?.noSpace" [style.width]="col.width ?? '150px'">
-            <dx-table-field-wrapper *ngIf="element" [isBusy]="isBusy" [column]="col" [source]="element"
-              [expandData]="expandedElement" (onExpand)="onTableExpand($event)" (onEventChange)="eventChange($event)"
-              (onToggleEventChange)="onToggleChange($event)" (onAction)="action($event)"
-              (onMenuAction)="onMenuAction($event)" (onEditRowAction)="onEditRowAction($event)"
-              (onClickLookupLink)="onLookupLink($event)" (onRowIconClick)="onRowIconClick($event)">
-            </dx-table-field-wrapper>
+            @if (element) {
+              <ng-container [ngSwitch]="col?.type">
+                <ng-container *ngSwitchCase="'select'">
+                  <dx-table-select 
+                  [(ngModel)]="element?.data[col?.field]" 
+                  name="select{{dataSource.indexOf(element)}}" 
+                  #selectRef="ngModel" 
+                  [options]="col?.options" 
+                  [required]="setting?.singleRowSelect ? (element?.selectSetting?.required && clickedRows.isSelected(element)) : setting?.multiSelect ?  selection.isSelected(element) && element?.selectSetting?.required: (element?.selectSetting?.required ?? false)" 
+                  [readonly]="element?.selectSetting?.readonly ?? false"
+                  (ngModelChange)="eventChange(element)">
+                  </dx-table-select>
+                </ng-container>
+                <ng-container *ngSwitchCase="'multi-select'">
+                  <dx-table-multi-select
+                  [(ngModel)]="element.data[col?.field]"
+                  name="multiSelect{{dataSource.indexOf(element)}}"
+                  [options]="col?.options"
+                  [required]="setting?.singleRowSelect ? (element?.selectSetting?.required && clickedRows.isSelected(element)) : setting?.multiSelect ?  selection.isSelected(element) && element?.selectSetting?.required: (element?.selectSetting?.required ?? false)"
+                  [readonly]="element?.selectSetting?.readonly ?? false"
+                  (ngModelChange)="eventChange(element)">
+                  </dx-table-multi-select>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                  <div class="d-flex gap-1 align-items-center">
+                  <dx-table-field-wrapper *ngIf="element" [isBusy]="isBusy" [column]="col" [source]="element"
+                  [expandData]="expandedElement" (onExpand)="onTableExpand($event)" (onEventChange)="eventChange($event)"
+                  (onToggleEventChange)="onToggleChange($event)" (onAction)="action($event)"
+                  (onMenuAction)="onMenuAction($event)" (onEditRowAction)="onEditRowAction($event)"
+                  (onClickLookupLink)="onLookupLink($event)" (onRowIconClick)="onRowIconClick($event)" (fileView)="onFileViewClick($event)" [id]="i">
+                </dx-table-field-wrapper> 
+                @if(element?.toolTip && element?.toolTip[col?.field]){
+                  <span class="material-icons-outlined me-2 column-data-info" dx-tooltip [dxTooltipTitle]="element?.toolTip[col?.field]">
+                    info
+                  </span>   
+                }
+                </div>
+                </ng-container>
+              </ng-container>
+            }
+            
+          
+            
           </td>
           <td mat-footer-cell *matFooterCellDef>
             <span *ngIf="col?.footer?.title">{{col?.footer?.title | transloco}}</span>
@@ -130,73 +196,77 @@
           </td>
         </ng-container>
 
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-        <!-- Overlay row for disabled rows -->
-        <tr [ngClass]="row?.disableRow?.isDisabled && !isBusy ? 'dx-table-overlay-row  show-overlay': 'd-none'" mat-row
-          *matRowDef="let row; columns: ['overlay']">
-        </tr>
-
-
-        <tr class="table-row" mat-row matRipple *matRowDef="let row; columns: displayedColumns;" cdkDrag
-          [cdkDragDisabled]="!setting?.rowArrange" [ngClass]="{
-          hovered: row.hovered && (setting?.singleRowSelect || setting?.multiRowSelect),
-          highlighted: clickedRows.isSelected(row) && (setting?.multiRowSelect),
-          highlightRowBg: row?.styleTableRowBg?.isHighLightRow}" (mouseover)="row.hovered = true"
-          (mouseout)="row.hovered = false" [cdkDragData]="row" cdkDragLockAxis="y"
-          cdkDragBoundary=".dx-table-drag-drop-container"
-          [class.disabled]="row?.multiCheckbox?.disable || row?.multiRadioButton?.disable"
-          [class.enable-row-click]="setting?.enableRowClick" (click)="onRowClick(row)">
-        </tr>
-        <!-- Overlay column for disabled rows -->
         <ng-container matColumnDef="overlay">
-          <div mat-cell class="d-flex w-100 justify-content-between" *matCellDef="let element">
-            <span class="body fw-semibold">
-              {{element?.disableRow?.msgPrefix}} | {{element?.disableRow?.message}}
-            </span>
-            <button class="btn-change me-3" (click)="onClickOverlayButtonAction(element)">
-              {{element?.disableRow?.buttonTitle}}
-            </button>
-          </div>
+          <td mat-cell class="overlay-row-content" *matCellDef="let element" [attr.colspan]="displayedColumns?.length">
+            <div class="d-flex align-items-center">
+              <div class="w-100 subbody fw-semibold">
+                {{element?.disableRow?.message}}
+              </div>
+              <button role="button" class="row-refresh" (click)="tableOverlayRefresh(element)">
+                <mat-icon>
+                  refresh
+                </mat-icon>
+              </button>
+            </div>
+          </td>
         </ng-container>
 
+        <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+        <tr [ngClass]="row?.disableRow?.isDisabled && !isBusy ? 'dx-table-overlay-row': 'd-none'" mat-row
+          *matRowDef="let row; columns: ['overlay']"></tr>
+        <tr class="table-row" mat-row matRipple *matRowDef="let row; columns: displayedColumns;" cdkDrag
+          [cdkDragDisabled]="!setting?.rowArrange" [ngClass]="{hovered: row.hovered && (setting?.singleRowSelect || setting?.multiRowSelect), highlighted: clickedRows.isSelected(row) && (setting?.multiRowSelect),
+            highlightRowBg : row?.styleTableRowBg?.isHighLightRow}" (mouseover)="row.hovered = true"
+          (mouseout)="row.hovered = false" [cdkDragData]="row" cdkDragLockAxis="y"
+          cdkDragBoundary=".dx-table-drag-drop-container"
+          [class.disabled]="row?.multiCheckbox?.disable || row?.multiRadioButton?.disable" (click)="onRowClick(row)"
+          [class.enable-row-click]="setting?.enableRowClick"></tr>
         <tr mat-row *matRowDef="let row; columns: ['expandedDetail']"
           [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'" style="overflow: hidden">
         </tr>
-        <ng-container *ngIf="footerColumns&&footerColumns?.length > 0">
+        <ng-container *ngIf="footerColumns && footerColumns?.length > 0 && dataSource?.length > 0 ">
           <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
         </ng-container>
       </table>
-    </ng-container>
-    <div *ngIf="(!dataSource || dataSource?.length === 0)">
-      <dx-table-skeleton *ngIf="isBusy" [loaderPageSize]="setting?.pageSize" [isAvatar]="isAvatar"
-        [isRowArrange]="setting?.rowArrange" [isMultiCheckbox]="setting?.multiSelect">
-      </dx-table-skeleton>
-    </div>
-    <div>
-      <ng-content select="table-content"></ng-content>
-      <ng-container *ngIf="(!dataSource || dataSource?.length === 0) && showDefaultEmptyContent && !isBusy">
-        <div class="dx-table-empty" *ngIf="!dxEmptyTemplate;else emptyContent">
-          <dx-empty></dx-empty>
-        </div>
-      </ng-container>
-
-      <ng-template #emptyContent>
-        <ng-container *dxStringTemplateOutlet="dxEmptyTemplate">
-          {{ isContentString ? dxNotFoundContent : ('No Data' | transloco) }}
+      <div class="d-flex justify-content-between" *ngIf="isHeaderBusy">
+        <dx-skeleton-loader [theme]="headerSkeleton"></dx-skeleton-loader>
+        <dx-skeleton-loader [theme]="headerSkeleton"></dx-skeleton-loader>
+        <dx-skeleton-loader [theme]="headerSkeleton"></dx-skeleton-loader>
+        <dx-skeleton-loader [theme]="headerSkeleton"></dx-skeleton-loader>
+        <dx-skeleton-loader [theme]="headerSkeleton"></dx-skeleton-loader>
+      </div>
+      <div *ngIf="(!dataSource || dataSource?.length === 0)">
+        <dx-table-skeleton *ngIf="isBusy" [loaderPageSize]="setting?.pageSize" [isAvatar]="isAvatar"
+          [isRowArrange]="setting?.rowArrange" [isMultiCheckbox]="setting?.multiSelect">
+        </dx-table-skeleton>
+      </div>
+      <div>
+        <ng-content select="table-content"></ng-content>
+        <ng-container *ngIf="(dataSource?.length === 0) && !isBusy">
+          <div class="dx-table-empty" *ngIf="!dxEmptyTemplate;else emptyContent">
+            <dx-empty [dxNotFoundImage]="dxNotFoundImage" [dxNotFoundContent]="dxNotFoundContent"
+              [dxNotFoundFooter]="dxNotFoundFooter"></dx-empty>
+          </div>
         </ng-container>
-      </ng-template>
+
+        <ng-template #emptyContent>
+          <ng-container *dxStringTemplateOutlet="dxEmptyTemplate">
+            {{ isContentString ? nzNotFoundContent : ('No Data' | transloco) }}
+          </ng-container>
+        </ng-template>
+      </div>
     </div>
-  </div>
+    <!-- Skeleton Loader's -->
+    <ng-template #checkboxLoader>
+      <dx-skeleton-loader [theme]="checkBoxLoader"></dx-skeleton-loader>
+    </ng-template>
 
-  <!-- Skeleton Loader's -->
-  <ng-template #checkboxLoader>
-    <dx-skeleton-loader [theme]="checkBoxLoader"></dx-skeleton-loader>
-  </ng-template>
+    <ng-template #rowSelect>
+      <dx-skeleton-loader [theme]="rowSelectLoader"></dx-skeleton-loader>
+    </ng-template>
+  </form>
+}
 
-  <ng-template #rowSelect>
-    <dx-skeleton-loader [theme]="rowSelectLoader"></dx-skeleton-loader>
-  </ng-template>
-</ng-template>
 
-<!--  -->
+  <!--  -->
+</div>

@@ -1,0 +1,83 @@
+// PrimeNG-style breadcrumb, themed entirely with dx theme variables + typography.
+.dx-breadcrumb {
+  display: flex;
+  align-items: center;
+  padding: var(--dx-spacing-sm, 0.5rem) var(--dx-spacing-md, 1rem);
+  background: var(--surface-base, #fff);
+  border-radius: var(--dx-radius-md, 6px);
+  overflow-x: auto;
+
+  // Alignment variants (default: left).
+  &--left {
+    justify-content: flex-start;
+  }
+  &--center {
+    justify-content: center;
+  }
+  &--right {
+    justify-content: flex-end;
+  }
+}
+
+.dx-breadcrumb-list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dx-breadcrumb-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.dx-breadcrumb-item-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: var(--dx-radius-sm, 4px);
+  text-decoration: none;
+  // `!important` + class specificity overrides the global `a { color: … !important }`
+  // in bootstrap/_override.scss so links use the theme primary colour.
+  color: var(--primary-base, #00828e) !important;
+  transition: color 0.15s ease, background-color 0.15s ease;
+
+  &:hover {
+    color: var(--primary-hover, var(--primary-base, #00828e)) !important;
+    background-color: var(--background-base, #f6f7fb);
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary-base, #00828e);
+    outline-offset: 1px;
+  }
+}
+
+.dx-breadcrumb-item-label {
+  color: var(--color-text-secondary, #667085);
+}
+
+// Two-class selector raises specificity above the global `.subbody`
+// typography rule so the current item stays emphasised.
+.dx-breadcrumb-item-label.dx-breadcrumb-item--current {
+  color: var(--color-text-primary, #1d2939);
+  font-weight: 600;
+}
+
+.dx-breadcrumb-separator {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-text-muted, #98a2b3);
+
+  .dx-breadcrumb-separator-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+  }
+}

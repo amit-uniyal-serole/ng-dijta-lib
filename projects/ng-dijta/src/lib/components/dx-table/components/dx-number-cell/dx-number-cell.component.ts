@@ -8,22 +8,23 @@ import { Params } from '@angular/router';
   templateUrl: './dx-number-cell.component.html',
   styleUrls: ['./dx-number-cell.component.css']
 })
-export class DxNumberCellComponent  implements OnChanges, OnInit {
+export class DxNumberCellComponent implements OnChanges, OnInit {
   @Input() data: number | undefined;
   val: string | undefined;
   @Input() link: LinkType<any> | undefined;
   constructor(
     private readonly dxCurrencyService: DxCurrencyService
-  ) { 
+  ) {
   }
 
   ngOnInit(): void {
-    if (this.data)
+    if (this.data || this.data === 0)
       this.val = this.dxCurrencyService.transformNumber(this.data);
   }
 
   ngOnChanges(): void {
-    if (this.data)
+
+    if (this.data || this.data === 0)
       this.val = this.dxCurrencyService.transformNumber(this.data);
   }
 

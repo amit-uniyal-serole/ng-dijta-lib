@@ -1,0 +1,18 @@
+
+.dx-typography {
+    .nav-pills {
+        .nav-link:focus, .nav-link:hover {
+            color: var(--primary-on-base);
+        }
+    }
+}
+
+a {
+    color: #1f3bb3 !important;;
+    &.a-inherit {
+        color: inherit !important;
+    }
+}
+.color-inherit {
+    color: inherit !important;
+}

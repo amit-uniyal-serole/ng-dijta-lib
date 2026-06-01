@@ -1,0 +1,50 @@
+import { Meta, Unstyled } from '@storybook/blocks';
+
+<Meta title="Foundations/Elevation" />
+
+# Elevation
+
+A Material-style shadow scale defined in
+[`theme/common/_elevation.scss`](?path=/docs/foundations-elevation--docs). Apply
+a level with the `.elevation-z-{n}` class to give a surface depth. `z-0` /
+`elevation-none` removes the shadow.
+
+Cards below use the real classes, so each shadow is exactly what the library
+renders.
+
+<Unstyled>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '32px', padding: '24px 8px', maxWidth: '760px' }}>
+    {['z-0', 'z-1', 'z-2', 'z-3', 'z-6', 'z-8', 'z-10', 'z-12', 'z-16', 'z-24'].map((z) => (
+      <div
+        key={z}
+        className={`elevation-${z}`}
+        style={{
+          height: '96px',
+          background: '#ffffff',
+          borderRadius: '6px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontFamily: 'monospace',
+          fontSize: '13px',
+          color: '#344054',
+        }}
+      >
+        .elevation-{z}
+      </div>
+    ))}
+  </div>
+</Unstyled>
+
+| Class | Aliases |
+|---|---|
+| `.elevation-z-0` | `.elevation-none` |
+| `.elevation-z-1` | — |
+| `.elevation-z-2` | — |
+| `.elevation-z-3` | — |
+| `.elevation-z-6` | — |
+| `.elevation-z-8` | — |
+| `.elevation-z-10` | — |
+| `.elevation-z-12` | — |
+| `.elevation-z-16` | — |
+| `.elevation-z-24` | — |

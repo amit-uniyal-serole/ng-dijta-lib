@@ -1,24 +1,48 @@
-<div id="dxToggle" class="dxSlideToggle">
+<div id="dxToggle" class="dxSlideToggle ngdx-field-wrapper">
   <div *ngIf="!labelTouchSensitive; else withLabel" class="custom-toggle">
-    <mat-slide-toggle [id]="id" class="toggle-margin" [(ngModel)]="value" [labelPosition]="labelPosition"
-      (ngModelChange)="inputChange($event)" [checked]="checked" [disabled]="disabled || readonly">
+    <mat-slide-toggle
+      [ariaReadOnly]="readonly"
+      [id]="id"
+      class="toggle-margin"
+      [(ngModel)]="value"
+      [labelPosition]="labelPosition"
+      (ngModelChange)="inputChange($event)"
+      [checked]="checked"
+      [disabled]="disabled || readonly"
+      [required]="required"
+    >
     </mat-slide-toggle>
     <div class="dx-input-label">
       <ng-content select=".outLabel"></ng-content>
     </div>
   </div>
   <ng-template #withLabel>
-    <mat-slide-toggle [tabIndex]="tabIndex" [id]="id" class="toggle-margin" [(ngModel)]="value" [labelPosition]="labelPosition"
-      (ngModelChange)="inputChange($event)" [checked]="checked" [disabled]="disabled || readonly">
-      <div class="subtitle">
-        <ng-content select="dx-label"></ng-content>
-      </div>
+    <mat-slide-toggle
+      [tabIndex]="tabIndex"
+      [id]="id"
+      class="toggle-margin"
+      [(ngModel)]="value"
+      [labelPosition]="labelPosition"
+      (ngModelChange)="inputChange($event)"
+      [checked]="checked"
+      [disabled]="disabled || readonly"
+      [required]="required"
+    >
+      <ng-content select="dx-label"></ng-content>
+      @if(required && labelDirective){
+      <span class="astrict">*</span>
+      }
     </mat-slide-toggle>
   </ng-template>
-
-  <mat-error>
-    <div class="dx-error">
+  <div class="mat-mdc-form-field-subscript-wrapper">
+    @if(invalid){
+    <mat-error class="dx-error">
       <ng-content select="dx-error"> </ng-content>
-    </div>
-  </mat-error>
+    </mat-error>
+    }@else {
+    <mat-hint>
+      <ng-content select="dx-hint"> </ng-content>
+    </mat-hint>
+    }
+  </div>
 </div>

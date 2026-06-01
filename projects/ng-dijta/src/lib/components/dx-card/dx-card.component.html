@@ -1,3 +1,4 @@
-<div class="dx-card">
+<div class="dx-card" [class.p-0]="borderNone">
+    <h3 class="heading-6 mb-1" *ngIf="title">{{title}}</h3>
     <ng-content></ng-content>
 </div>

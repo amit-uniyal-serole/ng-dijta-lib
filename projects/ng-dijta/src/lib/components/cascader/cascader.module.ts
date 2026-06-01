@@ -28,6 +28,6 @@ import { DxCascadeInputComponent } from './dx-cascader.component';
     MatFormFieldModule,
     ReactiveFormsModule
   ],
-  exports: [CascaderComponent, DxCascadeInputComponent],
+  exports: [CascaderComponent, CascaderLiComponent, DxCascadeInputComponent],
 })
 export class CascaderModule { }

@@ -1,7 +1,7 @@
-<div class="dx-field-wrapper input-variant-layout dx-datepicker-aligment" [class.none-label]="noneLabel"
+<div class="ngdx-field-wrapper input-variant-layout dx-datepicker-aligment" [class.none-label]="noneLabel"
   [ngClass]="outline" [class.error]="control?.invalid && (control.touched || control.dirty)" [class.required]="required"
   [class.none-border]="noneBorder">
-  <mat-form-field appearance="outline">
+  <mat-form-field appearance="outline" floatLabel="always">
     <mat-label class="dx-input-label" *ngIf="!onTouched && placeholder">{{placeholder}}</mat-label>
     <input [formControl]="control?.control" (ngModelChange)="inputChange($event)" matInput [max]="maxDate"
       [min]="minDate" [matDatepicker]="picker" [placeholder]="placeholder" (dateInput)="dateChange('input', $event)"

@@ -3,8 +3,8 @@ import { NgModule } from "@angular/core";
 import { MonitoringTileComponent } from "./monitoring-tile/monitoring-tile.component";
 import { TileFooterComponent } from "./monitoring-tile/tile-footer/tile-footer.component";
 import { TileHeaderComponent } from "./monitoring-tile/tile-header/tile-header.component";
-import { DxTileHeaderComponent } from './core/dx-tile-header/dx-tile-header.component';
-import { DxTileFooterComponent } from './core/dx-tile-footer/dx-tile-footer.component';
+import { DxTilesHeaderComponent } from './core/dx-tile-header/dx-tile-header.component';
+import { DxTilesFooterComponent } from './core/dx-tile-footer/dx-tile-footer.component';
 import { DxTileWrapperComponent } from './core/dx-tile-wrapper/dx-tile-wrapper.component';
 import { KpiTileComponent } from './variant/kpi-tile/kpi-tile.component';
 import { DxChartModule } from "../dx-chart";
@@ -14,8 +14,8 @@ import { DxChartModule } from "../dx-chart";
         TileHeaderComponent,
         TileFooterComponent,
         MonitoringTileComponent,
-        DxTileHeaderComponent,
-        DxTileFooterComponent,
+        DxTilesHeaderComponent,
+        DxTilesFooterComponent,
         DxTileWrapperComponent,
         KpiTileComponent
     ],
@@ -27,8 +27,8 @@ import { DxChartModule } from "../dx-chart";
         TileHeaderComponent,
         TileFooterComponent,
         MonitoringTileComponent,
-        DxTileHeaderComponent,
-        DxTileFooterComponent,
+        DxTilesHeaderComponent,
+        DxTilesFooterComponent,
         DxTileWrapperComponent,
         KpiTileComponent
     ]

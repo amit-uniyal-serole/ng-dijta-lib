@@ -1,6 +1,34 @@
-<div class="alert error" *ngIf="type === 'error'">
-  <p>{{ msg | transloco }}</p>
-</div>
-<div class="alert success" *ngIf="type === 'success'">
-  <p>{{ msg | transloco }}</p>
+<div
+  *ngIf="!closed"
+  @collapse
+  class="dx-alert"
+  [ngClass]="'dx-alert--' + type"
+  [class.dx-alert--banner]="banner"
+  [class.dx-alert--with-description]="!!description"
+  role="alert"
+  [attr.aria-live]="type === 'error' ? 'assertive' : 'polite'">
+  <mat-icon *ngIf="displayIcon" class="dx-alert__icon" aria-hidden="true">{{ iconName }}</mat-icon>
+
+  <div class="dx-alert__body">
+    <span *ngIf="message" class="dx-alert__message">{{ message | transloco }}</span>
+    <span *ngIf="description" class="dx-alert__description">{{ description | transloco }}</span>
+    <ng-content></ng-content>
+  </div>
+
+  <div class="dx-alert__action">
+    <ng-content select="[dx-alert-action]"></ng-content>
+  </div>
+
+  <button
+    *ngIf="closeable"
+    type="button"
+    class="dx-alert__close"
+    mat-icon-button
+    [attr.aria-label]="'dx.aria.close' | transloco"
+    (click)="close()">
+    <span *ngIf="closeText; else closeIcon" class="dx-alert__close-text">{{ closeText | transloco }}</span>
+    <ng-template #closeIcon>
+      <mat-icon aria-hidden="true">close</mat-icon>
+    </ng-template>
+  </button>
 </div>

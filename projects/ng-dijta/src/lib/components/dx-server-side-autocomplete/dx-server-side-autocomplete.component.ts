@@ -1,6 +1,6 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
-import { ChangeDetectorRef, Component, ElementRef, HostBinding, Inject, Injector, Input, OnInit, Optional, Self, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostBinding, Injector, Input, OnInit, Optional, Self, ViewChild, ViewEncapsulation, ViewRef } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, FormControl, NgControl, ValidationErrors, Validator, Validators } from '@angular/forms';
 import { } from '@angular/material';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
@@ -32,18 +32,20 @@ export class DxServerSideAutocompleteComponent implements ControlValueAccessor, 
   @HostBinding('attr.aria-describedby') describedBy = '';
   _required!: boolean;
   selectedRecords: any = [];
-  moduleDefinitionLoader$: any;
+  moduleDefinitionLoader$: boolean = false;
   recordIdentifier: string | undefined;
   recordIdentifierId: string | undefined;
   recordIdentifierSubtitle: string | undefined;
   paginationRequest: any;
   dropdownTransform: any;
+  allFetchedData: KeyValueModel[] = [];
   setDescribedByIds(ids: string[]) {
     this.describedBy = ids.join(' ');
   }
   @Input() set value(value: any) {
     if (value) {
       this.selectedItems = value;
+      this.criteria = value?.queryCriteria ? value: undefined;
     }
     this.stateChanges.next();
   }
@@ -70,6 +72,7 @@ export class DxServerSideAutocompleteComponent implements ControlValueAccessor, 
   @Input() noneLabel: boolean = false;
   @Input() viewOnly: boolean = false;
   @Input() readonly: boolean = false;
+  @Input() hideLookup: boolean = false;
   @Input() row: number = 2;
   @Input() outline: 'floating' | 'none-floating' | 'outer-label' = 'none-floating';
   @Input() labelPosition: 'left' | 'top' = 'top';
@@ -77,6 +80,7 @@ export class DxServerSideAutocompleteComponent implements ControlValueAccessor, 
   @Input() disableAutoCompleteSearch: boolean = false
   @Input() noneBorder: boolean = false;
   @Input() tabIndex!: number;
+  @Input() standardDropdown: boolean = false;
   // To get required 
   @Input()
   get required(): boolean {
@@ -93,9 +97,8 @@ export class DxServerSideAutocompleteComponent implements ControlValueAccessor, 
   //  Lookup Table Input's
   @Input() lookupModalConfig: DxLookupModalConfig | undefined;
   control: FormControl = new FormControl();
-
+  criteria: string | undefined;
   constructor(
-    @Optional() @Inject(UI_COMPONENT_CONFIG) config: UIConfigWrapper,
     public injector: Injector,
     @Optional() @Self() public ngControl: NgControl,
     private fm: FocusMonitor,
@@ -116,6 +119,7 @@ export class DxServerSideAutocompleteComponent implements ControlValueAccessor, 
   writeValue(value: any) {
     if (value) {
       this.selectedItems = Array.isArray(value) ? value : [value];
+      this.criteria = value?.queryCriteria ? value: undefined;
       if (!this.recordIdentifier) {
         this.getSelectedRecords()
       }
@@ -156,7 +160,7 @@ export class DxServerSideAutocompleteComponent implements ControlValueAccessor, 
         this.control = ngControl.control as FormControl;
         this.control.markAsUntouched();
         this.ctrRequired = this.control.hasValidator(Validators.required);
-        this.cd.detectChanges();
+        this.detectChangesSafely();
       });
     }
   }
@@ -180,66 +184,114 @@ export class DxServerSideAutocompleteComponent implements ControlValueAccessor, 
     this.itemControl.valueChanges.pipe(
       tap(data => {
         if (data?.trim() === '') {
-          this.filteredItems = [];
+          if (!this.paginationRequest) {
+            this.filteredItems = this.filterLocalData('');
+          } else {
+            this.filteredItems = [];
+          }
         }
       }),
-      filter<string>(value => !!(value && value?.length > 2)),
       tap(() => this.loading = true),
       debounceTime(2000),
       map(value => typeof value === 'string' ? value : this.lastFilter),
       switchMap((filter: any) => {
-        // Fetch Record Identifier , Internal Key and all selected keys //
-        const displayLabel = this.lookupModalConfig?.idName === 'CUSTOM_MODULE'
-          ? this.recordIdentifier : this.lookupModalConfig?.idName?.['name'];
-        const actualValue = this.lookupModalConfig?.idName === 'CUSTOM_MODULE'
-          ? this.recordIdentifierId : this.lookupModalConfig?.idName?.['id'];
-        const subtitle = this.lookupModalConfig?.idName === 'CUSTOM_MODULE'
-          ? this.recordIdentifierSubtitle : this.lookupModalConfig?.idName?.['subtitle'];
-        const keys = this.selectedItems?.map(item => item?.keyTt?.toString());
-        // prepare search
-        if (filter) {
-          this.paginationRequest.search =
-            filter && this.selectedItems?.length > 0
-              ? `${displayLabel}:sw:${filter},${actualValue}:nin:${JSON.stringify(keys)}`
-              : filter ? `${displayLabel}:sw:${filter}` : '';
-        } else {
-          this.paginationRequest.search = this.selectedItems?.length > 0 ? `${actualValue}:nin:${JSON.stringify(keys)}` : '';
+        if (!this.paginationRequest) {
+          this.loading = false;
+          return of(this.filterLocalData(filter));
         }
-        if (lookupApiConfig?.staticSearch) {
-          this.paginationRequest.search = `${lookupApiConfig?.staticSearch},${this.paginationRequest.search}`
-        }
-        lookupApiConfig = {
-          ...lookupApiConfig!,
-          paginationRequest: lookupApiConfig?.paginationRequest ? this.paginationRequest : undefined,
-          body: {
-            ...lookupApiConfig?.body,
-            paginationRequest: lookupApiConfig?.body?.paginationRequest ? this.paginationRequest : undefined
-          }
-        };
-        return this.ServerSideAutoCompleteService?.request(lookupApiConfig!)
-          .pipe(
-            map((data: any) => {
-              const moduleResponse = this.lookupModalConfig?.dropdownContentTransform
-                ? this.lookupModalConfig?.dropdownContentTransform(data)
-                : data?.response?.content
-                ?? data?.content
-                ?? data;
-              return moduleResponse?.map(item => {
-                return {
-                  keyTt: item?.[actualValue!],
-                  valueTt: item?.[displayLabel!],
-                  subtitle: subtitle ? item?.[subtitle!] : undefined
-                }
-              })
-            }),
-            first(),
-            catchError(() => EMPTY),
-            finalize(() => this.loading = false)
-          )
+          return this.loadRecoard(lookupApiConfig!, filter)
       })
     ).subscribe((data: any) => {
       this.filteredItems = data;
     })
+  }
+
+  private filterLocalData(searchTerm: string): KeyValueModel[] {
+    const term = searchTerm?.trim()?.toLowerCase();
+    const selectedKeys = this.selectedItems?.map(item => item?.keyTt?.toString()) || [];
+    let results = term
+      ? this.allFetchedData.filter(item =>
+        (item.valueTt && item.valueTt.toString().toLowerCase().includes(term))
+      )
+      : this.allFetchedData;
+    if (selectedKeys.length > 0) {
+      results = results.filter(item => !selectedKeys.includes(item?.keyTt?.toString()));
+    }
+    return results;
+  }
+
+  private loadRecoard(lookupApiConfig: LookupApiConfig<any>, filter: string | undefined) {
+    // Fetch Record Identifier , Internal Key and all selected keys //
+    const displayLabel = this.lookupModalConfig?.idName === 'CUSTOM_MODULE'
+      ? this.recordIdentifier : this.lookupModalConfig?.idName?.['name'];
+    const actualValue = this.lookupModalConfig?.idName === 'CUSTOM_MODULE'
+      ? this.recordIdentifierId : this.lookupModalConfig?.idName?.['id'];
+    const subtitle = this.lookupModalConfig?.idName === 'CUSTOM_MODULE'
+      ? this.recordIdentifierSubtitle : this.lookupModalConfig?.idName?.['subtitle'];
+        const keys = this.selectedItems?.length > 0 ? this.selectedItems?.map(item => item?.keyTt?.toString()) :[];
+    // prepare search
+    if (filter) {
+          if(this.standardDropdown && this.lookupModalConfig?.lookupApiConfig?.searchBasedOn) {
+        lookupApiConfig = {
+          ...lookupApiConfig,
+          params: {
+            [this.lookupModalConfig?.lookupApiConfig?.searchBasedOn]: filter
+          }
+        }
+      } else {
+        this.paginationRequest.search =
+          filter && this.selectedItems?.length > 0
+            ? `${displayLabel}:${this.lookupModalConfig?.lookupApiConfig?.searchBasedOperator ?? 'lk'}:${filter},${actualValue}:nin:${JSON.stringify(keys)}`
+            : filter ? `${displayLabel}:${this.lookupModalConfig?.lookupApiConfig?.searchBasedOperator ?? 'lk'}:${filter}` : '';
+      }
+    } else {
+        if(this.standardDropdown && this.lookupModalConfig?.lookupApiConfig?.searchBasedOn) { 
+        lookupApiConfig = {
+          ...lookupApiConfig,
+          params: {
+            [this.lookupModalConfig?.lookupApiConfig?.searchBasedOn]: filter
+          }
+        }
+      } else if (this.paginationRequest){
+        this.paginationRequest.search = this.selectedItems?.length > 0 ? `${actualValue}:nin:${JSON.stringify(keys)}` : '';
+      }
+
+    }
+    if (lookupApiConfig?.staticSearch) {
+      this.paginationRequest.search = `${lookupApiConfig?.staticSearch},${this.paginationRequest.search}`
+    }
+    lookupApiConfig = {
+      ...lookupApiConfig!,
+      paginationRequest: lookupApiConfig?.paginationRequest ? this.paginationRequest : undefined,
+      body: {
+        ...lookupApiConfig?.body,
+        paginationRequest: lookupApiConfig?.body?.paginationRequest ? this.paginationRequest : undefined
+      }
+    };
+    return this.ServerSideAutoCompleteService?.request(lookupApiConfig!)
+      .pipe(
+        map((data: any) => {
+          const moduleResponse = this.lookupModalConfig?.dropdownContentTransform
+            ? this.lookupModalConfig?.dropdownContentTransform(data)
+            : data?.response?.content
+            ?? data?.content
+            ?? data;
+          const mappedData = moduleResponse?.map(item => {
+            return {
+              keyTt: item?.[actualValue!],
+              valueTt: item?.[displayLabel!],
+              subtitle: subtitle ? item?.[subtitle!] : undefined
+            }
+          });
+          if (!this.paginationRequest) {
+            this.allFetchedData = mappedData || [];
+          }
+          return mappedData;
+        }),
+        first(),
+        catchError(() => EMPTY),
+        finalize(() => this.loading = false)
+      )
   }
 
   optionClicked(event: Event, item: KeyValueModel) {
@@ -256,7 +308,7 @@ export class DxServerSideAutocompleteComponent implements ControlValueAccessor, 
     if (this.lookupModalConfig?.tableSettings?.multiSelect) {
       const index = this.selectedItems?.findIndex(seletectItem => seletectItem?.keyTt === item?.keyTt);
       if (index === -1) {
-        this.selectedItems.push(item);
+        this.selectedItems?.push(item);
       } else {
         this.selectedItems = this.selectedItems?.filter(value => value?.keyTt !== item?.keyTt);
       }
@@ -289,6 +341,17 @@ export class DxServerSideAutocompleteComponent implements ControlValueAccessor, 
       }, 100)
     }
     this.filteredItems = [];
+    if(!(this.control?.value && this.filteredItems?.length > 0)) {
+      this.loading = true
+      this.loadRecoard(this.lookupModalConfig?.lookupApiConfig!, undefined).subscribe((data: any) => {
+        if (!this.paginationRequest) {
+          this.filteredItems = this.filterLocalData('');
+        } else {
+          this.filteredItems = data;
+        }
+      })
+    }
+
     this.isAutoCompleteOpen = !this.isAutoCompleteOpen;
   }
   matAutoCompleteClosed(): void {
@@ -326,6 +389,8 @@ export class DxServerSideAutocompleteComponent implements ControlValueAccessor, 
     dialogRef.componentInstance.isGenericService = this.lookupModalConfig?.isGenericService!;
     dialogRef.componentInstance.columns = this.lookupModalConfig?.columns ?? []
     dialogRef.componentInstance.lookUpHeaderSettings = this.lookupModalConfig?.lookUpHeaderSettings!;
+    dialogRef.componentInstance.additionalFilter = this.lookupModalConfig?.additionalFilter ?? [];
+    dialogRef.componentInstance.bluckAction = false;
     dialogRef.componentInstance.lookupApiConfig = cloneDeep({
       ...this.lookupModalConfig?.lookupApiConfig!,
       paginationRequest: this.lookupModalConfig?.lookupApiConfig?.paginationRequest
@@ -349,7 +414,7 @@ export class DxServerSideAutocompleteComponent implements ControlValueAccessor, 
     dialogRef.componentInstance.actions = {
       enable: true
     };
-    const ids: any | any[] = this.selectedItems?.map((val: any) => isNaN(val?.keyTt) ? val?.keyTt : Number(val?.keyTt));
+    const ids: any | any[] = (this.selectedItems ?? [])?.map((val: any) => isNaN(val?.keyTt) ? val?.keyTt : Number(val?.keyTt));
     dialogRef.componentInstance.multiRowSelection = {
       key: KEY!,
       value: ids && ids?.length > 0 ? ids : []
@@ -360,13 +425,15 @@ export class DxServerSideAutocompleteComponent implements ControlValueAccessor, 
         isPageUnknown: true
       }
     ];
-    dialogRef.componentInstance.selectedItems = this.selectedItems.map((val: any) => {
+    dialogRef.componentInstance.criteria = this.criteria;
+    dialogRef.componentInstance.selectedItems = (this.selectedItems ?? [])?.map((val: any) => {
       return {
         key: this.lookupModalConfig?.idName['subtitle'],
         value: val?.subtitle,
         pkId: val?.keyTt
       }
     });
+
     dialogRef.componentInstance.enableTwoStepConfirmation = false;
     dialogRef.componentInstance.recordIdentifier = this.lookupModalConfig?.recordIdentifier;
     dialogRef.componentInstance.selectedRecords = this.selectedRecords;
@@ -375,7 +442,8 @@ export class DxServerSideAutocompleteComponent implements ControlValueAccessor, 
       if (result) {
         this.selectedRecords = result?.selectedRecords;
         const DISPLAY_VALUE: string | undefined = this.lookupModalConfig?.idName === 'CUSTOM_MODULE' ? result?.recordIdentifier : this.lookupModalConfig?.idName?.name;
-        this.selectedItems = result?.selectedRecords?.map?.((item: any) => {
+        this.criteria = result?.criteria?.queryCriteria ? result?.criteria: undefined;
+        this.selectedItems = (result?.selectedRecords ?? [])?.map?.((item: any) => {
           return {
             keyTt: item?.data?.[KEY!],
             valueTt: item?.data?.[DISPLAY_VALUE!],
@@ -383,7 +451,7 @@ export class DxServerSideAutocompleteComponent implements ControlValueAccessor, 
             data: item?.data
           }
         });
-        this.changeCallback(this.selectedItems);
+        this.changeCallback(result?.criteria?.queryCriteria ? result?.criteria : this.selectedItems);
       }
     });
 
@@ -425,9 +493,9 @@ export class DxServerSideAutocompleteComponent implements ControlValueAccessor, 
      */
     dialogRef.componentInstance.singleRowSelection = {
       key: this.lookupModalConfig?.idName['id'] ?? this.recordIdentifierId,
-      value: this.selectedItems[0]?.keyTt ?? undefined
+      value: this.selectedItems?.length > 0 ? this.selectedItems[0]?.keyTt ?? undefined: undefined
     };
-    dialogRef.componentInstance.selectedItems = this.selectedItems.map((val: any) => {
+    dialogRef.componentInstance.selectedItems = this.selectedItems?.map((val: any) => {
       return {
         key: this.lookupModalConfig?.idName['subtitle'],
         value: val?.subtitle,
@@ -462,7 +530,8 @@ export class DxServerSideAutocompleteComponent implements ControlValueAccessor, 
         method: 'GET',
         api: `${lookupApiConfig?.rootUrl}/v1/module/settings?module=${lookupApiConfig?.body?.module}`,
       }
-      this.moduleDefinitionLoader$ = of(true);
+      this.moduleDefinitionLoader$ = true;
+      this.detectChangesSafely();
       this.ServerSideAutoCompleteService.request(moduleDefinition)
         .pipe(filter((data: FormBuilderModuleDefinitionDto) => !!data), first()).subscribe(
           {
@@ -474,17 +543,22 @@ export class DxServerSideAutocompleteComponent implements ControlValueAccessor, 
               }
               this.filter(lookupApiConfig);
               this.getSelectedRecords();
-              this.moduleDefinitionLoader$ = of(false);
+              this.moduleDefinitionLoader$ = false;
+              this.detectChangesSafely();
             },
             error: (err) => {
-              this.moduleDefinitionLoader$ = of(false);
+              this.moduleDefinitionLoader$ = false;
+              this.detectChangesSafely();
             },
             complete: () => {
-              this.moduleDefinitionLoader$ = of(false);
+              this.moduleDefinitionLoader$ = false;
+              this.detectChangesSafely();
             },
           }
         )
 
+    } else {
+      this.filter(lookupApiConfig)
     }
   }
   private finalRecordIdentifier(src: string | undefined): string | undefined {
@@ -494,13 +568,12 @@ export class DxServerSideAutocompleteComponent implements ControlValueAccessor, 
   }
 
   validate(control: AbstractControl): ValidationErrors | null {
-    if (!this.ctrRequired) {
-      this.ctrRequired = control.hasValidator(Validators.required);
-      this.cd.detectChanges();
-    }
-    if (!control.hasValidator(Validators.required)) {
-      this.ctrRequired = control.hasValidator(Validators.required);
-      this.cd.detectChanges();
+    const isRequired = control.hasValidator(Validators.required);
+    if (this.ctrRequired !== isRequired) {
+      Promise.resolve().then(() => {
+        this.ctrRequired = isRequired;
+        this.detectChangesSafely();
+      });
     }
     return null;
   }
@@ -509,6 +582,14 @@ export class DxServerSideAutocompleteComponent implements ControlValueAccessor, 
   ngOnDestroy() {
     this.fm.stopMonitoring(this.elRef.nativeElement);
     this.stateChanges.complete();
+    window.removeEventListener('scroll', this.scrollEvent, true);
+  }
+
+  private detectChangesSafely(): void {
+    const viewRef = this.cd as ViewRef;
+    if (!viewRef.destroyed) {
+      this.cd.detectChanges();
+    }
   }
 
 

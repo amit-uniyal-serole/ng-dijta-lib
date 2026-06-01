@@ -2,9 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DxSectionTitleComponent } from './dx-section-title.component';
 import { DxButtonModule } from '../dx-button';
-import { TranslocoModule } from '@ngneat/transloco';
-
-
+import { TranslocoModule } from '@jsverse/transloco';
 
 @NgModule({
   declarations: [DxSectionTitleComponent],
@@ -13,6 +11,6 @@ import { TranslocoModule } from '@ngneat/transloco';
     DxButtonModule,
     TranslocoModule
   ],
-  exports:[DxSectionTitleComponent]
+  exports: [DxSectionTitleComponent]
 })
 export class DxSectionTitleModule { }

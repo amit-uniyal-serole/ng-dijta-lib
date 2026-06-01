@@ -1,44 +1,122 @@
-## Selector for dx-input-email
-`<dx-input-email></dx-input-email>`
+---
+category: Components
+type: Data Entry
+title: Input Email
+---
 
-## Module
-`DxInputEmailModule`
-## Usage inside form
+An email text input that wraps Angular Material's `mat-form-field` + `matInput`, applies a built-in email regex validator, and participates in Angular forms as both a `ControlValueAccessor` and a `Validator`.
+
+## When To Use
+
+- When capturing an email address (sign-in, sign-up, profile, contact forms).
+- When the field must enforce email format on top of the form's own validators.
+- When the layout needs a floating / none-floating / outer-label outline consistent with other DX inputs.
+- When min/max length or input masking is required alongside email validation.
+
+## Label Variants
+
+`dx-input-email` supports two label layouts, selected via the `outline` input. The label content is projected — use the correct projection slot for the variant.
+
+### `none-floating` (default) — label above the field
+
+Project the label through a `<dx-label>` element.
+
+```html
+<dx-input-email formControlName="email">
+  <dx-label>Display Label</dx-label>
+</dx-input-email>
 ```
-<form [formGroup]="userForm">
-    <dx-input-email (blur)="blur()"  disabled="false" formControlName="email" placeholder="Primary Email" pattern='^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$' icon="contact_mail">
-            <dx-hint>
-                This show how hint will work
-            </dx-hint>
-        <dx-suffix></dx-suffix>
-            <dx-error  *ngIf="userForm.controls['email'].required && userForm.controls['email'].errors &&userForm.controls['email'].touched">Email is Required</dx-error>
-            <dx-error  *ngIf="userForm.controls['email'].invalid">Enter valid email</dx-error>
-    </dx-input-email>
-</form>
 
-```    
-`**Note**: It is mandatory to use dxLabel Directive with element tag to display label outside field e.g: <div dxLabel>Email</div>` 
-## Inputs
+### `outer-label` — label rendered outside the Material form field
 
-| Input  | Data need to be passed as input |
-| ------------- | ------------- |
-| **disabled** (boolean) | `pass boolean value to enable or disable field (default value false)`  |
+Set `outline="outer-label"` and project the label via the `dxLabel` attribute on any host element (e.g. `<p>`, `<span>`).
 
-| **noneLabel** (boolean) | `pass boolean value to enable or disable label (default value false)`  |
-| **mask** (string) | `Pass your mask`  |
-| **formControlName** (string)  | `form control name of form group` |
-| **outline** ('floating' | 'none-floating' | 'outer-label')  | `To Change Outline of input (default value none-floating)` |
-| **placeholder** (string)  | `pass placeholder to be displayed (default value - Email)` |
-| **pattern** (string)  | `pass regex pattern to validate (default value - /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/)` |
-| **icon** (string)  | `pass icon to be displayed (default value - mail)` |
-| **labelPosition** ('left' or 'top')  | `To Change Outer Label position   (default value top)` |
-## Import CUSTOM_ELEMENTS_SCHEMA 
+```html
+<dx-input-email outline="outer-label" formControlName="email">
+  <p dxLabel>Display Label</p>
+</dx-input-email>
+```
 
-`import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'`
+> Picking the wrong slot silently drops the label. `<dx-label>` is only read when `outline !== 'outer-label'`; `[dxLabel]` is only read when `outline === 'outer-label'`.
 
->Include  **schemas: [CUSTOM_ELEMENTS_SCHEMA]** in module file if  **dx-label**, **dx-hint**, **dx-suffix**,  **dx-prefix** and **dx-error**  gives error as they custom elements using as ng-content
-     
-![Variant](./result.png)  
-          
-        
-      
+## API
+
+```html
+<dx-input-email
+  formControlName="email"
+  placeholder="Work Email"
+  [required]="true">
+</dx-input-email>
+```
+
+### dx-input-email
+
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[disabled]` | Disables the input | `boolean` | `false` |
+| `[readonly]` | Renders the input read-only | `boolean` | `false` |
+| `[viewOnly]` | Renders as static display-only text | `boolean` | `false` |
+| `[required]` | Marks the field as required | `boolean` | `false` |
+| `[noneLabel]` | Hides the field label | `boolean` | `false` |
+| `[outline]` | Label / outline rendering variant | `'floating' \| 'none-floating' \| 'outer-label'` | `'none-floating'` |
+| `[outerLabelErrorType]` | Error-indicator style for outer labels | `'astrict-error' \| 'filled-error'` | `'filled-error'` |
+| `[labelPosition]` | Outer-label placement | `'left' \| 'top'` | `'top'` |
+| `[placeholder]` | Placeholder shown when empty | `string` | `'Email'` |
+| `[pattern]` | Override regex pattern applied to the value | `string` | - |
+| `[icon]` | Material icon name shown as prefix | `string` | `'mail'` |
+| `[minLength]` | Minimum character length | `number` | - |
+| `[maxLength]` | Maximum character length | `number` | - |
+| `[tabIndex]` | Native `tabindex` applied to the input | `number` | - |
+| `[tooltip]` | Tooltip text rendered on the field | `string` | - |
+| `[id]` | Unique id applied to the input | `string` | - |
+| `[mask]` | ngx-mask pattern applied to the input | `string` | - |
+| `[maskingPatterns]` | Custom masking patterns | `unknown` | - |
+| `[dropSpecialCharacters]` | Strip mask special characters from the model value | `boolean` | `false` |
+| `[prefix]` | Static prefix string | `string` | - |
+| `[specialCharacters]` | Characters allowed in the mask | `string[]` | `[]` |
+
+### Events
+
+| Event | Description | Type |
+|-------|-------------|------|
+| `(blur)` | Emitted when the input loses focus | `EventEmitter<FocusEvent>` |
+
+## Examples
+
+### Basic
+
+```html
+<dx-input-email formControlName="email"></dx-input-email>
+```
+
+### Required with tooltip
+
+```html
+<dx-input-email
+  formControlName="email"
+  [required]="true"
+  tooltip="We'll only use this to contact you">
+</dx-input-email>
+```
+
+### Outer-label layout
+
+```html
+<dx-input-email
+  outline="outer-label"
+  labelPosition="top"
+  formControlName="email">
+  <span dxLabel>Work Email</span>
+</dx-input-email>
+```
+
+## Import
+
+```typescript
+import { DxInputEmailModule } from '@ngdx/dijta';
+
+@NgModule({
+  imports: [DxInputEmailModule]
+})
+export class YourModule { }
+```

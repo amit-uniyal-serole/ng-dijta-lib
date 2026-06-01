@@ -1,40 +1,44 @@
-<div class="dx-field-wrapper position-relative dx-autocomplete" [class.none-label]="noneLabel" [ngClass]="outline"
-  [class.display-view]="viewOnly" [class.dx-disable]="disabled" [class.left-align-label]="labelPosition === 'left'"
+<div class="ngdx-field-wrapper position-relative" [class.none-label]="noneLabel" [ngClass]="outline"
+  [class.display-view]="viewOnly" [class.dx-disable]="disabled || controlDisable" [class.left-align-label]="labelPosition === 'left'"
   floatLabel="never" [class.required]="required || ctrRequired" [class]="outerLabelErrorType"
-  [class.none-border]="noneBorder">
-  <mat-label class="dx-outer-label-wrapper">
-    <span class="dx-outer-label">
+  [class.none-border]="noneBorder" [class.readonly]="readonly">
+  <mat-label class="dx-outer-label" *ngIf="outline === 'outer-label'">
+    <span class="dx-outer-label d-flex align-items-center">
       <ng-content select="[dxLabel]"></ng-content>
       <span *ngIf="required || ctrRequired" class="astrict">*</span>
     </span>
   </mat-label>
-  <mat-form-field appearance="outline">
-    <mat-label class="dx-input-label">
+
+  <mat-form-field appearance="outline" floatLabel="always">
+    <mat-label *ngIf="outline !== 'outer-label'">
       <ng-content select="dx-label"></ng-content>
     </mat-label>
-    <mat-select [tabIndex]="tabIndex" [id]="id" [multiple]="multiple" [formControl]="control" [required]="required || ctrRequired"
-      #singleSelect (selectionChange)="onUserSelect($event)" (ngModelChange)="onDropDownChange($event)"
-      [disabled]="disabled || readonly || viewOnly">
-      <mat-option>
-        <ngx-mat-select-search #selectSearch [formControl]="searchCtrl" placeholderLabel="Search"
-          noEntriesFoundLabel="no match found"></ngx-mat-select-search>
+    <span matPrefix>
+      <ng-content select="dx-prefix"></ng-content>
+    </span>
+    <mat-select [tabIndex]="tabIndex" [id]="id" [multiple]="multiple" [formControl]="control" 
+      [required]="required || ctrRequired" #singleSelect (selectionChange)="onUserSelect($event)"
+      (ngModelChange)="onDropDownChange($event)" [disabled]="disabled || controlDisable || readonly || viewOnly">
+      <mat-option aria-hidden="false">
+        <dx-mat-select-search #selectSearch [formControl]="searchCtrl" placeholderLabel="Search"
+          noEntriesFoundLabel="no match found"></dx-mat-select-search>
       </mat-option>
 
       <div>
-        <mat-option class="loading" *ngIf="loading">
+        <mat-option class="loading" *ngIf="loading" aria-hidden="false">
           <mat-spinner diameter="35"></mat-spinner>
         </mat-option>
-        <mat-option *ngIf="emptyOption && !multiple" [value]="undefined">
+        <mat-option *ngIf="emptyOption && !multiple" [value]="undefined" aria-hidden="false">
           <div class="item autcomplete-dropdown-option">&nbsp;{{'None' | transloco}}</div>
         </mat-option>
         <ng-container *ngFor="let option of filteredOptions | async">
-          <mat-option [disabled]="disabled || readonly || viewOnly" [value]="option?.keyTt" *ngIf="
+          <mat-option aria-hidden="false" [dxOptionBackgroundColor]="option?.color" [value]="option?.keyTt" *ngIf="
               option?.permission
                 ? (option?.permission?.permission
                   | ablePure : option?.permission?.apiName
                   | async)
                 : true
-            ">
+            " [disabled]="disabled || controlDisable || readonly || viewOnly" >
             <div *ngIf="!loading" class="item autcomplete-dropdown-option"
               [class.dropdown-option-padding-bottom]="option?.subtitle">
               <span *ngIf="country" class="fi fi-{{ option?.keyTt?.toLowerCase() }}"></span>&nbsp;

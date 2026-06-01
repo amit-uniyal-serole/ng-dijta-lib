@@ -1,25 +1,32 @@
-<div class="dx-chip-autocomplete dx-field-wrapper" [class.none-label]="noneLabel" [ngClass]="outline"
-  [class.error]="control?.invalid && (control.touched || control.dirty)">
-  <mat-form-field appearance="outline">
-    <mat-label class="dx-input-label">
+<div class="dx-chip-autocomplete ngdx-field-wrapper" [class.none-label]="noneLabel" [ngClass]="outline"
+  [class.display-view]="viewOnly" [class.dx-disable]="disabled" [class.left-align-label]="labelPosition === 'left'"
+  floatLabel="never" [class.required]="required || ctrRequired" [class]="outerLabelErrorType"
+  [class.no-error-space]="noErrorSpace">
+  <mat-label class="dx-outer-label" *ngIf="outline === 'outer-label'">
+    <ng-content select="[dxLabel]"></ng-content>
+    <span *ngIf="required || ctrRequired" class="astrict">*</span>
+  </mat-label>
+  <mat-form-field appearance="outline" floatLabel="always">
+    <mat-label *ngIf="outline !== 'outer-label'">
       <ng-content select="dx-label"></ng-content>
     </mat-label>
-    <mat-select #multiSelect [id]="id" [(ngModel)]="value" [compareWith]="comparer"
+    <mat-select [id]="id" #multiSelect [(ngModel)]="value" [compareWith]="comparer"
       (ngModelChange)="inputChange($event) " [required]="required" multiple
       (selectionChange)="onDropDownChange($event.value)" [disabled]="disabled">
       <mat-select-trigger>
-        <mat-chip-list>
-          <span *ngFor="let data of value">
-            <mat-chip *ngIf="data" [removable]="true" (removed)="onRemoveChip(data)">
-              {{ data?.valueTt | transloco }}
-              <mat-icon matChipRemove class="material-icons-outlined">close</mat-icon>
-            </mat-chip>
-          </span>
-        </mat-chip-list>
+        <mat-chip-listbox aria-label="Fish selection">
+          <mat-chip-option *ngFor="let data of value" [removable]="true" (removed)="onRemoveChip(data)">
+            {{ data?.valueTt }}
+            <button matChipRemove aria-label="'remove ' + keyword">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-chip-option>
+        </mat-chip-listbox>
       </mat-select-trigger>
+
       <mat-option>
-        <ngx-mat-select-search #selectSearch [formControl]="searchCtrl" placeholderLabel="Search"
-          noEntriesFoundLabel="no match found"></ngx-mat-select-search>
+        <dx-mat-select-search #selectSearch [formControl]="searchCtrl" placeholderLabel="Search"
+          noEntriesFoundLabel="no match found"></dx-mat-select-search>
       </mat-option>
       <div>
         <!-- groups -->
@@ -63,10 +70,9 @@
     <mat-hint>
       <ng-content select="dx-hint"> </ng-content>
     </mat-hint>
-  </mat-form-field>
-  <mat-error>
-    <div class="dx-error">
+    <mat-error>
       <ng-content select="dx-error"></ng-content>
-    </div>
-  </mat-error>
+    </mat-error>
+  </mat-form-field>
+
 </div>

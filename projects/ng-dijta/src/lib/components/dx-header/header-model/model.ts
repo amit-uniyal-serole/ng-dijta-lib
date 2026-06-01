@@ -21,7 +21,8 @@ export interface NotificationAvatar {
 
 export interface HeaderIcons {
     event: string;
-    icon: string
+    icon: string;
+    label:string;
 }
 export interface UserDetails {
     profileImage?: string;

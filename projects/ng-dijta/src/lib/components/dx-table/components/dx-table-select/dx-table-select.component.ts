@@ -18,6 +18,9 @@ import { Observable } from 'rxjs';
 export class DxTableSelectComponent implements ControlValueAccessor {
   selectedValue: any;
   @Input() options!: Observable<KeyValueModel[]>; // Dropdown options
+  @Input() required: boolean = false;
+  @Input() readonly: boolean = false;
+  @Input() name: string = ''
 
   // Function to call when the value changes
   private onChange: (value: any) => void = () => { };

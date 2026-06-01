@@ -1,0 +1,20 @@
+<nav class="dx-breadcrumb" [ngClass]="'dx-breadcrumb--' + align" aria-label="Breadcrumb">
+  <ol class="dx-breadcrumb-list" *ngIf="breadcrumb.length">
+    <ng-container *ngFor="let item of breadcrumb; let i = index; let last = last; let first = first">
+      <li class="dx-breadcrumb-separator" aria-hidden="true" *ngIf="!first">
+        <mat-icon class="dx-breadcrumb-separator-icon" aria-hidden="true">{{ separatorIcon }}</mat-icon>
+      </li>
+      <li class="dx-breadcrumb-item">
+        <a *ngIf="item?.url && !last" class="dx-breadcrumb-item-link subbody" [routerLink]="item.url">
+          <span class="dx-breadcrumb-item-label">{{ item.label }}</span>
+        </a>
+        <span
+          *ngIf="!item?.url || last"
+          class="dx-breadcrumb-item-label dx-breadcrumb-item--current subbody"
+          aria-current="page"
+          >{{ item.label }}</span
+        >
+      </li>
+    </ng-container>
+  </ol>
+</nav>

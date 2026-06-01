@@ -8,14 +8,19 @@ import { DxCardModule } from '../dx-card';
 import { KanbanBoardCardWrapperComponent } from './core/kanban-board-card-wrapper/kanban-board-card-wrapper.component';
 import { KanbanBoardCardComponent } from './core/kanban-board-card/kanban-board-card.component';
 import { DxKanbanViewComponent } from './dx-kanban-view.component';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
+import { KanbanOnscrollRenderComponent } from './core/kanban-onscroll-render/kanban-onscroll-render.component';
+import { DxLookupModule } from '../dx-lookup';
+import { LoadingModule } from '../loading';
+import { DxCurrencyModule } from '../dx-currency';
 
 
 @NgModule({
   declarations: [
     DxKanbanViewComponent,
     KanbanBoardCardComponent,
-    KanbanBoardCardWrapperComponent
+    KanbanBoardCardWrapperComponent,
+    KanbanOnscrollRenderComponent
   ],
   imports: [
     CommonModule,
@@ -24,10 +29,14 @@ import { TranslocoModule } from '@ngneat/transloco';
     MatMenuModule,
     MatTooltipModule,
     DxDirectiveModule,
-    TranslocoModule
+    TranslocoModule,
+    DxLookupModule,
+    LoadingModule,
+    DxCurrencyModule
   ],
   exports: [
-    DxKanbanViewComponent
+    DxKanbanViewComponent,
+    KanbanOnscrollRenderComponent
   ]
 })
 export class DxKanbanViewModule { }

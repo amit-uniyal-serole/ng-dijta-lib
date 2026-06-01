@@ -1,8 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 import { AdapterDataModel } from '../../../model/dx-image-upload.model';
 import { FilePickerAdapter, UploadResponse, UploadStatus } from '../../file-picker.adapter';
 import { GET_FILE_TYPE, IS_IMAGE_FILE } from '../../file-upload.utils';
@@ -42,11 +42,12 @@ export class FilePreviewItemComponent implements OnInit, OnChanges {
   public uploadError!: boolean | undefined;
   public uploadResponse: any;
   private _uploadSubscription!: Subscription;
+  uploadProgressTimeout: any;
   constructor(
     private fileService: FilePickerService,
     private changeRef: ChangeDetectorRef,
     private http: HttpClient,
-    private readonly fileValidatorService:FileValidatorService
+    private readonly fileValidatorService: FileValidatorService
   ) { }
 
   public ngOnInit() {
@@ -91,7 +92,7 @@ export class FilePreviewItemComponent implements OnInit, OnChanges {
   public onRemove(fileItem: FilePreviewModel): void {
     this._uploadUnsubscribe();
     this.removeFile.next({
-      ...fileItem      
+      ...fileItem
     });
   }
 
@@ -102,30 +103,36 @@ export class FilePreviewItemComponent implements OnInit, OnChanges {
     if (this.adapter && this.isUpload) {
       this._uploadSubscription =
         this.adapter.uploadFile(fileItem)
-          .pipe(filter((data: UploadResponse | undefined) => !!data))
-          .subscribe((res: UploadResponse | undefined) => {
+          .pipe(
+            filter((data: UploadResponse | undefined) => !!data),
+            tap((res: UploadResponse | undefined) => {
+              if (res?.status === UploadStatus.UPLOADED) {
+                this.uploadProgress = 100;
+              }
+            })
+          ).subscribe((res: UploadResponse | undefined) => {
             if (res && res.status === UploadStatus.UPLOADED) {
               this._onUploadSuccess(res.body, fileItem);
+              this.fileValidatorService.isUploadInprogress(false);
               this.uploadProgress = undefined;
-              this.fileValidatorService.isUploadInprogress(false)
             }
-            if (res && res.status === UploadStatus.IN_PROGRESS) {
-              this.uploadProgress = res.progress;
+            if ((res && res.status === UploadStatus.IN_PROGRESS) && res.progress !== 100) {
               this.fileValidatorService.isUploadInprogress(true)
+              this.uploadProgress = res.progress;
               this.changeRef.detectChanges();
             }
             if (res && res.status === UploadStatus.ERROR) {
               this.uploadError = true;
               this.uploadFail.next(res.body);
-              this.uploadProgress = undefined;
+              this.uploadProgress = undefined;              
               this.fileValidatorService.isUploadInprogress(false)
             }
             this.changeRef.detectChanges();
           }, (er: HttpErrorResponse) => {
-            
+
             this.uploadError = true;
             this.uploadFail.next(er);
-            this.uploadProgress = undefined;
+            this.uploadProgress = undefined;            
             this.fileValidatorService.isUploadInprogress(false)
             this.changeRef.detectChanges();
           });
@@ -137,7 +144,7 @@ export class FilePreviewItemComponent implements OnInit, OnChanges {
   private _onUploadSuccess(uploadResponse: any, fileItem: FilePreviewModel): void {
     this.uploadResponse = uploadResponse;
     this.fileItem.uploadResponse = uploadResponse;
-    this.fileItem.pkId=Number(uploadResponse?.map(res => res?.pkId).join());    
+    this.fileItem.pkId = Number(uploadResponse?.map(res => res?.pkId).join());
     this.uploadSuccess.next({ ...fileItem, uploadResponse });
   }
 

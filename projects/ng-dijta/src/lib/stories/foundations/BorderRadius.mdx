@@ -1,0 +1,30 @@
+import { Meta, Unstyled } from '@storybook/blocks';
+
+<Meta title="Foundations/Border Radius" />
+
+# Border radius
+
+Corner rounding is exposed as the `--border-radius-1` custom property with a
+matching `.border-radius-1` utility class
+([`theme/border-radius/_border-radius.scss`](?path=/docs/foundations-border-radius--docs)).
+
+<Unstyled>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '24px', padding: '24px 8px' }}>
+    <div
+      style={{
+        width: '120px',
+        height: '120px',
+        background: 'var(--primary-base, #CC0000)',
+        borderRadius: 'var(--border-radius-1, 6px)',
+      }}
+    />
+    <div style={{ fontFamily: 'monospace', fontSize: '13px', color: '#344054', lineHeight: 1.8 }}>
+      <div><strong>--border-radius-1</strong>: 6px</div>
+      <div>class: <strong>.border-radius-1</strong></div>
+    </div>
+  </div>
+</Unstyled>
+
+| Token | Value | Class |
+|---|---|---|
+| `--border-radius-1` | `6px` | `.border-radius-1` |

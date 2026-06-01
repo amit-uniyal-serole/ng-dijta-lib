@@ -6,3 +6,4 @@ export * from './calculator/age.calculator';
 export * from './validators/age.validator';
 export * from './transform/button-actions.transform';
 export * from './globalConfig/index';
+export * from './from-event-outside-angular';

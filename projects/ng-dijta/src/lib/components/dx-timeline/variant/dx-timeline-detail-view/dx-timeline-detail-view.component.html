@@ -26,7 +26,7 @@
             </div>
             <div class="timeline-right-section-body">
               <p class="paragraph mb-0">{{section.description}}</p>
-              <div *ngIf="section?.content" [innerHtml]="section?.content"></div>
+              <div *ngIf="section?.content" [innerHtml]="section?.content | dxsafe: 'html'"></div>
             </div>
           </div>
         </div>

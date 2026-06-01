@@ -1,8 +1,18 @@
-import { Component, Input, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Input, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'dx-tab-header',
-  templateUrl: './tab-header.component.html',
+  template: `
+  <ng-template>
+    <div class="tab" [class]="tabView">
+      <mat-icon *ngIf="icon">
+      {{icon}}
+      </mat-icon>
+      {{title}}
+      <ng-content></ng-content>
+    </div>
+  </ng-template>
+  `,
   styleUrls: ['./tab-header.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
@@ -11,6 +21,6 @@ export class TabHeaderComponent {
   @Input() title: string = '';
   @Input() icon: string | undefined = undefined;
   @Input() tabView: 'top_bottom' | 'line_border_flat_icon' = 'line_border_flat_icon';
-  @Input() data:any;
- 
+  @Input() data: any;
+
 }

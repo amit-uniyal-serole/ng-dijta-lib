@@ -12,13 +12,13 @@ import {
   HostListener,
   Inject,
   Optional,
-  Self,
   SimpleChanges,
   OnChanges,
   forwardRef,
-  Injector,
   LOCALE_ID,
-  HostBinding
+  HostBinding,
+  Renderer2,
+  Injector
 } from '@angular/core';
 import {
   AbstractControl,
@@ -33,7 +33,7 @@ import {
 } from '@angular/forms';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { Observable, of, Subscription } from 'rxjs';
-import { startWith, map, first } from 'rxjs/operators';
+import { startWith, map } from 'rxjs/operators';
 import { UI_COMPONENT_CONFIG, UIConfigWrapper } from '../../core';
 import { KeyValueModel } from '../../core/UI/model/keyValue';
 import { CreateOption } from './dx-autocomplete-select.model';
@@ -66,7 +66,6 @@ export class DxAutocompleteSelectComponent
   OnDestroy {
   @Input() loading: boolean = false;
   @Input() options!: KeyValueModel[];
-  @Input() disabled: boolean = false;
   @Input() showToolTip: boolean = true;
   @Input() country: boolean = false;
   @Input() emptyOption: boolean = false;
@@ -79,6 +78,10 @@ export class DxAutocompleteSelectComponent
   @Input() labelPosition: 'left' | 'top' = 'top';
   @Input() createOption: CreateOption = {}
   @Input() multiple: boolean = false;
+  /** When true, filter matches only against `valueTt`. When false, filter matches against both `keyTt` and `valueTt`. @default false */
+  @Input() filterByValueOnly: boolean = false;
+
+  @Input() value: string = '';
   // To get required 
   @Input()
   get required(): boolean {
@@ -91,7 +94,6 @@ export class DxAutocompleteSelectComponent
   protected _required: boolean | undefined;
 
   ctrRequired: boolean | undefined;
-  control: FormControl = new FormControl();
   @Input() tabIndex!: number;
   @ViewChild('inputRef') inputRef!: ElementRef;
   @ViewChild('singleSelect') singleSelect!: MatSelect;
@@ -109,6 +111,7 @@ export class DxAutocompleteSelectComponent
   obj!: KeyValueModel | undefined;
   searchCntrlSubscription!: Subscription;
   filterSubscription!: Subscription;
+  control: FormControl = new FormControl();
   static nextId = 0;
   @HostBinding()
   @Input() id = `dx-autoselect-${DxAutocompleteSelectComponent.nextId++}`;
@@ -117,12 +120,38 @@ export class DxAutocompleteSelectComponent
     this.onTouched();
   }
 
+  private _disabled = false;
+
+  get disabled(): boolean {
+    return this._disabled;
+  }
+  @Input()
+  set disabled(value: boolean) {
+    this._disabled = coerceBooleanProperty(value); // optional
+    this._disabled = value;
+  }
+
+  controlDisable: boolean = false;
+
+
   constructor(
     @Optional() @Inject(UI_COMPONENT_CONFIG) config: UIConfigWrapper,
     @Inject(LOCALE_ID) public locale: string,
     public injector: Injector,
     private readonly cd: ChangeDetectorRef) {
     this.outline = config?.value?.outline ?? "none-floating";
+  }
+
+  ngAfterViewInit(): void {
+    const ngControl: NgControl = this.injector.get(NgControl);
+    if (ngControl) {
+      setTimeout(() => {
+        this.control = ngControl.control as FormControl;
+        this.control.markAsUntouched();
+        this.ctrRequired = this.control.hasValidator(Validators.required);
+        this.cd.detectChanges();
+      });
+    }
   }
 
   ngOnInit(): void {
@@ -148,20 +177,11 @@ export class DxAutocompleteSelectComponent
       this.cd?.detectChanges();
     }
   }
-  ngAfterViewInit(): void {
-    const ngControl: NgControl = this.injector.get(NgControl);
-    if (ngControl) {
-      setTimeout(() => {
-        this.control = ngControl.control as FormControl;
-        this.control.markAsUntouched();
-        this.ctrRequired = this.control.hasValidator(Validators.required);
-        this.cd.detectChanges();
-      });
-    }
-  }
+
   writeValue(value: string): void {
     if (value) {
       this.onSelectChange.emit(value);
+      this.value = value;
     }
     this.onTouched();
   }
@@ -174,19 +194,21 @@ export class DxAutocompleteSelectComponent
     this.onTouched = fn;
   }
 
-  setDisabledState?(isDisabled: boolean): void {
-    this.disabled = isDisabled;
-  }
+
   refillList(): void {
     this.filteredList = of(this.options);
   }
 
   private _filter(option: string): KeyValueModel[] {
-    const filterValue: string = option?.toLowerCase();
-    return this.options?.filter(
-      (option: KeyValueModel) =>
-        option?.valueTt?.toLowerCase()?.indexOf(filterValue) === 0
-    );
+    const filterValue: string = option?.toLowerCase() ?? '';
+    return this.options?.filter((o: KeyValueModel) => {
+      const value: string = (o?.valueTt ?? '').toLowerCase();
+      if (this.filterByValueOnly) {
+        return value.includes(filterValue);
+      }
+      const key: string = String(o?.keyTt ?? '').toLowerCase();
+      return key.includes(filterValue) || value.includes(filterValue);
+    });
   }
 
   initFilterList(): void {
@@ -221,6 +243,12 @@ export class DxAutocompleteSelectComponent
       this.filterSubscription?.unsubscribe();
     }
   }
+
+   // Method called by the form when the control's disabled state changes
+   setDisabledState(isDisabled: boolean): void {
+    this.controlDisable = isDisabled;
+  }
+
   validate(control: AbstractControl): ValidationErrors | null {
     if (!this.ctrRequired) {
       this.ctrRequired = control.hasValidator(Validators.required);

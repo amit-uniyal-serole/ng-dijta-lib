@@ -1,0 +1,221 @@
+{
+  "project": {
+    "name": "@ngdx/dijta",
+    "generatedAt": "2026-05-20T02:31:02.018Z",
+    "source": "progress/"
+  },
+  "tags": [],
+  "statuses": [
+    {
+      "id": "not_started",
+      "label": "Not started",
+      "order": 1,
+      "isTerminal": false
+    },
+    {
+      "id": "to_be_planned",
+      "label": "To be planned",
+      "order": 2,
+      "isTerminal": false
+    },
+    {
+      "id": "planned",
+      "label": "Planned",
+      "order": 3,
+      "isTerminal": false
+    },
+    {
+      "id": "in_progress",
+      "label": "In progress",
+      "order": 4,
+      "isTerminal": false
+    },
+    {
+      "id": "blocked",
+      "label": "Blocked",
+      "order": 5,
+      "isTerminal": false
+    },
+    {
+      "id": "done",
+      "label": "Done",
+      "order": 6,
+      "isTerminal": true
+    },
+    {
+      "id": "cancelled",
+      "label": "Cancelled",
+      "order": 7,
+      "isTerminal": true
+    }
+  ],
+  "phases": [
+    {
+      "id": "phase-1",
+      "number": 1,
+      "title": "MF i18n for Module Federation Remotes",
+      "status": "in_progress",
+      "startedAt": "2026-05-14",
+      "completedAt": null,
+      "targetAt": null,
+      "goal": "Ship a complete in-library solution for Angular Module Federation remotes to register, lazy-load, and consume their own Transloco translations under a remote-scoped namespace — replacing the per-remote `setTranslation`-in-constructor pattern. Land the release-pipeline fix first so every subsequent MF i18n release publishes a real GitHub changelog describing the new APIs to downstream consumers. The feature ships in four sequential PRs; epic E01 is no-version-bump CI work and epics E02–E04 each ship a library minor.",
+      "tags": [],
+      "source": "progress/plans/phase-1/_phase.md",
+      "epicCounts": {
+        "total": 4,
+        "not_started": 0,
+        "to_be_planned": 0,
+        "planned": 0,
+        "in_progress": 1,
+        "blocked": 0,
+        "done": 3,
+        "cancelled": 0
+      }
+    },
+    {
+      "id": "phase-2",
+      "number": 2,
+      "title": "Theme Token Consolidation",
+      "status": "not_started",
+      "startedAt": null,
+      "completedAt": null,
+      "targetAt": null,
+      "goal": "Land the library-side migration that consumes the canonical `--dx-spacing-*` and `--dx-radius-*` token scales declared at `:root` in [partials/_default.scss](../../../projects/ng-dijta/src/lib/theme/partials/_default.scss) (shipped in Phase 1 of [doc/proposals/spacing-and-radius-scales.md](../../../doc/proposals/spacing-and-radius-scales.md), PR #16, commit `a0a925a`). Replace the raw `rem` / `px` literals scattered across ~100 component SCSS partials and ~100 theme partials with `var(--dx-spacing-{step}, literal)` / `var(--dx-radius-{step}, literal)` references — fallback preserved so the bundle stays pixel-stable by construction. Track-B consumer-app migration is out of scope (tracked in [doc/explore/library-gaps.md](../../../doc/explore/library-gaps.md) rows T1–T4 and T16).",
+      "tags": [],
+      "source": "progress/plans/phase-2/_phase.md",
+      "epicCounts": {
+        "total": 1,
+        "not_started": 0,
+        "to_be_planned": 0,
+        "planned": 1,
+        "in_progress": 0,
+        "blocked": 0,
+        "done": 0,
+        "cancelled": 0
+      }
+    }
+  ],
+  "epics": [
+    {
+      "id": "P1-E01",
+      "phaseId": "phase-1",
+      "title": "Fix Nx Release changelog so GitHub Releases include real commit details",
+      "status": "done",
+      "owner": null,
+      "startedAt": null,
+      "completedAt": null,
+      "objective": "GitHub Releases for `ng-dijta@18.6.0` and `ng-dijta@18.7.0` both render with the placeholder body **\"This was a version bump only for ng-dijta to align it with other projects, there were no code changes\"** even though real `feat(ng-dijta):` commits landed between those tags (e.g. `5630b80 feat(ng-dijta): broaden autocomplete-select filter and add filterByValueOnly toggle`, `d872e05 feat(ng-dijta): add prefix slot to mat-label in autocomplete select component`). This epic finds the root cause in [nx.json](../../../nx.json) + [.github/workflows/release.yml](../../../.github/workflows/release.yml), fixes it, backfills the two existing broken release notes, and adds a CI guard so the regression cannot recur silently.",
+      "tags": [],
+      "dependsOn": [],
+      "blocks": [
+        "P1-E02",
+        "P1-E03",
+        "P1-E04"
+      ],
+      "progress": {
+        "tasksTotal": 0,
+        "tasksDone": 0,
+        "exitCriteriaTotal": 0,
+        "exitCriteriaDone": 0,
+        "percent": 100
+      },
+      "source": "progress/plans/phase-1/P1-E01-release-changelog-fix.md"
+    },
+    {
+      "id": "P1-E02",
+      "phaseId": "phase-1",
+      "title": "DxRemoteI18nModule + DxLangLoaderService (runtime foundation)",
+      "status": "done",
+      "owner": null,
+      "startedAt": null,
+      "completedAt": null,
+      "objective": "Land the runtime wiring that lets an Angular Module Federation remote register its bundled (eager) translations and lazy-load translation chunks for additional languages — namespaced under a per-remote key — without consumers calling `TranslocoService.setTranslation` directly. Templates still use the native `'ns.foo' | transloco` syntax in this epic; the namespacing pipe / directive / service arrive in [P1-E03](P1-E03-mf-i18n-pipe-directive-service.md).",
+      "tags": [],
+      "dependsOn": [
+        "P1-E01"
+      ],
+      "blocks": [
+        "P1-E03",
+        "P1-E04"
+      ],
+      "progress": {
+        "tasksTotal": 0,
+        "tasksDone": 0,
+        "exitCriteriaTotal": 0,
+        "exitCriteriaDone": 0,
+        "percent": 100
+      },
+      "source": "progress/plans/phase-1/P1-E02-mf-i18n-runtime.md"
+    },
+    {
+      "id": "P1-E03",
+      "phaseId": "phase-1",
+      "title": "DxI18nPipe + DxRemoteI18nDirective + DxI18nService + strict mode",
+      "status": "done",
+      "owner": null,
+      "startedAt": null,
+      "completedAt": null,
+      "objective": "Add the consumer-facing translation surface on top of the runtime foundation from [P1-E02](P1-E02-mf-i18n-runtime.md): a `dxi18n` pipe, a `*dxRemoteI18n` structural directive, and a `DxI18nService` facade — each of which automatically prepends the remote namespace (from `DX_APP_NAMESPACE`) so consumer code uses bare keys (`'foo'` instead of `'remoteName.foo'`). Includes the strict-mode behaviour contract: dev throws on missing namespace, prod logs + returns the raw key.",
+      "tags": [],
+      "dependsOn": [
+        "P1-E02"
+      ],
+      "blocks": [
+        "P1-E04"
+      ],
+      "progress": {
+        "tasksTotal": 0,
+        "tasksDone": 0,
+        "exitCriteriaTotal": 0,
+        "exitCriteriaDone": 0,
+        "percent": 100
+      },
+      "source": "progress/plans/phase-1/P1-E03-mf-i18n-pipe-directive-service.md"
+    },
+    {
+      "id": "P1-E04",
+      "phaseId": "phase-1",
+      "title": "withDxRemote webpack helper + sub-path export `@ngdx/dijta/webpack`",
+      "status": "in_progress",
+      "owner": null,
+      "startedAt": null,
+      "completedAt": null,
+      "objective": "Ship a Node-only build helper (`withDxRemote`) that collapses a remote's Module Federation webpack config to a ~5-line call, plus a single source of truth for shared peer ranges (`DX_PEER_RANGES`) so library / Transloco / Angular version upgrades propagate to all 30+ remotes via `npm i @ngdx/dijta@latest`. Exposed as a secondary entry point `@ngdx/dijta/webpack` via ng-packagr's sub-path mechanism.",
+      "tags": [],
+      "dependsOn": [
+        "P1-E03"
+      ],
+      "blocks": [],
+      "progress": {
+        "tasksTotal": 0,
+        "tasksDone": 0,
+        "exitCriteriaTotal": 0,
+        "exitCriteriaDone": 0,
+        "percent": 0
+      },
+      "source": "progress/plans/phase-1/P1-E04-mf-i18n-webpack-helper.md"
+    },
+    {
+      "id": "P2-E01",
+      "phaseId": "phase-2",
+      "title": "Migrate library SCSS literals to `--dx-spacing-*` / `--dx-radius-*` tokens",
+      "status": "planned",
+      "owner": null,
+      "startedAt": null,
+      "completedAt": null,
+      "objective": "Land the Phase 2 / Track A migration described in [doc/proposals/spacing-and-radius-scales.md](../../../doc/proposals/spacing-and-radius-scales.md): replace every scale-step `rem` / `px` literal on `padding*` / `margin*` / `gap` / `border-*radius` properties in the library's component and theme SCSS with the canonical `var(--dx-spacing-{step}, literal)` / `var(--dx-radius-{step}, literal)` references that shipped at `:root` in PR #16. Literal fallback preserved on every site — pixel-stable by construction. Out-of-scale offsets stay as literals and are surfaced in PR descriptions for a follow-up design pass; they are not silently migrated.",
+      "tags": [],
+      "dependsOn": [],
+      "blocks": [],
+      "progress": {
+        "tasksTotal": 0,
+        "tasksDone": 0,
+        "exitCriteriaTotal": 0,
+        "exitCriteriaDone": 0,
+        "percent": 0
+      },
+      "source": "progress/plans/phase-2/P2-E01-spacing-radius-library-migration.md"
+    }
+  ],
+  "tasks": []
+}

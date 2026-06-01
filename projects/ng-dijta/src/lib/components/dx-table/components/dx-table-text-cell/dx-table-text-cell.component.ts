@@ -5,6 +5,7 @@ import { Link, LinkType, ReasonType, StatusReasons, Tooltip } from '../../interf
 import { NgDxAvatarSettings } from '../../../dx-avatar/model/avatar';
 import { Params } from '@angular/router';
 import { FlexTableCellComponent } from '../../ngx-table/flex-table-cell/flex-table-cell.component';
+import { DomSanitizer } from '@angular/platform-browser';
 interface BgClass {
   color: string;
   opacity: string;
@@ -38,7 +39,9 @@ export class DxTableTextCellComponent<T> extends FlexTableCellComponent<any> imp
 
   private _data!: string | number;
   private _defaultText: string = DxTableTextCellComponent.DEFAULT_TEXT;
-
+  constructor(private readonly sanitizer: DomSanitizer) {
+    super();
+  }
   ngOnChanges(): void {
     this.getReasons();
   }
@@ -69,11 +72,7 @@ export class DxTableTextCellComponent<T> extends FlexTableCellComponent<any> imp
   }
 
   private updateText(): void {
-    const tmp: string =
-      !this.data
-        ? this.defaultText
-        : String(this.data);
-
+    const tmp: string = this.data === undefined || this.data === null ? this.defaultText : String(this.data);
     this.text = StringUtil.isBlank(tmp) ? this.defaultText : tmp;
   }
 
@@ -103,8 +102,8 @@ export class DxTableTextCellComponent<T> extends FlexTableCellComponent<any> imp
     }
   }
 
-  prepareExtranalLink(data: Link<T>): string {
-    return `${data?.path}` + this.prepareQueryParams(data?.params);
+  prepareExtranalLink(data: Link<T>): any {
+    return this.sanitizer.bypassSecurityTrustUrl(`${data?.path}` + this.prepareQueryParams(data?.params));
   }
   private prepareQueryParams(params: Params | undefined): string {
     let queryParams = '';

@@ -1,7 +1,7 @@
-<div class="dx-field-wrapper">
+<div class="ngdx-field-wrapper">
   <div class="radio-button-wrapper" [class.display-view]="viewOnly">
-    <mat-label class="subbody radio-label">
-      <ng-content select="dx-label"></ng-content>
+    <mat-label class="subbody" >
+      <ng-content select="dx-label" class="fw-normal"></ng-content>
     </mat-label>
     <mat-radio-group [id]="id" [ngClass]="displayType == 'vertical' ? 'dx-radio-vertical' : 'dx-radio-horizantal'"
       [formControl]="control?.control" [required]="required" (ngModelChange)="inputChange($event)"
@@ -10,7 +10,7 @@
         <mat-radio-button [value]="option?.keyTt"
           *ngIf="option?.permission ? (option?.permission?.permission | ablePure: option?.permission?.apiName | async) : true">
           <div>
-            <span class="label fw-medium"> {{option?.valueTt | transloco}}</span>
+            <span class="radio-label-inner"> {{option?.valueTt | transloco}}</span>
           </div>
           <div *ngIf="option?.subtitle" class="radio-option-subtitle ">
             <span class="paragraph m-0 fw-semibold">{{option?.subtitle | transloco}}</span>
@@ -19,10 +19,10 @@
       </ng-container>
 
     </mat-radio-group>
-    <mat-error>
-      <div class="dx-error">
-        <ng-content select="dx-error"> </ng-content>
-      </div>
-    </mat-error>
+    <div class="mat-mdc-form-field-subscript-wrapper">
+      <mat-error *ngIf="control?.errors?.required && control?.touched" class="mx-2">
+        <ng-content select="dx-error"></ng-content>
+      </mat-error>
+    </div>
   </div>
 </div>

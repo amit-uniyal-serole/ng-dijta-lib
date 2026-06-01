@@ -1,5 +1,5 @@
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
-import { Component, EventEmitter, Input, Output, ViewEncapsulation, Optional, OnInit, ChangeDetectorRef, Inject, Injector, forwardRef, HostBinding } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation, Optional, OnInit, ChangeDetectorRef, Inject, Injector, forwardRef, HostBinding, ViewChild, ElementRef } from '@angular/core';
 import { ControlValueAccessor, FormControl, NgControl, NG_VALUE_ACCESSOR, Validators, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
 import { UI_COMPONENT_CONFIG, UIConfigWrapper } from '../../core/UI/service/input/ui-component.config';
 import { MentionConfig } from '../../directive/mentions/dx-mention-config';
@@ -23,6 +23,7 @@ import { MentionConfig } from '../../directive/mentions/dx-mention-config';
   encapsulation: ViewEncapsulation.None,
 })
 export class DxTextareaComponent implements ControlValueAccessor, OnInit, Validator {
+  @ViewChild('myTextarea') textarea!: ElementRef<HTMLTextAreaElement>;
   @Output() blur: EventEmitter<FocusEvent> = new EventEmitter<FocusEvent>();
   @Input() disabled: boolean = false;
   @Input() noneLabel: boolean = false;
@@ -63,6 +64,12 @@ export class DxTextareaComponent implements ControlValueAccessor, OnInit, Valida
   ctrRequired: boolean | undefined;
 
   control: FormControl = new FormControl();
+
+  @Input() mask: string | undefined;
+  @Input() maskingPatterns;
+  @Input() dropSpecialCharacters: boolean = false;
+  @Input() prefix: string | undefined;
+  @Input() specialCharacters: string[] = []
 
   constructor(
     @Optional() @Inject(UI_COMPONENT_CONFIG) config: UIConfigWrapper,
@@ -136,4 +143,16 @@ export class DxTextareaComponent implements ControlValueAccessor, OnInit, Valida
     return null;
   }
 
+  addNewLine(event: KeyboardEvent) {
+    event.preventDefault();
+    const textarea = event.target as HTMLTextAreaElement;
+    textarea.value += '\n';    
+    this.textarea?.nativeElement?.focus();
+    setTimeout(() => {
+      const textarea = this.textarea?.nativeElement;
+      if(textarea){
+        textarea.scrollTop = textarea.scrollHeight;
+      }
+    }, 0);
+  }
 }

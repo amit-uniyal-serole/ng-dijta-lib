@@ -20,9 +20,9 @@ export class DxDetailsCardComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['data']?.previousValue != changes['data']?.currentValue) {
-      this.values = changes['data']?.currentValue?.cards?.reduce((outerObj:CardConditionValue, card:DxCardData) => {
+      this.values = changes['data']?.currentValue?.cards?.reduce((outerObj: CardConditionValue, card: DxCardData) => {
         outerObj = card?.content?.reduce((innerObj: CardConditionValue, content: DxDetailsCardContent) => {
-          innerObj[content?.fieldName!] = content?.value ;
+          innerObj[content?.fieldName!] = content?.value;
           return { ...outerObj, ...innerObj }
         }, {}) as CardConditionValue;
         return outerObj;

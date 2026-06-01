@@ -45,7 +45,7 @@ export class DxImageInputComponent implements ControlValueAccessor, Validator {
   @Input() outerLabelErrorType: 'astrict-error' | 'filled-error' = 'filled-error';
   // Pass tooltips info to input
   @Input() tooltip: string | undefined;
-  @Input() placeholder: string | undefined = 'Choose File';
+  @Input() placeholder: string | undefined = '';
   @Input() adapterData!: AdapterDataModel;
   /** Max size of selected file in MB. Default: no limit */
   @Input()
@@ -59,6 +59,7 @@ export class DxImageInputComponent implements ControlValueAccessor, Validator {
   value: string = '';
   @Input() enableAutoUpload: boolean = false;
   @Input() uploadType: DxFileUploadType = 'single';
+  @Input() fileTypes: string[] = [];
   // To get required 
   @Input()
   get required(): boolean {
@@ -74,6 +75,7 @@ export class DxImageInputComponent implements ControlValueAccessor, Validator {
   protected _required: boolean | undefined;
 
   control: FormControl = new FormControl();
+  ctrRequired: boolean | undefined;
 
   constructor(
     @Optional() @Inject(UI_COMPONENT_CONFIG) config: UIConfigWrapper,
@@ -85,15 +87,18 @@ export class DxImageInputComponent implements ControlValueAccessor, Validator {
 
   // To bind component with controller
   ngAfterViewInit(): void {
-    const ngControl: NgControl = this.injector.get(NgControl);
-    if (ngControl) {
+    const ngControl: NgControl | null = this.injector.get(NgControl, null);
+
+    if (ngControl?.control instanceof FormControl) {
       setTimeout(() => {
-        this.control = ngControl.control as FormControl;
-        this.control.markAsUntouched();
-        this.required =
-          this.required ?? this.control.hasValidator(Validators.required);
-        this.cd.detectChanges();
+      this.control = ngControl.control as FormControl;
+      this.control?.markAsUntouched();
+      this.ctrRequired = this.control?.hasValidator(Validators.required);
+      this.cd.detectChanges();
       });
+    } else {
+      // fallback if not bound to form control
+      this.control = new FormControl();
     }
   }
 
@@ -124,15 +129,15 @@ export class DxImageInputComponent implements ControlValueAccessor, Validator {
       this.onTouched(value);
     }
   }
-  validate(control: AbstractControl): ValidationErrors | null {
-    if (this.required) {
-      control.setValidators([Validators.required]);
-      control.updateValueAndValidity();
-      this.required = control.hasValidator(Validators.required);
+   validate(control: AbstractControl): ValidationErrors | null {
+    if (!this.ctrRequired) {
+      this.ctrRequired = control.hasValidator(Validators.required);
+      this.cd.detectChanges()
       this.cd.detectChanges();
     }
     if (!control.hasValidator(Validators.required)) {
-      this.required = control.hasValidator(Validators.required);
+      this.ctrRequired = control.hasValidator(Validators.required);
+      this.cd.detectChanges()
       this.cd.detectChanges();
     }
     return null;

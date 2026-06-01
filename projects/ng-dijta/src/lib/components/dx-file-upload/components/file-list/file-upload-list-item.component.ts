@@ -5,7 +5,7 @@ import { FileUploadService } from '../../services/file-upload.service';
 @Component({
     selector: `file-upload-list-item`,
     template: `
-    <file-upload-icon [file]="file"></file-upload-icon>
+    <dx-file-upload-icon [file]="file"></dx-file-upload-icon>
     <div class="file-info">
         <span class="file-name">{{ file.name }}</span> ({{ calculateSize( file.size ) }})
     </div>

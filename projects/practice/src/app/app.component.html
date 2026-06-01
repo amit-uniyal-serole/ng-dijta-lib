@@ -1,0 +1,29 @@
+<dx-vertical-layout>
+  <header style="height: 100%;">
+    <dx-header [companyInfo]="companyInfo" [headerIcons]="headerIcons" [currentUser]="currentUser"></dx-header>
+  </header>
+  <content>
+    <ng-container *ngIf="(layoutServiceService.currentLayout | async) === 'vertical'">
+      <dx-vertical-content [menu]="menu">
+    
+        <dx-lcnc-breadcrumb [breadcrumbList]="(breadcrumb$ | async) ?? []" *ngIf="(breadcrumb$ | async)?.length > 0">
+        </dx-lcnc-breadcrumb>
+        <router-outlet></router-outlet>
+      </dx-vertical-content>
+    </ng-container>
+    <ng-container *ngIf="(layoutServiceService.currentLayout | async) === 'horizontal'">
+      <dx-horizontal-content [menu]="menu">
+    
+        <dx-lcnc-breadcrumb [breadcrumbList]="(breadcrumb$ | async) ?? []" *ngIf="(breadcrumb$ | async)?.length > 0">
+        </dx-lcnc-breadcrumb>
+        <router-outlet></router-outlet>
+      </dx-horizontal-content>
+    </ng-container>
+    <ng-container *ngIf="(layoutServiceService.currentLayout | async) === 'compact'">
+      <dx-compact-content [menu]="menu"
+        [flexMenu]="true" [expandMenu]="false" [disableDispalyConditions]="false">
+          <router-outlet></router-outlet>
+      </dx-compact-content>
+    </ng-container>
+  </content>
+</dx-vertical-layout>

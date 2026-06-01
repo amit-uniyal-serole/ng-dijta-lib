@@ -4,3 +4,21 @@
 .mat-checkbox-layout {
     white-space: break-spaces !important;
 }
+
+// Top label position: override mat-checkbox's internal flex layout so the
+// label sits above the checkbox box instead of beside it. We target the inner
+// `.mdc-form-field` (the flex container Material wraps the input + label in)
+// and switch direction + alignment.
+.dx-checkbox-wrapper[data-label-position='top'] {
+    .mdc-form-field {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    // Material adds left padding to the label when labelPosition='after'.
+    // In the top stack we don't want that gap on the side.
+    .mdc-label {
+        padding-left: 0;
+    }
+}

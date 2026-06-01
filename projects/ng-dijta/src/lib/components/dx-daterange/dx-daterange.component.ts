@@ -75,6 +75,7 @@ export class DxDaterangeComponent<D> implements ControlValueAccessor, Validator 
 
   onChange: Function = () => { };
   onTouched: Function = () => { };
+  ctrRequired: boolean | undefined;
   format: string = 'YYYY/MM/DD';
 
   control: FormControl = new FormControl();
@@ -92,7 +93,6 @@ export class DxDaterangeComponent<D> implements ControlValueAccessor, Validator 
     this._required = coerceBooleanProperty(value);
   }
   protected _required: boolean | undefined;
-  ctrRequired: boolean | undefined;
 
   @HostListener('focusout', ['$event.target'])
   onFocusout() {

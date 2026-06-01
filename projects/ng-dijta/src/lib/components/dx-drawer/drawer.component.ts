@@ -101,13 +101,13 @@ const NZ_CONFIG_MODULE_NAME: DxConfigKey = 'drawer';
                   </button>
                   <div *ngIf="dxTitle" class="dx-drawer-title">
                     <ng-container *dxStringTemplateOutlet="dxTitle">
-                      <div [innerHTML]="dxTitle | transloco" dx-tooltip dxTooltipTitle="{{dxTitle | transloco}}"></div>
+                      <div [innerHTML]="dxTitle  | dxsafe: 'html' | transloco" dx-tooltip dxTooltipTitle="{{dxTitle | transloco}}"></div>
                     </ng-container>
                   </div>
                 </div>
                 <div *ngIf="dxExtra" class="dx-drawer-extra">
                   <ng-container *dxStringTemplateOutlet="dxExtra">
-                    <div [innerHTML]="dxExtra | transloco"></div>
+                    <div [innerHTML]="dxExtra  | dxsafe: 'html' | transloco"></div>
                   </ng-container>
                 </div>
               </div>
@@ -126,7 +126,7 @@ const NZ_CONFIG_MODULE_NAME: DxConfigKey = 'drawer';
               </div>
               <div *ngIf="dxFooter" class="dx-drawer-footer">
                 <ng-container *dxStringTemplateOutlet="dxFooter">
-                  <div [innerHTML]="dxFooter | transloco"></div>
+                  <div [innerHTML]="dxFooter  | dxsafe: 'html' | transloco"></div>
                 </ng-container>
               </div>
             </div>
@@ -373,7 +373,8 @@ export class DxDrawerComponent<T = DxSafeAny, R = DxSafeAny, D = DxSafeAny>
             this.updateBodyOverflow();
             this.restoreFocus();
             this.inAnimation = false;
-            this.nzAfterClose.next(result!);
+            if (result)
+                this.nzAfterClose.next(result);
             this.nzAfterClose.complete();
             this.componentInstance = null;
         }, this.getAnimationDuration());

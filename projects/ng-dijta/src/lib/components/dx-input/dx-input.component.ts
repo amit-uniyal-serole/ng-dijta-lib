@@ -1,5 +1,4 @@
 import { BooleanInput, coerceBooleanProperty } from "@angular/cdk/coercion";
-import { getCurrencySymbol, getLocaleCurrencyCode } from "@angular/common";
 import {
   ChangeDetectorRef,
   Component,
@@ -10,10 +9,9 @@ import {
   Injector,
   Input,
   LOCALE_ID,
-  OnChanges,
-  OnInit,
   Optional,
   Output,
+  Self,
   SimpleChanges,
   ViewEncapsulation,
   forwardRef
@@ -29,7 +27,6 @@ import {
   Validator,
   Validators,
 } from '@angular/forms';
-import { Observable } from 'rxjs';
 import { KeyValueModel } from '../../core/UI/model/keyValue';
 
 import {
@@ -37,6 +34,7 @@ import {
   UI_COMPONENT_CONFIG,
 } from '../../core/UI/service/input/ui-component.config';
 import { MentionConfig } from "../../directive/mentions/dx-mention-config";
+import { Subscription } from "rxjs";
 
 export type INPUT_TYPE = 'text' | 'number';
 
@@ -59,15 +57,13 @@ export type INPUT_TYPE = 'text' | 'number';
   ],
   encapsulation: ViewEncapsulation.None,
 })
-export class DxInputComponent implements ControlValueAccessor, OnInit, Validator, OnChanges {
-  static nextId = 0;
+export class DxInputComponent implements ControlValueAccessor, Validator {
   @Output() onClickOption: EventEmitter<KeyValueModel> =
     new EventEmitter<KeyValueModel>();
   @Output() blur: EventEmitter<FocusEvent> = new EventEmitter<FocusEvent>();
   @Output() onEnter: EventEmitter<void> = new EventEmitter<void>();
   @Output() onInputChange: EventEmitter<string> = new EventEmitter<string>();
   @Input() type: INPUT_TYPE = "text";
-  @Input() disabled: boolean = false;
   @Input() noneLabel: boolean = false;
   @Input() isCurrency: boolean = false;
   @Input() isAutoComplete: boolean = false;
@@ -79,14 +75,20 @@ export class DxInputComponent implements ControlValueAccessor, OnInit, Validator
   @Input() readonly: boolean = false;
   @Input() viewOnly: boolean = false;
   @Input() outerLabelErrorType: 'astrict-error' | 'filled-error' = 'filled-error';
-  @Input() mentionConfigData!: MentionConfig
+  @Input() mentionConfigData!: MentionConfig;
+  @Input() noErrorSpace: boolean = false;
   // Pass tooltips info to input
   @Input() tooltip: string | undefined;
   @Input() noneBorder: boolean = false;
-
+  static nextId: number = 0;
+  // Mask
   @Input() mask: string | undefined;
-
   @Input() maskingPatterns;
+  @Input() dropSpecialCharacters: boolean = false;
+  @Input() prefix: string | undefined;
+  @Input() specialCharacters: string[] = []
+
+
 
   @HostBinding()
   @Input() id = `dx-input-${DxInputComponent.nextId++}`;
@@ -113,44 +115,33 @@ export class DxInputComponent implements ControlValueAccessor, OnInit, Validator
 
   ctrRequired: boolean | undefined;
 
-  autocomplete: boolean = true;
-  filteredOptions!: Observable<KeyValueModel[]>;
-  searchCtrl: FormControl = new FormControl();
-  value: string = "";
-  currencySymbol = "";
+  @Input() value: string | undefined;
   @Input() labelPosition: 'left' | 'top' = 'top';
-  private _validatorOnChange: (() => void) | undefined;
-  control: FormControl = new FormControl();
   @HostListener("focusout", ["$event.target"]) onFocusout() {
     this.onTouched();
   }
+  control: FormControl = new FormControl();
 
+  @Input() disabled: boolean = false;
+
+  // Internal state for disabled set by ControlValueAccessor (via formControl.disable())
+  private _cvaDisabled: boolean = false;
+
+  // Combined disabled state (either @Input or CVA disabled)
+  get isDisabled(): boolean {
+    return this.disabled || this._cvaDisabled;
+  }
+
+  filterSubscription!: Subscription;
   onChange: Function = () => { };
   onTouched: Function = () => { };
   constructor(
     @Optional() @Inject(UI_COMPONENT_CONFIG) config: UIConfigWrapper,
     @Inject(LOCALE_ID) public locale: string,
-    public injector: Injector,
-    private readonly cd: ChangeDetectorRef
+    private readonly cd: ChangeDetectorRef,
+    private injector: Injector,
   ) {
     this.outline = config?.value?.outline ?? "none-floating";
-    this.currencySymbol = getCurrencySymbol(
-      getLocaleCurrencyCode(locale)!,
-      this.currencyFormat,
-      locale
-    );
-  }
-
-  ngAfterViewInit(): void {
-    const ngControl: NgControl = this.injector.get(NgControl);
-    if (ngControl) {
-      setTimeout(() => {
-        this.control = ngControl.control as FormControl;
-        this.control.markAsUntouched();
-        this.ctrRequired = this.control.hasValidator(Validators.required);
-        this.cd.detectChanges();
-      });
-    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -158,15 +149,26 @@ export class DxInputComponent implements ControlValueAccessor, OnInit, Validator
       this.mentionConfigData = changes?.mentionConfigData?.currentValue
     }
   }
+  ngAfterViewInit(): void {
+    const ngControl: NgControl | null = this.injector.get(NgControl, null);
 
-  ngOnInit() {
-    if (this.minLength) {
-      this.control?.addValidators(Validators.minLength(this.minLength));
+    if (ngControl?.control instanceof FormControl) {
+      setTimeout(() => {
+      this.control = ngControl.control as FormControl;
+      this.control?.markAsUntouched();
+      this.ctrRequired = this.control?.hasValidator(Validators.required);
+      this.cd.detectChanges();
+      });
+    } else {
+      // fallback if not bound to form control
+      this.control = new FormControl();
     }
-    if (this.maxLength) {
-      this.control?.addValidators(Validators.maxLength(this.maxLength));
+  }
+
+  ngOnDestroy(): void {
+    if (this.filterSubscription) {
+      this.filterSubscription?.unsubscribe();
     }
-    this.control?.updateValueAndValidity();
   }
 
   onInputChangeEvent(event: any): void {
@@ -191,8 +193,9 @@ export class DxInputComponent implements ControlValueAccessor, OnInit, Validator
     this.onTouched = fn;
   }
 
-  setDisabledState?(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+  // Method called by the form when the control's disabled state changes
+  setDisabledState(isDisabled: boolean): void {
+    this._cvaDisabled = isDisabled;
   }
 
   onBlur(value: FocusEvent): void {
@@ -209,10 +212,12 @@ export class DxInputComponent implements ControlValueAccessor, OnInit, Validator
   validate(control: AbstractControl): ValidationErrors | null {
     if (!this.ctrRequired) {
       this.ctrRequired = control.hasValidator(Validators.required);
+      this.cd.detectChanges()
       this.cd.detectChanges();
     }
     if (!control.hasValidator(Validators.required)) {
       this.ctrRequired = control.hasValidator(Validators.required);
+      this.cd.detectChanges()
       this.cd.detectChanges();
     }
     return null;

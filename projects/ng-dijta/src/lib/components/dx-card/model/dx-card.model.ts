@@ -1,6 +1,6 @@
 
 import { NgDxAvatarSettings } from '../../dx-avatar/model/avatar';
-import { ButtonLoaderType, ConfirmationPopover, MultiActionDropDown } from '../../dx-button/dx-button.model';
+import { ButtonLoaderType, ConfirmationPopover, MultiActionDropDown, MultiActionMenuList } from '../../dx-button/dx-button.model';
 
 import { MultiActionButtonSettings } from '../../dx-table/interfaces/dx-table.interface';
 export type DX_CARD_TYPE = 'basic';
@@ -17,6 +17,11 @@ export interface BasicVariant {
   contentListing?: CardContentListing[];
   tiles?: CardTileDetails[];
   actions?: MultiActionButtonSettings;
+  actionGroup?: GroupAction;
+}
+export interface GroupAction {
+  actions?:MultiActionMenuList[];
+  subActions: MultiActionMenuList[];
 }
 export interface CardProfileSetting {
   src?: string | undefined;
@@ -35,6 +40,7 @@ export interface CardTileDetails {
 export interface CardDescription {
   title?: CardTitle;
   subtitle?: Subtitle;
+  maxTitleWidth?: boolean;
 }
 
 export interface CardTitle {

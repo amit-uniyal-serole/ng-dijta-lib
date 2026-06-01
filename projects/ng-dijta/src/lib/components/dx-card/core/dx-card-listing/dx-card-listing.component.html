@@ -1,10 +1,10 @@
 <div class="dx-card-wrapper-listing" *ngIf="contentListing && contentListing?.length>0">
-  <div *ngFor="let data of contentListing">
-    <div class="dx-card-listing-key-value-wrapper">
-      <span class="dx-card-listing-material-icons material-icons" *ngIf="data?.icon">{{data?.icon}}</span>
-      <span class="title subbody fw-bold" *ngIf="data?.label">{{data?.label | transloco}}:
-        &nbsp;</span>
-      <span class="subbody" *ngIf="data?.value">{{data?.value | transloco}}</span>
-    </div>
-  </div>
+    @for (data of contentListing; track $index) {
+      <div class="dx-card-listing-key-value-wrapper">
+        <span class="dx-card-listing-material-icons material-icons" *ngIf="data?.icon">{{data?.icon}}</span>
+        <span class="title subbody" *ngIf="data?.label">{{data?.label | transloco}}:
+          &nbsp;</span>
+        <span class="subbody value" *ngIf="data?.value">{{data?.value | transloco}}</span>
+      </div>
+    }
 </div>

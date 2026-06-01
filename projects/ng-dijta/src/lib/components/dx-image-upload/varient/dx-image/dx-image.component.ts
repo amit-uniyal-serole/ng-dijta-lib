@@ -54,7 +54,8 @@ export class DxImageComponent implements OnChanges, ControlValueAccessor, MatFor
   @Input() enableAutoUpload: boolean = false;
   @Input() tabIndex:number | undefined;
   @Input() uploadType!: DxFileUploadType;
-
+  @Input() readonly: boolean = false;
+  @Input() fileTypes: string[] = [];
   get empty() {
     return !this.parts;
   }
@@ -214,6 +215,15 @@ export class DxImageComponent implements OnChanges, ControlValueAccessor, MatFor
     dialogRef.componentInstance.fileMaxCount = this.fileMaxCount;
     dialogRef.componentInstance.totalMaxSize = this.totalMaxSize;
     dialogRef.componentInstance.fileMaxSize = this.fileMaxSize;
+    dialogRef.componentInstance.fileTypes = this.fileTypes.length > 0 ? this.fileTypes: [
+  "image/png",
+  "image/jpeg",
+  "image/gif",
+  "image/bmp",
+  "image/svg+xml",
+  "image/gif",
+  "image/avif"
+];
     dialogRef.afterClosed().pipe(
       filter((val: FilePreviewModel[] | undefined) => !!val && val?.length > 0),
       first()

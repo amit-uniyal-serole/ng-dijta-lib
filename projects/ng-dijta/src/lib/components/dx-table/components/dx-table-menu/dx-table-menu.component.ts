@@ -32,6 +32,7 @@ export class DxTableMenuComponent<T extends AnyAbility> implements OnChanges, Af
   @Input() data!: T;
   @Input() condition!: ConditionClass;
   @Input() menu!: BulkActions;
+  @Input() type: 'onhover' | 'compact' = 'compact'
   @Output() onClickBulkMenuAction: EventEmitter<MenuAction> =
     new EventEmitter<MenuAction>();
   @ViewChild(MatMenuTrigger) trigger!: MatMenuTrigger;
@@ -55,10 +56,7 @@ export class DxTableMenuComponent<T extends AnyAbility> implements OnChanges, Af
     if (changes?.menu?.previousValue != changes?.menu?.currentValue) {
       this.menu = changes?.menu?.currentValue;
     }
-    if (
-      (changes?.menu?.previousValue != changes?.menu?.currentValue)
-      ||
-      (changes?.data?.previousValue != changes?.data?.currentValue)) {
+    if ((changes?.menu?.previousValue != changes?.menu?.currentValue) || changes?.data?.previousValue != changes?.data?.currentValue) {
       if (this.menu) {
         this.menu.actions = this.menu?.actions?.filter((menu: MenuAction) => {
           return menu.classCondition ? ButtonActionTransform.getButtonConditionForShowHide(menu.classCondition, this.data) : true;

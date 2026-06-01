@@ -6,7 +6,7 @@ import { DxDirectiveModule } from '../../directive';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ChipSelectComponent } from './chip-select/chip-select.component';
 import { MatInputModule } from '@angular/material/input';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 
 
 @NgModule({

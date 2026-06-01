@@ -6,5 +6,10 @@
   "angularCompilerOptions": {
     "compilationMode": "partial"
   },
-  "exclude": []
+  "exclude": [
+    "src/test.ts",
+    "**/*.spec.ts",
+    "**/*.stories.ts",
+    "**/*.stories.fixtures.ts"
+  ]
 }

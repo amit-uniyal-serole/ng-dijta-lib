@@ -1,58 +1,72 @@
-<div *ngIf="!(moduleDefinitionLoader$ | async);else moduleDefinitionLoading"
-    class="dx-field-wrapper dx-field-server-side-autocomplete server-side-autocomplete" [class.none-label]="noneLabel"
-    [ngClass]="outline" [class.display-view]="viewOnly" [class.dx-disable]="disabled"
+@if(!moduleDefinitionLoader$){
+<div class="ngdx-field-wrapper dx-field-server-side-autocomplete server-side-autocomplete"
+    [class.none-label]="noneLabel" [ngClass]="outline" [class.display-view]="viewOnly" [class.dx-disable]="disabled"
     [class.left-align-label]="labelPosition === 'left'" [class.required]="required || ctrRequired"
-    [class]="outerLabelErrorType" [class.none-border]="noneBorder">
-    <mat-label class="dx-outer-label-wrapper">
-        <span class="dx-outer-label">
-            <ng-content select="[dxLabel]"></ng-content>
-            <span *ngIf="(required || ctrRequired) && outerLabelErrorType === 'astrict-error'" class="astrict">*</span>
-        </span>
+    [class]="outerLabelErrorType" [class.none-border]="noneBorder"
+    [class.single-record-selection]="!lookupModalConfig?.tableSettings?.multiSelect && selectedItems?.length > 0"
+    [class.multi-record-selection]="lookupModalConfig?.tableSettings?.multiSelect && selectedItems?.length > 0">
+    <mat-label class="dx-outer-label" *ngIf="outline === 'outer-label'">
+        <span class="dx-outer-label d-flex align-items-center">
+        <ng-content select="[dxLabel]"></ng-content>
+        <span *ngIf="required || ctrRequired" class="astrict">*</span>
+    </span>    
     </mat-label>
     <div class="d-flex align-items-start">
-        <mat-form-field appearance="outline">
-            <mat-label class="dx-input-label">
+        <mat-form-field appearance="outline" floatLabel="always">
+            @if (outline !== 'outer-label') {
+            <mat-label>
                 <ng-content select="dx-label"></ng-content>
             </mat-label>
+            }
             <span matPrefix>
                 <div>
                     <ng-content select="dx-prefix"></ng-content>
                 </div>
             </span>
-            <input [tabIndex]="tabIndex" [readonly]="disableAutoCompleteSearch" type="text" class="p-1 server-side-auto-complete-trigger"
-                #inputTrigger placeholder="Select items" matInput [matAutocomplete]="autoComplete"
-                [formControl]="control" [required]="required || ctrRequired">
-            <div class="d-flex">
-                <mat-chip-list #chipList class="dx-server-autocomplete-chips"
-                    [class.dx-chip-items]="selectedItems?.length > 0" [disabled]="disabled || readonly || viewOnly">
-                    <!-- Empty placeholder to maintain field height -->
-                    <div *ngIf="!selectedItems || selectedItems?.length===0" class="hide-placeholder">
-                        <p class="paragraph mb-0">Empty Placeholder</p>
-                    </div>
-                    <!-- Chips -->
-                    <mat-chip *ngFor="let item of selectedItems"
-                        [class.single-select-chip]="!lookupModalConfig?.tableSettings?.multiSelect"
-                        [selectable]="selectable" (removed)="remove(item)">
-                        {{
-                        item?.valueTt
-                        }}
-                        <span *ngIf="lookupModalConfig?.tableSettings?.multiSelect" class="material-icons-outlined"
-                            matChipRemove>
-                            close
-                        </span>
-                    </mat-chip>
-                </mat-chip-list>
+            <input [tabIndex]="tabIndex" [readonly]="disableAutoCompleteSearch" type="text" 
+                class="p-1 server-side-auto-complete-trigger" #inputTrigger placeholder="Select items" matInput
+                [matAutocomplete]="autoComplete" [formControl]="control" [required]="required || ctrRequired" style="height: 0px;">
+                @if(criteria) {
+                      <span>{{'Condition'}}</span>
+                } @else {
+                    <div class="d-flex" style="line-height: 0;">
+                        <mat-chip-list #chipList class="dx-server-autocomplete-chips"
+                            [class.dx-chip-items]="selectedItems?.length > 0" [disabled]="disabled || readonly || viewOnly">
+                            <!-- Empty placeholder to maintain field height -->
+                            @if(!selectedItems || selectedItems?.length===0){
+                                <div class="hide-placeholder">
+                                    <p class="paragraph mb-0">Empty Placeholder</p>
+                                </div>
+                            }
+                            @for(item of selectedItems; track item){
+                                <!-- Chips -->
+                                <mat-chip [class.single-select-chip]="!lookupModalConfig?.tableSettings?.multiSelect"
+                                    [selectable]="selectable" (removed)="remove(item)">
+                                    {{
+                                    item?.valueTt
+                                    }}
+                                    @if(lookupModalConfig?.tableSettings?.multiSelect){
+                                    <button matChipRemove aria-label="'remove ' + keyword">
+                                        <mat-icon aria-hidden="false" aria-label="close" fontIcon="close"></mat-icon>
+                                    </button>
+                                    }
+                                </mat-chip>
+                            }
 
-            </div>
+                        </mat-chip-list>
+
+                    </div>
+                }
             <mat-autocomplete #autoComplete="matAutocomplete" (opened)="matAutoCompleteOpened()"
-                (closed)="matAutoCompleteClosed()">
-                <mat-option *ngIf="lookupModalConfig?.lookupApiConfig" (click)="$event.stopPropagation()"
-                    class="search-input-option">
-                    <input type="text" class="p-1" #serverSideSearchInput
-                        [placeholder]="lookupModalConfig?.lookUpHeaderSettings?.searchInputLabel ?? 'Search...'"
-                        matInput autofocus [formControl]="itemControl" (click)="$event.stopPropagation()"
+                (closed)="matAutoCompleteClosed()" class="server-side-autocomplete-panel">
+                @if(lookupModalConfig?.lookupApiConfig){
+                <mat-option (click)="$event.stopPropagation()" class="search-input-option">
+                    <input type="text" class="p-1" #serverSideSearchInput 
+                        [placeholder]="placeholder ?? lookupModalConfig?.lookUpHeaderSettings?.searchInputLabel ?? 'Search...'"
+                        autofocus [formControl]="itemControl" (click)="$event.stopPropagation()"
                         (keydown)="$event.stopPropagation()">
-                    <svg *ngIf="loading" width="22px" height="22px" viewBox="0 0 16 16" style="float: right"
+                    @if(loading){
+                    <svg width="22px" height="22px" viewBox="0 0 16 16" style="float: right"
                         class="icon dx-server-autocomplete-loading">
                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                             <path
@@ -60,66 +74,81 @@
                                 fill="#1162BD"></path>
                         </g>
                     </svg>
+                    }
                 </mat-option>
-
-                <ng-container *ngIf="lookupModalConfig?.tableSettings?.multiSelect;else singleSelect">
-                    <mat-option *ngFor="let item of filteredItems" [value]="selectedItems"
-                        (click)="optionClicked($event, item);" [disabled]="disabled || readonly || viewOnly">
-                        <div (click)="$event.stopPropagation()" [for]="item.keyTt">
-                            <mat-checkbox [checked]="item.selected" [id]="item.keyTt" (change)="toggleSelection(item)">
-                                {{ item.valueTt }}
-                            </mat-checkbox>
-                            <span *ngIf="item.subtitle">
-                                {{ item.subtitle }}
-                            </span>
-                        </div>
-                    </mat-option>
-                </ng-container>
-                <ng-template #singleSelect>
-                    <mat-option
-                        *ngIf="emptyOption && loading === false && lookupModalConfig && (selectedItems?.length > 0)"
-                        [value]="undefined" (click)="optionClicked($event,undefined)">&nbsp;None</mat-option>
-                    <mat-option *ngFor="let item of filteredItems" [value]="item"
-                        (click)="optionClicked($event, item);">
-                        {{ item.valueTt }}
-                        <span *ngIf="item.subtitle" class="subbody">
-                            ({{ item.subtitle }})
+                }
+                @if(lookupModalConfig?.tableSettings?.multiSelect){
+                @for(item of filteredItems; track item){
+                <mat-option [value]="selectedItems" (click)="optionClicked($event, item);"
+                    [disabled]="disabled || readonly || viewOnly">
+                    <div (click)="$event.stopPropagation()" [for]="item.keyTt">
+                        <mat-checkbox [checked]="item.selected" [id]="item.keyTt" (change)="toggleSelection(item)">
+                            {{ item.valueTt }}
+                        </mat-checkbox>
+                        @if(item.subtitle){
+                        <span>
+                            {{ item.subtitle }}
                         </span>
-                    </mat-option>
-                </ng-template>
-                <div class="no-search-result" *ngIf="filteredItems?.length ===0 
-            && loading === false
-            && serverSideSearchInput?.nativeElement?.value?.trim()?.length > 2">
+                        }
+                    </div>
+                </mat-option>
+                }
+
+                } @else {
+                @if(emptyOption && loading === false && lookupModalConfig && (selectedItems?.length > 0)){
+                <mat-option [value]="undefined" (click)="optionClicked($event,undefined)">&nbsp;None</mat-option>
+                }
+                @for(item of filteredItems; track item){
+                <mat-option [value]="item" (click)="optionClicked($event, item);">
+                    {{ item.valueTt }}
+                    @if(item.subtitle){
+                    <span class="subbody">
+                        ({{ item.subtitle }})
+                    </span>
+                    }
+                </mat-option>
+                }
+                }
+                @if(filteredItems?.length ===0
+                && loading === false
+                && serverSideSearchInput?.nativeElement?.value?.trim()?.length > 2){
+                <div class="no-search-result">
                     <div>
                         <span class="fw-semibold subbody">No records found!</span>
                     </div>
                 </div>
-                <div class="no-search-result" *ngIf="filteredItems?.length ===0 
-                    && loading === false 
-                    && serverSideSearchInput?.value?.trim()?.length > 2">
+                }
+                @if(filteredItems?.length ===0
+                && loading === false
+                && serverSideSearchInput?.value?.trim()?.length > 2){
+                <div class="no-search-result">
                     <div>
                         <span class="fw-semibold subbody">No records found!</span>
                     </div>
                 </div>
-                <mat-option
-                    *ngIf="filteredItems?.length ===0 && loading === false && !lookupModalConfig?.lookupApiConfig">
+                }
+                @if(filteredItems?.length ===0 && loading === false && !lookupModalConfig?.lookupApiConfig){
+                <mat-option>
                     <div class="no-search-result mt-3">
                         <div>
                             <span class="fw-semibold subbody">Api configuration not available!</span>
                         </div>
                     </div>
                 </mat-option>
+                }
             </mat-autocomplete>
-            <span matSuffix>
-                <div class="d-flex align-items-center lookup-opener-wrapper">
-                    <button [tabIndex]="tabIndex" class="btn-styles-none lookup-btn" (click)="openLookup($event)">
-                        <span class="material-icons-outlined">
-                            manage_search
-                        </span>
-                    </button>
-                </div>
-                <ng-content select="dx-suffix"></ng-content>
-            </span>
+            @if(!hideLookup && !disabled) {
+                <span matSuffix>
+                    <div class="d-flex align-items-center lookup-opener-wrapper">
+                        <button [tabIndex]="tabIndex" class="btn-styles-none lookup-btn" (click)="openLookup($event)"
+                            [disabled]="disabled">
+                            <mat-icon aria-hidden="false" aria-label="manage_search" fontIcon="manage_search"></mat-icon>
+                        </button>
+                    </div>
+                    <ng-content select="dx-suffix"></ng-content>
+                </span>
+            }
+           
             <mat-hint>
                 <ng-content select="dx-hint"> </ng-content>
             </mat-hint>
@@ -130,7 +159,7 @@
 
     </div>
 </div>
-<ng-template #moduleDefinitionLoading>
-    <div dLoading [loading]="(moduleDefinitionLoader$ | async)" [backdrop]="true"
-        [message]="'Field configuration is in progress...'" class="server-automplete-input-field-loader"></div>
-</ng-template>
+} @else {
+<div dLoading [loading]="moduleDefinitionLoader$" [backdrop]="true"
+    [message]="'Field configuration is in progress...'" class="server-automplete-input-field-loader"></div>
+}

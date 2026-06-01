@@ -5,6 +5,7 @@ dx-card-checkbox .toggle-margin{
     display: flex;
     flex-direction: row;
     align-items: center;
+    position: relative;
     .show_more {
         background: #fff;
         width: fit-content;
@@ -22,6 +23,10 @@ dx-card-checkbox .toggle-margin{
         .show_more {
             visibility: visible;
         }
+    }
+    .more-content{        
+        position: absolute;
+        bottom: 0;
     }
 }
 

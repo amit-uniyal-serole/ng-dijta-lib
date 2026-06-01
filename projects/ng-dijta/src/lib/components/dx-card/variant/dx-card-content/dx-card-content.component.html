@@ -1,4 +1,5 @@
-<a [ngClass]="{'content-path':content?.path}" [routerLink]="content?.path" [queryParams]="content?.params">
+<a class="a-inherit text-decoration-none" [ngClass]="{'content-path':content?.path}" [routerLink]="content?.path"
+  [queryParams]="content?.params">
   <dx-card-text-wrapper [dxPopoverContentContext]="{$implicit: content}" dx-popover
     [dxHeader]="content?.displayPopoverConfig?.header" [dxPopoverTitle]="titleTemplateRef"
     [dxPopoverContent]="templateRef" [dxPopoverTitleContext]="{$implicit: content}"
@@ -11,7 +12,6 @@
   <dx-popover-variant-wrapper section="HEADER" [popoverTitleConfig]="popoverTitleConfig"
     (onPopoverAction)="sendDetailData($event)"></dx-popover-variant-wrapper>
 </ng-template>
-
 
 <ng-template #templateRef let-popoverContent>
   <dx-popover-variant-wrapper section="CONTENT" [popoverContent]="popoverContent"></dx-popover-variant-wrapper>

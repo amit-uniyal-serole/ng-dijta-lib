@@ -1,0 +1,34 @@
+<div class="d-flex align-items-center gap-2">
+    @for (action of actionGroup?.actions; track $index) {
+      
+        @if((action?.permission ?  (action?.permission?.permission | ablePure: action?.permission?.apiName | async) : true)) {
+        <dx-button [class]="action?.btnType" [confirmationPopover]="action?.confirmationPopover"
+            [condition]="action?.classCondition"  [data]="data" [src]="action?.src"
+            [disabled]="action?.disabled"
+            [title]="action?.label" [class]="action?.btnType" [icon]="action?.icon" (onActionSelect)="close(action)"></dx-button>
+    }   }
+    
+    @if(actionGroup?.subActions) {
+        @if((showMore | async) || isNoPermissionAction) {
+        <button mat-flat-button  [matMenuTriggerFor]="menu" class="border dx-btn-outline button btn-pointer secondary-btn dxBtn" [class.small-more-btn]="size">
+            <span class="material-icons">
+                more_horiz
+            </span>
+        </button>
+        }
+       
+        <mat-menu #menu="matMenu" class="group-action"  xPosition="before">
+            @for (action of actionGroup?.subActions; track $index) {
+                @if((action?.permission ?  (action?.permission?.permission | ablePure: action?.permission?.apiName | async) : true)) {
+                    <button mat-menu-item (click)="$event.stopPropagation()">
+                        <dx-button  [confirmationPopover]="action?.confirmationPopover"
+                            [condition]="action?.classCondition"  [data]="data" [src]="action?.src"
+                            [disabled]="action?.disabled"
+                            [title]="action?.label" [color]="action?.color" [class]="'text'" [icon]="action?.icon" (onActionSelect)="close(action)"></dx-button>
+                    </button>
+                }
+            }
+        </mat-menu>
+    }
+  
+</div>

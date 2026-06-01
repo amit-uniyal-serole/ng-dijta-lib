@@ -284,12 +284,14 @@ export class DxLoaderComponent implements OnDestroy, OnInit, OnChanges {
         }
       }
     }
-    if (changes.show.currentValue) {
-      this.dxLoaderService.show(this.name);
-      this.setDefaultOptions();
-    } else {
-      this.dxLoaderService.hide(this.name);
-      this.setDefaultOptions();
+    if (changes['show']) {
+      if (changes['show'].currentValue) {
+        this.dxLoaderService.show(this.name);
+        this.setDefaultOptions();
+      } else {
+        this.dxLoaderService.hide(this.name);
+        this.setDefaultOptions();
+      }
     }
   }
   /**

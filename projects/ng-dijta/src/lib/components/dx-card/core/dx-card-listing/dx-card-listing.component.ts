@@ -13,6 +13,7 @@ import { CardContentListing } from '../../model/dx-card.model';
       align-content: center;
       align-items: center;
       justify-content: flex-start;
+      gap: 5px;
     }
     `
   ]

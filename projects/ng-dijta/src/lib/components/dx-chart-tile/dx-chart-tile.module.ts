@@ -2,8 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DxChartTileComponent } from './dx-chart-tile.component';
 import { NgxEchartsModule } from 'ngx-echarts';
-
-export function chartModule(): Promise<any> {
+import { Axis, ChartView } from 'echarts/index';
+export function chartModule(): Promise<{
+  Axis: typeof Axis;
+  ChartView: typeof ChartView;
+}> {
   return import('echarts');
 }
 @NgModule({

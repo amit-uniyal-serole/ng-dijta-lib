@@ -1,88 +1,124 @@
-Using npm:
+---
+category: Components
+type: Feedback
+title: Loader
+---
 
-## Usage
+Full-screen or scoped loading indicator with a catalogue of over fifty animated spinner styles. Can be toggled declaratively via `[show]` / `[showSpinner]` inputs, or imperatively through `DxLoaderService`.
 
+## When To Use
 
-Import `DxLoaderModule` in in the root module(`AppModule`):
+- When a long-running operation (HTTP request, file upload, computation) blocks the UI.
+- When you need a full-screen overlay that also traps keyboard events while loading.
+- When a scoped loader inside a specific container is preferred over a global one.
+- When consistent branding of spinners across an application is required.
 
-```typescript
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-// Import library module
-import { DxLoaderModule } from "dx-loader";
+## API
 
-@NgModule({
-  imports: [
-    // ...
-    BrowserAnimationsModule,
-    DxLoaderModule,
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-})
-export class AppModule {}
+```html
+<dx-loader
+  name="primary"
+  type="ball-clip-rotate"
+  size="large"
+  [show]="isLoading">
+  <p>Loading...</p>
+</dx-loader>
 ```
 
-#### NOTE
+### dx-loader
 
-- There is possibility to use global configuration for DxLoaderModule.
-- Just call `forRoot` method for DxLoaderModule and pass configuration object.
-- The input properties of DxLoaderComponent has higher priority than global options
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[name]` | Unique name for the spinner instance (used by `DxLoaderService`) | `string` | `'primary'` |
+| `[type]` | Animation style for the spinner | `LOADERS_TYPE` | `'ball-clip-rotate'` |
+| `[size]` | Spinner size | `'default' \| 'small' \| 'medium' \| 'large'` | `'large'` |
+| `[color]` | Spinner color (CSS color) | `string` | `'#fff'` |
+| `[bdColor]` | Backdrop color (RGBA only) | `string` | `'rgba(51,51,51,0.8)'` |
+| `[fullScreen]` | Render as full-screen overlay | `boolean` | `true` |
+| `[zIndex]` | CSS `z-index` for the overlay | `number` | `99999` |
+| `[template]` | Custom HTML template for the spinner | `string` | `-` |
+| `[show]` | Whether the spinner is visible | `boolean` | `false` |
+| `[showSpinner]` | Alternative visibility toggle routed through `DxLoaderService` | `boolean` | `false` |
+| `[disableAnimation]` | Disable fade-in / fade-out animation | `boolean` | `false` |
+
+### Types
 
 ```typescript
-// Available options
-interface DxLoaderConfig {
-  type?: string;
+type Size = 'default' | 'small' | 'medium' | 'large';
+
+type LOADERS_TYPE =
+  | 'ball-8bits' | 'ball-atom' | 'ball-beat' | 'ball-clip-rotate'
+  | 'ball-clip-rotate-multiple' | 'ball-clip-rotate-pulse'
+  | 'ball-pulse' | 'ball-pulse-sync' | 'ball-scale' | 'ball-spin'
+  | 'cog' | 'cube-transition' | 'line-scale' | 'pacman'
+  | 'square-jelly-box' | 'timer' | 'triangle-skew-spin'
+  /* ...and many more — see dx-loader.enum.ts */;
+```
+
+## Examples
+
+### Basic full-screen spinner
+
+```html
+<dx-loader
+  name="primary"
+  type="ball-clip-rotate"
+  size="medium"
+  [show]="isLoading">
+</dx-loader>
+```
+
+### Scoped spinner (not full screen)
+
+```html
+<div class="dx-panel">
+  <dx-loader
+    name="panel"
+    [fullScreen]="false"
+    type="ball-pulse"
+    color="#1976d2"
+    [show]="isLoading">
+  </dx-loader>
+  <!-- panel content -->
+</div>
+```
+
+### With custom template and loading text
+
+```html
+<dx-loader
+  name="primary"
+  [show]="isLoading"
+  template='<img src="/assets/loading.gif" alt="" />'>
+  <p class="dx-loader__label">Please wait…</p>
+</dx-loader>
+```
+
+### Controlled via service
+
+```typescript
+import { DxLoaderService } from '@ngdx/dijta';
+
+private readonly loader = inject(DxLoaderService);
+
+start(): void {
+  this.loader.show('primary');
 }
-// Use in app
+
+stop(): void {
+  this.loader.hide('primary');
+}
+```
+
+## Import
+
+```typescript
+import { DxLoaderModule } from '@ngdx/dijta';
+
 @NgModule({
   imports: [
-    DxLoaderModule.forRoot({ type: 'ball-scale-multiple' })
+    DxLoaderModule.forRoot({ type: 'ball-clip-rotate' })
   ]
 })
-
-
-
-## Available Options
-
-- **[bdColor]**: RGBA color format.
-  To set background-color for backdrop, default `rgba(51,51,51,0.8)` where `alpha` value(0.8) is opacity of backdrop
-- **[size]**: Anyone from `small`, `default`, `medium`, `large`.
-  To set size of spinner, default `large`
-- **[color]**: Any css color format.
-  To set color of spinner, default `#fff`
-- **[type]**: Choose any animation spinner from [Load Awesome](http://github.danielcardoso.net/load-awesome/animations.html).
-  To set type of spinner
-- **[fullScreen]**: `true` or `false`
-  To enable/disable fullscreen mode(overlay), default `true`
-- **[name]**: For multiple spinners
-  To set name for spinner, default `primary`
-- **[zIndex]**: For dynamic z-index
-  To set z-index for the spinner, default `99999`
-- **[template]**: For custom spinner image
-  To set custom template for the custom spinner, default `null`
-- **[showSpinner]**: `true` or `false`
-  To show/hide spinner from template using variable
-- **[disableAnimation]**: `true` or `false`
-  To enable/disable fade animation of spinner, default `false`
-
-#### Using Spinner Type
-
-```html
-<dx-loader
-  bdColor="rgba(51,51,51,0.8)"
-  size="medium"
-  color="#fff"
-  type="ball-scale-multiple"
->
-  <p style="font-size: 20px; color: white">Loading...</p>
-</dx-loader>
+export class YourModule { }
 ```
-
-#### Using Custom Spinner
-
-```html
-<dx-loader
-  bdColor="rgba(0, 0, 0, 1)"
-  template="<img src='https://media.giphy.com/media/o8igknyuKs6aY/giphy.gif' />"
->
-</dx-loader>

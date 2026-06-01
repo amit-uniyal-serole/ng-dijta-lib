@@ -1,0 +1,48 @@
+:root {
+    --dx-chip-container-height: 18px;
+    --dx-chip-elevated-container-color:#e0e0e0;
+}
+.mat-mdc-chip.mat-mdc-standard-chip {
+    height: var(--dx-chip-container-height);
+}
+.mdc-evolution-chip-set .mdc-evolution-chip {
+    margin-top: 3px;
+    margin-bottom: 2px;
+}
+.mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) {
+    background-color: var(--dx-chip-elevated-container-color);
+}
+.mat-mdc-standard-chip {
+    --mdc-chip-label-text-size: var(--mat-option-label-text-size);
+}
+.mat-mdc-chip-remove::after {
+    padding: 0px !important;
+    margin: 0px !important;
+}
+.mat-mdc-standard-chip.mdc-evolution-chip--with-primary-graphic.mdc-evolution-chip--with-trailing-action .mdc-evolution-chip__action--trailing {
+    padding-left: 0px !important;
+    padding-right: 3px !important;
+}
+.mat-mdc-chip-remove .mat-icon {
+    font-size: 15px !important;
+}
+.mat-mdc-chip-set .mdc-evolution-chip {
+    margin: 0px 0 0px 3px !important;
+}
+.mdc-evolution-chip-set__chips {
+    display: flex;
+    flex-flow: unset;
+    min-width: 0;
+    overflow: auto;
+        -ms-overflow-style: none;  /* Internet Explorer 10+ */
+        scrollbar-width: none;  /* Firefox, Safari 18.2+, Chromium 121+ */
+    &::-webkit-scrollbar { 
+        display: none;  /* Older Safari and Chromium */
+    }
+}
+
+.mat-mdc-chip-set .mdc-evolution-chip-set__chips {
+    min-width: 100%;
+    margin-left: -3px;
+    margin-right: 0;
+}

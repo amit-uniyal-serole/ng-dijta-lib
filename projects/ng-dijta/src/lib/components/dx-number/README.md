@@ -1,181 +1,130 @@
-# dx-number
+---
+category: Components
+type: Data Entry
+title: Number
+---
 
-A numeric input field with decimal precision, thousands separator, input masking, and shorthand suffixes (K, M, B, T).
+Numeric input field with optional masking, precision, length constraints, and a short-form suffix parser for `K`, `M`, `B`, `T`, `Q`. Implements `ControlValueAccessor` and `Validator` so it works in reactive and template-driven forms.
 
-## Overview
+## When To Use
 
-`dx-number` is the dedicated numeric input component in ng-dijta. It implements `ControlValueAccessor` and `Validator`, working seamlessly with both reactive and template-driven forms. Use it for any whole number or decimal input that requires formatting — it supports thousands separators, configurable decimal precision, ngx-mask patterns, and shorthand entry (e.g., type `5K` to enter 5,000). An internal pattern validator ensures only numeric characters are accepted.
+- When the user must enter a number with a specific precision, length, or mask.
+- When a single field should accept short-form input like `1.5M` or `2K`.
+- When the form needs Material-style labels (floating, outer, or non-floating) with consistent error rendering.
+- When thousands separators are required on the displayed value.
 
-## Module Import
+## Label Variants
 
-```typescript
-import { DxNumberModule } from 'ng-dijta';
+`dx-number` supports two label layouts, selected via the `outline` input. The label content is projected — use the correct projection slot for the variant.
 
-@NgModule({
-  imports: [DxNumberModule]
-})
-export class AppModule {}
+### `none-floating` (default) — label above the field
+
+Project the label through a `<dx-label>` element.
+
+```html
+<dx-number formControlName="amount">
+  <dx-label>Display Label</dx-label>
+</dx-number>
 ```
 
-## Selector
+### `outer-label` — label rendered outside the Material form field
 
-`<dx-number>`
+Set `outline="outer-label"` and project the label via the `dxLabel` attribute on any host element (e.g. `<p>`, `<span>`).
+
+```html
+<dx-number outline="outer-label" formControlName="amount">
+  <p dxLabel>Display Label</p>
+</dx-number>
+```
+
+> Picking the wrong slot silently drops the label. `<dx-label>` is only read when `outline !== 'outer-label'`; `[dxLabel]` is only read when `outline === 'outer-label'`.
 
 ## API
 
-### Inputs
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `disabled` | `boolean` | `false` | Disables the input |
-| `readonly` | `boolean` | `false` | Sets the input to read-only (border visible) |
-| `viewOnly` | `boolean` | `false` | View-only mode — no border, no interaction |
-| `required` | `boolean` | `false` | Marks the field as required; also auto-detected from FormControl validators |
-| `noneLabel` | `boolean` | `false` | Hides the label |
-| `noneBorder` | `boolean` | `false` | Removes the input border |
-| `placeholder` | `string` | `'Number'` | Placeholder text |
-| `mask` | `string` | `''` | ngx-mask pattern string |
-| `pattern` | `string` | — | Custom regex pattern for validation |
-| `precision` | `number` | `0` | Number of decimal places to display |
-| `seprater` | `boolean` | `false` | Enables thousands separator formatting |
-| `outline` | `'floating' \| 'none-floating' \| 'outer-label'` | `'none-floating'` | Label style; can be set globally via `UI_COMPONENT_CONFIG` |
-| `labelPosition` | `'left' \| 'top'` | `'top'` | Position of outer label (used with `outer-label` outline) |
-| `outerLabelErrorType` | `'astrict-error' \| 'filled-error'` | `'filled-error'` | Error display style for outer-label mode |
-| `tooltip` | `string` | — | Tooltip text |
-| `minLength` | `number` | — | Minimum character length (adds `Validators.minLength`) |
-| `maxLength` | `number` | — | Maximum character length (adds `Validators.maxLength`) |
-| `tabIndex` | `number` | — | Tab order index |
-| `id` | `string` | auto | Unique element ID (auto-generated) |
-
-### Outputs
-
-| Event | Type | Description |
-|-------|------|-------------|
-| `blur` | `EventEmitter<FocusEvent>` | Emitted when the input loses focus |
-
-## Usage Examples
-
-### Basic Reactive Form
-
-```typescript
-// component.ts
-import { FormBuilder, Validators } from '@angular/forms';
-
-form = this.fb.group({
-  quantity: [null, [Validators.required, Validators.min(1)]]
-});
-
-constructor(private fb: FormBuilder) {}
+```html
+<dx-number
+  formControlName="amount"
+  placeholder="Amount"
+  [precision]="2"
+  [seprater]="true">
+</dx-number>
 ```
 
+### dx-number
+
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[placeholder]` | Input placeholder / label text | `string` | `'Number'` |
+| `[disabled]` | Whether the field is disabled | `boolean` | `false` |
+| `[readonly]` | Whether the field is read-only | `boolean` | `false` |
+| `[viewOnly]` | Render as plain text (no input UI) | `boolean` | `false` |
+| `[noneBorder]` | Remove the border around the input | `boolean` | `false` |
+| `[noneLabel]` | Hide the floating label | `boolean` | `false` |
+| `[required]` | Whether the field is required | `boolean` | `false` |
+| `[mask]` | Input mask pattern (`ngx-mask` syntax) | `string` | `''` |
+| `[pattern]` | Regex pattern used for validation | `string` | `-` |
+| `[precision]` | Number of decimal places to allow | `number` | `0` |
+| `[minLength]` | Minimum length validator | `number` | `-` |
+| `[maxLength]` | Maximum length validator | `number` | `-` |
+| `[seprater]` | Show thousands separator on the displayed value | `boolean` | `false` |
+| `[outline]` | Label / outline style | `'floating' \| 'none-floating' \| 'outer-label'` | `'none-floating'` |
+| `[labelPosition]` | Label placement relative to the input | `'left' \| 'top'` | `'top'` |
+| `[outerLabelErrorType]` | Error rendering style when using `outer-label` | `'astrict-error' \| 'filled-error'` | `'filled-error'` |
+| `[tooltip]` | Tooltip text | `string` | `-` |
+| `[tabIndex]` | DOM tab index | `number` | `-` |
+| `[id]` | Host id (auto-generated when omitted) | `string` | `dx-input-number-{n}` |
+
+### Events
+
+| Event | Description | Type |
+|-------|-------------|------|
+| `(blur)` | Emitted when the input loses focus | `EventEmitter<FocusEvent>` |
+
+## Examples
+
+### Reactive-form number
+
 ```html
-<!-- component.html -->
 <form [formGroup]="form">
-  <dx-number formControlName="quantity">
-    <dx-label>Quantity</dx-label>
-    <dx-error *ngIf="form.get('quantity')?.invalid && form.get('quantity')?.touched">
-      Quantity is required
-    </dx-error>
+  <dx-number
+    formControlName="quantity"
+    placeholder="Quantity"
+    [precision]="0"
+    [maxLength]="6">
   </dx-number>
 </form>
 ```
 
-### Template-Driven Form
+### Number with separator and decimals
 
 ```html
-<dx-number [(ngModel)]="amount" required>
-  <dx-label>Amount</dx-label>
-</dx-number>
-```
-
-### With Thousands Separator and Decimal Precision
-
-```html
-<!-- Display 1234567.89 as 1,234,567.89 -->
 <dx-number
-  formControlName="revenue"
-  [seprater]="true"
+  [(ngModel)]="amount"
+  placeholder="Amount"
   [precision]="2"
-  placeholder="0.00">
-  <dx-label>Revenue</dx-label>
-</dx-number>
-```
-
-### With Shorthand Suffixes (K/M/B/T)
-
-Users can type `5K` (=5,000), `2M` (=2,000,000), `1B` (=1,000,000,000), or `3T` (=3,000,000,000,000). The value is automatically converted.
-
-```html
-<dx-number
-  formControlName="budget"
-  placeholder="e.g. 5K, 2M, 1B"
-  tooltip="Supports shorthand: K, M, B, T">
-  <dx-label>Budget</dx-label>
-</dx-number>
-```
-
-### With Input Mask
-
-```html
-<!-- 6-digit PIN -->
-<dx-number
-  formControlName="pin"
-  mask="000000"
-  [maxLength]="6">
-  <dx-label>PIN</dx-label>
-</dx-number>
-```
-
-### Outer Label Style
-
-```html
-<dx-number
-  formControlName="price"
-  outline="outer-label"
-  labelPosition="top"
   [seprater]="true"
-  [precision]="2">
-  <div dxLabel>Unit Price</div>
+  outline="floating">
 </dx-number>
 ```
 
-## Content Slots
+### Read-only view
 
-| Slot | Selector | Description |
-|------|----------|-------------|
-| Label (floating) | `dx-label` | Label inside the Material form field |
-| Label (outer) | `[dxLabel]` | Label shown above the field in outer-label mode |
-| Hint | `dx-hint` | Helper text below the field |
-| Error | `dx-error` | Validation error message |
+```html
+<dx-number
+  [readonly]="true"
+  [(ngModel)]="totalValue"
+  [precision]="2"
+  [seprater]="true">
+</dx-number>
+```
 
-> **Note:** Use `schemas: [CUSTOM_ELEMENTS_SCHEMA]` in your module if `dx-label`, `dx-hint`, and `dx-error` report unknown element errors.
-
-## Global Configuration
-
-The `outline` default can be set application-wide using `UI_COMPONENT_CONFIG`:
+## Import
 
 ```typescript
-import { UI_COMPONENT_CONFIG } from 'ng-dijta';
+import { DxNumberModule } from '@ngdx/dijta';
 
 @NgModule({
-  providers: [
-    {
-      provide: UI_COMPONENT_CONFIG,
-      useValue: { value: { outline: 'floating' } }
-    }
-  ]
+  imports: [DxNumberModule]
 })
-export class AppModule {}
+export class YourModule { }
 ```
-
-## Features
-
-- Implements `ControlValueAccessor` and `Validator` — works with reactive and template-driven forms
-- Auto-detects `Validators.required` from FormControl
-- Built-in numeric pattern validator — only digits and shorthand letters (K, M, T, Q) accepted
-- Shorthand entry: `5K` = 5,000 | `2M` = 2,000,000 | `1B` = 1,000,000,000 | `3T` = 3,000,000,000,000
-- Configurable decimal precision via `precision` input
-- Optional thousands separator via `seprater` input
-- Input masking with ngx-mask
-- `disabled`, `readonly`, and `viewOnly` modes with distinct visual styles
-- Auto-generated unique `id` for accessibility

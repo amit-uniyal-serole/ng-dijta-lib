@@ -6,7 +6,7 @@ import { NgModule } from '@angular/core';
 
 
 import { MatIconModule } from '@angular/material/icon';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 import { DxNoAnimationModule } from '../../core/no-animation/dx-no-animation.module';
 import { DxOutletModule } from '../../core/outlet/outlet.module';
 import { DxOverlayModule } from '../../core/overlay/nz-overlay.module';

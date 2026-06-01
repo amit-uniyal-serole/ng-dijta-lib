@@ -6,6 +6,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -27,7 +28,7 @@ import { CalendarSettings, CalendarViewModel, StartDayOfWeekType } from './dx-ac
   templateUrl: './dx-activity-calendar.component.html',
   styleUrls: ['./dx-activity-calendar.component.scss']
 })
-export class DxActivityCalendarComponent implements AfterViewInit, OnInit, OnChanges {
+export class DxActivityCalendarComponent implements AfterViewInit, OnInit, OnChanges, OnDestroy {
   @Input() calendersList!: ICalendarInfo[];
   // @Input() defaultView: any = 2;
   @Input() calenderOptions!: Intl.DateTimeFormatOptions;
@@ -70,6 +71,10 @@ export class DxActivityCalendarComponent implements AfterViewInit, OnInit, OnCha
   timeDisplayFormat: string | undefined;
   enableCalendarsMenu: boolean = false;
   hideActions: boolean = false;
+  private intervalId: any
+  @Input() CHUNK_SIZE = 50;
+  @Input() renderDuration: number = 5000;
+  chunkIndex = 0;
   constructor(private cd: ChangeDetectorRef) { }
   ngOnInit(): void {
 
@@ -87,9 +92,11 @@ export class DxActivityCalendarComponent implements AfterViewInit, OnInit, OnCha
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['calendersList']?.previousValue !== changes['calendersList']?.currentValue) {
       this.calendersList = changes['calendersList']?.currentValue;
+      this.chunkIndex = 0;
       this.calendar?.setCalendars(this.calendersList);
     }
     if (changes['schedulesList']?.previousValue !== changes['schedulesList']?.currentValue) {
+      this.chunkIndex = 0;
       this.schedulesList = changes['schedulesList']?.currentValue;
       this.calendar?.createSchedules(this.schedulesList);
     }
@@ -160,6 +167,16 @@ export class DxActivityCalendarComponent implements AfterViewInit, OnInit, OnCha
       calendars: this.calendersList ?? DxCalendar.calendars,
       isReadOnly: this.isReadOnly,
       template: {
+        // Template for all-day events
+        allday(event: any) {          
+          const color = event?.color || '#000';
+          return `
+            <div class="d-flex align-items-center gap-2">
+              ${event?.raw?.icon ? `<span class="material-icons-outlined" style="color: ${color}"> ${event?.raw?.icon} </span>` : ''}
+              <span>${event.title}</span>
+            </div>
+          `;
+        },
         monthDayname: (dayname: IMonthDayNameInfo) => {
           return (
             '<span class="calendar-week-dayname-name">' +
@@ -225,8 +242,7 @@ export class DxActivityCalendarComponent implements AfterViewInit, OnInit, OnCha
         this.onChangeCalendarView(this.selectedView!);
       }
     }
-
-    this.calendar?.createSchedules(this.schedulesList);
+    this.renderChunk();
     this.displayDate();
     const cal: Calendar = this.calendar;
     const beforeCreateSchedule: EventEmitter<ISchedule> = this.beforeCreateSchedule;
@@ -314,7 +330,30 @@ export class DxActivityCalendarComponent implements AfterViewInit, OnInit, OnCha
 
       return html.join('');
     }
+
+
   }
+
+  renderChunk = () => {
+    if (this.chunkIndex < this.schedulesList.length) {
+      // Slice the remaining schedules
+      const chunk = this.schedulesList.slice(this.chunkIndex, this.chunkIndex + this.CHUNK_SIZE);
+      this.calendar?.createSchedules(chunk);
+      this.chunkIndex += this.CHUNK_SIZE;
+
+      // Schedule the next chunk
+      this.intervalId = setTimeout(this.renderChunk, this.renderDuration); // Defer to avoid freezing the UI
+    } else {
+      // Clear the timeout when all schedules are processed
+      clearTimeout(this.intervalId);
+      const schedule = this.schedulesList.slice(-2);
+      if (schedule.length > 2 && schedule.length > 0) {
+        this.calendar?.createSchedules(schedule);
+      }
+    }
+  };
+
+
 
   onClickToday(): void {
     this.calendar.today();
@@ -383,4 +422,11 @@ export class DxActivityCalendarComponent implements AfterViewInit, OnInit, OnCha
   onClickToggleAction(): void {
     this.onClickToggleMenu.emit(this.toggleMenu);
   }
+  ngOnDestroy() {
+    // Clear the interval when the component is destroyed
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  }
+
 }

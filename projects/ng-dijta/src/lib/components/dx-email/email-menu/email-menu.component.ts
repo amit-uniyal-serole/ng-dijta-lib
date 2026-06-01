@@ -22,9 +22,9 @@ export class EmailMenuComponent implements OnInit {
   @Output() menuItemClicked: EventEmitter<string> = new EventEmitter<string>();
   @Output() newEmail: EventEmitter<string> = new EventEmitter<string>();
   email: any;
-  constructor(private readonly dialog: MatDialog) {}
+  constructor(private readonly dialog: MatDialog) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
   onClickMenu(menuItem: any) {
     this.menuItemClicked.emit(menuItem);
   }

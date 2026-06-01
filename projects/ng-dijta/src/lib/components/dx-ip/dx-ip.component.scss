@@ -70,10 +70,6 @@
   overflow: hidden;
 }
 
-.ngx-ip-copy-overlay .ngx-ip-table {
-  height: 100%;
-}
-
 .ngx-ip-copy-overlay .ngx-ip-table>* {
   display: table-cell;
   text-align: center;
@@ -96,13 +92,12 @@
   flex-flow: column;
   vertical-align: bottom;
   width: 100%;
-  padding: 4px;
   border: 1px solid #000;
   border-radius: 5px;
   border-color: var(--input-border-fc);
-  margin-bottom: 0.99em;
-  padding: 6px 4px;
+  padding: 10px 4px;
   background-color: #fff;
+  margin-bottom: 22px;
 }
 
 .ngx-ip-table-cell {

@@ -502,18 +502,18 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
     }
   }
 
-  canChange(option, index, action: string) {
-    let changeResult = Promise.resolve(true);
+  canChange(option, index, action: string): Promise<boolean> {
+    let changeResult: Promise<boolean> = Promise.resolve(true);
 
     if (this.beforeChange) {
       const result: any = this.beforeChange(index, option, action);
       if (typeof result !== 'undefined') {
         if (result.then) {
-          changeResult = result.then((res: boolean | undefined) => res ?? true);
+          changeResult = result.then(value => value !== undefined ? value : false);
         } else if (result.subscribe) {
-          changeResult = (result as Observable<boolean>).toPromise().then((res: boolean | undefined) => res ?? true);
+          changeResult = (result as Observable<boolean>).toPromise().then(value => value !== undefined ? value : false);
         } else {
-          changeResult = Promise.resolve(result !== undefined ? result : true);
+          changeResult = Promise.resolve(result !== undefined ? result : false);
         }
       }
     }

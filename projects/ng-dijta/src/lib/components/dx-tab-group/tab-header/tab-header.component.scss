@@ -8,24 +8,9 @@
     display: block;
     align-items: center;
   }
-
-  .title {
-    font-weight: 600;
-    color: #2F2F2F;
-    font-size: 13px;
-    text-transform: capitalize;
-    line-height: 18px;
-    margin: 0px 3px;
-    font-family: inherit;
-  }
-
-  .icon {
-    color: #757575;
-    font-size: 20px;
-  }
 }
 
-.mat-tab-label-active {
+.mat-mdc-tab-label-active {
 
   .line_border_flat_icon,
   .top_bottom {

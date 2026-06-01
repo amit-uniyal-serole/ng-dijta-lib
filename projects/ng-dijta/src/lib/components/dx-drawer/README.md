@@ -1,106 +1,201 @@
+---
+category: Components
+type: Feedback
+title: Drawer
+---
 
-
-A Drawer is a panel that is typically overlaid on top of a page and slides in from the side. It contains a set of information or actions. Since that user can interact with the Drawer without leaving the current page, tasks can be achieved more efficient within the same context.
+A side-panel overlay (drawer) that slides in from any edge of the viewport. Supports template or component content, title / extra / footer slots, optional mask, keyboard dismissal, RTL direction, and programmatic opening via `DxDrawerService`.
 
 ## When To Use
 
-* Use a Form to create or edit a set of information.
-* Processing subtasks. When subtasks are too heavy for Popover and we still want to keep the subtasks in the context of the main task, Drawer comes very handy.
-* When a same Form is needed in multiple places.
-
-```ts
-import { DxDrawerModule } from '@ngdx/dijta';
-```
+- When extra detail, a preview or a secondary workflow should slide in without leaving the page.
+- When a form or contextual action should appear alongside the main view (not as a full modal).
+- When content size is flexible and benefits from top / bottom / left / right placement.
+- When the drawer must be opened imperatively from a service.
 
 ## API
 
+```html
+<dx-drawer
+  [(nzVisible)]="visible"
+  dxTitle="Details"
+  dxPlacement="right"
+  [dxClosable]="true"
+  (dxOnClose)="visible = false">
+  <ng-container *dxDrawerContent>
+    <p>Drawer content goes here.</p>
+  </ng-container>
+</dx-drawer>
+```
+
 ### dx-drawer
 
-| Props | Description | Type | Default | Global Config |
-| --- | --- | --- | --- | --- |
-| `[dxClosable]` | Whether a close (x) button is visible on top left of the Drawer dialog or not. | `boolean` | `true` |
-| `[dxCloseIcon]` | Custom close icon | `string \| TemplateRef<void> \| null` | `'close'` |
-| `[dxExtra]` | Extra actions area at corner. | `string \| TemplateRef<void> \| null` | - |
-| `[dxMask]` | Whether to show mask or not. | `boolean` | `true` | ✅ |
-| `[dxMaskClosable]` | Clicking on the mask (area outside the Drawer) to close the Drawer or not. | `boolean` | `true` | ✅ |
-| `[dxCloseOnNavigation]` | Whether to close the drawer when the user goes backwards/forwards in history. Note that this usually doesn't include clicking on links (unless the user is using the HashLocationStrategy). | `boolean` | `true` | ✅ |
-| `[dxKeyboard]` | Whether support press esc to close | `boolean` | `true` |
-| `[dxMaskStyle]` | Style for Drawer's mask element. | `object` | `{}` |
-| `[dxBodyStyle]` | Body style for drawer body element. Such as height, padding etc. | `object` | `{}` |
-| `[dxTitle]` | The title for Drawer. | `string \| TemplateRef<void>` | - |
-| `[dxFooter]` | The footer for Drawer. | `string \| TemplateRef<void>` | - |
-| `[dxVisible]` | Whether the Drawer dialog is visible or not, you can use `[(dxVisible)]` two-way binding | `boolean` | `false` |
-| `[dxPlacement]` | The placement of the Drawer. | `'top' \| 'right' \| 'bottom' \| 'left'` | `'right'` |
-| `[dxSize]` | Preset size of drawer, default `378px` and large `736px`.  | `'default' \| 'large'` | `'default'` |
-| `[dxWidth]` | Width of the Drawer dialog, only when placement is `'right'` or `'left'`, having a higher priority than `dxSize`.  | `number \| string` | - |
-| `[dxHeight]` | Height of the Drawer dialog, only when placement is `'top'` or `'bottom'`, having a higher priority than `dxSize`.  | `number \| string` | - |
-| `[dxOffsetX]` | The the X coordinate offset(px), only when placement is `'right'` or `'left'`. | `number` | `0` |
-| `[dxOffsetY]` | The the Y coordinate offset(px), only when placement is `'top'` or `'bottom'`. | `number` | `0` |
-| `[nzWrapClassName]` | The class name of the container of the Drawer dialog. | `string` | - |
-| `[dxZIndex]` | The `z-index` of the Drawer. | `number` | `1000` |
-| `(dxOnClose)` | Specify a callback that will be called when a user clicks mask, close button or Cancel button. | `EventEmitter<MouseEvent>` | - |
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[nzVisible]` | Whether the drawer is open (supports two-way binding) | `boolean` | `false` |
+| `[dxContent]` | Content as a `TemplateRef` or component `Type` | `TemplateRef \| Type<T>` | `-` |
+| `[dxTitle]` | Header title (string or template) | `string \| TemplateRef` | `-` |
+| `[dxExtra]` | Extra header area content | `string \| TemplateRef` | `-` |
+| `[dxFooter]` | Footer area content | `string \| TemplateRef` | `-` |
+| `[dxCloseIcon]` | Close icon (Material icon name or template) | `string \| TemplateRef<void>` | `'close'` |
+| `[dxClosable]` | Show the close button | `boolean` | `true` |
+| `[dxMask]` | Render the background mask | `boolean` | `true` |
+| `[dxMaskClosable]` | Clicking the mask closes the drawer | `boolean` | `true` |
+| `[dxMaskStyle]` | Inline style applied to the mask | `NgStyleInterface` | `{}` |
+| `[dxBodyStyle]` | Inline style applied to the body | `NgStyleInterface` | `{}` |
+| `[dxKeyboard]` | Allow closing with the `Esc` key | `boolean` | `true` |
+| `[dxCloseOnNavigation]` | Dismiss on route change | `boolean` | `true` |
+| `[dxNoAnimation]` | Disable open / close animation | `boolean` | `false` |
+| `[dxPlacement]` | Edge the drawer slides in from | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` |
+| `[dxSize]` | Preset size | `'default' \| 'large'` | `'default'` |
+| `[dxWidth]` | Explicit width (left / right placements) | `number \| string` | `-` |
+| `[dxHeight]` | Explicit height (top / bottom placements) | `number \| string` | `-` |
+| `[dxOffsetX]` | Horizontal offset in px | `number` | `0` |
+| `[dxOffsetY]` | Vertical offset in px | `number` | `0` |
+| `[dxZIndex]` | Overlay z-index | `number` | `1000` |
+| `[dxWrapClassName]` | Extra class applied to the wrapper | `string` | `-` |
+| `[dxDirection]` | Layout direction | `'ltr' \| 'rtl'` | `-` |
+
+### Events
+
+| Event | Description | Type |
+|-------|-------------|------|
+| `(dxOnClose)` | Emitted when the close button or mask is clicked | `EventEmitter<MouseEvent>` |
+| `(dxVisibleChange)` | Emitted when visibility changes | `EventEmitter<boolean>` |
+| `(dxOnViewInit)` | Emitted after the drawer view is initialised | `EventEmitter<void>` |
+
+### Methods (DxDrawerComponent)
+
+| Method | Description |
+|--------|-------------|
+| `open()` | Opens the drawer |
+| `close(result?)` | Closes the drawer and emits an optional result |
+| `getContentComponent()` | Returns the component instance when content was provided as a `Type<T>` |
+| `afterOpen` | `Observable<void>` that emits after open animation completes |
+| `afterClose` | `Observable<R>` that emits the close result |
 
 ### DxDrawerService
 
-| Method | Description | Params | Return |
-| --- | --- | --- | --- |
-| create<T, D, R> | create and open an Drawer | `DxDrawerOptions<T, D>`| `DxDrawerRef<T, R>` |
+```typescript
+const ref = this.drawerService.create<MyComponent, { id: string }, string>({
+  dxTitle: 'Edit Item',
+  dxContent: MyComponent,
+  dxContentParams: { id: '123' },
+  dxPlacement: 'right',
+  dxSize: 'large'
+});
 
-### DxDrawerOptions
+ref.afterClose.subscribe(result => {
+  // ...
+});
+```
 
-| Params | Description | Type | Default | Global Config |
-| --- | --- | --- | --- | --- |
-| dxContent |  The drawer body content. | `TemplateRef<{ $implicit: D, drawerRef: DxDrawerRef }> \| Type<T>` | - |
-| dxContentParams | The component inputs the param / The Template context. | `D` | - |
-| dxClosable | Whether a close (x) button is visible on top left of the Drawer dialog or not. | `boolean` | `true` |
-| dxCloseIcon | Custom close icon | `string \| TemplateRef<void> \| null` | `'close'` |
-| dxExtra | Extra actions area at corner. | `string \| TemplateRef<void> \| null` | - |
-| dxOnCancel | Execute when click on the mask or the upper cancel button, This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return false to prevent closing) | `() => Promise<any>` | - |
-| dxMaskClosable | Clicking on the mask (area outside the Drawer) to close the Drawer or not. | `boolean` | `true` | ✅ |
-| dxCloseOnNavigation    | Whether to close the drawer when the user goes backwards/forwards in history. Note that this usually doesn't include clicking on links (unless the user is using the HashLocationStrategy). | `boolean` | `true` | ✅ |
-| dxMask | Whether to show mask or not. | `boolean` | `true` | ✅ |
-| dxDirection        | Direction of the text in the modal | `'ltr' \| 'rtl'` | - | ✅ |
-| dxKeyboard | Whether support press esc to close | `boolean` | `true` |
-| dxMaskStyle | Style for Drawer's mask element. | `object` | `{}` |
-| dxBodyStyle | Body style for modal body element. Such as height, padding etc. | `object` | `{}` |
-| dxTitle | The title for Drawer. | `string \| TemplateRef<void>` | - |
-| dxFooter | The footer for Drawer. | `string \| TemplateRef<void>` | - |
-| dxSize | Preset size of drawer, default `378px` and large `736px`.  | `'default' \| 'large'` | `'default'` |
-| dxWidth |  Width of the Drawer dialog, only when placement is `'right'` or `'left'`, having a higher priority than `nzSize`.  | `number \| string` | - |
-| dxHeight | Height of the Drawer dialog, only when placement is `'top'` or `'bottom'`, having a higher priority than `nzSize`.  | `number \| string` | - |
-| dxWrapClassName | The class name of the container of the Drawer dialog. | `string` | - |
-| dxZIndex| The `z-index` of the Drawer. | `number` | `1000` |
-| dxPlacement | The placement of the Drawer. | `'top' \| 'right' \| 'bottom' \| 'left'` | `'right'` |
-| dxOffsetX | The the X coordinate offset(px). | `number` | `0` |
-| dxOffsetY | The the Y coordinate offset(px), only when placement is `'top'` or `'bottom'`. | `number` | `0` |
+### Types
 
-### DxDrawerRef
+```typescript
+type DxDrawerPlacement = 'left' | 'right' | 'top' | 'bottom';
+type DxDrawerSize = 'default' | 'large';
 
-#### Methods
-| Name | Description | Type |
-| --- | --- | --- |
-| close | close the drawer. | `(result?: R) => void` |
-| open | open the drawer. | `() => void` |
-| getContentComponent| Returns the instance when `nzContent` is the component. | `() => T \| null` |
+interface DxDrawerOptions<T, D> {
+  dxTitle?: string | TemplateRef<{}>;
+  dxContent?: TemplateRef<{ $implicit: D; drawerRef: DxDrawerRef }> | Type<T>;
+  dxContentParams?: Partial<T & D>;
+  dxPlacement?: DxDrawerPlacement;
+  dxSize?: DxDrawerSize;
+  dxWidth?: number | string;
+  dxHeight?: number | string;
+  dxClosable?: boolean;
+  dxMask?: boolean;
+  dxMaskClosable?: boolean;
+  dxKeyboard?: boolean;
+  dxNoAnimation?: boolean;
+  nzOnCancel?(): Promise<unknown>;
+}
+```
 
-#### Property
-| Name | Description | Type |
-| --- | --- | --- |
-| afterOpen | Callback called after open. | `Observable<void>` |
-| afterClose | Callback called after close. | `Observable<R>` |
-| dxCloseIcon | Custom close icon | `string \| TemplateRef<void> \| null` |
-| dxClosable | Whether a close (x) button is visible on top right of the Drawer dialog or not. | `boolean` |
-| nzMaskClosable | Clicking on the mask (area outside the Drawer) to close the Drawer or not. | `boolean` |
-| dxMask | Whether to show mask or not. | `boolean` |
-| dxKeyboard | Whether support press esc to close | `boolean` |
-| dxMaskStyle | Style for Drawer's mask element. | `object` |
-| dxBodyStyle | Body style for modal body element. Such as height, padding etc. | `object` |
-| dxTitle | The title for Drawer. | `string \| TemplateRef<void>` |
-| dxFooter | The footer for Drawer. | `string \| TemplateRef<void>` |
-| dxWidth |  Width of the Drawer dialog.  | `number \| string` |
-| dxHeight | Height of the Drawer dialog, only when placement is `'top'` or `'bottom'`.  | `number \| string` |
-| dxWrapClassName | The class name of the container of the Drawer dialog. | `string` |
-| dxZIndex| The `z-index` of the Drawer. | `number` |
-| dxPlacement | The placement of the Drawer. | `'top' \| 'right' \| 'bottom' \| 'left'` |
-| dxOffsetX | The the X coordinate offset(px). | `number` |
-| dxOffsetY | The the Y coordinate offset(px), only when placement is `'top'` or `'bottom'`. | `number` |
+## Examples
+
+### Template-driven drawer
+
+```html
+<button mat-flat-button (click)="visible = true">Open</button>
+
+<dx-drawer
+  [(nzVisible)]="visible"
+  dxTitle="Details"
+  dxPlacement="right"
+  (dxOnClose)="visible = false">
+  <ng-container *dxDrawerContent>
+    <p>Details content...</p>
+  </ng-container>
+</dx-drawer>
+```
+
+### Large left-hand drawer with custom footer
+
+```html
+<dx-drawer
+  [(nzVisible)]="visible"
+  dxTitle="Settings"
+  dxPlacement="left"
+  dxSize="large"
+  [dxFooter]="footer"
+  (dxOnClose)="visible = false">
+  <ng-container *dxDrawerContent>
+    <settings-form></settings-form>
+  </ng-container>
+</dx-drawer>
+
+<ng-template #footer>
+  <button mat-stroked-button (click)="visible = false">Cancel</button>
+  <button mat-flat-button color="primary" (click)="save()">Save</button>
+</ng-template>
+```
+
+### Opened programmatically from a service
+
+```typescript
+constructor(private readonly drawerService: DxDrawerService) {}
+
+openDetails(id: string): void {
+  const ref = this.drawerService.create<DetailsComponent, { id: string }, boolean>({
+    dxTitle: 'Details',
+    dxContent: DetailsComponent,
+    dxContentParams: { id },
+    dxPlacement: 'right'
+  });
+
+  ref.afterClose.subscribe(saved => {
+    if (saved) {
+      this.reload();
+    }
+  });
+}
+```
+
+### No-mask, bottom placement
+
+```html
+<dx-drawer
+  [(nzVisible)]="visible"
+  dxTitle="Quick edit"
+  dxPlacement="bottom"
+  [dxMask]="false"
+  dxHeight="320px"
+  (dxOnClose)="visible = false">
+  <ng-container *dxDrawerContent>
+    <quick-edit></quick-edit>
+  </ng-container>
+</dx-drawer>
+```
+
+## Import
+
+```typescript
+import { DxDrawerModule, DxDrawerServiceModule } from '@ngdx/dijta';
+
+@NgModule({
+  imports: [DxDrawerModule, DxDrawerServiceModule]
+})
+export class YourModule { }
+```

@@ -20,7 +20,6 @@ export class DxCriteriaFilterComponent implements OnInit, OnChanges, ControlValu
   onChange: Function = () => { };
   onTouched: Function = () => { };
   control: FormControl = new FormControl();
-
   criteriaForm!: FormGroup;
   operationTypes = ["= ''", "!=''", "${EMPTY}", "${NOTEMPTY}", "is not empty", "is empty"];
   @Input() operatorsToHideValueField = ["${HASCHANGED}"];
@@ -126,7 +125,7 @@ export class DxCriteriaFilterComponent implements OnInit, OnChanges, ControlValu
   @Input() enablePattern: boolean = false;
   @Input() maxConditions: number = 0;
   @Input() singleSelection: boolean = false;
-  userModalConfig: DxLookupModalConfig | undefined;
+  @Input() userModalConfig: DxLookupModalConfig | undefined;
 
   @HostListener('focusout', ['$event.target'])
   onFocusout() {
@@ -157,11 +156,12 @@ export class DxCriteriaFilterComponent implements OnInit, OnChanges, ControlValu
     if (simpleChanges?.columns?.previousValue !== simpleChanges?.columns?.currentValue) {
       this.columns = simpleChanges?.columns?.currentValue;
       this.columns = [
-        ...this.columns,
         {
           keyTt: 'None',
           valueTt: 'None',
-        }
+        },
+        ...this.columns,
+
       ];
     }
     if (simpleChanges?.operators?.previousValue !== simpleChanges?.operators?.currentValue) {
@@ -187,13 +187,20 @@ export class DxCriteriaFilterComponent implements OnInit, OnChanges, ControlValu
   get addCriteria(): FormGroup {
     return this.formBuidler.group({
       field: ["None"],
-      operator: "",
+      operator: [""],
       value: [undefined],
       logicalOperator: true,
       data: undefined
     });
   }
 
+  getUseFieldOperator(citeria: FormGroup): boolean | undefined {
+    const fieldType = this.getFieldType(citeria?.controls?.field?.value);
+    if (!fieldType) return undefined;
+    return this.operators[fieldType]?.find(
+      op => op.keyTt === citeria?.controls?.operator?.value
+    )?.useFieldOperator;
+  }
 
   get getCiterias(): FormArray {
     return (this.criteriaForm.get("rules") as FormArray)
@@ -210,10 +217,6 @@ export class DxCriteriaFilterComponent implements OnInit, OnChanges, ControlValu
 
   addciteria(): void {
     this.getCiterias.push(this.addCriteria);
-    const defaultExPresssion = this.criteriaForm?.value?.expression && this.criteriaForm?.value?.expression !== ""
-      ? this.criteriaForm?.value?.expression : "1";
-    const expression: string | undefined = '(' + defaultExPresssion?.concat(`and${this.getCiterias?.length})`);
-    this.criteriaForm?.controls?.expression.setValue(expression)
   }
 
   removeCriteria(index: number): void {
@@ -232,7 +235,10 @@ export class DxCriteriaFilterComponent implements OnInit, OnChanges, ControlValu
   }
 
   getFieldType(field: string): string | undefined {
-    return this.columns?.find((column: KeyValueModel) => column?.keyTt === field)?.data?.type;
+    return (this.columns ?? [])?.find((column: KeyValueModel) => column?.keyTt === field)?.data?.type;
+  }
+  getFieldData(field: string): string | undefined {
+    return (this.columns ?? [])?.find((column: KeyValueModel) => column?.keyTt === field)?.data;
   }
   getPicklistOptions(field: string): KeyValueModel[] | undefined {
     return sortBy(this.columns?.find((column: KeyValueModel) => column?.keyTt === field)?.data?.options, item => item.valueTt?.toLowerCase());
@@ -258,10 +264,14 @@ export class DxCriteriaFilterComponent implements OnInit, OnChanges, ControlValu
 
 
   deleteciteria(index: number): void {
-    const logicalOp: string = this.getCiterias.controls[index].value.logicalOperator ? 'and' : 'or';
-    let expression = this.criteriaForm?.controls?.expression?.value.slice(1).split(`${logicalOp}${this.getCiterias.controls?.length})`).join("");
-    this.criteriaForm?.controls?.expression.setValue(expression.length > 1 ? expression : "");
+    (this.criteriaForm?.controls['rules'] as FormArray).controls[index].patchValue({
+      logicalOperator: true
+    })
     this.getCiterias?.removeAt(index);
+  }
+
+  removeFirstParenthesis(expression: string): string {
+    return expression.startsWith("(") ? expression.substring(1) : expression;
   }
 
   inputChange(event: string): void {
@@ -271,7 +281,7 @@ export class DxCriteriaFilterComponent implements OnInit, OnChanges, ControlValu
     this.onChange(this.criteriaForm.value);
   }
   writeValue(value: any): void {
-    if (value) {      
+    if (value) {
       value = {
         ...value,
         rules: value?.rules?.map(rule => {
@@ -284,7 +294,8 @@ export class DxCriteriaFilterComponent implements OnInit, OnChanges, ControlValu
       this.addFormControls(value?.rules);
       setTimeout(() => {
         this.criteriaForm.patchValue(value);
-      }, 1000);
+        this.criteriaForm.updateValueAndValidity();
+      });
     }
   }
 
@@ -313,14 +324,22 @@ export class DxCriteriaFilterComponent implements OnInit, OnChanges, ControlValu
     this.onTouched = fn;
   }
   onChangeLogicalOperator(index: number, logicalOp: boolean): void {
-    const expression: string = this.criteriaForm?.controls?.expression.value;
-    const updatedExpression: string = expression.replace(`${!logicalOp ? 'and' : 'or'}${index + 2}`, `${logicalOp ? 'and' : 'or'}${index + 2}`);
-    this.criteriaForm?.controls?.expression.setValue(updatedExpression);
+    // const expression: string = this.criteriaForm?.controls?.expression.value;
+    // const updatedExpression: string = expression.replace(`${!logicalOp ? 'and' : 'or'}${index + 2}`, `${logicalOp ? 'and' : 'or'}${index + 2}`);
+    (this.criteriaForm.controls.rules as FormArray).controls[index].patchValue({
+      logicalOperator: logicalOp
+    })
+    // this.criteriaForm?.controls?.expression.setValue(updatedExpression);
   }
 
   clearValue(index: number) {
     const valueControl = (this.getCiterias.controls[index] as FormGroup)?.['controls']?.value;
-    valueControl.setValue(undefined);
+    const citeria = this.getCiterias.controls[index] as FormGroup;
+    if(this.getUseFieldOperator(citeria)){
+      valueControl.setValue((this.getCiterias.controls[index] as FormGroup).get('operator')?.value);
+    }else{
+      valueControl.setValue(undefined);
+    }  
   }
 
   private userModal(rootUrl: string): void {
@@ -331,7 +350,7 @@ export class DxCriteriaFilterComponent implements OnInit, OnChanges, ControlValu
       },
       lookupApiConfig: {
         method: 'GET',
-        api: `${rootUrl}/v1/settings/users`,
+        api: `${rootUrl}/v1/settings/users/brief-user-list`,
         searchBasedOn: 'fullName',
         paginationRequest: {
           sortOrder: 'desc',

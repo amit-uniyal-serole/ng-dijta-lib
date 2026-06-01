@@ -5,7 +5,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { DxPageContentMenuComponent } from '../dx-page-content-menu.component';
 import { DxContentMenuAccrodianComponent } from '../dx-content-menu-accrodian.component';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 
 
 
@@ -18,7 +18,7 @@ import { TranslocoModule } from '@ngneat/transloco';
     RouterModule,
     TranslocoModule
   ],
-  exports: [DxPageContentMenuComponent],
+  exports: [DxPageContentMenuComponent, DxContentMenuAccrodianComponent],
 
 })
 export class DxpagecontentmenuModule { }

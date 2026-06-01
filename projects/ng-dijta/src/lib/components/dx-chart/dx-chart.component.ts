@@ -32,6 +32,7 @@ export class DxChartComponent<T> implements AfterViewInit, OnChanges, OnDestroy 
   ngAfterViewInit(): void {
     this.setupChart();
     this.parentDivResize();
+    this.onResize();
     this.resizeSub = fromEvent(window, 'resize')
       .pipe(debounceTime(50))
       .subscribe(() => {

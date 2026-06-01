@@ -17,6 +17,6 @@ export class DxTableCurrencyComponent<T> extends FlexTableCellComponent<number> 
   @Input() locale?: string;
   @Input() setting?: CurrencyConfig;
   @Input() column!: DxTableColumn<T>;
-
+  @Input() config: CurrencySetting | undefined;
 
 }

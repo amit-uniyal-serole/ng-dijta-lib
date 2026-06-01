@@ -1,0 +1,40 @@
+
+.ngdx-field-wrapper {
+    .mat-mdc-radio-button .mdc-form-field {
+        font-family: inherit;
+    }
+}
+
+.mat-mdc-radio-button.mat-accent {
+     //Radio buttons
+
+  --mdc-radio-disabled-selected-icon-color: black;
+  --mdc-radio-disabled-unselected-icon-color: black;
+  --mdc-radio-unselected-hover-icon-color: #212121;
+  --mdc-radio-unselected-icon-color: rgba(0, 0, 0, 0.54);
+  --mdc-radio-unselected-pressed-icon-color: rgba(0, 0, 0, 0.54);
+  --mdc-radio-selected-focus-icon-color: var(--primary-base);
+  --mdc-radio-selected-hover-icon-color: var(--primary-base);
+  --mdc-radio-selected-icon-color: var(--primary-base);
+  --mdc-radio-selected-pressed-icon-color: var(--primary-base);
+  --mat-radio-ripple-color: black;
+  --mat-radio-checked-ripple-color: var(--primary-base);
+  --mat-radio-disabled-label-color: rgba(0, 0, 0, 0.38);
+  --mat-radio-label-text-color: rgba(0, 0, 0, 0.87);
+}
+
+.mat-mdc-radio-button.mat-primary {
+    --mdc-radio-disabled-selected-icon-color: black;
+    --mdc-radio-disabled-unselected-icon-color: black;
+    --mdc-radio-unselected-hover-icon-color: #212121;
+    --mdc-radio-unselected-icon-color: rgba(0, 0, 0, 0.54);
+    --mdc-radio-unselected-pressed-icon-color: rgba(0, 0, 0, 0.54);
+    --mdc-radio-selected-focus-icon-color: var(--primary-base);
+    --mdc-radio-selected-hover-icon-color: var(--primary-base);
+    --mdc-radio-selected-icon-color: var(--primary-base);
+    --mdc-radio-selected-pressed-icon-color: var(--primary-base);
+    --mat-radio-ripple-color: black;
+    --mat-radio-checked-ripple-color: var(--primary-base);
+    --mat-radio-disabled-label-color: rgba(0, 0, 0, 0.38);
+    --mat-radio-label-text-color: rgba(0, 0, 0, 0.87);
+}

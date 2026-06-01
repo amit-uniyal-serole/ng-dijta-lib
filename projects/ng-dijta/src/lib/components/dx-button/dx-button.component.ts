@@ -4,11 +4,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { ButtonClasses, ButtonLoaderType, ConfirmationPopover, CustomLabelColor, MultiActionDropDown } from './dx-button.model';
 import { DxConfirmComponent } from '../dx-confirm/dx-confirm.component';
 import { ConditionClass } from '../../directive';
+import { CdkOverlayOrigin } from '@angular/cdk/overlay';
+import { MatButton } from '@angular/material/button';
 import { DxPermission } from '../../core/UI/model/ui-permission';
 @Component({
   selector: 'dx-button',
   templateUrl: './dx-button.component.html',
-  styleUrls: ['./dx-button.component.scss']
+  styleUrls: ['./dx-button.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DxButtonComponent<T> implements AfterViewInit {
   @Input() title!: string;
@@ -22,10 +25,11 @@ export class DxButtonComponent<T> implements AfterViewInit {
   @Input() customClass!: string[];
   @Input() multiActionDropDown!: MultiActionDropDown;
   @Input() icon!: string;
-  @Input() size: 'default' | 'small' | 'big' = 'default';
+  @Input() size: 'small' | 'big' | '' = '';
   @Input() confirmationPopover!: ConfirmationPopover;
   @Input() isLoading: boolean = false;
   @Input() loaderType: ButtonLoaderType = 'semi-circle';
+  @Input() color: string | undefined;
   @Input() isReverseElement: boolean = false;
   static nextId = 0;
   @HostBinding()
@@ -36,6 +40,13 @@ export class DxButtonComponent<T> implements AfterViewInit {
   @ViewChild('multiActonMenu') multiActonMenu!: ElementRef;
   @ViewChild('dropDownIcon') dropDownIcon!: ElementRef;
   @ViewChild('dropDownLabel') dropDownLabel!: ElementRef;
+  @ViewChild('button') button!: MatButton;
+  @Input() dxType: "primary" | "default" = 'primary';
+
+  isOpen = false;
+  panelWidth: string | number = 'auto';
+  readonly _elementRef: ElementRef | undefined;
+
   @ViewChild('subaction', { static: false }) list!: ElementRef;
   isListEmpty: boolean = true;
   isMultiActionDropdownOpen: boolean = true;
@@ -61,14 +72,15 @@ export class DxButtonComponent<T> implements AfterViewInit {
       dialogRef.afterClosed().subscribe(isConfirmed => {
         if (isConfirmed) {
           this.onClickMenuAction?.emit(event);
+          this.isOpen = false;
         }
-        this.isMultiActionDropdownOpen = false;
       });
     } else {
-      this.toggleMultiActonMenu();
       this.onClickMenuAction?.emit(event);
+      this.isOpen = false;
     }
   }
+
   ngAfterViewInit() {
     setTimeout(() => {
 
@@ -81,12 +93,30 @@ export class DxButtonComponent<T> implements AfterViewInit {
   }
   toggleMultiActonMenu(): void {
     this.isMultiActionDropdownOpen = !this.isMultiActionDropdownOpen;
+
   }
   fillLabelColor(color: string): CustomLabelColor {
-    const customColor: CustomLabelColor = {
-      color: color
+    return {
+      color: `${color} !important`
     }
-    return customColor
+  }
+  openOption(): void {
+    this.isOpen = true;
+    this.panelWidth = this._getOverlayWidth(this.button._elementRef);
+  }
+  /** Gets how wide the overlay panel should be. */
+  private _getOverlayWidth(
+    preferredOrigin: ElementRef<ElementRef> | CdkOverlayOrigin | undefined,
+  ): string | number {
+    if (this.panelWidth === 'auto') {
+      const refToMeasure =
+        preferredOrigin instanceof CdkOverlayOrigin
+          ? preferredOrigin.elementRef
+          : preferredOrigin || this._elementRef;
+      return refToMeasure?.nativeElement.getBoundingClientRect().width;
+    }
+
+    return this.panelWidth === null ? '' : this.panelWidth;
   }
 
 }

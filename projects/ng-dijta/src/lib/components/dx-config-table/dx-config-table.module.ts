@@ -4,7 +4,7 @@ import { DxConfigTableComponent } from './dx-config-table.component';
 import { FlexTableModule } from '../dx-table';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DxTableFilterModule } from '../dx-table-filter';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @NgModule({
   declarations: [

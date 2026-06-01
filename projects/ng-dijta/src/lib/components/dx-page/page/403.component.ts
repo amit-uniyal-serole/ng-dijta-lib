@@ -1,8 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'lib-403',
   template: `
+   
+      <div class="no-permission-wrapper"  *ngIf="isNewUI;else oldUI">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64">
+                <image xlink:href="data:image/png;base64,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" x="0" y="0" width="64" height="64"/>
+              </svg>
+          <p class="heading-6 m-0">{{"Access Denied" | transloco}}</p>
+          <p class="body m-0">{{"Please check with your administrator" | transloco}}</p>
+      </div>
+    <ng-template #oldUI>
     <div
       class="d-flex center-div flex-column align-items-center justify-content-center h-screen gap-12 py-8 "
     >
@@ -445,6 +454,7 @@ import { Component } from '@angular/core';
         </p>
       </div>
     </div>
+</ng-template>
   `,
   styles: [
     `
@@ -457,7 +467,26 @@ import { Component } from '@angular/core';
         left: 50%;
         transform: translate(-50%, -50%);
       }
+      .no-permission-wrapper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+
+      >img {
+          height: 64px;
+          width: 64px;        
+          filter: drop-shadow(0 0 0.1rem grey);
+      }
+    }
     `,
   ],
 })
-export class Lib403Component { }
+export class Lib403Component {
+  @Input() isNewUI: boolean = true;
+}

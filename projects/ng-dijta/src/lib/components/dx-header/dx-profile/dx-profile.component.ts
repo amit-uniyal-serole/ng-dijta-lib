@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, signal, Signal } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { KeyValueModel } from '../../../core/UI/model/keyValue';
 import { DxDrawerRef } from '../../dx-drawer';
@@ -12,15 +12,15 @@ import { NgDxAvatarSettings } from '../../dx-avatar/model/avatar';
   styleUrls: ['./dx-profile.component.scss']
 })
 export class DxProfileComponent implements OnInit {
-  avatarSettings: NgDxAvatarSettings = {
+  avatarSettings = signal<NgDxAvatarSettings>({
     size: 80,
     initialsSize: 2,
-  };
-  logoAvatarSettings: NgDxAvatarSettings = {
-    size: 35,
+  });
+  logoAvatarSettings = signal<NgDxAvatarSettings>({
+    size: 38,
     initialsSize: 2,
-  };
-  option: KeyValueModel[] = [
+  });
+  option = signal<KeyValueModel[]>([
     {
       keyTt: 'compact',
       valueTt: 'Compact'
@@ -33,21 +33,22 @@ export class DxProfileComponent implements OnInit {
       keyTt: 'horizontal',
       valueTt: 'Enterprise'
     }
-  ]
+  ]);
   @Input() profile!: Profile;
   @Output() onClickCompanyAction: EventEmitter<Company> =
     new EventEmitter<Company>();
-  layoutType: FormControl = new FormControl('compact')
-  selectedCompany: Company | undefined;
+  layoutType = signal<FormControl>(new FormControl('compact'))
+  selectedCompany = signal<Company | undefined>({});
   constructor(
     private drawer: DxDrawerRef<DxProfileComponent, Profile>,
   ) { }
 
   ngOnInit(): void {
     if (this.profile?.profileBasic?.companyList) {
-      this.selectedCompany = this.profile?.profileBasic?.companyList?.find(
+      const defaultCompany = this.profile?.profileBasic?.companyList?.find(
         (item: Company) => item?.default
       );
+      this.selectedCompany.set(defaultCompany) 
     }
   }
 

@@ -1,39 +1,99 @@
-## Selector for dx-input-datepicker
-`<dx-input-datepicker></dx-input-datepicker>`
+---
+category: Components
+type: Data Entry
+title: Input Datepicker
+---
 
-## Module
-`DxInputDatePickerModule`
-## Usage inside form
+A date input control that wraps Angular Material's `mat-datepicker` and exposes min/max date, required, and floating / outer-label outline variants. Integrates with Angular Forms as a `ControlValueAccessor`.
+
+## When To Use
+
+- When the user needs to pick a single calendar date (due date, appointment, report start/end date).
+- When the selection must be constrained to a `minDate` / `maxDate` range.
+- When the date field must participate in a `FormGroup` / `FormControl` through `ngModel` or `formControlName`.
+- When you need a borderless or floating-label variant consistent with other DX inputs.
+
+## API
+
+```html
+<dx-input-datepicker
+  formControlName="startDate"
+  [minDate]="today"
+  [maxDate]="maxAllowed"
+  placeholder="Start Date"
+  (onDateChange)="onDateChange($event)">
+</dx-input-datepicker>
 ```
-<form [formGroup]="userForm">
-    <dx-input-datepicker disabled="false" formControlName="datepicker" [minDate]="minDate" [maxDate]="maxDate">
-            <dx-hint>
-                This show how hint will work
-            </dx-hint>
-        <dx-suffix></dx-suffix>
-            <dx-error  *ngIf="userForm.controls['datepicker'].required && userForm.controls['datepicker'].errors &&userForm.controls['datepicker'].touched">Dob is Required</dx-error>
-            <dx-error  *ngIf="userForm.controls['datepicker'].invalid">Enter valid datepicker</dx-error>
-    </dx-input-datepicker>
-</form>
 
-```    
-## Inputs
+### dx-input-datepicker
 
-| Input  | Data need to be passed as input |
-| ------------- | ------------- |
-| **disabled** (boolean) | `pass boolean value to enable or disable field (default value false)`  |
-| **formControlName** (string)  | `form control datepicker of form group` |
-| **outline** ('floating' | 'none-floating' | 'outer-label')  | `To Change Outline of input (default value none-floating)` |
-| **placeholder** (string)  | `pass placeholder to be displayed (default value - Select Date)` |
-| **minDate** (Date)  | `pass minDate for validation` |
-| **maxDate** (Date)  | `pass maxDate for validation` |
-## Import CUSTOM_ELEMENTS_SCHEMA 
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[minDate]` | Earliest selectable date | `Date` | - |
+| `[maxDate]` | Latest selectable date | `Date` | - |
+| `[disabled]` | Disables the input | `boolean` | `false` |
+| `[required]` | Marks the field as required | `boolean` | - |
+| `[noneBorder]` | Removes the form-field outline | `boolean` | `false` |
+| `[noneLabel]` | Hides the field label | `boolean` | `false` |
+| `[outline]` | Label / outline rendering variant | `'floating' \| 'none-floating' \| 'outer-label'` | `'none-floating'` |
+| `[placeholder]` | Placeholder shown when empty | `string` | `'Select Date'` |
 
-`import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'`
+### Events
 
->Include  **schemas: [CUSTOM_ELEMENTS_SCHEMA]** in module file if  **dx-label**, **dx-hint**, **dx-suffix**,  **dx-prefix** and **dx-error**  gives error as they custom elements using as ng-content
-     
-![Variant](./result.png)  
-          
-        
-      
+| Event | Description | Type |
+|-------|-------------|------|
+| `(onDateChange)` | Emitted when the user picks or clears a date | `EventEmitter<InputDatePickerModel<D>>` |
+
+### Types
+
+```typescript
+interface InputDatePickerModel<D> {
+  name: string;
+  data: MatDatepickerInputEvent<D>;
+}
+```
+
+## Examples
+
+### Basic
+
+```html
+<dx-input-datepicker
+  [(ngModel)]="startDate"
+  placeholder="Start Date">
+</dx-input-datepicker>
+```
+
+### With min / max range
+
+```html
+<dx-input-datepicker
+  formControlName="dueDate"
+  [minDate]="today"
+  [maxDate]="endOfYear"
+  placeholder="Due Date"
+  (onDateChange)="onDueDate($event)">
+</dx-input-datepicker>
+```
+
+### Outer-label layout
+
+```html
+<dx-input-datepicker
+  outline="outer-label"
+  [required]="true"
+  formControlName="issuedOn">
+  <span dxLabel>Issued On</span>
+</dx-input-datepicker>
+```
+
+## Import
+
+```typescript
+import { DxInputDatePickerModule } from '@ngdx/dijta';
+
+@NgModule({
+  imports: [DxInputDatePickerModule]
+})
+export class YourModule { }
+```

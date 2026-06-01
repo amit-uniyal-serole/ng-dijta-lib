@@ -5,7 +5,7 @@ import { DxMenuAccordianComponent } from './core/dx-menu-accordian/dx-menu-accor
 import { DxMenuAccordianContentComponent } from './core/dx-menu-accordian-content/dx-menu-accordian-content.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 
 
 @NgModule({

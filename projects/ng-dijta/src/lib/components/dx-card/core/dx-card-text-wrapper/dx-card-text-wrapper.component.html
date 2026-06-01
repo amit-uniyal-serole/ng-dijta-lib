@@ -10,7 +10,7 @@
     <dx-card-date [data]="data?.value" [setting]="data?.settings?.date"></dx-card-date>
   </ng-container>
   <ng-container *ngSwitchCase="'currency'">
-    <dx-card-currency [data]="data?.value" [setting]="data?.settings?.currency"></dx-card-currency>
+    <dx-card-currency [data]="data?.value" [currencySetting]="data?.currencySettings" [setting]="data?.settings?.currency"></dx-card-currency>
   </ng-container>
   <ng-container *ngSwitchCase="'URL'">
     <dx-card-url [data]="data"></dx-card-url>
@@ -30,13 +30,24 @@
   <ng-container *ngSwitchCase="'Check Box'">
     <dx-card-checkbox [data]="data"></dx-card-checkbox>
   </ng-container>
+  <ng-container *ngSwitchCase="'contact'">
+    <a (click)="$event.stopPropagation()" dx-tooltip dxTooltipTitle="{{data?.value}}"
+            [href]="'tel:'+ data?.value | dxsafe: 'url'" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+        <div class="d-flex aling-items-center">
+          <dx-phone-view [phoneNumber]="data?.value"></dx-phone-view>
+        </div>
+    </a>
+  </ng-container>
   <ng-container *ngSwitchCase="'HTML'">
-    <div class="text-cell" [innerHtml]="data?.value"></div>
+    <div class="text-cell" [innerHtml]="data?.value  | dxsafe: 'html'"></div>
   </ng-container>
   <ng-container *ngSwitchCase="'ONLY_HTML'">
     <div class="html-content">
-      <div class="html-content-length" [class.more]="data?.value?.length >= 500"
-        [innerHTML]=" data?.value?.length >= 500 ? (data?.value ?? '').substring(0, 300) : data?.value"></div>
+        <div class="html-content-length" [innerHTML]="(data?.value | dxsafe: 'html' ?? '')">
+        </div>
+        @if(data?.value?.length > 500){
+          <span class="more-content">...</span>      
+        }
       <div class="show_more_container" (click)="$event.stopPropagation()">
         <span dx-tooltip [dxTooltipTitle]="'View Full Details' | transloco" class="material-icons-outlined show_more"
           *ngIf="data?.value?.length > 500 " (click)="openViewModal()">
@@ -60,7 +71,7 @@
       <h3 class="heading-6">{{ data?.label ?? 'Detail'}}</h3>
     </div>
     <div class="card-model-body">
-      <div class="display-text" [innerHtml]="data?.value | transloco"></div>
+      <div class="display-text" [innerHtml]="data?.value | dxsafe: 'html'"></div>
     </div>
     <div class="card-model-footer">
       <button type="button" (click)="close()">Close</button>

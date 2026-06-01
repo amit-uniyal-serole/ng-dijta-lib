@@ -158,6 +158,7 @@ export class DxMultiLookupComponent implements ControlValueAccessor, Validator, 
     dialogRef.componentInstance.isGenericService = this.lookupModalConfig?.isGenericService!;
     dialogRef.componentInstance.columns = this.lookupModalConfig?.columns ?? []
     dialogRef.componentInstance.lookUpHeaderSettings = this.lookupModalConfig?.lookUpHeaderSettings!;
+    dialogRef.componentInstance.additionalFilter = this.lookupModalConfig?.additionalFilter ?? [];
     dialogRef.componentInstance.lookupApiConfig = cloneDeep(this.lookupModalConfig?.lookupApiConfig)!;
     dialogRef.componentInstance.setting = this.lookupModalConfig?.tableSettings!;
     dialogRef.componentInstance.listTransform = this.lookupModalConfig?.listTransform;

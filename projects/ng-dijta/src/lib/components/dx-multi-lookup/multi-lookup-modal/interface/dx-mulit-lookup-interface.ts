@@ -83,6 +83,7 @@ export interface MultiLookupSelectedRecordsModel {
   selectedRecords?: DxTableData<any>[];  
   type?: 'UNASSIGN' | 'ADD_MORE';
   unassignedList?: DxTableData<any>[];
+  criteria?: any;
 }
 
 export interface MultiLookupRecordSelectedIds {

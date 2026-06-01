@@ -1,10 +1,4 @@
-import {
-  HttpRequest,
-  HttpClient,
-  HttpEvent,
-  HttpEventType,
-  HttpParams,
-} from '@angular/common/http';
+import { HttpRequest, HttpClient, HttpEvent, HttpEventType, HttpParams } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
 import { Observable, of } from "rxjs";
 import { FilePickerAdapter, UploadResponse, UploadStatus } from "./file-picker.adapter";

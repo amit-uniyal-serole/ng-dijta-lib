@@ -1,25 +1,10 @@
-<div class="dx-kanban-view-wrapper">
+<div class="dx-kanban-view-wrapper" scrollHeight [heightReduce]="60" #kanbanView>
     <div cdkDropList class="dx-kanban-view-board" cdkDropListOrientation="horizontal">
-        <!-- Board Columns -->
-        <div cdkDragHandle scrollHeight *ngFor="let column of dataSource?.columns" class="dx-kanban-view-columns">
-            <div class="dx-kanban-board-header" [ngStyle]="column?.color? headerBackgroundColor(column?.color): null">
-                <span class="subtitle">{{column?.name | transloco}}</span>
-            </div>
-            <div id="{{column.id}}" [cdkDropListConnectedTo]="getColumnId()" cdkDropList
-                [cdkDropListData]="column.content" (cdkDropListDropped)="drop($event)"
-                class="dx-kanban-board-container">
+        <ng-container *ngFor="let column of dataSource?.columns">
+            <!-- Board Columns -->
+            <dx-kanban-onscroll-render [column]="column" (onKanbanCardAction)="onClickAction($event)"
+                [height]="(kanbanView.offsetHeight ?? 200) - 60"></dx-kanban-onscroll-render>
+        </ng-container>
 
-                <!-- column content -->
-                <div *ngFor="let content of column?.content" cdkDrag [cdkDragData]="content"
-                    class="dx-kanban-board-card example-box">
-                    <!-- card -->
-                    <div class="item-placeholder" *cdkDragPlaceholder>
-                    </div>
-                    <dx-kanban-board-card-wrapper (onClickAction)="onClickAction($event, content)"
-                        [type]="column?.variant" [content]="content"></dx-kanban-board-card-wrapper>
-                </div>
-
-            </div>
-        </div>
     </div>
 </div>

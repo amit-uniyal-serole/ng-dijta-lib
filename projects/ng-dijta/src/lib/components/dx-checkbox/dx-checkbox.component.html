@@ -1,13 +1,23 @@
-<div class="dx-field-wrapper" [class.dx-disable]="disabled">
-  <mat-checkbox [tabIndex]="tabIndex" [id]="id" [formControl]="control?.control" (ngModelChange)="inputChange($event)"
-    [disabled]="disabled || readonly || viewOnly" (change)="onInputChangeEvent($event)">
+<div class="ngdx-field-wrapper dx-checkbox-wrapper" [class.dx-disable]="disabled"
+  [attr.data-label-position]="labelPosition">
+  <mat-checkbox
+    [tabIndex]="tabIndex"
+    [id]="id"
+    [checked]="value"
+    [disabled]="disabled"
+    [required]="required || ctrRequired"
+    [labelPosition]="matLabelPosition"
+    (change)="onInputChangeEvent($event)"
+    (blur)="onTouched(); blur.emit($event)">
+
     <mat-label class="subbody">
       <ng-content select="dx-label"></ng-content>
     </mat-label>
   </mat-checkbox>
-  <mat-error>
-    <div class="dx-error">
-      <ng-content select="dx-error"> </ng-content>
-    </div>
-  </mat-error>
+
+  <div class="mat-mdc-form-field-subscript-wrapper">
+    <mat-error *ngIf="control?.errors?.required && control?.touched" class="mx-2">
+      <ng-content select="dx-error"></ng-content>
+    </mat-error>
+  </div>
 </div>

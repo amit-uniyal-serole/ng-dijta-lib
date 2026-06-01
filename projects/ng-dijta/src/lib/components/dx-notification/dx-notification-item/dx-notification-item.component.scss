@@ -5,6 +5,7 @@
     display: flex;
     align-items: flex-start;
     position: relative;
+    text-align: left;
     &:hover {
         background-color: #f8fcff;
     }
@@ -40,8 +41,6 @@
         border-color: #d7d9dd;
         cursor: pointer;
         padding: 6px;
-        // position: absolute;
-        // right: 0;
         &.un-read {
             background: #ccc;
         }

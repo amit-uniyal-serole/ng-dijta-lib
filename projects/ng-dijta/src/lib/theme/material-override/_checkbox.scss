@@ -1,0 +1,19 @@
+:root {
+    --dx-checkbox-selected-icon-color: var(--secondary-base);
+    --dx-checkbox-selected-checkmark-color: var(--secondary-on-base);
+    --mdc-checkbox-state-layer-size: 30px;
+    --mat-checkbox-label-text-font: inherit;
+
+}
+.ngdx-field-wrapper {
+    .mdc-checkbox .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
+        border-color: var(--dx-checkbox-selected-icon-color) !important;
+        background-color: var(--dx-checkbox-selected-icon-color) !important;
+    }
+    .mdc-checkbox .mdc-checkbox__native-control:enabled~.mdc-checkbox__background .mdc-checkbox__mixedmark {
+        border-color: var(--dx-checkbox-selected-checkmark-color) !important;
+    }
+    .mdc-checkbox .mdc-checkbox__native-control:enabled~.mdc-checkbox__background .mdc-checkbox__checkmark {
+        color: var(--dx-checkbox-selected-checkmark-color) !important;
+    }
+}

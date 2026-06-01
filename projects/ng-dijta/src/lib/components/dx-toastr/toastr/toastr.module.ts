@@ -7,7 +7,8 @@ import {
   GlobalConfig,
   TOAST_CONFIG,
 } from './toastr-config';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
+import { DxDirectiveModule } from '../../../directive';
 
 export const DefaultGlobalConfig: GlobalConfig = {
   ...DefaultNoComponentGlobalConfig,
@@ -37,7 +38,7 @@ export class ToastrModule {
 }
 
 @NgModule({
-  imports: [CommonModule],
+  imports: [CommonModule, DxDirectiveModule],
 })
 export class ToastrComponentlessModule {
   static forRoot(config: Partial<GlobalConfig> = {}): ModuleWithProviders<ToastrModule> {

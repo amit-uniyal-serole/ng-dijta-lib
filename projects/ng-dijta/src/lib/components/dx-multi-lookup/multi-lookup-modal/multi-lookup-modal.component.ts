@@ -1,22 +1,30 @@
 import { SelectionChange } from '@angular/cdk/collections';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
-import lodash, { isArray, startCase } from 'lodash';
+import { isArray, startCase } from 'lodash';
 import { Observable, of, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { KeyValueModel } from '../../../core/UI/model/keyValue';
+import { DxFileDownloadService } from '../../../service/file-download/dx-file-download.service';
+import { DxGlobalConfigService } from '../../../service/global-config/dx-global-config.service';
 import { PaginationRequest } from '../../dx-config-table';
-import { LookupApiConfig, LookupModalService } from '../../dx-lookup';
-import { BulkActions, DxFilter, DxTableColumn, DxTableColumnType, DxTableData, DxTableSetting, PageSize, SelectedCheckboxConfig, SelectedRowsConfig } from '../../dx-table';
+import { AdditionalFilter, FileUploadConfig, LookupApiConfig, LookupModalService } from '../../dx-lookup';
+import { BulkActions, DxFilter, DxTableColumn, DxTableColumnType, DxTableComponent, DxTableData, DxTableSetting, PageSize, SelectedCheckboxConfig, SelectedRowsConfig } from '../../dx-table';
+import { ToastrService } from '../../dx-toastr';
 import { MultiLookupModalActions, MultiLookupModalHeaderSettings, MultiLookupModuleDefinitionDto, MultiLookupModuleRecordModel, MultiLookupRecordSelectedIds, MultiLookupSelectedRecordsModel } from './interface/dx-mulit-lookup-interface';
+import { MultiLookupModalHelperService } from './multi-lookup-modal.service';
+import { MatChipInputEvent } from '@angular/material/chips';
+
 @Component({
   selector: 'dx-multi-lookup-modal',
   templateUrl: './multi-lookup-modal.component.html',
   styleUrls: ['./multi-lookup-modal.component.scss']
 })
 export class MultiLookupModalComponent<T> implements OnInit {
+  @ViewChild('table') tableRef!: DxTableComponent<any>;
   setting!: DxTableSetting;
   actions: MultiLookupModalActions = {
     enable: false
@@ -27,6 +35,7 @@ export class MultiLookupModalComponent<T> implements OnInit {
   saveConfig!: {
     apiConfig?: LookupApiConfig<any>;
     payloadTransform?: any;
+    successMessage?: string;
   };
   listTransform: any;
   columns!: DxTableColumn<T>[];
@@ -42,7 +51,7 @@ export class MultiLookupModalComponent<T> implements OnInit {
   //moduleDetails: any;
   moduleDetailsLoader$: Observable<boolean> = of(false);
   fieldType!: string;
-  paginationRequest!: PaginationRequest | undefined;
+  paginationRequest: PaginationRequest = {};
   recordIdentifier: any;
   selectedRecords: DxTableData<any>[] = [];
   rootUrl: string | undefined;
@@ -73,31 +82,139 @@ export class MultiLookupModalComponent<T> implements OnInit {
   tablePageSize: number | undefined;
   submitButtonTitle!: string;
   isLoading!: boolean;
+  additionalFilter: AdditionalFilter[] = [];
+  selectAll: boolean | undefined;
+  customSelection: boolean = true;
+  customViewId: number | undefined;
+  newEndPointUrl: boolean = false;
+  bluckAction: boolean = true;
+
+  tabs: any[] = [];
+  selectedTabIndex: number = 0;
+  criteria: any;
+
+  mode: 'manual' | 'file' = 'manual';
+  modeOptions: KeyValueModel[] = [
+    { keyTt: 'manual', valueTt: 'Manual' },
+    { keyTt: 'file', valueTt: 'CSV Upload' },
+  ];
+  fileUploadConfig?: FileUploadConfig;
+  selectedFile?: File;
+  fileUploadLoading: boolean = false;
+  sampleDownloading: boolean = false;
+  isDragOver: boolean = false;
+  fileError?: string;
+  uploadStatus: 'idle' | 'uploaded' | 'failed' = 'idle';
+  private fileUploadSubscription?: Subscription;
+  private sampleDownloadSubscription?: Subscription;
   constructor(
     private readonly dialogRef: MatDialogRef<MultiLookupModalComponent<MultiLookupSelectedRecordsModel>>,
-    private readonly lookupModalService: LookupModalService<T>
+    private readonly lookupModalService: LookupModalService<T>,
+    private readonly toastrService: ToastrService,
+    private readonly dxGlobalConfigService: DxGlobalConfigService,
+    private readonly multiLookupModalHelperService: MultiLookupModalHelperService,
+    private readonly fileDownload: DxFileDownloadService
   ) { }
 
   ngOnInit(): void {
+
     if (this.enableTwoStepConfirmation) {
       this.isEdit = !!this.multiRowSelection?.value?.length;
     };
     this.paginationRequest = this.lookupApiConfig?.body?.paginationRequest ?? this.lookupApiConfig?.paginationRequest;
+    if (this.criteria?.queryExpression) {
+      this.additionalFilter = this.additionalFilter.map((filter) => {
+        return {
+          ...filter,
+          value: (this.criteria.queryCriteria ?? []).find((val) => val.fieldName === filter.field)?.value
+        }
+      });
+      const search = this.multiLookupModalHelperService.buildAdvancedSearchQuery(this.additionalFilter);
+      this.paginationRequest = {
+        ...this.paginationRequest,
+        search: search
+      };
+    }
+    this.checkConfig();
+  }
+
+  private async checkConfig(): Promise<void> {
+    // const configDetails: DxDijtaGlobalConfig = await this.dxGlobalConfigService.getConfigDetails();
+    if (true && this.dxGlobalConfigService.getPageSize()) {
+      this.paginationRequest.pageSize = this.dxGlobalConfigService.getPageSize();
+    }
     if (this.isGenericService) {
       this.getLookUpList()
     } else {
+      if (this.tabs?.length > 0) {
+        const { lookupApiConfig, saveConfig, submitButtonTitle, fileUploadConfig } = this.tabs[0];
+        this.lookupApiConfig = lookupApiConfig;
+        this.saveConfig = saveConfig;
+        this.submitButtonTitle = submitButtonTitle;
+        this.fileUploadConfig = fileUploadConfig ?? this.fileUploadConfig;
+      }
       this.getModuleDefinition()
     }
   }
+
+  addKeyword(filter: any, event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    if (
+      value &&
+      Array.isArray(filter.value) &&
+      !filter.value.includes(value)
+    ) {
+      if (!filter.maxLength || filter.value.length < filter.maxLength) {
+        filter.value.push(value);
+      } else {
+        console.warn('Max item limit reached');
+      }
+    }
+
+    filter.tempKeyword = '';
+    event.chipInput?.clear();
+  }
+
+  removeKeyword(filter: any, keyword: string): void {
+    const index = filter.value.indexOf(keyword);
+    if (index >= 0) {
+      filter.value.splice(index, 1);
+    }
+  }
+
+  handlePaste(filter: any, event: ClipboardEvent): void {
+    const pastedText = event.clipboardData?.getData('text/plain') ?? '';
+    const pastedItems = pastedText.split(/[,;]/); // Split by comma or semicolon
+
+    pastedItems.forEach(item => {
+      const trimmedItem = item.trim();
+      const maxReached = filter.maxLength && filter.value.length >= filter.maxLength;
+      if (
+        trimmedItem &&
+        Array.isArray(filter.value) &&
+        !filter.value.includes(trimmedItem) &&
+        !maxReached
+      ) {
+        filter.value.push(trimmedItem);
+      }
+    });
+
+    filter.tempKeyword = '';
+    event.preventDefault();
+  }
+
+
 
   onClose(): void {
     this.dialogRef.close();
   }
   onPaginate(event: PageEvent): void {
-
     if (this.paginationRequest) {
       this.paginationRequest.pageNo = event?.pageIndex;
-      this.disableUpdatingMultiSelectionIds = !!this.multiRowSelection?.value?.length;
+      this.paginationRequest.pageSize = event?.pageSize;
+      this.tablePageSize = event?.pageSize;
+      // this.disableUpdatingMultiSelectionIds = !!this.multiRowSelection?.value?.length;
 
     }
     this.getLookUpList();
@@ -109,17 +226,18 @@ export class MultiLookupModalComponent<T> implements OnInit {
         ...this.paginationRequest,
         pageSize: this.setting.pageSize,
       };
-      this.disableUpdatingMultiSelectionIds = !!this.multiRowSelection?.value?.length;
+      // this.disableUpdatingMultiSelectionIds = !!this.multiRowSelection?.value?.length;
 
       this.getLookUpList();
     }
   }
 
   onSort(event: Sort): void {
+    if (this.mode === 'file') { return; }
     if (event && this.paginationRequest) {
       this.paginationRequest.sortBy = event?.active;
       this.paginationRequest.sortOrder = event?.direction;
-      this.disableUpdatingMultiSelectionIds = !!this.multiRowSelection?.value?.length;
+      // this.disableUpdatingMultiSelectionIds = !!this.multiRowSelection?.value?.length;
 
       this.getLookUpList();
     }
@@ -160,19 +278,20 @@ export class MultiLookupModalComponent<T> implements OnInit {
 
   search(): void {
     const searchControl = this.searchControl?.value?.trim();
-    this.disableUpdatingMultiSelectionIds = !!this.multiRowSelection?.value?.length;
+    // this.disableUpdatingMultiSelectionIds = !!this.multiRowSelection?.value?.length;
     if (this.paginationRequest) {
       this.paginationRequest.search = '';
     }
     if (this.paginationRequest && this.lookupApiConfig?.searchBasedOn) {
       this.paginationRequest.search = searchControl && searchControl != '' ?
-        [this.lookupApiConfig?.searchBasedOn] + ':sw:' + searchControl : '';
+        [this.lookupApiConfig?.searchBasedOn] + `:${this.lookupApiConfig?.searchBasedOperator ?? 'lk'}:` + searchControl : '';
       this.paginationRequest.pageNo = 0;
       this.getLookUpList();
     }
   }
 
   private getLookUpList(): void {
+    this.lookupDataSubscription?.unsubscribe();
     if (this.paginationRequest) {
       this.paginationRequest.pageSize = this.tablePageSize ?? this.customViewDetails?.listSize ?? this.paginationRequest?.pageSize ?? 10;
       if (this.lookupApiConfig?.staticSearch) {
@@ -184,46 +303,67 @@ export class MultiLookupModalComponent<T> implements OnInit {
       }
     };
     this.skeletonLoader$ = of(true);
-    this.lookupApiConfig = {
-      ...this.lookupApiConfig,
-      body: {
-        ...this.lookupApiConfig?.body,
+    if (this.lookupApiConfig.method === 'GET') {
+      this.lookupApiConfig = {
+        ...this.lookupApiConfig,
         paginationRequest: this.paginationRequest
-      }
-    };
-    this.lookupDataSubscription = this.lookupModalService.getLookupServiceRequest(this.lookupApiConfig).subscribe(
-      (response: MultiLookupModuleRecordModel) => {
-        if (response) {
-          const moduleResponse: any = response?.response ?? response
-          this.setting.totalItems = moduleResponse?.totalElements;
-          this.setting.pageIndex = moduleResponse?.number;
-          if (this.listTransform) {
-            this.dataSource = this.listTransform(moduleResponse, this.config);
-          } else {
-            this.dataSource = moduleResponse?.content?.map((item: any) => {
-              const additionalRecord = this.selectedItems.find((record) => record.pkId === item.pkId);
-              let additionObj: any;
-              if (additionalRecord && additionalRecord.key) {
-                additionObj = {
-                  [additionalRecord?.key!]: [additionalRecord?.value!]
-                }
-              }
-              return {
-                data: {
-                  ...this.getValue(item),
-                  ...additionObj
-                },
-                dropdown: this.getRecordDropdownValues(item, this.pickListConfigList!),
-              };
-            });
-          }
-          this.skeletonLoader$ = of(false);
+      };
+    } else {
+      this.lookupApiConfig = {
+        ...this.lookupApiConfig,
+        body: {
+          ...this.lookupApiConfig?.body,
+          customViewId: this.customViewId,
+          paginationRequest: this.paginationRequest
         }
-      },
-      (error) => {
-        this.skeletonLoader$ = of(false);
-      }
-    );
+      };
+    }
+    this.lookupDataSubscription = this.lookupModalService.getLookupServiceRequest(this.lookupApiConfig)
+      .pipe(filter(data => !!data)).subscribe(
+        {
+          next: (response: MultiLookupModuleRecordModel) => {
+            if (response) {
+              const moduleResponse: any = response?.response ?? response
+              this.setting.totalItems = moduleResponse?.totalElements;
+              this.setting.pageIndex = moduleResponse?.number;
+              this.setting.pageSize = moduleResponse?.size;
+
+              if (this.listTransform) {
+                this.dataSource = this.listTransform(moduleResponse, this.config, this);
+              } else {
+                this.dataSource = moduleResponse?.content?.map((item: any) => {
+                  const additionalRecord = this.selectedItems.find((record) => record.pkId === item.pkId);
+                  let additionObj: any;
+                  if (additionalRecord && additionalRecord.key) {
+                    additionObj = {
+                      [additionalRecord?.key!]: [additionalRecord?.value!]
+                    }
+                  }
+                  return {
+                    data: {
+                      ...this.getValue(item),
+                      ...additionObj
+                    },
+                    dropdown: this.getRecordDropdownValues(item, this.pickListConfigList!),
+                  };
+                });
+              }
+              if (this.criteria?.queryExpression === '(1)') {
+                this.onCheckboxChange(this.dataSource, false);
+                setTimeout(() => {
+                  this.selectAll = false;
+                }, 500);
+              }
+
+              this.skeletonLoader$ = of(false);
+            }
+          },
+          error: (err) => {
+            this.skeletonLoader$ = of(false);
+          },
+        },
+
+      );
   }
 
   private getValue(src: any): { [key: string]: any } {
@@ -240,6 +380,15 @@ export class MultiLookupModalComponent<T> implements OnInit {
    * @description Module Defintion
    */
   private getModuleDefinition(): void {
+    if (this.tabs?.length > 0 && !this.lookupApiConfig?.body?.module) {
+      this.recordIdentifier = this.lookupApiConfig?.searchBasedOn;
+      if (this.lookUpHeaderSettings?.isServiceDefined) {
+        this.lookUpHeaderSettings.title = `${this.lookUpHeaderSettings?.titlePrefix ?? 'Select'} Records`;
+        this.lookUpHeaderSettings.searchInputLabel = `Search ${startCase(this.recordIdentifier)}`;
+      }
+      this.getLookUpList();
+      return;
+    }
     const moduleDefinition: LookupApiConfig<T> = {
       method: 'GET',
       api: `${this.lookupApiConfig?.rootUrl}/v1/module/settings?module=${this.lookupApiConfig?.body?.module}`,
@@ -268,6 +417,7 @@ export class MultiLookupModalComponent<T> implements OnInit {
                 type: 'text',
               }
             ];
+            this.customViewId = moduleDefinition?.customViewList?.defaultView?.customViewId;
             this.getModuleCustomView(moduleDefinition?.customViewList?.defaultView?.customViewId!)
           }
           this.popupLoader$ = of(false);
@@ -286,13 +436,16 @@ export class MultiLookupModalComponent<T> implements OnInit {
   }
 
   /**
-   * @description Module Custom View 
+   * @description Module Custom View
    */
   private getModuleCustomView(customViewId: number): void {
     if (customViewId) {
+      const endpoint = this.newEndPointUrl
+        ? `/v1/settings/custom-views/details/${customViewId}`
+        : `/v1/settings/customView/getViewDetails?customViewId=${customViewId}`;
       const customViewSettings: LookupApiConfig<T> = {
         method: 'GET',
-        api: `${this.lookupApiConfig?.rootUrl}/v1/settings/customView/getViewDetails?customViewId=${customViewId}`,
+        api: `${this.lookupApiConfig?.rootUrl}${endpoint}`,
       }
       this.customViewloader$ = of(true);
       this.customViewSubscription = this.lookupModalService.getLookupServiceRequest(customViewSettings)
@@ -384,48 +537,39 @@ export class MultiLookupModalComponent<T> implements OnInit {
   }
 
   public onCheckboxChange(event: DxTableData<any>[], isEdit?: boolean): void {
+    this.selectAll = true;
     if (isEdit) {
-      this.unassignedList = event?.map((data: DxTableData<any>) => data?.data)
-    } else {
-      if (!this.disableUpdatingMultiSelectionIds) {
-        this.remainingIds = this.multiRowSelection?.value?.filter((id: number) => !!!event?.find((e: DxTableData<any>) => id == e?.data?.[this.multiRowSelection?.key!]));
-        const index: number = this.multiRecordSelectionListPkIds?.findIndex((item: MultiLookupRecordSelectedIds) => item?.page == this.paginationRequest?.pageNo);
-        let obj: MultiLookupRecordSelectedIds = {
-          page: this.paginationRequest?.pageNo,
-          ids: event?.map((data: DxTableData<any>) => data?.data?.[this.multiRowSelection?.key!]),
-          data: event?.map((data: DxTableData<any>) => data)
-        }
+      this.unassignedList = this.multiLookupModalHelperService.mapUnassignedList(event);
+      return;
+    }
 
-        if (index != -1) {
-          this.multiRecordSelectionListPkIds[index] = {
-            ...this.multiRecordSelectionListPkIds[index],
-            ids: obj?.ids,
-            data: obj?.data
-          }
-        } else {
-          this.multiRecordSelectionListPkIds.push(obj)
-        }
-        const ids = this.multiRecordSelectionListPkIds?.map((data: MultiLookupRecordSelectedIds) => data?.ids)?.flat();
+    if (!this.disableUpdatingMultiSelectionIds) {
+      this.remainingIds = this.multiLookupModalHelperService.calculateRemainingIds(event, this.multiRowSelection);
+      const pageSelection: MultiLookupRecordSelectedIds = this.multiLookupModalHelperService.buildPageSelection(
+        event,
+        this.multiRowSelection?.key as string | undefined,
+        this.paginationRequest?.pageNo
+      );
+      this.multiRecordSelectionListPkIds = this.multiLookupModalHelperService.upsertPageSelection(
+        this.multiRecordSelectionListPkIds,
+        pageSelection
+      );
+      const aggregatedIds: number[] = this.multiLookupModalHelperService.collectSelectionIds(this.multiRecordSelectionListPkIds);
 
-        if (this.multiRowSelection) {
-          this.multiRowSelection.value = [
-            ...this.remainingIds ?? [],
-            ...ids,
-          ];
-          this.multiRowSelection.value = lodash.uniq(this.multiRowSelection.value)?.filter(data => !!data);
-        }
-        this.selectedRecords = this.multiRecordSelectionListPkIds?.map((data: MultiLookupRecordSelectedIds) => data?.data!)?.flat() ?? [];
-        if (!this.enableTwoStepConfirmation) {
-          const key = this.multiRowSelection?.key as string;
-          const uniqBy = `data.${key}`
-          this.selectedRecords = lodash.uniqBy(this.selectedRecords, uniqBy);
-          this.selectedRecords = this.selectedRecords
-            ?.filter(record => !!this.multiRowSelection?.value?.find(val => val === record?.data?.[key]));
-        }
+      if (this.multiRowSelection) {
+        this.multiRowSelection.value = this.multiLookupModalHelperService.mergeSelectionValues(this.remainingIds, aggregatedIds);
       }
 
-      this.disableUpdatingMultiSelectionIds = false;
+      this.selectedRecords = this.multiLookupModalHelperService.mergeSelectedRecords(this.multiRecordSelectionListPkIds);
+
+      if (!this.enableTwoStepConfirmation) {
+        this.selectedRecords = this.multiLookupModalHelperService.dedupeSelectedRecords(
+          this.selectedRecords,
+          this.multiRowSelection
+        );
+      }
     }
+    this.disableUpdatingMultiSelectionIds = false;
   }
 
   onCheckboxSelectionChange(event: SelectionChange<DxTableData<T>>): void {
@@ -436,29 +580,57 @@ export class MultiLookupModalComponent<T> implements OnInit {
   }
 
   public onClickConfirm(): void {
+    let selectedIds = this.selectedRecords.map((record: DxTableData<any>) => record?.data?.pkId);
+    let maxRecord;
+    if (this.bluckAction && this.mode !== 'file') {
+      let filter: any;
+      if (!this.selectAll && this.paginationRequest.search) {
+        filter = this.multiLookupModalHelperService.parseFiltersForCriteria(this.additionalFilter);
+      }
+      if (!this.selectAll && !this.paginationRequest.search) {
+        filter = [
+          {
+            "fieldIndex": 1,
+            "fieldName": "siteCode",
+            "comparator": "is not empty",
+            "value": ""
+          }
+        ]
+      }
+
+      maxRecord = {
+        "queryCriteria": !this.selectAll ? filter : undefined,
+        "queryExpression": !this.selectAll ? "(" + filter.map((f: any) => f.fieldIndex).join("and") + ")" : undefined
+      }
+    }
+
 
     const data: MultiLookupSelectedRecordsModel = {
       selectedRecords: this.selectedRecords,
       recordIdentifier: this.recordIdentifier,
-      type: this.isAddMore ? 'ADD_MORE' : undefined
+      type: this.isAddMore ? 'ADD_MORE' : undefined,
+      criteria: maxRecord
     }
     if (this.saveConfig) {
-      let selectedIds = this.selectedRecords.map((record: DxTableData<any>) => record?.data?.pkId)
+
       if (this.saveConfig.payloadTransform) {
         this.saveConfig.apiConfig = {
           ...this.saveConfig.apiConfig,
-          ...this.saveConfig.payloadTransform(selectedIds, this.saveConfig?.apiConfig)
+          ...this.saveConfig.payloadTransform(selectedIds, this.saveConfig?.apiConfig, this.paginationRequest, this.selectAll, this.additionalFilter)
         }
       }
       this.isLoading = true;
       this.lookupModalService.getLookupServiceRequest(this.saveConfig.apiConfig!).subscribe({
         next: (response) => {
+          if (this.saveConfig?.successMessage) {
+            this.toastrService.success(this.saveConfig.successMessage);
+          }
           this.isLoading = false;
           this.dialogRef.close(response);
         },
-        error: () => {
+        error: (error) => {
           this.isLoading = false;
-          this.dialogRef.close()
+          this.dialogRef.close(error);
         },
         complete: () => {
           this.isLoading = false;
@@ -524,10 +696,330 @@ export class MultiLookupModalComponent<T> implements OnInit {
     });
     return dropdownList
   }
+
+
+  onFilterSearch(forceToStop?: boolean): void {
+
+    const search = this.multiLookupModalHelperService.buildAdvancedSearchQuery(this.additionalFilter);
+    if (this.lookupApiConfig.customSearchWithGenriceService && this.paginationRequest) {
+      this.paginationRequest.search = search;
+      this.paginationRequest.pageNo = 0;
+    } else if (this.saveConfig?.apiConfig) {
+      this.saveConfig = {
+        ...this.saveConfig,
+        apiConfig: {
+          ...this.saveConfig.apiConfig,
+          body: {
+            ...this.saveConfig.apiConfig.body,
+            search: search
+          }
+        }
+      };
+      this.paginationRequest = {
+        ...this.paginationRequest,
+        search: search
+      }
+    } else {
+      this.lookupApiConfig = {
+        ... this.lookupApiConfig,
+        paginationRequest: {
+          ...this.lookupApiConfig.paginationRequest,
+          search: search
+        }
+      };
+    }
+
+    if (!forceToStop) {
+      this.getLookUpList()
+    }
+  }
+
+  onFilterReset(isTabChange: boolean = false): void {
+    if (this.additionalFilter?.length) {
+      this.additionalFilter = this.additionalFilter.map((item: AdditionalFilter) => ({
+        ...item,
+        value: Array.isArray(item.value) ? [] : '',
+        tempKeyword: ''
+      }));
+    }
+
+    if (this.lookupApiConfig.customSearchWithGenriceService && this.paginationRequest) {
+      this.paginationRequest.search = undefined;
+    } else if (this.saveConfig?.apiConfig) {
+      this.saveConfig = {
+        ...this.saveConfig,
+        apiConfig: {
+          ...this.saveConfig.apiConfig,
+          body: {
+            ...this.saveConfig.apiConfig.body,
+            search: undefined
+          }
+        }
+      }
+
+      this.paginationRequest = {
+        ...this.paginationRequest,
+        search: undefined
+      }
+    } else {
+      this.lookupApiConfig = {
+        ... this.lookupApiConfig,
+        paginationRequest: {
+          ...this.lookupApiConfig.paginationRequest,
+          search: ''
+        }
+      };
+    }
+
+    if (this.searchControl) {
+      this.searchControl.setValue('');
+    }
+
+    if (!isTabChange) {
+      this.getLookUpList()
+    }
+  }
+  onTabChange(tab: any): void {
+    this.selectedTabIndex = tab.index;
+    const { lookupApiConfig, saveConfig, submitButtonTitle, fileUploadConfig } = this.tabs[tab.index];
+    this.lookupApiConfig = lookupApiConfig;
+    this.saveConfig = saveConfig;
+    this.submitButtonTitle = submitButtonTitle;
+    if (this.mode === 'file') {
+      this.selectedFile = undefined;
+      this.uploadStatus = 'idle';
+      this.mode = 'manual';
+      this.fileUploadSubscription?.unsubscribe();
+      this.fileUploadLoading = false;
+      this.restoreManualSettings();
+    }
+    this.fileUploadConfig = fileUploadConfig;
+    this.clearSelections();
+    this.onFilterReset(true)
+    this.getModuleDefinition()
+  }
+  protected onFileSelected(input: HTMLInputElement): void {
+    const file: File | undefined = input.files?.[0];
+    input.value = '';
+    if (file) {
+      this.acceptFile(file);
+    }
+  }
+
+  protected onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver = true;
+  }
+
+  protected onDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver = false;
+  }
+
+  protected onFileDropped(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver = false;
+    const file: File | undefined = event.dataTransfer?.files?.[0];
+    if (file) {
+      this.acceptFile(file);
+    }
+  }
+
+  protected formatFileSize(bytes?: number): string {
+    if (bytes === undefined || bytes === null) {
+      return '';
+    }
+    if (bytes < 1024) {
+      return `${bytes} B`;
+    }
+    if (bytes < 1024 * 1024) {
+      return `${(bytes / 1024).toFixed(1)} KB`;
+    }
+    return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+  }
+
+  private acceptFile(file: File): void {
+    if (!this.fileUploadConfig) {
+      return;
+    }
+
+    const accept: string = this.fileUploadConfig.accept ?? '.csv';
+    const maxSize: number = this.fileUploadConfig.maxSize ?? 10 * 1024 * 1024;
+
+    if (!this.isAcceptedFile(file, accept)) {
+      this.fileError = `Invalid file type. Expected ${accept}.`;
+      this.selectedFile = undefined;
+      return;
+    }
+    if (file.size > maxSize) {
+      this.fileError = `File too large. Max ${maxSize / 1024 / 1024} MB.`;
+      this.selectedFile = undefined;
+      return;
+    }
+
+    // Clear any prior results so the table doesn't show stale data after picking a new file
+    this.dataSource = [];
+    this.setting.totalItems = 0;
+
+    this.fileError = undefined;
+    this.uploadStatus = 'idle';
+    this.selectedFile = file;
+  }
+
+  protected onUploadFile(): void {
+    if (!this.selectedFile || !this.fileUploadConfig) {
+      return;
+    }
+
+    const file: File = this.selectedFile;
+    const body: unknown = this.fileUploadConfig.payloadTransform
+      ? this.fileUploadConfig.payloadTransform(file, this.fileUploadConfig.apiConfig)
+      : (() => {
+        const fd: FormData = new FormData();
+        fd.append(this.fileUploadConfig!.fileFieldName ?? 'file', file);
+        return fd;
+      })();
+
+    this.fileUploadLoading = true;
+    this.fileUploadSubscription?.unsubscribe();
+    this.fileUploadSubscription = this.lookupModalService
+      .getLookupServiceRequest({ ...this.fileUploadConfig.apiConfig, body } as LookupApiConfig<T>)
+      .pipe(filter((r: any) => !!r))
+      .subscribe({
+        next: (response: MultiLookupModuleRecordModel) => {
+          this.applyFileUploadResponse(response);
+          this.uploadStatus = 'uploaded';
+          this.fileUploadLoading = false;
+        },
+        error: () => {
+          this.toastrService.error('Failed to process the uploaded file.');
+          this.uploadStatus = 'failed';
+          this.fileUploadLoading = false;
+        }
+      });
+  }
+
+  protected onModeChange(newMode: string): void {
+    // Shared cleanup — runs regardless of direction.
+    this.selectedFile = undefined;
+    this.fileError = undefined;
+    this.uploadStatus = 'idle';
+    this.fileUploadSubscription?.unsubscribe();
+    this.fileUploadLoading = false;
+    this.clearSelections();
+
+    if (newMode === 'file') {
+      this.onFilterReset(true);
+      this.dataSource = [];
+      this.setting.totalItems = 0;
+      this.mode = 'file';
+    } else {
+      this.restoreManualSettings();
+      this.mode = 'manual';
+      this.getLookUpList();
+    }
+  }
+
+
+  protected onDownloadTemplate(): void {
+    const sample = this.fileUploadConfig?.sampleFile;
+    if (!sample?.url) {
+      return;
+    }
+    this.sampleDownloading = true;
+    this.sampleDownloadSubscription?.unsubscribe();
+    this.sampleDownloadSubscription = this.fileDownload
+      .download({
+        url: sample.url,
+        fileName: sample.fileName,
+        defaultExtension: this.deriveDefaultExtension(),
+      })
+      .subscribe({
+        next: () => {
+          this.sampleDownloading = false;
+        },
+        error: () => {
+          this.toastrService.error('Failed to download the file.');
+          this.sampleDownloading = false;
+        },
+      });
+  }
+
+  private deriveDefaultExtension(): string | undefined {
+    const accept: string | undefined = this.fileUploadConfig?.accept;
+    return accept
+      ?.split(',')
+      .map((token: string) => token.trim())
+      .find((token: string) => token.startsWith('.'));
+  }
+
+  protected onRemoveFile(): void {
+    this.selectedFile = undefined;
+    this.fileError = undefined;
+    this.uploadStatus = 'idle';
+    this.dataSource = [];
+    this.setting.totalItems = 0;
+    this.clearSelections();
+    // mode stays 'file', toolbar stays hidden — user can immediately upload another
+  }
+
+  private clearSelections(): void {
+    this.selectedRecords = [];
+    this.multiRecordSelectionListPkIds = [{ data: [], isPageUnknown: true }];
+    if (this.multiRowSelection) {
+      this.multiRowSelection.value = [];
+    }
+    this.selectAll = undefined;
+  }
+
+  private applyFileUploadResponse(response: MultiLookupModuleRecordModel): void {
+    const moduleResponse: any = response?.response ?? response;
+
+    const items: any[] = Array.isArray(moduleResponse)
+      ? moduleResponse
+      : Array.isArray(moduleResponse?.content)
+        ? moduleResponse.content
+        : [];
+
+    this.dataSource = this.listTransform
+      ? this.listTransform({ content: items }, this.config, this)
+      : items.map((item: any) => ({
+        data: this.getValue(item),
+        dropdown: this.getRecordDropdownValues(item, this.pickListConfigList!)
+      }));
+
+    this.setting.totalItems = this.dataSource.length;
+    this.setting.pageSize = this.dataSource.length || 1;
+    this.setting.pageIndex = 0;
+    this.setting.hideToolbar = true;
+
+    this.selectAll = true;
+    this.onCheckboxChange(this.dataSource, false);
+  }
+
+  private restoreManualSettings(): void {
+    this.setting.hideToolbar = false;
+  }
+
+  private isAcceptedFile(file: File, accept: string): boolean {
+    const tokens: string[] = accept.split(',').map((t: string) => t.trim().toLowerCase()).filter(Boolean);
+    if (!tokens.length) {
+      return true;
+    }
+    const name: string = file.name.toLowerCase();
+    const type: string = file.type.toLowerCase();
+    return tokens.some((t: string) => (t.startsWith('.') ? name.endsWith(t) : type === t));
+  }
+
   ngOnDestroy(): void {
     this.lookupDataSubscription?.unsubscribe();
     this.moduleDefinitionSubscription?.unsubscribe();
     this.customViewSubscription?.unsubscribe();
+    this.fileUploadSubscription?.unsubscribe();
+    this.sampleDownloadSubscription?.unsubscribe();
   }
 
 }

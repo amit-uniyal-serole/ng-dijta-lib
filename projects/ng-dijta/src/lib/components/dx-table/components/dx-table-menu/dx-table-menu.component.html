@@ -1,64 +1,83 @@
-<div class="table-action" (click)="$event.stopPropagation()" [dxConditionClass]="data"
-  [condition]="menu?.classCondition">
-  <ng-container *dxBulkAblility="menu?.actions">
-    <button [disabled]="menu?.disable" dx-tooltip dxTooltipTitle="{{menu?.label | transloco}}"
-      *ngIf="!isBusy && menu?.actions?.length" [matMenuTriggerFor]="tableColMenu" mat-icon-button class="menu">
-      <mat-icon>{{menu?.icon??'more_vert'}}</mat-icon>
-    </button>
-  </ng-container>
+@if(type === 'onhover') {
+<div class="icon-toolbar">
+  <button mat-icon-button class="icon-btn">
+    <mat-icon>edit</mat-icon>
+  </button>
+  <button mat-icon-button class="icon-btn">
+    <mat-icon>image</mat-icon>
+  </button>
+  <button mat-icon-button class="icon-btn">
+    <mat-icon>chat_bubble_outline</mat-icon>
+  </button>
+  <button mat-icon-button class="icon-btn">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+</div>
 
-  <mat-menu #tableColMenu="matMenu" class="table-row-menu-panel" xPosition="before">
-    <div *ngFor="let item of menu?.actions">
-      <ng-container
-        *ngIf="item?.permission ? (item.permission?.permission | ablePure: item.permission?.apiName | async) : true">
-        <ng-container [ngSwitch]="item?.btnType">
-          <ng-container *ngSwitchCase="'external_link'">
-            <a [href]="item?.href ?? '/'" target="{{item?.target ?? '_self'}}" dx-tooltip
-              dxTooltipTitle="{{bulkAction?.hideMenuToolTip?null:item?.label}}" [disabled]="item?.disable"
-              class="d-flex table-row-menu-btns" dxTooltipPlacement="left" [dxConditionClass]="data"
-              [condition]="item?.classCondition">
-              <div class="d-flex align-items-center">
-                <span class="material-icons-outlined table-row-menu-icon" [ngStyle]="{color:item?.color}"
-                  *ngIf="item?.icon">{{item?.icon}}</span>
-                <span class="table-row-menu-items" [ngStyle]="{color:item?.color}">{{item?.label | transloco}}</span>
-              </div>
-            </a>
-          </ng-container>
-          <ng-container *ngSwitchCase="'system_link'">
-            <a [routerLink]="item?.href" target="{{item?.target ?? '_self'}}" dx-tooltip
-              dxTooltipTitle="{{bulkAction?.hideMenuToolTip?null:item?.label}}" [disabled]="item?.disable"
-              class="d-flex table-row-menu-btns" dxTooltipPlacement="left" [dxConditionClass]="data"
-              [condition]="item?.classCondition">
-              <div class="d-flex align-items-center">
-                <span class="material-icons-outlined table-row-menu-icon" [ngStyle]="{color:item?.color}"
-                  *ngIf="item?.icon">{{item?.icon}}</span>
-                <span class="table-row-menu-items" [ngStyle]="{color:item?.color}">{{item?.label | transloco}}</span>
-              </div>
-            </a>
-          </ng-container>
-          <ng-container *ngSwitchDefault>
-            <button (click)="bulkActionMenuClick(item, item?.confirmationPopover)" dx-tooltip
-              dxTooltipTitle="{{bulkAction?.hideMenuToolTip?null:item?.label}}" [disabled]="item?.disable"
-              class="table-row-menu-btns" dxTooltipPlacement="left" [dxConditionClass]="data"
-              [condition]="item?.classCondition" [class.btn-border-top]="item?.isBorderTop">
-              <div class="d-flex align-items-center justify-content-between">
+} @else {
+  <div class="table-action" (click)="$event.stopPropagation()" [dxConditionClass]="data"
+    [condition]="menu?.classCondition">
+    <ng-container *dxBulkAbility="menu?.actions">
+      <button [disabled]="menu?.disable" dx-tooltip dxTooltipTitle="{{menu?.label | transloco}}"
+        *ngIf="!isBusy && menu?.actions?.length" [matMenuTriggerFor]="tableColMenu" mat-icon-button class="menu">
+        <mat-icon>{{menu?.icon??'more_vert'}}</mat-icon>
+      </button>
+    </ng-container>
+
+    <mat-menu #tableColMenu="matMenu" class="table-row-menu-panel" xPosition="before">
+      <div *ngFor="let item of menu?.actions">
+        <ng-container
+          *ngIf="item?.permission ? (item.permission?.permission | ablePure: item.permission?.apiName | async) : true">
+          <ng-container [ngSwitch]="item?.btnType">
+            <ng-container *ngSwitchCase="'external_link'">
+              <a [href]="item?.href ?? '/'" target="{{item?.target ?? '_self'}}" dx-tooltip
+                dxTooltipTitle="{{bulkAction?.hideMenuToolTip?null:item?.label}}" [disabled]="item?.disable"
+                class="d-flex table-row-menu-btns" dxTooltipPlacement="left" [dxConditionClass]="data"
+                [condition]="item?.classCondition">
                 <div class="d-flex align-items-center">
                   <span class="material-icons-outlined table-row-menu-icon" [ngStyle]="{color:item?.color}"
                     *ngIf="item?.icon">{{item?.icon}}</span>
                   <span class="table-row-menu-items" [ngStyle]="{color:item?.color}">{{item?.label | transloco}}</span>
                 </div>
-                <span *ngIf="item?.info" class="material-icons info ms-1" dx-tooltip [dxTooltipTitle]="item?.info"
-                  dxTooltipPlacement="top" [style.color]="item?.infoColor">info</span>
-              </div>
+              </a>
+            </ng-container>
+            <ng-container *ngSwitchCase="'system_link'">
+              <a [routerLink]="item?.href" target="{{item?.target ?? '_self'}}" dx-tooltip
+                dxTooltipTitle="{{bulkAction?.hideMenuToolTip?null:item?.label}}" [disabled]="item?.disable"
+                class="d-flex table-row-menu-btns" dxTooltipPlacement="left" [dxConditionClass]="data"
+                [condition]="item?.classCondition">
+                <div class="d-flex align-items-center">
+                  <span class="material-icons-outlined table-row-menu-icon" [ngStyle]="{color:item?.color}"
+                    *ngIf="item?.icon">{{item?.icon}}</span>
+                  <span class="table-row-menu-items" [ngStyle]="{color:item?.color}">{{item?.label | transloco}}</span>
+                </div>
+              </a>
+            </ng-container>
+            <ng-container *ngSwitchDefault>
+              <button (click)="bulkActionMenuClick(item, item?.confirmationPopover)" dx-tooltip
+                dxTooltipTitle="{{bulkAction?.hideMenuToolTip?null:item?.label}}" [disabled]="item?.disable"
+                class="table-row-menu-btns" dxTooltipPlacement="left" [dxConditionClass]="data"
+                [condition]="item?.classCondition" [class.btn-border-top]="item?.isBorderTop">
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="d-flex align-items-center">
+                    <span class="material-icons-outlined table-row-menu-icon" [ngStyle]="{color:item?.color}"
+                      *ngIf="item?.icon">{{item?.icon}}</span>
+                    <span class="table-row-menu-items" [ngStyle]="{color:item?.color}">{{item?.label | transloco}}</span>
+                  </div>
+                  <span *ngIf="item?.info" class="material-icons info ms-1" dx-tooltip [dxTooltipTitle]="item?.info"
+                    dxTooltipPlacement="top" [style.color]="item?.infoColor">info</span>
+                </div>
 
-            </button>
+              </button>
+            </ng-container>
           </ng-container>
         </ng-container>
-      </ng-container>
-    </div>
-  </mat-menu>
-</div>
-<div #list *ngFor="let item of menu?.actions">
-  <span
-    *ngIf="item?.permission ? (item.permission?.permission | ablePure: item.permission?.apiName | async) : true"></span>
-</div>
+      </div>
+    </mat-menu>
+  </div>
+  <div #list *ngFor="let item of menu?.actions">
+    <span
+      *ngIf="item?.permission ? (item.permission?.permission | ablePure: item.permission?.apiName | async) : true"></span>
+  </div>
+}
+

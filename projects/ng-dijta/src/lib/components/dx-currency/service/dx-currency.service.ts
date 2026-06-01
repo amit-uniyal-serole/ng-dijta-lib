@@ -52,7 +52,7 @@ export class DxCurrencyService {
         return converatedVal.toLocaleString();
       }
     }
-    return ''
+    return value.toString()
 
   }
 
@@ -62,6 +62,7 @@ export class DxCurrencyService {
     locale: string = this.getLocal(),
   ): string {
     if (value) {
+      
       const converatedVal = this.removeSparetorForString(value);
       if (converatedVal?.toString() !== 'NaN') {
         if (precision) {
@@ -70,7 +71,9 @@ export class DxCurrencyService {
             useGrouping: false
           });
         }
-        return this.removeSparetorForString(converatedVal.toLocaleString(locale)).toString();
+        return this.removeSparetorForString(converatedVal.toLocaleString(locale, {
+          minimumFractionDigits: 20, maximumFractionDigits: 20,
+        })).toString();
       }
     }
     return ''

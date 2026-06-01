@@ -110,7 +110,7 @@ export class DxLookupComponent implements ControlValueAccessor, Validator, OnCha
   onTouched: Function = () => { };
 
   //  Lookup Table Input's
-  @Input() lookupModalConfig: DxLookupModalConfig | undefined
+  @Input() lookupModalConfig: DxLookupModalConfig | undefined;
   constructor(
     @Optional() @Inject(UI_COMPONENT_CONFIG) config: UIConfigWrapper,
     @Inject(LOCALE_ID) public locale: string,

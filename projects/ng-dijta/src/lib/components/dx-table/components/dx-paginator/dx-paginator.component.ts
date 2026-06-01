@@ -34,10 +34,19 @@ export class DxPaginatorComponent<T> implements OnInit, OnChanges {
   @Output() onLeftDropDownSearch: EventEmitter<string> = new EventEmitter<string>();
   @Output() onSubMenuClick: EventEmitter<SubmenuActionModel> = new EventEmitter<SubmenuActionModel>();
   @Output() onMarkAsDefault: EventEmitter<MenuAction> = new EventEmitter<MenuAction>();
+  pageSizeOptions: number[] = [];
+  divWidth: boolean = false;
+
+  updateDivMessage(currentWidth: number): void {
+    this.divWidth = currentWidth < 500;
+  }
+
+
+  pageSizeSelection: BulkActions = PaginatorData?.PageSize;
+  @Output()
   @Output() activeTabChange = new EventEmitter<number | string>();
   links = ['First', 'Second', 'Third', 'First', 'Second', 'Third'];
   mobileDevice: boolean = false
-  pageSizeSelection: BulkActions = PaginatorData?.PageSize
   show: boolean = true;
   tabsData: DxPaginationTab[] | undefined = []
   menusData: DxPaginationTab[] | undefined = []
@@ -48,6 +57,9 @@ export class DxPaginatorComponent<T> implements OnInit, OnChanges {
     })
   }
   onPaginate(event: PageEvent): void {
+    // this.onClickPageSize?.emit({
+    //   pageSize: event.pageSize
+    // })
     this.onPagination.emit(event)
   }
 
@@ -60,6 +72,9 @@ export class DxPaginatorComponent<T> implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    this.pageSizeSelection.label = this.pageSizeList?.label ?? PaginatorData?.defaultPageSizeDropdown?.defaultSize;
+    this.pageSizeSelection.actions = this.pageSizeList?.actions ?? PaginatorData?.defaultPageSizeDropdown?.actions;
+    this.pageSizeOptions = this.pageSizeSelection.actions.map((action: MenuAction) => Number(action.type))
     this.onWindowScroll()
     this.updatePageSizeSelection();
     // this.show = !!(this.setting.colArrange && this.setting.download && this.setting.filter && this.setting.pagination)

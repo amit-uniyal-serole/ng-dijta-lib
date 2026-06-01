@@ -21,3 +21,7 @@ export * from './hide-show/ngdx-show-if.directive';
 export * from './event/key-enter.directive';
 export * from './safe/safe.pipe';
 export * from './bulk-ability/bulk-ablility.directive';
+export * from './input/no-leading-trailing-space.directive';
+
+export * from './localized-number/localized-number-format.directive';
+export * from './label/label.directive';

@@ -1,19 +1,19 @@
-<div class="dx-field-wrapper input-variant-layout dx-datepicker-aligment" [class.none-label]="noneLabel"
+<div class="ngdx-field-wrapper input-variant-layout dx-datepicker-aligment" [class.none-label]="noneLabel"
   [ngClass]="outline" [class.display-view]="viewOnly" [class.dx-disable]="disabled" [class.required]="required"
   [class.left-align-label]="labelPosition === 'left'" [class]="outerLabelErrorType">
-  <mat-label class="dx-outer-label-wrapper">
+  <mat-label class="dx-outer-label">
     <span class="dx-outer-label">
       <ng-content select="[dxLabel]"></ng-content>
       <span *ngIf="required" class="astrict">*</span>
     </span>
   </mat-label>
-  <mat-form-field appearance="outline" floatLabel="never">
+  <mat-form-field appearance="outline" floatLabel="always">
     <span matPrefix class="material-icons-outlined cursor-pointer">{{icon}}</span>
     <mat-label class="dx-input-label">
       <ng-content select="dx-label"></ng-content>
     </mat-label>
     <input [formControl]="control" (ngModelChange)="inputChange($event)" matInput [max]="maxDate" [min]="minDate"
-      [matDatepicker]="picker" [placeholder]="placeholder" (dateInput)="dateChange('input', $event)"
+      [matDatepicker]="picker" placeholder="" (dateInput)="dateChange('input', $event)"
       (dateChange)="dateChange('change', $event)" ngDefaultControl [readonly]="readonly || viewOnly || disabled" />
     <mat-datepicker-toggle matSuffix [for]="picker" [disabled]="disabled">
       <span class="material-icons" matDatepickerToggleIcon>

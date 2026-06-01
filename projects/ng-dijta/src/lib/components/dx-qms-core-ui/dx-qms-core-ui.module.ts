@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TranslocoModule } from '@ngneat/transloco';
 import { DxCheckboxModule } from '../dx-checkbox';
 import { DxInputModule } from '../dx-input';
 import { DxSectionTitleModule } from '../dx-section-title';
@@ -12,12 +11,13 @@ import { DxStatusModule } from '../dx-status';
 import { DxTextareaModule } from '../dx-textarea';
 import { LoadingModule } from '../loading';
 import { DxEvidenceUploadComponent } from './components/dx-evidence-upload/dx-evidence-upload.component';
+import { TranslocoModule } from '@jsverse/transloco';
 import { DxToolTipModule } from '../dx-tooltip';
 
 
 @NgModule({
   declarations: [
-    DxEvidenceUploadComponent    
+    DxEvidenceUploadComponent
   ],
   imports: [
     CommonModule,
@@ -34,7 +34,7 @@ import { DxToolTipModule } from '../dx-tooltip';
     DxSectionTitleModule,
     DxToolTipModule
   ],
-  exports:[    
+  exports: [
     DxEvidenceUploadComponent
   ]
 })

@@ -1,12 +1,210 @@
 {
-  "/dx-lcnc-api/*": {
-      "_comment": "Try This",
-      "target": "https://tune.dev.indigit.io/dx-lcnc-api/",
-      "secure": false,
-      "logLevel": "debug",
-      "pathRewrite": {
-        "^/dx-lcnc-api": ""
-      },
-      "changeOrigin": true
-    }
+  "/dx-dijta-api/*": {
+    "_comment": "Try This",
+    "target": "https://tune.dev.indigit.io/dx-dijta-api/",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/dx-dijta-api": ""
+    },
+    "changeOrigin": true
+  },
+  "/oauth2/*": {
+    "_comment": "Try This",
+    "target": " https://identity.policyfest.com/oauth2/",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/oauth2": ""
+    },
+    "changeOrigin": true
+  },
+  "/auth/*": {
+    "_comment": "Try This",
+    "target": " https://dijtaauthdev.policyfest.com/auth/",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/auth": ""
+    },
+    "changeOrigin": true
+  },
+
+  "/dx-qms/*": {
+    "_comment": "Try This",
+    "target": "https://tune.dev.indigit.io/dx-qms/",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/dx-qms": ""
+    },
+    "changeOrigin": true
+  },
+  "/dx-pay-gateway/*": {
+    "_comment": "Try This",
+    "target": "https://tune.dev.indigit.io/dx-pay-gateway/",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/dx-pay-gateway": ""
+    },
+    "changeOrigin": true
+  },
+  "/dx-elm/*": {
+    "_comment": "Try This",
+    "target": "https://tune.dev.indigit.io/dx-elm/",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/dx-elm": ""
+    },
+    "changeOrigin": true
+  },
+  "/dx-push-notification-api/*": {
+    "_comment": "Try This",
+    "target": "https://tune.dev.indigit.io/dx-push-notification-api/",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/dx-push-notification-api": ""
+    },
+    "changeOrigin": true
+  },
+
+  "/dx-mstd-api/**": {
+    "_comment": "Try This",
+    "target": "https://tune.dev.indigit.io/dx-mstd-api/",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/dx-mstd-api": ""
+    },
+    "changeOrigin": true
+  },
+
+  "/dx-sap/*": {
+    "_comment": "Try This",
+    "target": "https://tune.dev.indigit.io/dx-sap/",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/dx-sap": ""
+    },
+    "changeOrigin": true
+  },
+
+  "/qms/*": {
+    "_comment": "Try This",
+    "target": "http://localhost:4203/",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/qms": ""
+    },
+    "changeOrigin": true
+  },
+  "/lms/*": {
+    "_comment": "Try This",
+    "target": "http://localhost:4202/",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/lms": ""
+    },
+    "changeOrigin": true
+  },
+
+  "/dx-lms-api/*": {
+    "_comment": "Try This",
+    "target": "https://tune.dev.indigit.io/dx-lms-api/",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/dx-lms-api": ""
+    },
+    "changeOrigin": true
+  },
+  "/messaging_services/*": {
+    "_comment": "Try This",
+    "target": "https://tune.dev.indigit.io/messaging_services",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/messaging_services": ""
+    },
+    "changeOrigin": true
+
+  },
+  "/element/*": {
+    "_comment": "Try This",
+    "target": "https://lms-dev.indigit.io/",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/element": ""
+    },
+    "changeOrigin": true
+  },
+
+  "/dx-rule-engine-api/*": {
+    "_comment": "Try This",
+    "target": "https://tune.dev.indigit.io/dx-rule-engine-api/",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/dx-rule-engine-api": ""
+    },
+    "changeOrigin": true
+  },
+  "/dx-ccm/*": {
+    "_comment": "Try This",
+    "target": "https://tune.dev.indigit.io/dx-ccm/",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/dx-ccm": ""
+    },
+    "changeOrigin": true
+  },
+  "/dx-dms/*": {
+    "_comment": "Try This",
+    "target": "https://tune.dev.indigit.io/dx-dms/",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/dx-dms": ""
+    },
+    "changeOrigin": true
+  },
+  "/dijta/*": {
+    "_comment": "Try This",
+    "target": "https://tune.dev.indigit.io",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/dijta": ""
+    },
+    "changeOrigin": true
+  },
+  "/dx-lcnc-crm-api/**": {
+    "_comment": "Try This",
+    "target": "https://serole.staging.indigit.io/api/dx-lcnc-crm-api/",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/dx-lcnc-crm-api": ""
+    },
+    "changeOrigin": true
+  },
+  "/dx-lcnc-rm-api/**": {
+    "_comment": "Try This",
+    "target": "https://optus.staging.indigit.io/api/dx-lcnc-rm-api/",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/dx-lcnc-rm-api": ""
+    },
+    "changeOrigin": true
+  }
+
 }

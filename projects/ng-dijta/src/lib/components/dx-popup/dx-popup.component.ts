@@ -9,7 +9,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class DxPopupComponent {
 
   title!: string;
-  description!: string;
+  description!: string[];
   constructor(
     private readonly dialogRef: MatDialogRef<DxPopupComponent>
   ) { }

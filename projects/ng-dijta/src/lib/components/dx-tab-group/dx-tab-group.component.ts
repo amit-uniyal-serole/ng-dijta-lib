@@ -5,14 +5,26 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { TabComponent } from './tab/tab.component';
 @Component({
   selector: 'dx-tab-group',
-  templateUrl: './dx-tab-group.component.html',
-  styleUrls: ['./dx-tab-group.component.scss'],
+  template: `
+    <div *ngIf="show" [class]="tabsAlign" [class]="outline">
+      <mat-tab-group mat-stretch-tabs="false" [animationDuration]="animationDuration" [selectedIndex]="selectedIndex"
+        [headerPosition]="headerPosition" (selectFocusedIndex)="onSelectFocusedIndex($event)" [color]="color"
+        [backgroundColor]="backgroundColor" (selectedTabChange)="onTabChanged($event)">
+        <mat-tab *ngFor="let item of appItems" [disabled]="item.disabled">
+          <ng-template mat-tab-label>
+            <ng-container *ngTemplateOutlet="item?.itemHeader?.headerTemplate"></ng-container>
+          </ng-template>
+          <ng-container *ngTemplateOutlet="item?.contentTemplate"></ng-container>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  `,
   encapsulation: ViewEncapsulation.None
 })
 export class DxTabGroupComponent implements OnInit {
   @ContentChildren(TabComponent) public appItems!: QueryList<TabComponent>;
   @Input() tabsAlign: 'start' | 'center' | 'end' = 'start';
-  @Input() outline: 'filled' | 'top_underline' | 'none' = 'none';
+  @Input() outline: 'filled' | 'top_underline' | 'bottom_underline_bg' | 'none' = 'none';
   @Input() animationDuration: string = '500ms';
   @Input() headerPosition: 'below' | '' = '';
   @Input() color: string = '';

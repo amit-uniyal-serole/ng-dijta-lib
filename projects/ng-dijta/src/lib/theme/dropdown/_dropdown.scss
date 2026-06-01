@@ -1,0 +1,135 @@
+
+.cdk-overlay-pane > div > .dx-dropdown-menu {
+    position: relative;
+    top: 0; // initial;
+    left: 0; //initial;
+    border: none;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow:
+      0 2px 4px -1px rgba(0, 0, 0, 0.2),
+      0 4px 5px 0 rgba(0, 0, 0, 0.14),
+      0 1px 10px 0 rgba(0, 0, 0, 0.12);
+  }
+
+  // Material-style menu sizing for the plain dropdown.
+  // Excluded for `.dx-drop-menu-wrapper` (cascader) — that menu sizes itself
+  // to the input width via inline ngStyle and stays unaffected.
+  .cdk-overlay-pane > div > .dx-dropdown-menu:not(.dx-drop-menu-wrapper) {
+    padding: 8px 0;
+    min-width: 112px;
+    max-width: 280px;
+  }
+
+  // Scoped to *direct* item children of a dx-dropdown-menu so the cascader's
+  // own .dx-dropdown-item rows (deeply nested inside .dx-cascader-list) are
+  // unaffected.
+  .cdk-overlay-pane > div > .dx-dropdown-menu > .dx-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 16px;
+    margin: 0;
+    font-size: 14px;
+    line-height: 40px;
+    color: rgba(0, 0, 0, 0.87);
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+
+    .mat-icon {
+      flex: 0 0 auto;
+      width: 20px;
+      height: 20px;
+      font-size: 20px;
+      color: rgba(0, 0, 0, 0.54);
+    }
+
+    &:hover,
+    &:focus-visible {
+      background-color: rgba(0, 0, 0, 0.04);
+      outline: none;
+    }
+
+    &.disabled,
+    &[aria-disabled='true'] {
+      color: rgba(0, 0, 0, 0.38);
+      cursor: default;
+      pointer-events: none;
+    }
+  }
+
+  // Reset default list paddings so the menu panel sits flush.
+  .cdk-overlay-pane > div > ul.dx-dropdown-menu {
+    list-style: none;
+    margin: 0;
+  }
+
+  // Menu divider — matches the `<mat-divider>` token: a thin neutral line with
+  // 4px breathing room above and below.
+  .cdk-overlay-pane > div > .dx-dropdown-menu > .dx-dropdown-divider {
+    display: block;
+    height: 0;
+    margin: 4px 0;
+    padding: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    list-style: none;
+  }
+
+  // Submenu trigger row — a `<li dDropDown>` that hosts a nested dropdown.
+  // We can't reuse `dDropDownMenuItem` because the row should NOT auto-close
+  // the parent on click; instead it opens the submenu. Style it to match a
+  // regular item.
+  .cdk-overlay-pane > div > .dx-dropdown-menu > .dx-dropdown-submenu {
+    display: flex;
+    align-items: stretch;
+    height: 40px;
+    padding: 0 16px;
+    margin: 0;
+    font-size: 14px;
+    line-height: 40px;
+    color: rgba(0, 0, 0, 0.87);
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+
+    > [dDropDownToggle] {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .mat-icon {
+      color: rgba(0, 0, 0, 0.54);
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+  
+  .dx-dropdown span {
+    &.icon-chevron-down,
+    &.icon-select-arrow {
+      display: inline-block;
+      vertical-align: text-top;
+    }
+  }
+  
+  .dx-dropdown-animation span {
+    &.icon-chevron-down,
+    &.icon-select-arrow {
+      transition: transform 300ms cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+  }
+  
+  .dx-dropdown.open span {
+    &.icon-chevron-down,
+    &.icon-select-arrow {
+      transform: rotate(180deg);
+    }
+  }
+  

@@ -2,31 +2,35 @@
 <div id="dxCalender">
   <div class="cal-header">
     <div class="d-flex cal-action-btns">
-      <button dx-tooltip [dxTooltipTitle]="!toggleMenu ? 'Expand':'Collapse'" dxTooltipPlacement="bottom" *ngIf="enableCalendarsMenu" class="dx-calendar-more-actions" (click)="onClickToggleAction()" mat-button>
+      <button dx-tooltip [dxTooltipTitle]="!toggleMenu ? 'Expand':'Collapse'" dxTooltipPlacement="bottom"
+        *ngIf="enableCalendarsMenu" class="dx-calendar-more-actions" (click)="onClickToggleAction()" mat-button>
         <span class="material-icons-outlined">
           {{toggleMenu ? 'keyboard_double_arrow_left' : 'keyboard_double_arrow_right'}}
         </span>
       </button>
-      <div *ngIf="enableCalendarsMenu" class="mx-1"></div> 
-      <dx-button class="secondary-btn" *ngIf="!hideActions" icon="today" (onActionSelect)="onClickToday()" title="Today">
+      <div *ngIf="enableCalendarsMenu" class="mx-1"></div>
+      <dx-button class="secondary-btn" *ngIf="!hideActions" icon="today" (onActionSelect)="onClickToday()"
+        title="Today">
       </dx-button>
     </div>
     <div class="d-flex align-items-center">
-      <button  class="calendar-change-btns" (click)="onClickPrevious()" mat-button>
+      <button class="calendar-change-btns" (click)="onClickPrevious()" mat-button>
         <span class="material-icons">chevron_left</span>
       </button>
       <span class="heading-6 fw-semibold">{{ currentCalendar }}</span>
-      <button  class="calendar-change-btns" (click)="onClickNext()" mat-button>
+      <button class="calendar-change-btns" (click)="onClickNext()" mat-button>
         <span class="material-icons">chevron_right</span>
       </button>
     </div>
     <div>
       <div class="d-flex align-items-center">
-        <dx-button class="secondary-btn" *ngIf="!hideActions" icon="arrow_drop_down" (onActionSelect)="menuTrigger?.openMenu()" #menuTrigger="matMenuTrigger"
-          [matMenuTriggerFor]="menu" [isReverseElement]="true" [title]="selectedView?.name">
+        <dx-button class="secondary-btn" *ngIf="!hideActions" icon="arrow_drop_down"
+          (onActionSelect)="menuTrigger?.openMenu()" #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu"
+          [isReverseElement]="true" [title]="selectedView?.name">
         </dx-button>
         <div *ngIf="enableSettings" class="mx-1"></div>
-        <button dx-tooltip dxTooltipTitle="Calendar Settings" dxTooltipPlacement="bottom" class="dx-calendar-more-actions" *ngIf="enableSettings" (click)="onClickSettingsAction()" mat-button>
+        <button dx-tooltip dxTooltipTitle="Calendar Settings" dxTooltipPlacement="bottom"
+          class="dx-calendar-more-actions" *ngIf="enableSettings" (click)="onClickSettingsAction()" mat-button>
           <span class="material-icons-outlined">settings</span>
         </button>
       </div>

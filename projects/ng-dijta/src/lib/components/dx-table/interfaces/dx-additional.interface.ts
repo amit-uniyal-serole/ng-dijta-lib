@@ -3,6 +3,7 @@ import { BulkActions, MenuAction } from './dx-table.interface';
 import { TableDropdown } from './dx-multi-value.interface';
 import { TableLookup } from './dx-table-lookup.interface';
 import { Avatar, DxTableNgDxAvatar } from '../../dx-avatar/model/avatar';
+import { NumberFormatVariant } from '../../../core/UI/constant/currency-default';
 
 export interface ImageSizeUrl {
   sm?: string;
@@ -66,8 +67,13 @@ export interface DxTableData<T> {
     isDisabled?: boolean;
     message?: string;
   },
+  disableRow?: {
+    isDisabled?: boolean;
+    message?: string;
+  },
   isEdit?: boolean;
   currency?: CurrencyType<T>;
+  toolTip?:T
 }
 
 export type CurrencyType<T> = {
@@ -79,6 +85,11 @@ export class CurrencySetting {
   info?: string;
   icon?: string;
   infoColor?: string;
+  appCurrencyConfig?: {
+    config: NumberFormatVariant;
+    decimal?: number;
+    symbol?: string;
+  }
 }
 
 export interface iconData<T> {
@@ -125,6 +136,8 @@ export interface RadioButtonSetting {
 
 export interface SelectSetting {
   disable?: boolean;
+  readonly?: boolean;
+  required?: boolean;
   option?: DxOption[];
 }
 export interface NgDxMultiChip {
@@ -156,6 +169,9 @@ export interface Link<T> {
   type?: 'external' | 'internal';
   params?: Params;
   openInNewTab?: boolean;
+  trueAs?: string;
+  falseAs?: string;
+  fieldType?: 'checkbox' | string;
 }
 
 export interface DxTableMenuAction<T> {

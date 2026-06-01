@@ -10,7 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { FilterAddButtonComponent } from './filter-add-button/filter-add-button.component';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 
 
 
@@ -32,7 +32,7 @@ import { TranslocoModule } from '@ngneat/transloco';
     MatMenuModule,
     TranslocoModule
   ],
-  exports: [DxAdvanceFilterComponent],
+  exports: [DxAdvanceFilterComponent, FilterAddButtonComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DxAdvanceFilterModule { }

@@ -1,0 +1,169 @@
+<div id="flex-menu-wrapper" class="flex_menu__sidebar z-3 d-flex position-fixed p-0" scrollHeight>
+  <div class="elevation-z-3" (window:resize)="onResize()"
+    class="flex_menu__wrapper h-100 position-relative elevation-z-6">
+    <div>
+      <div aria-label="menu" id="dx-flex-menu-items" class="p-0">
+        <ng-container *ngIf="!isMenusLoading;else menuSkeletonLoader">
+
+          <!-- Main Menu -->
+
+          <ng-container *ngFor="let menu of (flexMenuList | shortBy: 'order') | filterBy: 'position': 'bottom': false">
+
+            <ng-container *ngIf="menu.isDisplay || disableDispalyConditions">
+              <a role="link" [@menuItems]="bottonMenusToggle"
+                *ngIf="menu?.permission ? (menu.permission?.permission | ablePure: menu.permission?.apiName | async) : true"
+                class="d-flex link text-truncate justify-content-center position-relative flex-column border-bottom text-center align-items-center text-break white-space text-decoration-none p-2 py-3 "
+                [class.visible]="breakHeight?.length > 2" [routerLink]='menu?.route?.path'
+                (mouseover)="onMouseOver(activeMenu===menu?.code)" (click)="onMenu(menu)" routerLinkActive='menu_active'
+                [ngClass]="{ active: activeMenu === menu?.code }" dx-tooltip
+                dxTooltipTitle="{{ menu?.label | transloco }}" dxTooltipPlacement="right"
+                matTooltipClass="tooltip-color">
+                <mat-icon class="material-symbols-sharp" *ngIf=" menu?.icon" aria-hidden="false"
+                  [attr.aria-label]="menu?.label | transloco" [fontIcon]="menu?.icon"></mat-icon>
+                <p class="m-0 paragraph text-truncate text-break" [style.width.px]="71"> {{menu?.label |
+                  transloco}}</p>
+              </a>
+
+            </ng-container>
+
+          </ng-container>
+
+
+
+
+
+          <!-- last active item -->
+          @if(activeItem() && activeItem().position !== 'bottom') {
+
+          <a role="link"
+            class="d-flex link text-truncate justify-content-center position-relative flex-column border-bottom text-center align-items-center text-break white-space text-decoration-none p-2"
+            [class.visible]="breakHeight?.length>2" [routerLink]='activeItem()?.route?.path'
+            (mouseover)="onMouseOver(activeMenu===activeItem()?.code)" (click)="onMenu(activeItem())"
+            routerLinkActive='menu_active' [ngClass]="{ active: activeMenu === activeItem()?.code }" dx-tooltip
+            *ngIf="menu?.permission ? (menu.permission?.permission | ablePure: menu.permission?.apiName | async) : true"
+            dxTooltipTitle="{{ activeItem()?.label | transloco }}" dxTooltipPlacement="right">
+            <mat-icon *ngIf="activeItem()?.icon" aria-hidden="false" [attr.aria-label]="activeItem()?.label | transloco"
+              [fontIcon]="activeItem()?.icon"></mat-icon>
+            <p class="m-0 paragraph text-truncate text-break" [style.width.px]="71"> {{activeItem()?.label |
+              transloco}}
+            </p>
+          </a>
+
+          }
+          <!--  -->
+          <!-- More -->
+          @if((flexMenuService?.filteredMenus|async)?.length) {
+
+          <a role="button" [@menuItems]="bottonMenusToggle"
+            class="d-flex link text-truncate justify-content-center position-relative flex-column text-center border-bottom align-items-center text-break white-space text-decoration-none p-2 "
+            (click)="menuTrigger.openMenu()" [class.visible]="breakHeight?.length > 2"
+            [class.flex-more-panel]="menuTrigger?.menuOpen">
+
+            <mat-icon aria-hidden="false" aria-label="more" [fontIcon]="'more_horiz'"></mat-icon>
+            <p class="m-0 title paragraph text-truncate text-break"> {{'More' | transloco}} </p>
+            <span class="position-absolute end-0" #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu"></span>
+          </a>
+
+          }
+
+
+          <mat-menu #menu="matMenu" xPosition="after">
+            @for (menu of (flexMenuService?.filteredMenus|async); track menu) {
+
+            <div matMenuContent [style.width.px]="200" class="background_base">
+              <a role="link"
+                class="w-100 text-truncate link d-flex justify-content-start position-relative text-center border-bottom align-items-center background_base background_on_base w-100 text-break white-space text-decoration-none p-2 border-bottom"
+                [routerLink]='menu?.route?.path' (click)="onMenu(menu)" routerLinkActive='menu_active'
+                [ngClass]="{ active: activeMenu === menu?.code }" dx-tooltip
+                dxTooltipTitle="{{ menu?.label | transloco }}" dxTooltipPlacement="right">
+                <mat-icon *ngIf="menu?.icon" aria-hidden="false" [attr.aria-label]="menu.label | transloco"
+                  [fontIcon]="menu?.icon"></mat-icon>
+                <p class="ms-1 paragraph text-truncate text-break mb-0">{{ menu.label | transloco }}
+                </p>
+              </a>
+            </div>
+
+            }
+
+
+          </mat-menu>
+          <!--  -->
+          <div (mouseleave)="onMouseOver(false)" class="close-panel-palceholder"></div>
+          <!-- Min & Max -->
+
+          <div class="position-absolute w-100 border-top bottom-0">
+            @if (subMenuList()?.length > 0) {
+
+            <a role="button"
+              class="d-flex maximize btn btn-link  justify-content-center flex-column border-top bord text-center w-100 align-items-center text-break white-space text-decoration-none p-2 position-absolute bottom-0"
+              (click)="toggle(maximize())" dx-tooltip dxTooltipTitle="{{subMenu==='in'?'Minimize':'Maximize' }}"
+              dxTooltipPlacement="right" [class.show-flex-menus]="breakHeight?.length>2">
+              <mat-icon aria-hidden="false" aria-label="Toggle"
+                [fontIcon]="subMenu==='in' && maximize? 'menu_open' : 'clear_all'"></mat-icon>
+              <p class="m-0 title paragraph text-break" [style.width.px]="71"> {{
+                subMenu==='in' && maximize? 'Close' : 'Open'
+                }}
+
+            </a>
+
+            } @else {
+
+            @for (menu of initialFlexMenuList() | filterBy: 'position': 'bottom'; track menu) {
+
+            <a role="link" [@menuItems]="bottonMenusToggle()" [routerLink]='menu?.route?.path'
+              class="d-flex link justify-content-center flex-column text-center align-items-center text-break white-space text-decoration-none p-2 "
+              (click)="onMenu(menu)">
+              <div class="wrapper-menu">
+                <div class="wrapper-menu">
+                  <mat-icon *ngIf="menu?.icon" aria-hidden="false" [attr.aria-label]="menu.label | transloco"
+                    [fontIcon]="menu?.icon"></mat-icon>
+                  <p class="m-0 title paragraph text-truncate text-break" [style.width.px]="71">
+                    {{menu?.label |
+                    transloco}}
+                  </p>
+                </div>
+              </div>
+            </a>
+
+            }
+            }
+          </div>
+
+          <!--  -->
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  @if (subMenuList()?.length > 0) {
+  <div class="background_base background_on_base border-end elevation-z-6" scrollHeight [@slideInOut]="subMenu">
+    <ul class="px-1 pc-submenu  list-unstyled" [style.width.px]="250">
+      @if (subMenuList()?.length > 0) {
+      <li>
+        <h3 class="subtitle text_primary_base text- fw-bold p-2">{{subMenuList()[0]?.parentName | transloco}}</h3>
+      </li>
+      }
+
+      @for (item of subMenuList(); track item; let i = $index) {
+      <ng-container *ngIf="item.isDisplay || disableDispalyConditions">
+        <li>
+          <dx-menu-list-item [disableDispalyConditions]="disableDispalyConditions" [item]="item" [index]="i"
+            [vartical]="false" [list]="subMenuList()" (onMenuSelection)="toggle(maximize())"></dx-menu-list-item>
+        </li>
+      </ng-container>
+      }
+
+
+    </ul>
+
+  </div>
+  }
+</div>
+
+
+<ng-template #menuSkeletonLoader>
+  <div *ngFor="let item of [1,2,3]"
+    class="w-100 link d-flex justify-content-start position-relative text-center border-bottom align-items-center w-100 text-break white-space text-decoration-none pt-3 px-2 border-bottom">
+    <dx-skeleton-loader [theme]="checkBoxLoader"></dx-skeleton-loader>
+  </div>
+</ng-template>

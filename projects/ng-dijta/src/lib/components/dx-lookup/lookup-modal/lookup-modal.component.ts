@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
@@ -11,7 +11,9 @@ import { LookupModalService } from './service/lookup-modal.service';
 
 import { isArray, pickBy, startsWith } from 'lodash';
 import { PaginationRequest } from '../../dx-config-table';
-import { BulkActions, DxFilter, DxTableColumn, DxTableColumnType, DxTableData, DxTableSetting, PageSize, SelectedCheckboxConfig, SelectedRowsConfig } from '../../dx-table';
+import { BulkActions, DxFilter, DxTableColumn, DxTableColumnType, DxTableComponent, DxTableData, DxTableSetting, PageSize, SelectedCheckboxConfig, SelectedRowsConfig } from '../../dx-table';
+import { DxGlobalConfigService } from '../../../service/global-config/dx-global-config.service';
+import { DxDijtaGlobalConfig } from '../../../interface/config.detail.model';
 @Component({
   selector: 'dx-lookup-modal',
   templateUrl: './lookup-modal.component.html',
@@ -19,7 +21,7 @@ import { BulkActions, DxFilter, DxTableColumn, DxTableColumnType, DxTableData, D
   encapsulation: ViewEncapsulation.None
 })
 export class LookupModalComponent<T> implements OnInit {
-
+  @ViewChild('table') tableRef!: DxTableComponent<any>;
   tableSettings!: DxTableSetting;
   actions: LookupModalActions = {
     enable: false
@@ -42,7 +44,7 @@ export class LookupModalComponent<T> implements OnInit {
   moduleDetailsLoader$: Observable<boolean> = of(false);
 
   isGenericService: boolean = false;
-  paginationRequest!: PaginationRequest;
+  paginationRequest: PaginationRequest = {};
   recordIdentifier: any;
   selectedRecords: DxTableData<any>[] = [];
   singleRowSelection: SelectedRowsConfig<any> | undefined;
@@ -80,20 +82,33 @@ export class LookupModalComponent<T> implements OnInit {
   constructor(
     private readonly dialogRef: MatDialogRef<LookupModalComponent<T>>,
     private readonly lookupModalService: LookupModalService<T>,
-    private readonly fb: FormBuilder
+    private readonly fb: FormBuilder,
+    private readonly dxGlobalConfigService: DxGlobalConfigService
   ) { }
 
   ngOnInit(): void {
 
-    this.paginationRequest = this.lookupApiConfig?.body?.paginationRequest ?? this.lookupApiConfig?.paginationRequest
-    if (this.isGenericService) {
-      this.getLookUpList()
-    } else {
-      this.getModuleDefinition()
-    }
+    this.paginationRequest = this.lookupApiConfig?.body?.paginationRequest ?? this.lookupApiConfig?.paginationRequest;
     if (this.lookupApiConfig.newSearchFilter) {
       this.prepareSearch();
     }
+    this.checkConfig();
+
+  }
+
+  private async checkConfig(): Promise<any> {
+    const configDetails: DxDijtaGlobalConfig = await this.dxGlobalConfigService.getConfigDetails();
+    if (configDetails && this.dxGlobalConfigService.getPageSize() && !this.lookupApiConfig.disableInitialCall) {
+      if (this.paginationRequest) {
+        this.paginationRequest.pageSize = this.dxGlobalConfigService.getPageSize();
+      }
+      if (this.isGenericService) {
+        this.getLookUpList()
+      } else {
+        this.getModuleDefinition()
+      }
+    }
+
   }
 
   onClose(): void {
@@ -103,7 +118,8 @@ export class LookupModalComponent<T> implements OnInit {
 
     if (this.paginationRequest) {
       this.paginationRequest.pageNo = event?.pageIndex;
-
+      this.paginationRequest.pageSize = event?.pageSize;
+      this.tablePageSize = event?.pageSize;
     }
     this.getLookUpList();
   }
@@ -154,10 +170,13 @@ export class LookupModalComponent<T> implements OnInit {
 
   onHeaderActionClick(event: DxFilter): void {
     if (event.type === 'refresh') {
-      this.paginationRequest = {
-        ...this.paginationRequest,
-        pageSize: this.tableSettings.pageSize,
-      };
+      if (this.tableSettings.pagination) {
+        this.paginationRequest = {
+          ...this.paginationRequest,
+          pageSize: this.tableSettings.pageSize,
+        };
+      }
+
       this.getLookUpList();
     } else {
       this.actionEmitted.emit(event);
@@ -216,7 +235,7 @@ export class LookupModalComponent<T> implements OnInit {
     this.paginationRequest.search = '';
     if (this.paginationRequest && this.lookupApiConfig?.searchBasedOn) {
       this.paginationRequest.search = searchControl && searchControl != '' ?
-        [this.lookupApiConfig?.searchBasedOn] + ':sw:' + searchControl : '';
+        [this.lookupApiConfig?.searchBasedOn] + `:${this.lookupApiConfig?.searchBasedOperator ?? 'lk'}:` + searchControl : '';
       this.paginationRequest.pageNo = 0;
       this.getLookUpList();
     }
@@ -226,21 +245,27 @@ export class LookupModalComponent<T> implements OnInit {
     if (this.filterFg.valid) {
 
       if (this.lookupApiConfig.newSearchFilter?.isServerSearch) {
-        this.paginationRequest = {
-          ...this.paginationRequest,
-          search: ''
-        };
-        const searches = Object.keys(this.cleanObject(this.filterFg.value)).map((key: string) => {
-          const operators = this.lookupApiConfig.newSearchFilter?.searchParams.find((search) => search.field === key)?.search;
-          return `${key}:${operators ?? 'sw'}:${this.filterFg.value[key]}`
-        });
-        this.paginationRequest.search = searches.join(',');
-        this.paginationRequest.pageNo = 0;
+        if (this.lookupApiConfig?.transformPayload) {
+          this.lookupApiConfig = this.lookupApiConfig?.transformPayload(this)
+        } else {
+          this.paginationRequest = {
+            ...this.paginationRequest,
+            search: ''
+          };
+          const searches = Object.keys(this.cleanObject(this.filterFg.value)).map((key: string) => {
+            const operators = this.lookupApiConfig.newSearchFilter?.searchParams.find((search) => search.field === key)?.search;
+            return `${key}:${operators ?? 'lk'}:${this.filterFg.value[key]}`
+          });
+          this.paginationRequest.search = searches.join(',');
+          this.paginationRequest.pageNo = 0;
+        }
+
         this.getLookUpList();
       } else {
         this.dataSource = this.filterArray(this.originalDataSource, this.cleanObject(this.filterFg.value));
       }
     }
+
   }
   reset(): void {
     this.filterFg.reset();
@@ -256,14 +281,15 @@ export class LookupModalComponent<T> implements OnInit {
   private filterArray<T>(array: DxTableData<T>[], filterObject: Partial<T>): DxTableData<T>[] {
     return array.filter(item =>
       Object.keys(filterObject).every(key => {
-        const searchField: SearchParams<any> | undefined = this.lookupApiConfig.newSearchFilter?.searchParams.find((search) => search.field === key);
-        if (searchField?.search === 'sw') {
-          return startsWith(item.data[key], filterObject[key])
-        }
-        return item.data[key] === filterObject[key];
-      }
+        const searchField: SearchParams<any> | undefined =
+          this.lookupApiConfig.newSearchFilter?.searchParams.find(search => search.field === key);
 
-      )
+        if (searchField?.search === 'lk') {
+          return item.data[key]?.toString().toLowerCase().includes(filterObject[key]?.toString().toLowerCase());
+        }
+
+        return item.data[key] == filterObject[key];
+      })
     );
   }
   private cleanObject(obj: Partial<T>): Partial<any> {
@@ -274,7 +300,8 @@ export class LookupModalComponent<T> implements OnInit {
   }
 
   getLookUpList(): void {
-    if (this.paginationRequest) {
+    this.lookupDataSubscription?.unsubscribe();
+    if (this.paginationRequest && this.tableSettings.pagination) {
       this.paginationRequest.pageSize = this.tablePageSize ?? this.customViewDetails?.listSize ?? this.paginationRequest?.pageSize ?? 10;
       if (this.lookupApiConfig?.staticSearch) {
         this.paginationRequest.search = this.paginationRequest.search?.split(',')
@@ -289,40 +316,43 @@ export class LookupModalComponent<T> implements OnInit {
       ...this.lookupApiConfig,
       body: {
         ...this.lookupApiConfig?.body,
-        paginationRequest: this.paginationRequest
+        paginationRequest: this.tableSettings.pagination ? this.paginationRequest : undefined
       }
     };
     this.lookupDataSubscription = this.lookupModalService.getLookupServiceRequest(this.lookupApiConfig).subscribe(
-      (response: ModuleRecordModel) => {
-        if (response) {
-          const moduleResponse = response?.response ?? response
-          this.tableSettings.totalItems = moduleResponse?.totalElements;
-          this.tableSettings.pageIndex = moduleResponse?.number
-          if (this.listTransform) {
-            this.dataSource = this.listTransform(moduleResponse, this.config);
-          } else {
-            this.dataSource = moduleResponse?.content?.map((item: any) => {
-              const additionalRecord = this.selectedItems.find((record) => record.pkId === item.pkId);
-              let additionObj: any;
-              if (additionalRecord && additionalRecord.key) {
-                additionObj = {
-                  [additionalRecord?.key!]: [additionalRecord?.value!]
+      {
+        next: (response: ModuleRecordModel) => {
+          if (response) {
+            const moduleResponse = response?.response ?? response
+            this.tableSettings.totalItems = moduleResponse?.totalElements;
+            this.tableSettings.pageIndex = moduleResponse?.number;
+            this.tableSettings.pageSize = moduleResponse?.size;
+            if (this.listTransform) {
+              this.dataSource = this.listTransform(moduleResponse, this.config, this);
+            } else {
+              this.dataSource = moduleResponse?.content?.map((item: any) => {
+                const additionalRecord = this.selectedItems?.find((record) => record.pkId === item.pkId);
+                let additionObj: any;
+                if (additionalRecord && additionalRecord.key) {
+                  additionObj = {
+                    [additionalRecord?.key!]: [additionalRecord?.value!]
+                  }
                 }
-              }
-              return {
-                data: {
-                  ...this.getValue(item),
-                  ...additionObj
-                }
-              };
-            }) as DxTableData<any>[];
+                return {
+                  data: {
+                    ...this.getValue(item),
+                    ...additionObj
+                  },
+                };
+              }) as DxTableData<any>[];
+            }
+            this.originalDataSource = this.dataSource;
+            this.skeletonLoader$ = of(false);
           }
-          this.originalDataSource = this.dataSource;
+        },
+        error: (error) => {
           this.skeletonLoader$ = of(false);
         }
-      },
-      (error) => {
-        this.skeletonLoader$ = of(false);
       }
     );
   }

@@ -1,6 +1,7 @@
 export * from './dx-file-upload.module';
 export * from './components/attribute/file-upload-attr.component';
 export *  from './components/drop-zone/file-upload-drop-zone.component';
+export *  from './components/file-list/file-upload-icon.component';
 export *  from './components/file-list/file-upload-list-item.component';
 export *  from './components/multiple-file-upload/file-upload.component';
 export *  from './components/simple-file-upload/simple-file-upload.component';

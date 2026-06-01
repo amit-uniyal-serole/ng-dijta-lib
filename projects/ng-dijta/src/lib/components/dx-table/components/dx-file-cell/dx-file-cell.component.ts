@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, Input } from '@angular/core';
+import { Component, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
 import { fadeIn, fadeOut } from './error.animation';
 import { ErrorUtils } from './error.utils';
@@ -27,12 +27,16 @@ export class DxFileCellComponent {
     this._files = file;
   }
 
+  @Output() fileView: EventEmitter<{ file: FileCellDto; element: HTMLImageElement }> = new EventEmitter();
+
   get displayFile(): FileCellDto | undefined {
     return this._files?.recordFile;
   }
 
-  get images(): string[] | undefined {
-    return this._files?.otherImages?.map((image) => image.imageSizeUrl?.lg ?? '');
+  get images(): string[] {
+    const recordLg = this._files?.recordFile?.imageSizeUrl?.lg;
+    const otherLgs = this._files?.otherImages?.map((image) => image.imageSizeUrl?.lg ?? '') ?? [];
+    return recordLg ? [recordLg, ...otherLgs] : otherLgs;
   }
   constructor(
     private elementRef: ElementRef,
@@ -75,7 +79,23 @@ export class DxFileCellComponent {
   }
 
   open() {
-    this.customSub.next(this.elementRef.nativeElement.querySelector('img'));
+    const lgUrl = this.displayFile?.imageSizeUrl?.lg;
+    const allPreviewImgs = this.elementRef.nativeElement.querySelectorAll('div[dImagePreview] img') as NodeListOf<HTMLImageElement>;
+    let imgElement: HTMLImageElement | null = null;
+    if (lgUrl) {
+      for (const img of Array.from(allPreviewImgs)) {
+        if (img.src?.includes(lgUrl)) {
+          imgElement = img;
+          break;
+        }
+      }
+    }
+    if (imgElement) {
+      this.customSub.next(imgElement);
+    }
+    if (this.displayFile && imgElement) {
+      this.fileView.emit({ file: this.displayFile, element: imgElement });
+    }
   }
 
   private downloadFile(blob: Blob, fileName: string): void {

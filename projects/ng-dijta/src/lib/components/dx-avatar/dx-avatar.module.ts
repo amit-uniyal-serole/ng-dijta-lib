@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 import { DxPopoverModule } from '../dx-popover/popover.module';
 import { DxAvatarGroupComponent } from './components/dx-avatar-group.component';
 import { DxAvatarComponent } from './dx-avatar.component';

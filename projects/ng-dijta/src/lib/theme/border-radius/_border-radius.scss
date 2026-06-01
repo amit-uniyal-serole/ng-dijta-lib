@@ -1,0 +1,8 @@
+:root {
+    --border-radius-1: 6px;
+}
+.border-radius {
+    &-1 {
+        border-radius: var(--border-radius-1);
+    }
+}

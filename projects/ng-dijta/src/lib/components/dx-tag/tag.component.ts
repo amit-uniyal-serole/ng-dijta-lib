@@ -68,22 +68,22 @@ export class TagComponent implements OnChanges {
   }
 
   canDeleteTag(tag) {
-    let changeResult = Promise.resolve(true);
-  
+    let closeResult: Promise<boolean> = Promise.resolve(true);
+
     if (this.beforeDelete) {
       const result: any = this.beforeDelete(tag);
       if (typeof result !== 'undefined') {
         if (result.then) {
-          changeResult = result.then((res: boolean | undefined) => res ?? true);
+          closeResult = result.then(res => res !== undefined ? res : false);
         } else if (result.subscribe) {
-          changeResult = (result as Observable<boolean>).toPromise().then((res: boolean | undefined) => res ?? true);
+          closeResult = (result as Observable<boolean>).toPromise().then(res => res !== undefined ? res : false);
         } else {
-          changeResult = Promise.resolve(result !== undefined ? result : true);
+          closeResult = Promise.resolve(result !== undefined ? result : false);
         }
       }
     }
-  
-    return changeResult;
+
+    return closeResult;
   }
 
 }

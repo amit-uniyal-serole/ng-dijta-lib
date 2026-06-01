@@ -1,15 +1,18 @@
 .options-trigger {
-    min-width: 40px;
+        min-width: fit-content;
     vertical-align: top;
     max-width: 98% !important;
-    background: #E7F2FF;
+    /* background: #E7F2FF; */
     color: #313949;
     border: gray;
-    border-radius: 9px;
-    padding: 3px 10px;
+    border-radius: 5px;
+    padding: 0px 7px;
     display: inline-block;
     position: relative;
-    margin: 5px 3px 0px 0px;
+    margin: 2px 3px 0px 0px;
+    font-size: 13px;
+    border: 1px solid;
+    line-height: 19px;
 }
 
 .options-container {
@@ -23,4 +26,8 @@
 
 #search-input.mat-form-field.mat-focused {
     padding-top: 0.3em !important;
+}
+
+.mdc-list-item__primary-text {
+    width: 100%;
 }

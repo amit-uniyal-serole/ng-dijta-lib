@@ -2,41 +2,43 @@ import { Component, Input, OnChanges, SimpleChanges, OnInit } from '@angular/cor
 import { Observable, Subject, of } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzBreakpointService, siderResponsiveMap } from '../../../utils/types/breakpoint';
-import { Menu, SUB_MENU_TYPE } from '../../dx-side-bar';
-import { FlexMenuAction } from '../../dx-side-bar/model/menu';
 import { LayoutServiceService } from '../layout-service.service';
+import { Menu, SUB_MENU_TYPE } from '../../dx-sidebar';
+import { FlexMenuAction } from '../../dx-sidebar/model/menu';
 export enum FIX_SIZE {
   IN = 240,
   OUT = 0,
-  DEFAULT = 76,
+  DEFAULT = 75,
   MAX = 316,
 }
 @Component({
   selector: 'dx-compact-content',
   template: `
-    <dx-layout-content>
-        <dx-layout-sider [nzWidth]="(isHideSideBar$ | async) && !(menuToogle$ | async) ? 0 : size" nzTheme="light">
+      <dx-layout-sider [nzWidth]="(isHideSideBar$ | async) && !(menuToogle$ | async) ? 0 : size" nzTheme="light">
           <div class="side" [ngStyle]="{'display': size === 0 || ((isHideSideBar$ | async) && !(menuToogle$ | async)) ? 'none' : 'block'}">
-            <dx-side-bar *ngIf="!flexMenu" [menu]="menu"></dx-side-bar>
-            <dx-flex-menu
-              *ngIf="flexMenu"
+            <dx-flex-menu  
               [menu]="menu"
               [subMenu]="menuState"
               [isMenusLoading]="isMenusLoading"
+              [width]="size"
               (sidebarToggle)="onToggle($event)"
-              [disableDispalyConditions]="disableDispalyConditions"
+            [disableDispalyConditions]="disableDispalyConditions"
             ></dx-flex-menu>
           </div>
         </dx-layout-sider>
-        <div class="inner-content-area" [ngStyle]="{'padding-left.px': size}">
-          <ng-content></ng-content>
+        <div class="inner-content-area" scrollHeight [ngStyle]="{'padding-left.px': size}" [class.overflow-hidden]="(overflowEnable$ | async)">
+            <ng-content></ng-content>
         </div>
-    </dx-layout-content>
   `,
+  styles: [`
+    .side {
+      background-color: var(--primary-base, #00828e);
+      color: var(--primary-on-base, #fff);
+    }  
+  `]
 })
 export class CompactContentComponent implements OnChanges, OnInit {
   @Input() menu: Menu[] = [];
-  @Input() flexMenu!: boolean;
   @Input() isMenusLoading!: boolean;
   @Input() disableDispalyConditions: boolean = true;
   private destroy$ = new Subject<void>();
@@ -49,6 +51,7 @@ export class CompactContentComponent implements OnChanges, OnInit {
   size: number = FIX_SIZE.DEFAULT;
   smallSize: boolean = false;
   isHideSideBar$: Observable<boolean> = of(false);
+  overflowEnable$: Observable<boolean> = of(false);
   menuToogle$!: Observable<boolean>;
   constructor(
     private breakpointService: NzBreakpointService,
@@ -67,7 +70,7 @@ export class CompactContentComponent implements OnChanges, OnInit {
       });
     this.onToggleChange();
     this.isHideSideBar$ = this.layoutServiceService.onHideSideBar;
-    this.menuToogle$ = this.layoutServiceService.onMenuToggle
+    this.overflowEnable$ = this.layoutServiceService.overflowEnable;
   }
 
   ngOnChanges(changes: SimpleChanges) {

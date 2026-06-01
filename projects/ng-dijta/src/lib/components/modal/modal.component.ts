@@ -106,7 +106,7 @@ export class ModalComponent implements OnInit, OnDestroy {
         if (result.then) {
           hiddenResult = result.then((res: boolean | undefined) => res ?? true);
         } else if (result.subscribe) {
-          hiddenResult = (result as Observable<boolean>).toPromise().then((res: boolean | undefined) => res ?? true);
+          hiddenResult = (result as Observable<boolean>).toPromise().then(value => value !== undefined ? value : false);
         } else {
           hiddenResult = Promise.resolve(result !== undefined ? result : true);
         }

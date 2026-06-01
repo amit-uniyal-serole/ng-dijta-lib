@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { DxLookupComponent } from './dx-lookup.component';
 import { LookupModalModule } from './lookup-modal/lookup-modal.module';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { LookupModalModule } from './lookup-modal/lookup-modal.module';
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
-    LookupModalModule
+    LookupModalModule,
+    MatIconModule
   ],
   exports: [DxLookupComponent, LookupModalModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

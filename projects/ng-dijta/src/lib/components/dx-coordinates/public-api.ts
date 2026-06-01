@@ -5,3 +5,4 @@ export * from './coordinate-lat-long/coordinate-lat-long.component';
 export * from './coordinate-lat-long/dx-coordinate-validator';
 export * from './directives/latitude.directive';
 export * from './model/coordinate';
+export * from '../../pipe/dx-tooltip-list.pipe';

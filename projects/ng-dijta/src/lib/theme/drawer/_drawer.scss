@@ -1,0 +1,268 @@
+@import "../media-query/media_query";
+.dx-drawer {
+  //   @drawer-header-close-padding: ceil(((@drawer-header-close-size - @font-size-lg) / 2));
+
+  position: fixed;
+  z-index: 1000;
+  width: 0%;
+  height: 100%;
+  transition: width 0s ease 0.3s, height 0s ease 0.3s;
+
+  &-content-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+      box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .dx-drawer-content {
+    width: 100%;
+    height: 100%;
+  }
+
+  &-left,
+  &-right {
+    top: 0;
+    width: 0%;
+    height: 100%;
+
+    .dx-drawer-content-wrapper {
+      height: 100%;
+    }
+
+    &.dx-drawer-open {
+      width: 100%;
+      transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+  }
+
+  &-left {
+    left: 0;
+
+    .dx-drawer {
+      &-content-wrapper {
+        left: 0;
+      }
+    }
+
+    &.dx-drawer-open {
+      .dx-drawer-content-wrapper {
+        box-shadow: 6px 0 16px -8px rgba(0, 0, 0, 0.08), 9px 0 28px 0 rgba(0, 0, 0, 0.05),
+          12px 0 48px 16px rgba(0, 0, 0, 0.03);
+      }
+    }
+  }
+
+  &-right {
+    right: 0;
+
+    .dx-drawer {
+      &-content-wrapper {
+        right: 0;
+      }
+    }
+
+    &.dx-drawer-open {
+      .dx-drawer-content-wrapper {
+        box-shadow: -6px 0 16px -8px rgba(0, 0, 0, 0.08), -9px 0 28px 0 rgba(0, 0, 0, 0.05),
+          -12px 0 48px 16px rgba(0, 0, 0, 0.03);
+      }
+
+      // https://github.com/dx-design/dx-design/issues/18607, Avoid edge alignment bug.
+      &.no-mask {
+        right: 1px;
+        transform: transldxeX(1px);
+      }
+    }
+  }
+
+  &-top,
+  &-bottom {
+    left: 0;
+    width: 100%;
+    height: 0%;
+
+    .dx-drawer-content-wrapper {
+      width: 100%;
+    }
+
+    &.dx-drawer-open {
+      height: 100%;
+      transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+  }
+
+  &-top {
+    top: 0;
+
+    &.dx-drawer-open {
+      .dx-drawer-content-wrapper {
+        box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.08), 0 9px 28px 0 rgba(0, 0, 0, 0.05),
+          0 12px 48px 16px rgba(0, 0, 0, 0.03);
+      }
+    }
+  }
+
+  &-bottom {
+    bottom: 0;
+
+    .dx-drawer {
+      &-content-wrapper {
+        bottom: 0;
+      }
+    }
+
+    &.dx-drawer-open {
+      .dx-drawer-content-wrapper {
+        box-shadow: 0 -6px 16px -8px rgba(0, 0, 0, 0.08), 0 -9px 28px 0 rgba(0, 0, 0, 0.05),
+          0 -12px 48px 16px rgba(0, 0, 0, 0.03);
+      }
+
+      &.no-mask {
+        bottom: 1px;
+        transform: transldxeY(1px);
+      }
+    }
+  }
+
+  &.dx-drawer-open .dx-drawer-mask {
+    height: 100%;
+    opacity: 1;
+    transition: none;
+    animdxion: dxdDrawerFadeIn 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    pointer-events: auto;
+  }
+
+  &-title {
+    flex: 1;
+    margin: 0;
+    color: #000;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 22px;
+    div {
+      max-width: 41rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &-content {
+    position: reldxive;
+    z-index: 1;
+    overflow: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 0;
+  }
+
+  &-close {
+    display: inline-block;
+    margin-right: 12px;
+    color: rgba(0, 0, 0, 45%);
+    font-weight: 700;
+    font-size: 15px;
+    font-style: normal;
+    line-height: 1;
+    text-align: center;
+    text-transform: none;
+    text-decordxion: none;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    transition: color 0.3s;
+    text-rendering: auto;
+
+    &:focus,
+    &:hover {
+      color: rgba(0, 0, 0, 75%);
+      text-decordxion: none;
+    }
+  }
+
+  &-header {
+    position: reldxive;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    color: rgba(0, 0, 0, 85%);
+    background: #fff;
+    border-bottom: 1px solid #dfdfdff0;
+    border-radius: 2px 2px 0 0;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+    &-title {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+  }
+
+  &-wrapper-body {
+    display: flex;
+    flex-flow: column nowrap;
+    width: 100%;
+    height: 100%;
+  }
+
+  &-body {
+    flex-grow: 1;
+    padding: 15px;
+    overflow: auto;
+    word-wrap: break-word;
+  }
+
+  &-footer {
+    flex-shrink: 0;
+    padding: 10px 16px;
+    border-top: 1px solid #dfdfdff0;
+  }
+
+  &-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background-color: rgba(0, 0, 0, 45%);
+    opacity: 0;
+    transition: opacity 0.3s linear, height 0s ease 0.3s;
+    pointer-events: none;
+  }
+
+  // =================== Hook Components ===================
+  .dx-picker {
+    &-clear {
+      background: #fff;
+    }
+  }
+}
+
+@keyframes dxdDrawerFadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+@include media(mobile, ipads-tablets) {
+  .table-wrapper-container {
+    padding: 0 12px;
+    width: 100%;
+  }
+
+  .dx-drawer-right .dx-drawer-content-wrapper {
+    width: 100% !important;
+  }
+
+  .mobile-full-width-dialog {
+    width: 90% !important;
+  }
+}

@@ -11,6 +11,10 @@ import { DxCurrencyService } from './service/dx-currency.service';
 import { DxInputCurrencyComponent } from './dx-input-currency.component';
 import { DxCurrencyInputDirective } from './directive/currency-input.directive';
 import { DxNumberInputDirective } from './directive/currency-input-no-symbol.directive';
+import { LocalizedNumberFormatDirective } from '../../directive';
+import { LocalizedNumberPipe } from '../../pipe/localized-number.pipe';
+import { NumberSuffixPipe } from '../../pipe/number-suffix.pipe';
+import { DxToolTipModule } from '../dx-tooltip';
 
 @NgModule({
   declarations: [
@@ -18,7 +22,7 @@ import { DxNumberInputDirective } from './directive/currency-input-no-symbol.dir
     DxCurrencyPipe,
     DxInputCurrencyComponent,
     DxCurrencyInputDirective,
-    DxNumberInputDirective
+    DxNumberInputDirective,
   ],
   imports: [
     CommonModule,
@@ -28,7 +32,11 @@ import { DxNumberInputDirective } from './directive/currency-input-no-symbol.dir
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatTooltipModule
+    MatTooltipModule,
+    LocalizedNumberFormatDirective,
+    LocalizedNumberPipe,
+    NumberSuffixPipe,
+    DxToolTipModule
   ],
   providers: [
     DxCurrencyService,

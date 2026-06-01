@@ -1,0 +1,34 @@
+$font-weights: ("extra-light": 200,
+  "light": 300,
+  "regular": 400, //base font weight
+  "medium": 500,
+  "semibold": 600,
+  "bold": 700,
+  "extra-bold": 800,
+);
+
+$text: ("-center": center,
+  "-left": left,
+  "-right": right,
+  "-justify": justify,
+  "-initial": initial,
+  "-inherit": inherit,
+);
+
+
+$fontsize: (
+  "h1" : 23.61px,
+  "h2" : 22.13px, // Always used h2 for heading
+  "h3" : 20.74px,
+  "h4" : 19.44px,
+  "h5" : 18.22px,
+  "h6" : 17.07px,
+  "subtitle":16px,
+  "body" : 16px,
+  "subbody": 14px,
+  "paragraph":12px,
+  "label"    : 13px,   // Field labels / form captions
+  "input"    : 14px,   // Input text fields
+  "info"     : 12px,   // Small hints / helper text
+  "button"   : 14px,   // Buttons and labels
+);

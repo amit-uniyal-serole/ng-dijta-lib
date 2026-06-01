@@ -14,6 +14,9 @@ export class LayoutServiceService {
   private hideSideBar = new BehaviorSubject<boolean>(false);
   onHideSideBar = this.hideSideBar.asObservable();
 
+  private _overflowEnable = new BehaviorSubject<boolean>(false);
+  overflowEnable = this._overflowEnable.asObservable();
+
   changeLayout(type: LAYOUT_TYPE) {
     this.layoutType.next(type)
   }
@@ -25,4 +28,10 @@ export class LayoutServiceService {
   onHideSideBarChange(val: boolean): void {
     this.hideSideBar.next(val);
   }
+
+  hiddenOverflow(val: boolean): void {
+    this._overflowEnable.next(val);
+  }
+
+
 }

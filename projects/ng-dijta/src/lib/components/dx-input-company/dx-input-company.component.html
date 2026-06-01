@@ -1,12 +1,15 @@
-<div class="dx-field-wrapper input-variant-layout" [class.none-label]="noneLabel" [ngClass]="outline"
-  [class.error]="control?.invalid && (control.touched || control.dirty)" [class.display-view]="viewOnly"
-  [class.required]="required">
-  <mat-form-field appearance="outline">
+<div class="ngdx-field-wrapper input-variant-layout" [class.none-label]="noneLabel" [ngClass]="outline"
+  [class.display-view]="viewOnly" [class.required]="required || ctrRequired">
+  <mat-label class="dx-outer-label" *ngIf="outline === 'outer-label'">
+    <ng-content select="[dxLabel]"></ng-content>
+    <span *ngIf="required || ctrRequired" class="astrict">*</span>
+  </mat-label>
+  <mat-form-field appearance="outline" floatLabel="always">
     <span matPrefix class="material-icons-outlined">{{icon}}</span>
-    <mat-label class="dx-input-label">
+    <mat-label *ngIf="outline !== 'outer-label'">
       <ng-content select="dx-label"></ng-content>
     </mat-label>
-    <input type="text" matInput [mask]="mask" [formControl]="control?.control" [placeholder]="placeholder"
+    <input type="text" matInput [mask]="mask" [formControl]="control" [placeholder]="placeholder"
       (ngModelChange)="inputChange($event)" [disabled]="disabled" (blur)="onBlur($event)"
       [readonly]="readonly || viewOnly" />
     <span matSuffix>

@@ -1,0 +1,25 @@
+:root {
+    --mat-dialog-headline-padding: 15px;
+    --mat-dialog-with-actions-content-padding:12px;
+    --mat-dialog-border: 1px solid #ccc;
+    --mdc-dialog-container-shape: var(--dx-card-border-radius);
+}
+.mdc-dialog__title {
+    border-bottom: var(--mat-dialog-border) !important;
+    display: flex !important;
+    width: 100%;
+    &::before {
+        height: auto !important;
+    }
+    .close {
+        position: absolute;
+        right: 14px;
+        top: 26%;    
+    }
+}
+.mdc-dialog__actions {
+    border-top: var(--mat-dialog-border) !important;
+}
+.mat-mdc-dialog-container-with-actions .mat-mdc-dialog-content {
+    padding: var(--mat-dialog-with-actions-content-padding, 20px 24px) !important;
+}

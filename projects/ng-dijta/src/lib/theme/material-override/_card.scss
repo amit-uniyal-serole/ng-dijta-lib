@@ -1,0 +1,17 @@
+:root {
+    --dx-card-background: #fff;
+    --dx-card-border-radius: 5px;
+
+    --dx-card-header-padding: 10px;
+    --dx-card-header-border-bottom-width: 1px;
+    --dx-card-header-border-bottom-color: #d6d6db8c;
+    --dx-card-header-background: #fff;
+    --dx-card-header-forbackground: #000;
+
+    --dx-card-body-padding: 10px 15px;
+}
+
+.dx-card {
+    width: 100%;
+    height: 100%;
+}

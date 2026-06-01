@@ -1,58 +1,130 @@
-## Selector
+---
+category: Components
+type: Data Display
+title: Table View Wrapper
+---
 
-`<dx-table-view-wrapper></dx-table-view-wrapper>`
+Container that switches between a `dx-table` and a `dx-canvas` view over the same data set. Forwards table and canvas inputs through a single API and re-emits each view's events, so a parent only wires one component for both layouts.
 
-## Module
+## When To Use
 
-`import{DxTableViewWrapperModule} from @ngdx/dijta`
+- Offer users a choice between a standard table layout and a card/canvas layout of the same rows.
+- Persist the currently selected view on the `multiViewTable` state object.
+- Centralize data-loading, pagination, and selection handling across both views.
 
-## Inputs
+## API
 
-### Table
+```html
+<dx-table-view-wrapper
+  [multiViewTable]="{ selectedView: 'dx-table', isMultiViewToggle: true }"
+  [columns]="columns"
+  [dataSource]="rows"
+  [setting]="setting"
+  [canvasDataSource]="canvasRows"
+  [canvasSetting]="canvasSetting"
+  (onTableViewPaginationClick)="onPage($event)"
+  (onTableViewCheckboxChange)="onSelect($event)">
+</dx-table-view-wrapper>
+```
 
-| Input                                  | Description                                |
-| -------------------------------------- | ------------------------------------------ |
-| **columns** (Array<DxTableColumn<T>>)  | `Define table columns`                     |
-| **dataSource** (Array<DxTableData<T>>) | `Data which need to be displayed on table` |
-| **setting** (DxTableSetting)           | `Define Table settings`                    |
+### dx-table-view-wrapper
 
-### Canvas
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[multiViewTable]` | View-switching state (active view + toggle flag) | `MultiViewTable` | - |
+| `[columns]` | Column definitions for the table view | `DxTableColumn<T>[]` | `[]` |
+| `[dataSource]` | Row data for the table view | `DxTableData<T>[]` | `[]` |
+| `[templateRef]` | Custom row template for the table view | `TemplateRef<any>` | - |
+| `[setting]` | Table-wide behavior settings | `DxTableSetting` | - |
+| `[isBusy]` | Show loading state on both views | `boolean` | `false` |
+| `[isAvatar]` | Enables avatar rendering in the table view | `boolean` | `false` |
+| `[canvasDataSource]` | Row data for the canvas view | `DxCanvasData<T>[]` | - |
+| `[canvasSetting]` | Canvas-view behavior settings | `DxCanvasSetting` | - |
+| `[cardActions]` | Column definition used for per-card actions | `DxTableColumn<T>` | - |
 
-| Input                                         | Description                                       |
-| --------------------------------------------- | ------------------------------------------------- |
-| **canvasDataSource** (Array<DxCanvasData<T>>) | `Data which need to be displayed on canvas cards` |
-| **canvasSetting** (DxCanvasSetting)           | `Define canvas settings`                          |
-| **cardActions** (DxTableColumn<T>)            | `Define card actions`                             |
+### Events
 
-## Events
+Table-view outputs:
 
-### Table
+| Event | Description | Type |
+|-------|-------------|------|
+| `(onTableViewAction)` | Forwarded from `dx-table` `(onAction)` | `EventEmitter<OnAction<DxTableData<T>>>` |
+| `(onTableViewSort)` | Forwarded from `dx-table` `(onSort)` | `EventEmitter<Sort>` |
+| `(onTableViewCheckboxChange)` | Forwarded from `dx-table` `(onCheckboxChange)` | `EventEmitter<DxTableData<T>[]>` |
+| `(onTableViewRowSelection)` | Forwarded from `dx-table` `(onRowSelection)` | `EventEmitter<DxTableData<T>[]>` |
+| `(onTableViewFilterClick)` | Forwarded from `dx-table` `(onFilterClick)` | `EventEmitter<DxFilter>` |
+| `(onTableViewPaginationClick)` | Forwarded from `dx-table` `(onPaginationClick)` | `EventEmitter<PageEvent>` |
+| `(onTableViewEventChange)` | Forwarded from `dx-table` `(onEventChange)` | `EventEmitter<DxTableData<T>>` |
+| `(onTablePageSizeChange)` | Forwarded from `dx-table` `(onClickTablePageSize)` | `EventEmitter<PageSize>` |
 
-| Event                          | Time of triggering                  | return type                        |
-| ------------------------------ | ----------------------------------- | ---------------------------------- |
-| **onTableViewAction**          | `on click of action icons in table` | **OnAction<T>**                    |
-| **onTableViewSort**            | `on sorting columns`                | **Sort**                           |
-| **onTableViewCheckboxChange**  | `on click of checkbox`              | **DxTableColumn<T>[]**             |
-| **onTableViewFilterClick**     | `on clicking Filter Icon`           | **DxFilter**                       |
-| **onTableViewPaginationClick** | `on clicking paginator Icon`        | **PageEvent**                      |
-| **onTableViewEventChange**     | `on Event Change`                   | **DxTableData<T>**                 |
-| **onTableViewRowSelection**    | `on Row Selection`                  | **EventEmitter<DxTableData<T>[]>** |
-| **onTablePageSizeChange**      | `on clicking page size dropdown`    | **PageSize**                       |
+Canvas-view outputs:
 
-### Canvas
+| Event | Description | Type |
+|-------|-------------|------|
+| `(onCanvasViewCheckboxChange)` | Card selection changed | `EventEmitter<DxCanvasData<T>[]>` |
+| `(onCanvasViewPaginationClick)` | Canvas pagination event | `EventEmitter<PageEvent>` |
+| `(onClickCanvasViewHeaderAction)` | Canvas header action (filter, etc.) | `EventEmitter<DxFilter>` |
+| `(onClickCanvasViewAction)` | Per-card action clicked | `EventEmitter<OnAction<T>>` |
+| `(onCanvasPageSizeChange)` | Canvas page size changed | `EventEmitter<PageSize>` |
 
-| Event                             | Time of triggering                  | return type           |
-| --------------------------------- | ----------------------------------- | --------------------- |
-| **onClickCanvasViewAction**       | `on click of action icons in table` | **OnAction<T>**       |
-| **onCanvasViewCheckboxChange**    | `on click of checkbox`              | **DxCanvasData<T>[]** |
-| **onCanvasViewPaginationClick**   | `on clicking paginator Icon`        | **PageEvent**         |
-| **onClickCanvasViewHeaderAction** | `on clicking Filter Icon`           | **DxFilter**          |
-| **onCanvasPageSizeChange**        | `on clicking page size dropdown`    | **PageSize**          |
+### Types
 
-## Sample selector After implementing all inputs and output Events
+```typescript
+type TABLE_VIEW_TYPES = 'dx-table' | 'dx-canvas';
 
-> `<dx-table-view-wrapper [multiViewTable]="multiViewTable" [canvasSetting]="canvasSetting" [canvasDataSource]="canvasDataSource" [cardActions]="cardActions" (onCanvasViewPaginationClick)="onCanvasViewPaginationClick($event)" (onCanvasViewCheckboxChange)="onCanvasViewCheckboxChange($event)" (onClickCanvasViewHeaderAction)="onClickCanvasViewHeaderAction($event)" (onClickCanvasViewAction)="onClickCanvasViewAction($event)" (onCanvasPageSizeChange)="onCanvasPageSizeChange($event)" [dataSource]="dataSource" [setting]="setting" [columns]="tableColumns" (onTableViewCheckboxChange)="onTableViewCheckboxChange($event)" (onTableViewRowSelection)="onTableViewRowSelection($event)" (onTableViewSort)="onTableViewSort($event)" (onTableViewFilterClick)="onTableViewFilterClick($event)" (onTableViewAction)="onTableViewAction($event)" (onTableViewEventChange)="onTableViewEventChange($event)" (onTableViewPaginationClick)="onTableViewPaginationClick($event)" (onTablePageSizeChange)="onTablePageSizeChange($event)"> </dx-table-view-wrapper>`
+interface MultiViewTable {
+  selectedView: TABLE_VIEW_TYPES;
+  isMultiViewToggle?: boolean;
+}
+```
 
-## Import this fonts styles link in index.html to display material icons
+## Examples
 
-> `<link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">`
+### Table view only
+
+```html
+<dx-table-view-wrapper
+  [multiViewTable]="{ selectedView: 'dx-table' }"
+  [columns]="columns"
+  [dataSource]="rows">
+</dx-table-view-wrapper>
+```
+
+### Table + canvas with toggle
+
+```typescript
+multiView: MultiViewTable = { selectedView: 'dx-table', isMultiViewToggle: true };
+```
+
+```html
+<dx-table-view-wrapper
+  [multiViewTable]="multiView"
+  [columns]="columns"
+  [dataSource]="rows"
+  [canvasDataSource]="canvasRows"
+  [canvasSetting]="canvasSetting"
+  [cardActions]="cardActions">
+</dx-table-view-wrapper>
+```
+
+### Reacting to canvas actions
+
+```html
+<dx-table-view-wrapper
+  [multiViewTable]="multiView"
+  [canvasDataSource]="canvasRows"
+  [canvasSetting]="canvasSetting"
+  (onClickCanvasViewAction)="handleCardAction($event)">
+</dx-table-view-wrapper>
+```
+
+## Import
+
+```typescript
+import { DxTableViewWrapperModule } from '@ngdx/dijta';
+
+@NgModule({
+  imports: [DxTableViewWrapperModule]
+})
+export class YourModule { }
+```

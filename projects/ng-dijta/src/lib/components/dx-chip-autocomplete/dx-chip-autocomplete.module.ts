@@ -6,9 +6,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatChipsModule } from '@angular/material/chips';
-import { TranslocoModule } from '@ngneat/transloco';
+import { MatIconModule } from '@angular/material/icon';
+import { TranslocoModule } from '@jsverse/transloco';
+import { DxMatSelectSearchModule } from '../dx-autocomplete-select/mat-select-search/ngx-mat-select-search.module';
 
 
 @NgModule({
@@ -20,12 +21,13 @@ import { TranslocoModule } from '@ngneat/transloco';
     FormsModule,
     MatFormFieldModule,
     MatSelectModule,
-    NgxMatSelectSearchModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
     ReactiveFormsModule,
     MatChipsModule,
-    TranslocoModule
+    MatIconModule,
+    TranslocoModule,
+    DxMatSelectSearchModule
   ],
   exports: [DxChipAutocompleteComponent]
 })

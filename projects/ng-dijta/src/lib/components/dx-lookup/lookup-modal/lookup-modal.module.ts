@@ -9,6 +9,7 @@ import { FlexTableModule } from '../../dx-table';
 import { DxButtonModule } from '../../dx-button';
 import { DxCardModule } from '../../dx-card';
 import { DxSelectModule } from '../../dx-select';
+import { MatIconModule } from '@angular/material/icon';
 
 
 
@@ -26,7 +27,8 @@ import { DxSelectModule } from '../../dx-select';
     FlexTableModule,
     DxButtonModule,
     DxCardModule,
-    DxSelectModule
+    DxSelectModule,
+    MatIconModule
   ],
   exports:[LookupModalComponent]
 })

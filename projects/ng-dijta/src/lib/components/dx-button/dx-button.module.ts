@@ -8,11 +8,15 @@ import { DxDirectiveModule } from '../../directive';
 import { DxPopoverModule } from '../dx-popover';
 import { DxToolTipModule } from '../dx-tooltip/dx-tooltip.module';
 import { DxConfirmComponent } from '../dx-confirm/dx-confirm.component';
-import { TranslocoModule } from '@ngneat/transloco';
+import { MatSelectModule } from '@angular/material/select';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { MatIconModule } from '@angular/material/icon';
+import { TranslocoModule } from '@jsverse/transloco';
 import { AbilityModule } from '@casl/angular';
+import { MenuPanelComponent } from './menu-panel/menu-panel.component';
 
 @NgModule({
-  declarations: [DxButtonComponent, DxConfirmComponent],
+  declarations: [DxButtonComponent, DxConfirmComponent, MenuPanelComponent],
   imports: [
     CommonModule,
     MatMenuModule,
@@ -21,9 +25,13 @@ import { AbilityModule } from '@casl/angular';
     DxDirectiveModule,
     DxPopoverModule,
     DxToolTipModule,
+    MatSelectModule,
+    OverlayModule,
+    MatIconModule,
+    TranslocoModule,
     TranslocoModule,
     AbilityModule
   ],
-  exports: [DxButtonComponent],
+  exports: [DxButtonComponent, DxConfirmComponent, MenuPanelComponent],
 })
 export class DxButtonModule { }

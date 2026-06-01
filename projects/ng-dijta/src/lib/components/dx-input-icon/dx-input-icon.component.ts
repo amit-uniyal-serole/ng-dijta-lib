@@ -2,43 +2,63 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  forwardRef,
   HostListener,
   Inject,
   Input,
   LOCALE_ID,
-  OnChanges,
   Optional,
   Output,
-  Self,
   ViewEncapsulation
 } from '@angular/core';
-import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import {
-  UIConfigWrapper,
-  UI_COMPONENT_CONFIG
-} from '../../core/UI/service/input/ui-component.config';
-import { DxIconSelectionPopupComponent } from '../dx-icon-selection-popup';
 import { filter, first } from 'rxjs/operators';
+import {
+  UI_COMPONENT_CONFIG,
+  UIConfigWrapper
+} from '../../core/UI/service/input/ui-component.config';
+import { DxIconSelectionPopupComponent, IconConfig } from '../dx-icon-selection-popup';
 
 @Component({
   selector: 'dx-input-icon',
   templateUrl: './dx-input-icon.component.html',
   styleUrls: ['./dx-input-icon.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DxInputIconComponent),
+      multi: true,
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => DxInputIconComponent),
+      multi: true
+    }
+  ],
 })
 export class DxInputIconComponent
-  implements OnChanges, ControlValueAccessor {
+  implements ControlValueAccessor, Validator {
   @Output() blur: EventEmitter<FocusEvent> = new EventEmitter<FocusEvent>();
   @Input() disabled: boolean = false;
   @Input() required: boolean = false;
   @Input() noneLabel: boolean = false;
+  @Input() outline: "floating" | "none-floating" | "outer-label" =
+    "none-floating";
+  @Input() currencyFormat: "wide" | "narrow" = "narrow";
+  @Input() currencyPosition: "left" | "right" = "left";
+  @Input() readonly: boolean = false;
+  @Input() viewOnly: boolean = false;
+  @Input() outerLabelErrorType: 'astrict-error' | 'filled-error' = 'filled-error';
   @Input() mask: string = '';
-  @Input() outline: 'floating' | 'none-floating' | 'outer-label' = 'none-floating';
   @Input() placeholder: string = 'Select Icon';
   @Input() icon: string = 'search';
-  value: string = '';
+  @Input() value: string | undefined;
+  @Input() iconConfig: IconConfig | undefined;
 
+  ctrRequired: boolean | undefined;
+  @Input() labelPosition: 'left' | 'top' = 'top';
   @HostListener('focusout', ['$event.target'])
   onFocusout() {
     this.onTouched();
@@ -47,30 +67,12 @@ export class DxInputIconComponent
   onChange: Function = () => { };
   onTouched: Function = () => { };
   constructor(
-    @Self() @Optional() public control: NgControl,
     @Optional() @Inject(UI_COMPONENT_CONFIG) config: UIConfigWrapper,
     @Inject(LOCALE_ID) public locale: string,
     private readonly cd: ChangeDetectorRef,
     private readonly dialog: MatDialog
   ) {
-    this.control && (this.control.valueAccessor = this);
     this.outline = config?.value?.outline ?? 'none-floating';
-  }
-  ngOnChanges(): void {
-    this.cd?.detectChanges();
-  }
-  public get invalid(): boolean {
-    return this.control ? this.control.invalid! : false;
-  }
-
-  public get showError(): boolean {
-    if (!this.control) {
-      return false;
-    }
-
-    const { dirty, touched } = this.control;
-
-    return this.invalid ? (dirty || touched)! : false;
   }
 
   inputChange(event: string): void {
@@ -80,7 +82,6 @@ export class DxInputIconComponent
 
   writeValue(value: string): void {
     this.onTouched();
-    this.value = this.control.value;
     this.value = value;
   }
 
@@ -109,13 +110,25 @@ export class DxInputIconComponent
         panelClass: ['lookout-modal-box'],
         width: '70%',
       });
-
+    dialogRef.componentInstance.iconConfig = this.iconConfig;
     dialogRef.afterClosed().pipe(
       filter((val: string) => !!val),
       first()
     ).subscribe((val: string) => {
-      this.control.control?.setValue(val);
+      this.value = val;
       this.onChange(this.value);
+      this.cd.detectChanges();
     });
+  }
+  validate(control: AbstractControl): ValidationErrors | null {
+    if (!this.ctrRequired) {
+      this.ctrRequired = control.hasValidator(Validators.required);
+      this.cd.detectChanges();
+    }
+    if (!control.hasValidator(Validators.required)) {
+      this.ctrRequired = control.hasValidator(Validators.required);
+      this.cd.detectChanges();
+    }
+    return null;
   }
 }

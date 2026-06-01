@@ -95,20 +95,20 @@ export class DxFullscreenComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private canChange(isFullscreen: boolean, trigger: string): Promise<boolean> {
     let changeResult = Promise.resolve(true);
-  
+
     if (this.beforeChange) {
       const result: any = this.beforeChange(isFullscreen, trigger);
       if (typeof result !== 'undefined') {
         if (result.then) {
-          changeResult = result.then((res: boolean | undefined) =>  res ?? true);
+          changeResult = result.then((res: boolean | undefined) => res ?? true);
         } else if (result.subscribe) {
-          changeResult = (result as Observable<boolean>).toPromise().then((res: boolean | undefined) =>  res ?? true);
+          changeResult = (result as Observable<boolean>).toPromise().then(value => value !== undefined ? value : false);
         } else {
           changeResult = Promise.resolve(result !== undefined ? result : true);
         }
       }
     }
-  
+
     return changeResult;
   }
 

@@ -54,9 +54,9 @@ export class DxCardTextComponent {
   }
 
   private updateText(): void {
-    const tmp: string = !this.data ? this.defaultText : String(this.data);
-
+    const tmp: string = this.data === undefined || this.data === null ? this.defaultText : String(this.data);
     this.text = StringUtil.isBlank(tmp) ? this.defaultText : tmp;
+
   }
 
   showBackgroundColor(column: boolean, color: string): CardTextBg | undefined {

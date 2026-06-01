@@ -3,8 +3,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DxButtonComponent } from './dx-button.component';
 
 describe('DxButtonComponent', () => {
-  let component: DxButtonComponent;
-  let fixture: ComponentFixture<DxButtonComponent>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let component: DxButtonComponent<any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let fixture: ComponentFixture<DxButtonComponent<any>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

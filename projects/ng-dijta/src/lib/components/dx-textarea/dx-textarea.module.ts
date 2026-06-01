@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { DxTextareaComponent } from './dx-textarea.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DxDirectiveModule } from '../../directive';
-
+import { NgxMaskDirective } from 'ngx-mask';
 @NgModule({
   declarations: [DxTextareaComponent],
   imports: [
@@ -16,7 +16,8 @@ import { DxDirectiveModule } from '../../directive';
     MatInputModule,
     MatTooltipModule,
     ReactiveFormsModule,
-    DxDirectiveModule
+    DxDirectiveModule,
+    NgxMaskDirective
   ],
   exports: [DxTextareaComponent]
 })

@@ -1,14 +1,14 @@
-<div class="dx-field-wrapper dx-field-textarea dx-tag" [class.none-label]="noneLabel" [ngClass]="outline"
+<div class="ngdx-field-wrapper dx-field-tag dx-tag" [class.none-label]="noneLabel" [ngClass]="outline"
   [class.display-view]="viewOnly" [class.dx-disable]="disabled" [class.left-align-label]="labelPosition === 'left'"
   [class.required]="required || ctrRequired" [class]="outerLabelErrorType" #getHeight>
-  <mat-label class="dx-outer-label-wrapper">
+  <mat-label class="dx-outer-label">
     <span class="dx-outer-label">
       <ng-content select="[dxLabel]"></ng-content>
       <span *ngIf="required || ctrRequired" class="astrict">*</span>
     </span>
   </mat-label>
-  <mat-form-field appearance="outline" (click)="trigger1.closePanel();">
-    <mat-label class="dx-input-label">
+  <mat-form-field appearance="outline" floatLabel="always" (click)="trigger1.closePanel();">
+    <mat-label>
       <ng-content select="dx-label"></ng-content>
     </mat-label>
     <span matPrefix>
@@ -16,26 +16,24 @@
         <ng-content select="dx-prefix"></ng-content>
       </div>
     </span>
-    <mat-chip-list #chipList aria-label="Tag" [formControl]="control">
-      <mat-chip *ngFor="let tag of value" class="tag" [changeChipColor]="tag.colorCode" [same]="true"
+    <mat-chip-grid #chipList aria-label="Tag" [formControl]="control">
+      <mat-chip-row *ngFor="let tag of value" class="tag" [changeChipColor]="tag.colorCode" [same]="true"
         [removable]="false">
         <div class="tag">
-          <span class="material-icons-outlined tag-icon">
-            tag
-          </span>
+          <mat-icon fontIcon="sell" aria-hidden="false" aria-label="sell"> </mat-icon>
+          <span class="mx-1"></span>
           {{ tag.name }}
-          <span (click)="remove(tag)" *ngIf="(allowDelete || (!allowDelete && !tag?.recordId))"
-            class="material-icons-outlined tag-close" matChipRemove>
-            close
-          </span>
+          <button (click)="remove(tag)" *ngIf="(allowDelete || (!allowDelete && !tag?.recordId))" matChipRemove>
+            <mat-icon fontIcon="close" aria-hidden="false" aria-label="close"> </mat-icon>          
+          </button>
         </div>
-      </mat-chip>
+      </mat-chip-row>
       <input #myInput [id]="id" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
         [matChipInputAddOnBlur]="addOnBlur" [formControl]="tagName" (ngModelChange)="onSearch($event)"
         [maxlength]="maxlength" [autofocus]="autofocus" (blur)="onBlur($event)" [required]="required || ctrRequired"
         [disabled]="disableCreate" [readonly]="readonly || viewOnly || disabled" [placeholder]="tooltip"
         [matAutocomplete]="auto" />
-    </mat-chip-list>
+    </mat-chip-grid>
     <mat-autocomplete #auto="matAutocomplete" [id]="id+'-select'" [autoActiveFirstOption]="true"
       (opened)="onAutoComplete()" (closed)="handleClose()" (optionSelected)="onSelect($event)">
       <div (click)="$event.stopPropagation()">
@@ -46,7 +44,7 @@
           }">
             <div class="tag-create">
               <div class="color-picker">
-                <dx-colors [(ngModel)]="color" [palette]="palette" (click)="$event.stopPropagation()"
+                <dx-colors [(ngModel)]="color" (click)="$event.stopPropagation()" [palette]="palette"
                   (keydown)="$event.stopPropagation()" (open)="isColorPickerOpen = true" dx-colors-trigger></dx-colors>
               </div>
               <p class="subbody mb-0">{{ tagName.value }}</p>
@@ -67,7 +65,7 @@
           <div class="color-picker">
             <dx-colors [(ngModel)]="tag.colorCode" dx-colors-trigger (click)="$event.stopPropagation()"></dx-colors>
           </div>
-          <p>{{ tag.name }}</p>
+          <p class="subbody mb-0">{{ tag.name }}</p>
         </div>
       </mat-option>
     </mat-autocomplete>

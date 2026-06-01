@@ -7,9 +7,10 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { LoadingModule } from '../loading';
 import { DxServerSideAutocompleteComponent } from './dx-server-side-autocomplete.component';
+import { DxMatSelectSearchModule } from '../dx-autocomplete-select/mat-select-search/ngx-mat-select-search.module';
+import { MatIconModule } from '@angular/material/icon';
 
 
 
@@ -19,17 +20,18 @@ import { DxServerSideAutocompleteComponent } from './dx-server-side-autocomplete
   ],
   imports: [
     CommonModule,
-    MatInputModule,    
+    MatInputModule,
     MatFormFieldModule,
     MatChipsModule,
     MatAutocompleteModule,
+    DxMatSelectSearchModule,
     MatCheckboxModule,
     MatSelectModule,
-    NgxMatSelectSearchModule,
-    ReactiveFormsModule,   
+    ReactiveFormsModule,
     FormsModule,
-    LoadingModule
+    LoadingModule,
+    MatIconModule
   ],
-  exports:[DxServerSideAutocompleteComponent]
+  exports: [DxServerSideAutocompleteComponent]
 })
 export class DxServerSideAutocompleteModule { }

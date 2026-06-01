@@ -14,10 +14,10 @@ import { NgDxAvatarSettings } from '../../../dx-avatar/model/avatar';
       display: flex;
       align-items: center;   
     } 
-    .text-with-icon ndx-avatar {
+    .text-with-icon  ndx-avatar {
         margin-right:3px;
-      }
-      .text-with-icon a {
+    }
+    .text-with-icon a {
         text-decoration: none; 
       }
     .path-color{

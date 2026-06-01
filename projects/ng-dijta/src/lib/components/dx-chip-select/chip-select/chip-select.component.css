@@ -3,15 +3,16 @@
     display: none;
   }
   .custom-label {
-    display: inline-block;
+  display: inline-block;
     border: 1px solid rgb(7, 7, 7);
-    padding: 5px 20px;
-    margin: 2px 5px;
-    font-size: 14px;
+    padding: 0px 20px;
+    margin: 2px;
+    font-size: inherit;
     border-radius: 4px;
     cursor: pointer;
     background-color: #fff;
-    color: #000;
+    color: #4d4d4d;
+    line-height: 17px;
   }
   .hiddenInput {
     padding: 0px;

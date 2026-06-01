@@ -1,22 +1,23 @@
 .dx-card-generic {
-  background-color: #fff;
-  margin: 10px 0px;
+  background-color: var(--dx-card-background);
+  border-radius: var(--dx-card-border-radius);
   display: flex;
   flex-flow: column nowrap;
   width: 100%;
   height: auto;
-  border-radius: 6px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
 
   .dx-card-generic-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 5px 10px;
-    color: #000000d9;
-    background: #fff;
-    border-bottom: 1px solid #dfdfdff0;
-    border-radius: 6px 6px 0px 0px;
+    padding: var(--dx-card-header-padding);
+    background: var(--dx-card-header-background);
+    color: var(--dx-card-header-forbackground);
+    border-bottom: 1px solid;
+    border-width: var(--dx-card-header-border-bottom-width);
+    border-color: var(--dx-card-header-border-bottom-color);
+    border-radius: var(--dx-card-border-radius) var(--dx-card-border-radius) 0px 0px;
     position: relative;
 
     .card-collapse-icon {
@@ -26,10 +27,8 @@
 
   .dx-card-generic-body {
     flex-grow: 1;
-    padding: 18px;
+    padding: var(--dx-card-body-padding);
     overflow: auto;
-    font-size: 13px;
-    line-height: 17px;
     word-wrap: break-word;
   }
 

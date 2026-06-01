@@ -1,43 +1,81 @@
-## Selector for dx-input-label
-`<dx-input-label></dx-input-label>`
+---
+category: Components
+type: Data Entry
+title: Input Label
+---
 
-## Module
-`DxInputLabelModule`
-## Usage inside form
+A short-text label input that wraps Angular Material's `mat-form-field` + `matInput` and applies a built-in label-name pattern validator (alphanumeric + spaces, no `|` or `=`). Integrates with Angular Forms as a `ControlValueAccessor`.
+
+## When To Use
+
+- When capturing a short label / tag name (category, chip, filter label).
+- When the value must reject separators like `|` and `=` that conflict with downstream serialization.
+- When you want a consistent icon-prefixed text input matching other DX inputs.
+
+## API
+
+```html
+<dx-input-label
+  formControlName="label"
+  placeholder="Add Label">
+</dx-input-label>
 ```
-<form [formGroup]="userForm">
-    <dx-input-label (blur)="blur()"  disabled="false" formControlName="name">
-            <dx-hint>
-                This show how hint will work
-            </dx-hint>
-        <dx-suffix></dx-suffix>
-            <dx-error  *ngIf="userForm.controls['name'].required && userForm.controls['name'].errors &&userForm.controls['name'].touched">Name is Required</dx-error>
-            <dx-error  *ngIf="userForm.controls['name'].invalid">Enter valid name</dx-error>
-    </dx-input-label>
-</form>
 
-```    
-## Inputs
+### dx-input-label
 
-| Input  | Data need to be passed as input |
-| ------------- | ------------- |
-| **disabled** (boolean) | `pass boolean value to enable or disable field (default value false)`  |
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[disabled]` | Disables the input | `boolean` | `false` |
+| `[required]` | Marks the field as required | `boolean` | `false` |
+| `[noneLabel]` | Hides the field label | `boolean` | `false` |
+| `[outline]` | Label / outline rendering variant | `'floating' \| 'none-floating' \| 'outer-label'` | `'none-floating'` |
+| `[placeholder]` | Placeholder shown when empty | `string` | `'Add Label'` |
+| `[pattern]` | Override regex pattern applied to the value | `string` | - |
+| `[icon]` | Material icon name shown as prefix | `string` | `'label'` |
+| `[mask]` | ngx-mask pattern applied to the input | `string` | `''` |
 
-| **noneLabel** (boolean) | `pass boolean value to enable or disable label (default value false)`  |
-| **mask** (string) | `Pass your mask`  |
-| **formControlName** (string)  | `form control name of form group` |
-| **outline** ('floating' | 'none-floating' | 'outer-label')  | `To Change Outline of input (default value none-floating)` |
-| **placeholder** (string)  | `pass placeholder to be displayed (default value - Name)` |
-| **pattern** (string)  | `pass regex pattern to validate (default value - /^[A-Za-z]{2}/)` |
-| **icon** (string)  | `pass icon to be displayed (default value - account_circle)` |
+### Events
 
-## Import CUSTOM_ELEMENTS_SCHEMA 
+| Event | Description | Type |
+|-------|-------------|------|
+| `(blur)` | Emitted when the input loses focus | `EventEmitter<FocusEvent>` |
 
-`import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'`
+## Examples
 
->Include  **schemas: [CUSTOM_ELEMENTS_SCHEMA]** in module file if  **dx-label**, **dx-hint**, **dx-suffix**,  **dx-prefix** and **dx-error**  gives error as they custom elements using as ng-content
-     
-![Variant](./result.png)  
-          
-        
-      
+### Basic
+
+```html
+<dx-input-label formControlName="label"></dx-input-label>
+```
+
+### Required with custom pattern
+
+```html
+<dx-input-label
+  formControlName="label"
+  [required]="true"
+  pattern="^[A-Za-z0-9_-]{3,}$"
+  placeholder="Tag name">
+</dx-input-label>
+```
+
+### Outer-label layout
+
+```html
+<dx-input-label
+  outline="outer-label"
+  formControlName="label">
+  <span dxLabel>Category Label</span>
+</dx-input-label>
+```
+
+## Import
+
+```typescript
+import { DxInputLabelModule } from '@ngdx/dijta';
+
+@NgModule({
+  imports: [DxInputLabelModule]
+})
+export class YourModule { }
+```

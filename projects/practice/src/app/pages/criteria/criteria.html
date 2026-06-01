@@ -1,0 +1,17 @@
+<div class="container mt-2">
+    <div class="row">
+        <div class="col-md-12">
+            <dx-criteria-filter [(ngModel)]="lookup" [operators]="operatorsBasedOnFields"
+                        [columns]="citeriaColumns" [readonlyCriteria]="true" [rootUrl]="'dx-lcnc-sdr-api'"
+                        [maxConditions]="5"></dx-criteria-filter>
+                       
+        </div>
+        <div class="col-md-12">
+            <pre>
+                {{
+                    lookup | json
+                }}
+            </pre>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+:root {
+    --mobile-min:320px;
+    --mobile-max:480px;
+    --ipads-tablets-min:481px;
+    --ipads-tablets-max:768px;
+    --laptops-small-screen-min:769px;
+    --laptops-small-screen-max:1024px;
+    --large-screens-desktops-min:1025px;
+    --large-screens-desktops-max:1200px;
+    --tv-extra-large-screens-min:1201px;
+}
+$mobile-min:320px;
+$mobile-max:480px;
+$ipads-tablets-min:481px;
+$ipads-tablets-max:768px;
+$laptops-small-screen-min:769px;
+$laptops-small-screen-max:1024px;
+$large-screens-desktops-min:1025px;
+$large-screens-desktops-max:1200px;
+$tv-extra-large-screens-min:1201px;
+/* 
+  ##Device = For Mobile Devices 
+  ##Screen = B/w 320px — 480px
+*/
+
+@mixin mobile {
+    @media (min-width:$mobile-min) and (max-width: $mobile-max) {
+        @content;
+    }
+}
+
+
+/* 
+  ##Device = For iPads and Tablets
+  ##Screen = B/w 481px — 768px
+*/
+
+@mixin ipads-tablets {
+    @media (min-width: $ipads-tablets-min) and (max-width:$ipads-tablets-max) {
+        @content;
+    }
+}
+
+
+/* 
+  ##Device = Laptops and small screen
+  ##Screen = B/w 769px — 1024px
+*/
+
+@mixin laptops-small-screen {
+    @media (min-width: $laptops-small-screen-min) and (max-width: $laptops-small-screen-max) {
+        @content;
+    }
+}
+
+
+/* 
+  ##Device = Large screens and Desktops
+  ##Screen = 1025px — 1200px
+*/
+
+@mixin large-screen-desktops {
+    @media (min-width: $large-screens-desktops-min) and (max-width: $large-screens-desktops-max) {
+        @content;
+    }
+}
+
+
+/* 
+  ##Device = TV and Extra Large Screens 
+  ##Screen = 1201px and more
+*/
+
+@mixin extra-large-screens {
+    @media (min-width: $tv-extra-large-screens-min) {
+        @content;
+    }
+}

@@ -1,0 +1,47 @@
+<div class="dx-table-multi-select" [class.required]="required">
+  <button type="button"
+          class="dx-table-multi-select__trigger"
+          cdkOverlayOrigin
+          #trigger="cdkOverlayOrigin"
+          [disabled]="readonly"
+          [attr.aria-haspopup]="'listbox'"
+          [attr.aria-expanded]="isOpen"
+          [attr.aria-label]="'dx.aria.multiSelect' | transloco"
+          (click)="toggle()">
+    <span class="dx-table-multi-select__label" [class.dx-table-multi-select__placeholder]="!selectedValues?.length">
+      <ng-container *ngIf="selectedValues?.length; else empty">
+        <span class="dx-table-multi-select__names">{{ displayedLabelText }}</span>
+        <span *ngIf="overflowCount > 0" class="dx-table-multi-select__overflow">+{{ overflowCount }}</span>
+      </ng-container>
+      <ng-template #empty>{{ placeholder | transloco }}</ng-template>
+    </span>
+    <mat-icon aria-hidden="true" class="dx-table-multi-select__chevron">
+      {{ isOpen ? 'arrow_drop_up' : 'arrow_drop_down' }}
+    </mat-icon>
+  </button>
+
+  <ng-template cdkConnectedOverlay
+               [cdkConnectedOverlayOrigin]="trigger"
+               [cdkConnectedOverlayOpen]="isOpen"
+               [cdkConnectedOverlayHasBackdrop]="true"
+               cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+               (backdropClick)="close()"
+               (detach)="close()"
+               (overlayKeydown)="$event.key === 'Escape' && close()">
+    <div class="dx-table-multi-select__panel"
+         role="listbox"
+         [attr.aria-multiselectable]="true">
+      <label *ngFor="let option of resolvedOptions; trackBy: trackByKey"
+             class="dx-table-multi-select__option">
+        <mat-checkbox [checked]="isSelected(option?.keyTt)"
+                      [disabled]="option?.disabled"
+                      (change)="toggleOption(option?.keyTt, $event.checked)">
+          {{ option?.valueTt | transloco }}
+        </mat-checkbox>
+      </label>
+      <div *ngIf="!resolvedOptions?.length" class="dx-table-multi-select__empty">
+        {{ 'dx.common.noOptions' | transloco }}
+      </div>
+    </div>
+  </ng-template>
+</div>

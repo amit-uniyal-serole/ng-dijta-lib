@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { debounceTime, filter, first } from 'rxjs/operators';
+import { filter, first } from 'rxjs/operators';
 import { KeyValueModel } from '../../core';
 import { PaginationRequest } from '../dx-config-table';
-import { Icons } from './model/icon.interface';
+import { IconConfig, Icons } from './model/icon.interface';
 import { IconService } from './service/icon.service';
 import { sortBy, unionBy } from 'lodash';
 import { HttpErrorResponse } from '@angular/common/http';
 import { trigger, transition, query, style, stagger, animate, state } from '@angular/animations';
-import { fromEvent } from 'rxjs';
-import { Skeleton, SkeletonLoaderModel } from '../dx-skeleton-loader';
+import { SkeletonLoaderModel } from '../dx-skeleton-loader';
 @Component({
   selector: 'dx-icon-selection-popup',
   templateUrl: './dx-icon-selection-popup.component.html',
@@ -59,10 +58,11 @@ export class DxIconSelectionPopupComponent implements OnInit {
   isCategoryError = false;
   search: string = '';
   showMore: boolean = false;
-  loaderArray = Array(12).fill('')
+  loaderArray = Array(12).fill('');
+  @Input() iconConfig: IconConfig | undefined;
   constructor(
     public dialogRef: MatDialogRef<DxIconSelectionPopupComponent>,
-    private readonly iconService: IconService
+    private readonly iconService: IconService,
   ) { }
 
   chipSkeleton: SkeletonLoaderModel = {
@@ -86,7 +86,7 @@ export class DxIconSelectionPopupComponent implements OnInit {
       {
         field: 'categoryKey',
         operator: 'eq',
-        value: this.search ? undefined : this.selectedCategory
+        value: this.selectedCategory === '' ? undefined : this.selectedCategory
       },
       {
         field: 'tags',
@@ -120,7 +120,7 @@ export class DxIconSelectionPopupComponent implements OnInit {
   getIconCategory(): void {
     this.isBusy = true;
     this.iconService
-      .fetchIconCategory().subscribe({
+      .fetchIconCategory(this.iconConfig).subscribe({
         next: (response: any) => {
           this.isBusy = false;
           this.iconCategoryList = response?.map((item: any) => {
@@ -159,7 +159,7 @@ export class DxIconSelectionPopupComponent implements OnInit {
     this.isBusy = true;
     this.iconList = [];
     this.iconService
-      .fetchIconList(this.listPaginationRequest)
+      .fetchIconList(this.listPaginationRequest, this.iconConfig)
       .pipe(
         filter((item: any) => !!item),
         first()

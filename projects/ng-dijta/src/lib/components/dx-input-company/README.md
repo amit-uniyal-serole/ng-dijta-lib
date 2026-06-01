@@ -1,43 +1,111 @@
-## Selector for dx-input-company
-`<dx-input-company></dx-input-company>`
+---
+category: Components
+type: Form
+title: Input Company
+---
 
-## Module
-`DxInputCompanyModule`
-## Usage inside form
+Specialised input for company / organisation names. Wraps Angular Material `mat-form-field` + `matInput`, supports input masking and ships with a default `apartment` icon. Integrates with Reactive Forms via `ControlValueAccessor` and `Validator`.
+
+## When To Use
+
+- When a form collects a legal entity / company name with consistent iconography.
+- When the value needs a pattern or mask (e.g. tax ID combined with name).
+- When the field must participate in reactive forms validation and view-only flows.
+
+## Label Variants
+
+`dx-input-company` supports two label layouts, selected via the `outline` input. The label content is projected — use the correct projection slot for the variant.
+
+### `none-floating` (default) — label above the field
+
+Project the label through a `<dx-label>` element.
+
+```html
+<dx-input-company formControlName="company">
+  <dx-label>Display Label</dx-label>
+</dx-input-company>
 ```
-<form [formGroup]="userForm">
-    <dx-input-company (blur)="blur()"  disabled="false" formControlName="name">
-            <dx-hint>
-                This show how hint will work
-            </dx-hint>
-        <dx-suffix></dx-suffix>
-            <dx-error  *ngIf="userForm.controls['name'].required && userForm.controls['name'].errors &&userForm.controls['name'].touched">Name is Required</dx-error>
-            <dx-error  *ngIf="userForm.controls['name'].invalid">Enter valid name</dx-error>
-    </dx-input-company>
+
+### `outer-label` — label rendered outside the Material form field
+
+Set `outline="outer-label"` and project the label via the `dxLabel` attribute on any host element (e.g. `<p>`, `<span>`).
+
+```html
+<dx-input-company outline="outer-label" formControlName="company">
+  <p dxLabel>Display Label</p>
+</dx-input-company>
+```
+
+> Picking the wrong slot silently drops the label. `<dx-label>` is only read when `outline !== 'outer-label'`; `[dxLabel]` is only read when `outline === 'outer-label'`.
+
+## API
+
+```html
+<dx-input-company formControlName="company" placeholder="Company"></dx-input-company>
+```
+
+### dx-input-company
+
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[value]` | Current value | `string` | - |
+| `[disabled]` | Disables the field | `boolean` | `false` |
+| `[readonly]` | Renders the field as read-only | `boolean` | `false` |
+| `[viewOnly]` | Read-only view mode used for detail screens | `boolean` | `false` |
+| `[required]` | Marks the field as required | `boolean` | `false` |
+| `[noneLabel]` | Hide the label row | `boolean` | `false` |
+| `[outline]` | Field appearance | `'floating' \| 'none-floating' \| 'outer-label'` | `'none-floating'` |
+| `[placeholder]` | Placeholder text | `string` | - |
+| `[pattern]` | Validation pattern (regex) | `string` | - |
+| `[mask]` | Input mask pattern | `string` | `''` |
+| `[icon]` | Material icon shown on the field | `string` | `'apartment'` |
+
+### Events
+
+| Event | Description | Type |
+|-------|-------------|------|
+| `(blur)` | Emitted on field blur | `EventEmitter<FocusEvent>` |
+
+## Examples
+
+### Basic
+
+```html
+<form [formGroup]="form">
+  <dx-input-company
+    formControlName="company"
+    placeholder="Company name"
+    [required]="true">
+  </dx-input-company>
 </form>
+```
 
-```    
-## Inputs
+### With mask and custom icon
 
-| Input  | Data need to be passed as input |
-| ------------- | ------------- |
-| **disabled** (boolean) | `pass boolean value to enable or disable field (default value false)`  |
+```html
+<dx-input-company
+  formControlName="company"
+  mask="AAA-000000"
+  icon="business">
+</dx-input-company>
+```
 
-| **noneLabel** (boolean) | `pass boolean value to enable or disable label (default value false)`  |
-| **mask** (string) | `Pass your mask`  |
-| **formControlName** (string)  | `form control name of form group` |
-| **outline** ('floating' | 'none-floating' | 'outer-label')  | `To Change Outline of input (default value none-floating)` |
-| **placeholder** (string)  | `pass placeholder to be displayed (default value - Name)` |
-| **pattern** (string)  | `pass regex pattern to validate (default value - /^[A-Za-z]{2}/)` |
-| **icon** (string)  | `pass icon to be displayed (default value - account_circle)` |
+### View-only (detail screen)
 
-## Import CUSTOM_ELEMENTS_SCHEMA 
+```html
+<dx-input-company
+  formControlName="company"
+  [viewOnly]="true">
+</dx-input-company>
+```
 
-`import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'`
+## Import
 
->Include  **schemas: [CUSTOM_ELEMENTS_SCHEMA]** in module file if  **dx-label**, **dx-hint**, **dx-suffix**,  **dx-prefix** and **dx-error**  gives error as they custom elements using as ng-content
-     
-![Variant](./result.png)  
-          
-        
-      
+```typescript
+import { DxInputCompanyModule } from '@ngdx/dijta';
+
+@NgModule({
+  imports: [DxInputCompanyModule]
+})
+export class YourModule { }
+```

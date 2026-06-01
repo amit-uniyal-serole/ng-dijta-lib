@@ -1,2 +1,16 @@
-<dx-currency  dx-tooltip dxTooltipTitle="{{data | dxcurrency: setting?.display: setting?.digitsInfo}}" [amount]="data" [currencyCode]="setting?.currencyCode" [digitsInfo]="setting?.digitsInfo"
-  [display]="setting?.display"></dx-currency>
+
+  @if(currencySetting?.appCurrencyConfig) {
+    <dx-currency
+      [amount]="data" [currencyCode]="currencySetting?.appCurrencyConfig?.symbol"
+      [appCurrencyConfig]="currencySetting?.appCurrencyConfig?.config" [decimal]="currencySetting?.appCurrencyConfig?.decimal"></dx-currency>
+    
+    } @else {
+    <dx-currency [amount]="data"
+      [currencyCode]="setting?.currencyCode" [digitsInfo]="setting?.digitsInfo" [display]="setting?.display"></dx-currency>
+    }
+    <div *ngIf="currencySetting" class="info d-flex align-items-center gap-1" [style.color]="currencySetting?.infoColor">
+      <span class="material-icons-outlined icon" [style.color]="currencySetting?.iconColor" *ngIf="currencySetting?.icon">
+        {{currencySetting?.icon}}
+      </span>
+      <span>{{currencySetting?.info}}</span>
+    </div>

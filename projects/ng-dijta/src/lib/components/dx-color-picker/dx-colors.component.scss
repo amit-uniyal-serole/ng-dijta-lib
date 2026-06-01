@@ -5,7 +5,7 @@
     font-family: sans-serif;
     $radius: 5px;
     .preview {
-      margin: 2px;
+      margin: 5px 0px 0px 2px;
       display: inline-block;
       box-sizing: border-box;
       border-radius: 100%;
@@ -24,7 +24,7 @@
         border-radius: 100%;
       }
       .circle {
-        $size: 20px;
+        $size: 16px;
         height: $size;
         width: $size;
         box-sizing: border-box;

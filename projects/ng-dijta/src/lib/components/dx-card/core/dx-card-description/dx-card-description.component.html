@@ -1,6 +1,8 @@
 <div class="dx-card-description-wrapper">
   <div class="d-flex align-items-centern dx-card-description-wrapper-title">
-    <div *ngIf="description?.title?.name" dx-tooltip dxTooltipTitle="{{description?.title?.name}}" class="card-title heading-6 fw-medium">{{description?.title?.name | transloco}}</div>
+    <div *ngIf="description?.title?.name" dx-tooltip dxTooltipTitle="{{description?.title?.name}}"
+      [class.max-card-title-width]="!description?.maxTitleWidth" class="card-title body fw-medium">
+      {{description?.title?.name | transloco}}</div>
     <div *ngIf="description?.title?.badge" class="dx-card-description-title-badge"
       [ngStyle]="showBackgroundColor(description?.title?.badgeColor)">
       <span>

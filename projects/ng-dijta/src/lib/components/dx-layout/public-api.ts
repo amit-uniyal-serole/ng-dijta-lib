@@ -6,7 +6,6 @@ export * from './sider-trigger.component';
 export * from './sider.component';
 export * from './layout.module';
 export * from './compact/compact-content.component';
-export * from './compact/compact-layout.component';
 export * from './layout-wrapper.component';
 export * from './layout-service.service';
 export * from './horizontal/horizontal-content.component';

@@ -1,17 +1,24 @@
-<div class="d-flex align-items-center justify-content-between mb-2">
+<div class="d-flex align-items-center justify-content-between ">
     <div>
-        <span class="fw-semibold">
+        <span class="fw-medium">
             {{content?.header?.title | transloco}}
         </span>
     </div>
     <div>
-        <span *ngIf="content?.header?.actions?.length" [matMenuTriggerFor]="menu"
-            class="material-icons-outlined cursor-pointer">
-            more_horiz
-        </span>
+        
+        @if(content?.header?.actionGroup) {
+            <dx-group-action size="small" [actionGroup]="content?.header?.actionGroup" (onClickCardAction)="onSelectAction($event)"></dx-group-action>
+        } @else {
+            <span *ngIf="content?.header?.actions?.length" [matMenuTriggerFor]="menu"
+                class="material-icons-outlined cursor-pointer">
+                more_horiz
+            </span>
+        }
     </div>
 </div>
+
 <ng-container *ngFor="let data of content?.data">
+    
     <ng-container [ngSwitch]="type">
         <!-- standard -->
         <ng-container *ngSwitchCase="'standard'">

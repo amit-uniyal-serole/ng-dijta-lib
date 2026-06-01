@@ -1,12 +1,12 @@
-import { NgxMatDatetimePicker } from '@angular-material-components/datetime-picker';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
-import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, forwardRef, HostBinding, HostListener, Inject, Injector, Input, Optional, Output, Self, ViewChild, ViewEncapsulation, } from '@angular/core';
-import { ControlValueAccessor, FormControl, NgControl, NG_VALUE_ACCESSOR, Validators, AbstractControl, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
+import { ChangeDetectorRef, Component, EventEmitter, forwardRef, HostBinding, HostListener, Inject, Input, Optional, Output, ViewChild, ViewEncapsulation, } from '@angular/core';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators, AbstractControl, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DateDefault } from '../../core/UI/constant/currency-default';
 import { UIConfigWrapper, UI_COMPONENT_CONFIG } from '../../core/UI/service/input/ui-component.config';
 import { DatetimePickerModel } from './datetime-picker.model';
+import { NgxMatDatetimepicker } from '../../core/datetime-picker';
 
 
 @Component({
@@ -27,8 +27,9 @@ import { DatetimePickerModel } from './datetime-picker.model';
   ],
   encapsulation: ViewEncapsulation.None
 })
-export class DxDatetimePickerComponent<D> implements ControlValueAccessor, AfterViewInit, Validator {
-  @ViewChild('picker') toPicker!: NgxMatDatetimePicker<Date>;
+export class DxDatetimePickerComponent<D> implements ControlValueAccessor, Validator {
+  @ViewChild('picker') toPicker!: NgxMatDatetimepicker<Date>;
+
   @Input() date!: Date;
   @Input() showSpinners = true;
   @Input() showSeconds = false;
@@ -59,6 +60,7 @@ export class DxDatetimePickerComponent<D> implements ControlValueAccessor, After
   onTouched: Function = () => { };
   control: FormControl = new FormControl();
   @Input() outerLabelErrorType: 'astrict-error' | 'filled-error' = 'filled-error';
+  ctrRequired: boolean | undefined;
 
   // To get required 
   @Input()
@@ -77,7 +79,6 @@ export class DxDatetimePickerComponent<D> implements ControlValueAccessor, After
   }
 
   constructor(
-    public injector: Injector,
     private readonly cd: ChangeDetectorRef,
     @Optional() @Inject(UI_COMPONENT_CONFIG) config: UIConfigWrapper
   ) {
@@ -87,18 +88,6 @@ export class DxDatetimePickerComponent<D> implements ControlValueAccessor, After
   ngAfterViewInit(): void {
     if (this.startAt) {
       this.toPicker.startAt = this.startAt;
-      this.toPicker._selected = this.startAt
-    }
-    const ngControl: NgControl = this.injector.get(NgControl);
-    if (ngControl) {
-      setTimeout(() => {
-        ngControl.control?.setValue(this.checkZisPersent(ngControl.control?.value));
-        this.control = ngControl.control as FormControl;
-        this.control.markAsUntouched();
-        this.required =
-          this.required ?? this.control.hasValidator(Validators.required);
-        this.cd.detectChanges();
-      });
     }
   }
 
@@ -109,7 +98,6 @@ export class DxDatetimePickerComponent<D> implements ControlValueAccessor, After
 
   writeValue(value: string): void {
     this.onTouched();
-    this.value = this.control.value;
     this.value = value;
   }
 
@@ -133,22 +121,14 @@ export class DxDatetimePickerComponent<D> implements ControlValueAccessor, After
   }
 
   validate(control: AbstractControl): ValidationErrors | null {
-    if (!this.required) {
-      this.required = control.hasValidator(Validators.required);
+    if (!this.ctrRequired) {
+      this.ctrRequired = control.hasValidator(Validators.required);
       this.cd.detectChanges();
     }
     if (!control.hasValidator(Validators.required)) {
-      this.required = control.hasValidator(Validators.required);
+      this.ctrRequired = control.hasValidator(Validators.required);
       this.cd.detectChanges();
     }
     return null;
   }
-  private checkZisPersent(data: Date | number | string | undefined): Date | string | number | undefined {
-    if (typeof data === 'string' && data !== "") {
-      const endsWithZ = data.endsWith("Z");
-      return endsWithZ ? data : `${data}Z`
-    }
-    return data;
-  }
-
 }

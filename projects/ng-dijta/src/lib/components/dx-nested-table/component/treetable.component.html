@@ -11,7 +11,7 @@
           <div class="center-icon" *ngIf="column?.isNestedCol">
 
             <div class="value-cell">
-              <div class="left-border" [innerHTML]="formatIndentation(element)"></div>
+              <div class="left-border" [innerHTML]="formatIndentation(element) | dxsafe: 'html'"></div>
               <span class="material-icons-outlined" *ngIf="element.children.length > 0 && column?.isNestedCol">
                 expand_more
               </span>
@@ -47,7 +47,8 @@
   <div dLoading *ngIf="isBusy" [loading]="isBusy" [backdrop]="true" [message]="'Loading...'" [style.height.px]="150">
   </div>
   <!-- <d-loading *ngIf="isBusy"></d-loading> -->
-  <ng-container *ngIf="!tree && !isBusy && dataSource?._filterData.length <= 0">
+
+  <ng-container *ngIf="!isBusy && dataSource?._filterData.length <= 0">
     <dx-empty></dx-empty>
   </ng-container>
 

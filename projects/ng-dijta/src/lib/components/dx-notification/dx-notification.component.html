@@ -1,28 +1,27 @@
-<div class="notifications-wrapper">
-    <div>
-        <div class="notification-header">
-            <h3 class="heading-6">{{'Notification' | transloco}}</h3>
-            <div class="notification-actions">
-                <div class="box-notification-action" (click)="markAsRead()">
-                    <span class="material-icons-outlined notification-action-icon" dxTooltip
-                        dxTooltipTitle="Mark all as read">
-                        mark_as_unread
-                    </span>
-                    <p class="paragraph mb-0">{{'Mark all read' | transloco}}</p>
-                </div>
-
-                <label class="action box-notification-action">
-                    <input type="checkbox" [(ngModel)]="toggleAllAsRead" (change)="showUnread()">
-                    <span class="material-icons-outlined notification-action-icon">
-                        mark_email_unread
-                    </span>
-                    <p class="paragraph mb-0">{{'Show unread' | transloco}}</p>
+<div class="notifications-wrapper position-relative h-100 d-flex  flex-column justify-content-between overflow-hidden ">    
+        <div class="notification-header px-2 py-3  align-items-center">
+            <h3 class="heading-6 mb-0">{{'Notification' | transloco}}</h3>
+            <div class="notification-actions d-flex align-items-baseline ">
+                <button
+                    class=" border-0 py-1 px-2 rounded box-notification-action d-flex align-items-center me-1 cursor-pointer"
+                    (click)="markAsRead()">
+                    <mat-icon dxTooltip dxTooltipTitle="Mark all as read"
+                        class="cursor-pointer my-0 mx-1 surface_on_dark" aria-hidden="false"
+                        aria-label="Mark all as read" fontIcon="mark_as_unread"></mat-icon>
+                    <p class="paragraph mb-0 surface_on_base ">{{'Mark all read' | transloco}}</p>
+                </button>
+                <label class="action py-1 px-2 rounded box-notification-action d-flex align-items-center me-1 cursor-pointer ">
+                    <input class="position-absolute d-none " type="checkbox" [(ngModel)]="toggleAllAsRead"
+                        (change)="showUnread()">
+                    <mat-icon dxTooltip dxTooltipTitle="Mark all as read"
+                        class="cursor-pointer my-0 mx-1 surface_on_dark" aria-hidden="false"
+                        aria-label="Mark all as unread" fontIcon="mark_email_unread"></mat-icon>
+                    <p class="paragraph mb-0 surface_on_base">{{'Show unread' | transloco}}</p>
                 </label>
             </div>
         </div>
         <div class="notifications-body">
             <ng-content class="notification-content"></ng-content>
         </div>
-    </div>
-
+    
 </div>

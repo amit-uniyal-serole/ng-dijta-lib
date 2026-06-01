@@ -1,0 +1,85 @@
+:root {
+  --primary-base: #CC0000;
+  --primary-on-base: #FFFFFF;
+  --primary-light: #FF0000;
+  --primary-on-light: #FFFFFF;
+  --primary-dark: #990000;
+  --primary-on-dark: #FFFFFF;
+  --primary-hover: #CC0000;
+  --primary-on-hover: #FFFFFF;
+  --secondary-base: #F2994A;
+  --secondary-on-base: #FFFFFF;
+  --secondary-light: #f5c092ed;
+  --secondary-on-light: #FFFFFF;
+  --secondary-dark: #F2994A;
+  --secondary-on-dark: #FFFFFF;
+  --background-base: #F6F7FB;
+  --background-on-base: #2F2F2F;
+  --background-light: #F6F7FB;
+  --background-on-light: #2F2F2F;
+  --background-dark: #2F2F2F;
+  --background-on-dark: #FFFFFF;
+  --surface-base: #FFFFFF;
+  --surface-on-base: #2F2F2F;
+  --surface-light: #F3F7FF;
+  --surface-on-light: #2F2F2F;
+  --input-focused-fc: #1d6cc0;
+  --input-border-fc: #030303e3;
+  --input-label-fc: #030303cf;
+  --input-label-fw: normal;
+  --error-fc: #bd3232;
+  --input-border-width: 1px;
+  --model-box-bg: #fff;
+  --mat-table-row-item-label-text-font: inherit;
+  --mdc-chip-with-avatar-avatar-size: 14px;
+
+  /* Headings */
+  --color-heading-primary: #1D2939;
+  --color-heading-secondary: #344054;
+
+  /* Text */
+  --color-text-primary: #475467;
+  --color-text-secondary: #667085;
+  --color-text-muted: #98A2B3;
+
+  /* Text */
+  --color-text-label: #6B7280;
+  --color-text-value: #111827;
+
+  /* Inputs */
+  --color-input-label: #6B7280;
+  --color-input-value: #111827;
+
+  /* Tables */
+  --color-table-header-text: #1b1718;
+  --color-table-body-text: #2f2f2f;
+
+  --btn-default-text: #344054;
+
+  /* MD3-aligned aliases — resolve through the library's existing tokens.
+     Consumers may use either the legacy name (e.g. --primary-base) or the
+     MD3 alias (e.g. --dx-primary) interchangeably. Brand overrides applied
+     to the legacy names flow through the aliases automatically. */
+  --dx-primary: var(--primary-base, #CC0000);
+  --dx-on-primary: var(--primary-on-base, #FFFFFF);
+  --dx-surface: var(--surface-base, #FFFFFF);
+  --dx-on-surface: var(--surface-on-base, #2F2F2F);
+  --dx-surface-card: var(--surface-base, #FFFFFF);
+  --dx-surface-variant: var(--surface-light, #F3F7FF);
+  --dx-on-surface-variant: var(--color-text-secondary, #667085);
+  --dx-error: var(--error-fc, #bd3232);
+
+  /* Spacing scale — canonical 5-step geometric-ish progression.
+     Consumers and library components should reference these tokens instead
+     of raw rem/px values. See .claude/rules/theming.md (Spacing scale subset). */
+  --dx-spacing-xs: 0.25rem; /*  4px */
+  --dx-spacing-sm: 0.5rem;  /*  8px */
+  --dx-spacing-md: 1rem;    /* 16px */
+  --dx-spacing-lg: 1.5rem;  /* 24px */
+  --dx-spacing-xl: 2rem;    /* 32px */
+
+  /* Radius scale — pairs with the spacing scale. */
+  --dx-radius-sm: 0.25rem; /*  4px — chips, small inputs */
+  --dx-radius-md: 0.5rem;  /*  8px — cards, buttons      */
+  --dx-radius-lg: 1rem;    /* 16px — modals, surfaces    */
+}

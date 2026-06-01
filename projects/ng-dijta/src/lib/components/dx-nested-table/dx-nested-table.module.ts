@@ -4,9 +4,10 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { TreetableComponent } from './component/treetable.component';
 import { FlexTableModule } from '../dx-table';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 import { DxEmptyModule } from '../dx-empty';
 import { LoadingModule } from '../loading';
+import { DxDirectiveModule } from '../../directive';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { LoadingModule } from '../loading';
     FlexTableModule,
     TranslocoModule,
     DxEmptyModule,
-    LoadingModule
+    LoadingModule,
+    DxDirectiveModule
   ],
   exports: [
     TreetableComponent

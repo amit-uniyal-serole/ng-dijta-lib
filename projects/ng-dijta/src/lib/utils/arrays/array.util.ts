@@ -1,4 +1,4 @@
-import { orderBy } from 'lodash';
+import * as lodash from 'lodash';
 import { SortOrder } from './array.interface';
 
 export class ArrayUtil {
@@ -31,7 +31,7 @@ export class ArrayUtil {
             ? order
             : [order];
 
-        return orderBy(arr, tmpFields, tmpOrders);
+        return lodash.orderBy(arr, tmpFields, tmpOrders);
     }
 
     static groupBy<T, R>(array: Array<T>, keyExtractor: (item: T) => R): Map<R, Array<T>> {

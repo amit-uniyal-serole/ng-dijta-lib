@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { DxTableFilterSettings } from './model/dx-table-filter.model';
@@ -16,31 +16,31 @@ export class DxTableFilterComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<DxTableFilterComponent>,
     private filterBuilder: FormBuilder
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.title=this.title??'Search'
+    this.title = this.title ?? 'Search'
     this.changeDirection();
     this.filterForm = this.toGroup();
   }
-  toGroup():FormGroup {
+  toGroup(): FormGroup {
     let group: any = {};
-    this.filterSettings?.forEach((field:DxTableFilterSettings) => {
-      group[field.name] = [field?.defaultValue??''];
+    this.filterSettings?.forEach((field: DxTableFilterSettings) => {
+      group[field.name] = [field?.defaultValue ?? ''];
     });
     return this.filterBuilder.group(group);
   }
-  onSearch():void { 
+  onSearch(): void {
     this.dialogRef.close(this.filterForm.value);
   }
-  onClear():void {
-    this.resetFilterForm();    
+  onClear(): void {
+    this.resetFilterForm();
     this.dialogRef.close(this.filterForm.value);
   }
-  onClose():void{
+  onClose(): void {
     this.dialogRef.close();
   }
-  resetFilterForm():void{
+  resetFilterForm(): void {
     this.filterForm?.reset()
   }
   changeDirection(): void {

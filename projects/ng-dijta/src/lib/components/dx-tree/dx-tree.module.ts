@@ -8,9 +8,8 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TranslocoModule } from '@ngneat/transloco';
-
-
+import { MatIconModule } from '@angular/material/icon';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @NgModule({
   declarations: [
@@ -28,6 +27,7 @@ import { TranslocoModule } from '@ngneat/transloco';
     CdkTableModule,
     CdkTreeModule,
     DragDropModule,
+    MatIconModule,
     TranslocoModule
   ],
   exports: [DxTreeComponent]

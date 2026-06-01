@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, HostListener, Inject, Input, OnChanges, OnInit, Optional, Output, Self, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormControl, NgControl } from '@angular/forms';
+import { AbstractControl, FormControl, NgControl, ValidationErrors, Validator, Validators } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
 import { Observable, Subscription, of, ReplaySubject, Subject } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./dx-chip-autocomplete.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class DxChipAutocompleteComponent implements OnInit, OnChanges {
+export class DxChipAutocompleteComponent implements OnInit, OnChanges, Validator {
   @Input() loading: boolean = false;
   @Input() required: boolean = false;
   @Input() options!: KeyValueModel[];
@@ -22,7 +22,11 @@ export class DxChipAutocompleteComponent implements OnInit, OnChanges {
   @Input() showToolTip: boolean = true;
   @Input() country: boolean = false;
   @Input() noneLabel: boolean = false;
+  @Input() labelPosition: 'left' | 'top' = 'top';
+  @Input() viewOnly: boolean = false;
+  @Input() noErrorSpace: boolean = false;
   @Input() outline: 'floating' | 'none-floating' | 'outer-label' = 'none-floating';
+  @Input() outerLabelErrorType: 'astrict-error' | 'filled-error' = 'filled-error';
   @Input() createOption: CreateOption = {}
   static nextId = 0;
   @HostBinding()
@@ -44,6 +48,7 @@ export class DxChipAutocompleteComponent implements OnInit, OnChanges {
   obj!: KeyValueModel | undefined;
   searchCntrlSubscription!: Subscription;
   filterSubscription!: Subscription;
+  ctrRequired: boolean | undefined;
   protected _onDestroy = new Subject<void>();
   @HostListener('focusout', ['$event.target'])
   onFocusout() {
@@ -52,7 +57,7 @@ export class DxChipAutocompleteComponent implements OnInit, OnChanges {
 
   constructor(
     @Self() @Optional() public control: NgControl,
-    @Inject(UI_COMPONENT_CONFIG) config: UIConfigWrapper,
+    @Self() @Optional() @Inject(UI_COMPONENT_CONFIG) config: UIConfigWrapper,
     private readonly cd: ChangeDetectorRef) {
     this.control && (this.control.valueAccessor = this);
     this.outline = config?.value?.outline ?? 'none-floating';
@@ -214,5 +219,16 @@ export class DxChipAutocompleteComponent implements OnInit, OnChanges {
       });
     });
     return optionGroupsCopy;
+  }
+  validate(control: AbstractControl): ValidationErrors | null {
+    if (!this.ctrRequired) {
+      this.ctrRequired = control.hasValidator(Validators.required);
+      this.cd.detectChanges();
+    }
+    if (!control.hasValidator(Validators.required)) {
+      this.ctrRequired = control.hasValidator(Validators.required);
+      this.cd.detectChanges();
+    }
+    return null;
   }
 }

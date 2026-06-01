@@ -7,7 +7,7 @@ import { TileFooterDto } from '../../interface/tile-footer';
   styleUrls: ['./dx-tile-footer.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class DxTileFooterComponent implements OnInit {
+export class DxTilesFooterComponent implements OnInit {
   @Input() footer: TileFooterDto | undefined;
   constructor() { }
 

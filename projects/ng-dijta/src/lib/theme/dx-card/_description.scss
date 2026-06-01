@@ -1,0 +1,30 @@
+.dx-card-description-wrapper {
+  .dx-card-description-title {
+    font-weight: 600;
+    font-size: 19.2px;
+    line-height: 20px; 
+    text-align: left;
+    letter-spacing: 0.15px;
+    color: #4d4d4d;
+  }
+
+  .dx-card-description-subtitle {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    color: var(--color-text-label);
+
+  }
+
+  .dx-card-description-title-badge {
+      padding: 1px 11px !important;
+      border-radius: 7px;
+      letter-spacing: 0.46px;
+      font-weight: 400 !important;
+      font-size: 13px;
+      margin-left: 12px;
+      margin-top: 0px;
+      margin-bottom: auto;
+  }
+}

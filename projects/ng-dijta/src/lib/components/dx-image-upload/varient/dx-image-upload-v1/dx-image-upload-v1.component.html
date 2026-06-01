@@ -5,20 +5,18 @@
     [enableAutoUpload]="enableAutoUpload" [accept]="accept" [fileTypes]="fileTypes">
     <div class="dropzoneTemplate h-100">
       <div class="dx-image-upload-v1">
-        <div class="drag-drop-content">
-          <span class="material-icons-outlined">
-            cloud_upload
-          </span>
-          <p class="content body">Drag and Drop files to upload</p>
-          <p>Or</p>
-          <p class="content body">Browse files</p>
+        <div class="drag-drop-content">          
+          <mat-icon aria-hidden="false" aria-label="Upload Icon" fontIcon="cloud_upload"></mat-icon>          
+          <p class="content body">{{ 'Drag and Drop files to upload' | transloco }}</p>
+          <p>{{ 'Or' | transloco }}</p>
+          <p class="content body">{{ 'Browse files' | transloco }}</p>
         </div>
       </div>
     </div>
     <ng-template #myItemTemplate let-fileItem="fileItem" let-uploadProgress="uploadProgress">
-      <p>File Size: {{ fileItem.file.size }}</p>
-      <p>File Name: {{ fileItem.fileName }}</p>
-      <p>Upload Progress: {{ uploadProgress }} %</p>
+      <p class="subbody mb-0">File Size: {{ fileItem.file.size }}</p>
+      <p class="subbody mb-0">File Name: {{ fileItem.fileName }}</p>
+      <p class="subbody mb-0">Upload Progress: {{ uploadProgress }} %</p>
       <button (click)="uploader.removeFile(fileItem)">Remove</button>
     </ng-template>
   </dx-awesome-uploader>

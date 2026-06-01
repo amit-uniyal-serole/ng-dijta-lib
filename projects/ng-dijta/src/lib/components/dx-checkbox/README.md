@@ -1,125 +1,99 @@
-# dx-checkbox
+---
+category: Components
+type: Data Entry
+title: Checkbox
+---
 
-Material-based checkbox form control with read-only and view-only modes.
+A form-integrated checkbox that wraps Angular Material `mat-checkbox` and implements `ControlValueAccessor` + `Validator` so it plugs into both template-driven and reactive forms. Labels and error messages are projected via `dx-label` / `dx-error` slots.
 
-## Overview
+## When To Use
 
-`dx-checkbox` wraps Angular Material's `<mat-checkbox>` with ng-dijta form integration patterns — supporting `disabled`, `readonly`, and `viewOnly` display states, as well as custom content projection for labels and error messages. It implements `ControlValueAccessor` for seamless use with both Reactive and Template-Driven Forms.
-
-## Module Import
-
-```typescript
-import { DxCheckboxModule } from 'ng-dijta';
-
-@NgModule({
-  imports: [DxCheckboxModule]
-})
-export class AppModule {}
-```
-
-## Selector
-
-`<dx-checkbox>`
+- When you need a single boolean input bound via `ngModel` or `formControlName`.
+- When you want a consistently styled checkbox with a projected label and error slot.
+- For multi-select from a list of options, use `dx-chip-select` or `mat-selection-list` instead.
 
 ## API
 
-### Inputs
+```html
+<dx-checkbox formControlName="acceptTerms">
+  <dx-label>I accept the terms and conditions</dx-label>
+  <dx-error>This field is required</dx-error>
+</dx-checkbox>
+```
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `disabled` | `boolean` | `false` | Disable the checkbox — user cannot interact with it |
-| `readonly` | `boolean` | `false` | Render as read-only — visually interactive but value cannot be changed |
-| `viewOnly` | `boolean` | `false` | View-only mode — no border, no interaction, suitable for display pages |
-| `tabIndex` | `number` | — | Tab index for keyboard navigation |
-| `id` | `string` | auto-generated | Element ID (auto-incremented `dx-checkbox-N`) |
+### dx-checkbox
 
-### Outputs
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[id]` | Unique element id (auto-generated when omitted) | `string` | `dx-checkbox-{n}` |
+| `[disabled]` | Whether the checkbox is disabled | `boolean` | `false` |
+| `[readonly]` | Render as read-only (non-editable) | `boolean` | `false` |
+| `[viewOnly]` | Render in view-only mode (display current value, no interaction) | `boolean` | `false` |
+| `[required]` | Marks the checkbox as required (renders the asterisk) | `boolean` | `false` |
+| `[tabIndex]` | Custom tab index for keyboard navigation | `number` | `-` |
 
-| Event | Type | Description |
-|-------|------|-------------|
-| `onInputChange` | `EventEmitter<boolean>` | Emitted when the checkbox value changes — provides the new boolean value |
-| `blur` | `EventEmitter<FocusEvent>` | Emitted when the checkbox loses focus |
+### Events
+
+| Event | Description | Type |
+|-------|-------------|------|
+| `(onInputChange)` | Emitted when the checked state changes; payload is the new boolean value | `EventEmitter<boolean>` |
+| `(blur)` | Emitted when the checkbox loses focus | `EventEmitter<FocusEvent>` |
 
 ### Content Slots
 
-| Slot | Selector | Description |
-|------|----------|-------------|
-| Label | `<dx-checkbox-label>` | Text label displayed beside the checkbox |
-| Error | `<dx-checkbox-error>` | Error message shown when validation fails |
+- `dx-label` — Visible label text (required for accessibility).
+- `dx-error` — Validation error message displayed when the bound control is invalid and touched.
 
-> **Note:** If `dx-checkbox-label` or `dx-checkbox-error` cause "unknown element" errors, add `CUSTOM_ELEMENTS_SCHEMA` to your module:
-> ```typescript
-> import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-> @NgModule({ schemas: [CUSTOM_ELEMENTS_SCHEMA] })
-> ```
+## Examples
 
-## Usage Examples
+### Template-driven
 
-### Basic Reactive Form
+```html
+<dx-checkbox [(ngModel)]="isSubscribed" (onInputChange)="onToggle($event)">
+  <dx-label>Subscribe to newsletter</dx-label>
+</dx-checkbox>
+```
+
+### Reactive form with validation
 
 ```typescript
-// component.ts
 form = this.fb.group({
   acceptTerms: [false, Validators.requiredTrue]
 });
 ```
 
 ```html
-<!-- component.html -->
 <form [formGroup]="form">
   <dx-checkbox formControlName="acceptTerms">
-    <dx-checkbox-label>I accept the Terms & Conditions</dx-checkbox-label>
-    <dx-checkbox-error
-      *ngIf="form.controls['acceptTerms'].invalid && form.controls['acceptTerms'].touched">
-      You must accept the terms
-    </dx-checkbox-error>
+    <dx-label>I accept the terms</dx-label>
+    <dx-error>You must accept the terms to continue</dx-error>
   </dx-checkbox>
 </form>
 ```
 
-### Template-Driven Form
+### Disabled
 
 ```html
-<dx-checkbox [(ngModel)]="isActive" name="active">
-  <dx-checkbox-label>Active</dx-checkbox-label>
+<dx-checkbox [(ngModel)]="isActive" [disabled]="true">
+  <dx-label>Feature is locked</dx-label>
 </dx-checkbox>
 ```
 
-### Disabled and View-Only States
+### View-only
 
 ```html
-<!-- Disabled: cannot toggle -->
-<dx-checkbox formControlName="agreed" [disabled]="true">
-  <dx-checkbox-label>Agreement</dx-checkbox-label>
-</dx-checkbox>
-
-<!-- View-only: display mode, no interaction -->
-<dx-checkbox formControlName="agreed" [viewOnly]="true">
-  <dx-checkbox-label>Agreement</dx-checkbox-label>
+<dx-checkbox [(ngModel)]="savedValue" [viewOnly]="true">
+  <dx-label>Auto-renewal enabled</dx-label>
 </dx-checkbox>
 ```
 
-### With Change Event
-
-```html
-<dx-checkbox
-  [(ngModel)]="isEnabled"
-  (onInputChange)="onToggle($event)">
-  <dx-checkbox-label>Enable Feature</dx-checkbox-label>
-</dx-checkbox>
-```
+## Import
 
 ```typescript
-onToggle(checked: boolean): void {
-  console.log('Checkbox changed to:', checked);
-}
+import { DxCheckboxModule } from '@ngdx/dijta';
+
+@NgModule({
+  imports: [DxCheckboxModule]
+})
+export class YourModule { }
 ```
-
-## Features
-
-- **Material checkbox** — uses Angular Material's `<mat-checkbox>` as the underlying control
-- **ControlValueAccessor** — works with `formControlName`, `formControl`, and `ngModel`
-- **Three display states** — `disabled`, `readonly`, and `viewOnly` for different use cases
-- **Content projection** — supports `<dx-checkbox-label>` and `<dx-checkbox-error>` slots
-- **Blur event** — enables touched state tracking for form validation
-- **Auto-ID** — unique ID auto-generated per instance for accessibility

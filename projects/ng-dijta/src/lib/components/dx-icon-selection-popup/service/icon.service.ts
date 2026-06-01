@@ -11,14 +11,13 @@ export class IconService {
   iconConfig: IconConfig = IconData.iconConfig;
   constructor(
     private http: HttpClient
-  ) {
+  ) {}
+
+  public fetchIconCategory(iconConfig: IconConfig = IconData.iconConfig): Observable<unknown> {
+    return this.http.get(iconConfig?.iconCategoryURL);
   }
 
-  public fetchIconCategory(): Observable<unknown> {
-    return this.http.get(this.iconConfig?.iconCategoryURL);
-  }
-
-  public fetchIconList(request: PaginationRequest): Observable<unknown> {
+  public fetchIconList(request: PaginationRequest, iconConfig: IconConfig = IconData.iconConfig): Observable<unknown> {
     let params: any = {
       pageNo: request?.pageNo ?? '',
       pageSize: request?.pageSize ?? '',
@@ -33,7 +32,7 @@ export class IconService {
       }
     }
     let queryParams = new HttpParams().appendAll(params);
-    return this.http.get(this.iconConfig?.iconListURL, {
+    return this.http.get(iconConfig?.iconListURL, {
       params: queryParams
     });
   }

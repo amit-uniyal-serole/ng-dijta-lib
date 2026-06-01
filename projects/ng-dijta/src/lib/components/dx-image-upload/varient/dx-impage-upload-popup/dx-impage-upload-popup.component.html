@@ -17,8 +17,9 @@
         </ol>
       </span>
     </div>
-    <div class="d-flex">
+    <div class="d-flex align-items-center ">
       <dx-button class="secondary-btn" [title]="'Cancel'" (onActionSelect)="onClose()"></dx-button>
+      <div class="mx-2"></div>
       <dx-button
         [disabled]="!this.uploader1?.uploader?.files || !this.uploader1?.uploader?.files?.length || (isUploading$ | async) || isFilesAttaching"
         [title]="'Upload'" (onActionSelect)="onSubmit()" [isLoading]="isFilesAttaching"></dx-button>

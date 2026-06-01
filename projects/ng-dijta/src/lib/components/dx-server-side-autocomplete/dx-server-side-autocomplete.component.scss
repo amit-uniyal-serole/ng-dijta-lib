@@ -1,6 +1,10 @@
 .btn-styles-none {
   border: none;
   background-color: unset;
+  color: #808080;
+  position: absolute;
+  right: 0;
+  top: -12px;
 }
 
 .no-search-result {
@@ -25,7 +29,7 @@
   }
 
 
-  .mat-chip {
+  .mat-mdc-chip {
     background: unset !important;
     border: 1px solid #cbccd1 !important;
     border-radius: 5px !important;
@@ -35,7 +39,15 @@
       border: none !important;
       font-size: 16px !important;
       margin: 0px 2px !important;
-      padding: 5px;
+      padding: 0px;
+
+      .mdc-evolution-chip__cell {
+        height: 18px;
+
+        .mat-mdc-chip-action {
+          padding: 0px !important;
+        }
+      }
 
     }
 
@@ -47,18 +59,20 @@
 
   .hide-placeholder {
     visibility: hidden;
+    height: 0px;
   }
 
   .server-side-auto-complete-trigger {
     display: block !important;
     height: 0px;
     width: 0px;
-    padding: 3px !important;
+    padding: 0px !important;
     margin: 0px !important;
   }
 
   .dx-server-autocomplete-chips {
     width: 100%;
+    min-height: 24px;
   }
 
   .lookup-opener-wrapper {
@@ -73,10 +87,12 @@
 
 .search-input-option {
   border-bottom: 1px solid #ccc;
-  .mat-option-text {
+
+  .mdc-list-item__primary-text {
     line-height: 0px !important;
     display: flex;
     align-items: center;
+    width: 100%;
 
     .dx-server-autocomplete-loading {
       animation: spin 2s linear infinite;
@@ -96,6 +112,16 @@
 
   input {
     line-height: 40px;
+    width: 100%;
+    border: none;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &.mat-mdc-option:hover:not(.mdc-list-item--disabled) {
+    background-color: #fff;
   }
 }
 
@@ -107,4 +133,10 @@
 
 .loader-height {
   min-height: 100px;
+}
+
+.single-record-selection {
+  .mdc-text-field__input {
+    height: 0px !important;
+  }
 }

@@ -30,7 +30,6 @@ import {
     UI_COMPONENT_CONFIG,
     UIConfigWrapper,
 } from '../../core/UI/service/input/ui-component.config';
-import { KeyValueModel } from '../../core/UI/model/keyValue';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Observable, Subscription } from 'rxjs';
 import { CascaderItem } from './cascader.type';
@@ -39,18 +38,21 @@ import { CascaderItem } from './cascader.type';
 @Component({
     selector: 'dx-cascader-input',
     template: `
-        <div class="dx-field-wrapper" [class.none-label]="noneLabel" [ngClass]="outline"
+        <div class="ngdx-field-wrapper" [class.none-label]="noneLabel" [ngClass]="outline"
   [class.display-view]="viewOnly" [class.dx-disable]="disabled" [class.left-align-label]="labelPosition === 'left'"
   floatLabel="never" [class.required]="required || ctrRequired" [class]="outerLabelErrorType">
-  <mat-label class="dx-outer-label-wrapper">
+  <mat-label class="dx-outer-label">
     <span class="dx-outer-label">
       <ng-content select="[dxLabel]"></ng-content>
     </span>
   </mat-label>
-  <mat-form-field appearance="outline">
-    <mat-label class="dx-input-label">
+  <mat-form-field appearance="outline" floatLabel="always">
+<mat-label *ngIf="outline !== 'outer-label'">
       <ng-content select="dx-label"></ng-content>
     </mat-label>
+    <span matPrefix>
+      <ng-content select="dx-prefix"></ng-content>
+    </span>
     <input matInput [formControl]="control" style="display: none;">
       <d-cascader 
         [options]="options" 

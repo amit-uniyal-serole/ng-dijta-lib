@@ -27,29 +27,108 @@
     }
   }
 }
-.mat-standard-chip.mat-chip-with-trailing-icon {
-  padding: 0px 9px !important;
-}
-.mat-chip-list-wrapper {
-  overflow: auto;
-  display: block !important;
-}
-
-.mat-chip.mat-standard-chip {
-  background-color: #e4e5e53b !important;
-  border: 1px solid #8080805c !important;
-}
-
-.mat-standard-chip {
-  min-height: 25px !important;
-}
-
-.mat-chip.mat-standard-chip .mat-chip-remove {
-  color: #2a2929eb;
-  font-weight: 600;
-  font-size: 18px;
-}
 
 .mat-select-arrow-wrapper {
   padding-left: 3px;
+}
+
+// Chip styling — match the dx-chip-select label look (white background,
+// 1px dark border, 4px radius, wide horizontal padding) instead of the
+// default Material pill chip.
+//
+// Targets Material 18's MDC chip classes (.mat-mdc-chip-option /
+// .mdc-evolution-chip). The previous rules in this file used Material 15
+// class names (.mat-standard-chip, .mat-chip-with-trailing-icon) and no
+// longer apply.
+.dx-chip-autocomplete {
+  mat-chip-listbox,
+  .mat-mdc-chip-set {
+    .mdc-evolution-chip-set__chips {
+      gap: 4px;
+    }
+  }
+
+  mat-chip-option,
+  .mat-mdc-chip-option {
+    // Material 18 paints the chip background via these MDC CSS variables,
+    // which override any plain `background-color`. Set them all to white
+    // so the chip reads as the dx-chip-select label (white surface, dark
+    // border, no fill on selection).
+    --mdc-chip-elevated-container-color: #fff;
+    --mdc-chip-elevated-selected-container-color: #fff;
+    --mdc-chip-elevated-disabled-container-color: #fff;
+    --mdc-chip-flat-disabled-selected-container-color: #fff;
+    --mdc-chip-label-text-color: #4d4d4d;
+    --mdc-chip-selected-label-text-color: #4d4d4d;
+    --mdc-chip-with-trailing-icon-trailing-icon-color: #4d4d4d;
+    --mdc-chip-selected-trailing-icon-color: #4d4d4d;
+
+    border: 1px solid rgb(7, 7, 7);
+    border-radius: 4px;
+    background-color: #fff;
+    color: #4d4d4d;
+    margin: 2px;
+    height: 18px;
+    min-height: 18px;
+    line-height: 16px;
+    font-size: 12px;
+    box-shadow: none;
+
+    // MDC's inner pill background — flatten so our outer border + radius
+    // is the chrome the user sees.
+    .mdc-evolution-chip__cell--primary {
+      .mat-mdc-chip-action {
+        padding: 0 8px;
+        height: 16px;
+        min-height: 16px;
+      }
+    }
+
+    // MDC paints its own background and "ripple" surface. Clear them so the
+    // chip reads as a white square-ish pill with our border.
+    .mdc-evolution-chip__action--primary,
+    .mat-mdc-chip-focus-overlay,
+    .mdc-evolution-chip__ripple--primary {
+      background-color: transparent;
+    }
+
+    // The label text inside the chip.
+    .mdc-evolution-chip__text-label,
+    .mat-mdc-chip-action-label {
+      color: #4d4d4d;
+      font-size: 13px;
+    }
+
+    // Remove button — keep the affordance, but match the chip's flat tone.
+    .mat-mdc-chip-remove,
+    .mdc-evolution-chip__icon--trailing {
+      color: #4d4d4d;
+      opacity: 0.7;
+      width: 14px;
+      height: 14px;
+      padding: 0;
+      margin-right: 4px;
+
+      .mat-icon {
+        font-size: 12px;
+        width: 12px;
+        height: 12px;
+        line-height: 12px;
+      }
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    // Selected state stays white — selection is communicated by the chip
+    // existing in the field at all.
+
+    // Disabled chips inherit the wrapper's disabled state.
+    &.mat-mdc-chip-disabled,
+    &[disabled] {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
 }

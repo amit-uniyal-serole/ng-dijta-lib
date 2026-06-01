@@ -1,6 +1,5 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import {
-  OnInit,
   Component,
   EventEmitter,
   Inject,
@@ -8,11 +7,13 @@ import {
   LOCALE_ID,
   Optional,
   Output,
-  Self,
   ViewEncapsulation,
+  Injector,
+  ChangeDetectorRef,
+  forwardRef,
   HostBinding
 } from '@angular/core';
-import { ControlValueAccessor, NgControl, Validators } from '@angular/forms';
+import { ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import {
   UIConfigWrapper,
@@ -23,10 +24,22 @@ import {
   selector: 'dx-input-chips',
   templateUrl: './dx-input-chips.component.html',
   styleUrls: ['./dx-input-chips.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DxInputChipsComponent),
+      multi: true,
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => DxInputChipsComponent),
+      multi: true
+    }
+  ],
   encapsulation: ViewEncapsulation.None,
 })
 export class DxInputChipsComponent
-  implements OnInit, ControlValueAccessor {
+  implements ControlValueAccessor {
   @Output() blur: EventEmitter<FocusEvent> = new EventEmitter<FocusEvent>();
   @Input() disabled: boolean = false;
   @Input() required: boolean = false;
@@ -38,7 +51,14 @@ export class DxInputChipsComponent
   @Input() visible = true;
   @Input() selectable = true;
   @Input() removable = true;
+  @Input() currencyFormat: "wide" | "narrow" = "narrow";
+  @Input() currencyPosition: "left" | "right" = "left";
+  @Input() readonly: boolean = false;
+  @Input() viewOnly: boolean = false;
+  @Input() outerLabelErrorType: 'astrict-error' | 'filled-error' = 'filled-error';
+  @Input() labelPosition: 'left' | 'top' = 'top';
   chips: string[] = [];
+  @Input() noErrorSpace: boolean = false;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   onChange: Function = () => { };
   onTouched: Function = () => { };
@@ -47,35 +67,20 @@ export class DxInputChipsComponent
   @HostBinding()
   id = `dx-input-chips-${DxInputChipsComponent.nextId++}`;
   constructor(
-    @Self() @Optional() public control: NgControl,
     @Optional() @Inject(UI_COMPONENT_CONFIG) config: UIConfigWrapper,
     @Optional() @Inject(LOCALE_ID) public locale: string,
+    public injector: Injector,
+    private readonly cd: ChangeDetectorRef
   ) {
-    this.control && (this.control.valueAccessor = this);
     this.outline = config?.value?.outline ?? 'none-floating';
   }
 
-  ngOnInit(): void {
-    this.control.control?.addValidators(Validators.pattern(/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/))
-    this.control.control?.updateValueAndValidity();
-    if (this.control.control?.invalid) {
-      this.control.control?.markAsTouched();
-    }
-  }
 
   add(event: MatChipInputEvent): void {
-    const input = event.input;
-    const value = event.value;
+    this.chips.push(event.value);
 
-    // Add our chips
-    if ((value || '').trim()) {
-      this.chips.push(value.trim());
-    }
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
+    // Clear the input value
+    // event.chipInput!.clear();
   }
 
   remove(fruit: string): void {
@@ -93,7 +98,6 @@ export class DxInputChipsComponent
 
   writeValue(value: string[]): void {
     this.onTouched();
-    this.chips = this.control.value;
     this.chips = value;
   }
 

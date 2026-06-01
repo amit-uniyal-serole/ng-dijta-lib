@@ -69,6 +69,8 @@ export class DropDownDirective implements OnDestroy, OnChanges, AfterContentInit
   @Input() trigger: 'click' | 'hover' | 'manually' = 'click';
   @Input() closeScope: 'all' | 'blank' | 'none' = 'all';
   @Input() closeOnMouseLeaveMenu = false;
+  /** Auto-close the dropdown when a menu item is clicked. Matches ng-zorro's `nzClickHide`. */
+  @Input() clickHide = true;
 
   @Output() toggleEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 

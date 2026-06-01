@@ -7,7 +7,7 @@ import { TileHeaderDto } from '../../interface/tile-header';
   styleUrls: ['./dx-tile-header.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class DxTileHeaderComponent implements OnInit {
+export class DxTilesHeaderComponent implements OnInit {
   @Input() header: TileHeaderDto | undefined;
   constructor() { }
 

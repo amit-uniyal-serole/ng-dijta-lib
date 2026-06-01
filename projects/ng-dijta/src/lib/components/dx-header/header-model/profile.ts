@@ -21,4 +21,5 @@ export interface ProfileBasicAction {
     type?: string;
     color?: string;
     isNotClose?: boolean;
+    classes?:string[];
 }

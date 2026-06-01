@@ -29,8 +29,9 @@ import { DxDirectiveModule } from '../../directive';
     DxColorsModule,
     MatIconModule,
     MatAutocompleteModule,
-    DxDirectiveModule
+    DxDirectiveModule,
+    MatIconModule
   ],
-  exports: [DxTagInputComponent, DxTagComponent]
+  exports: [DxTagInputComponent, DxTagComponent, MatChipsModule]
 })
 export class DxTagInputModule { }

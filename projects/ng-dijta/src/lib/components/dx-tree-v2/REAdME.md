@@ -1,122 +1,141 @@
-## Selector
+---
+category: Components
+type: Data Display
+title: TreeV2
+---
 
-> <dx-tree-v2 [nodes]="nodes" [options]="options" [showLine]="showLine" (onFocus)="onFocus($event)"></dx-tree-v2>
+A feature-rich hierarchical tree built on an embedded angular-tree-component engine. Adds virtualization, filtering, async children loading, drag-and-drop, and a rich event stream on top of `<dx-tree>`.
 
-## Inputs
+## When To Use
+- When the node count is large enough that virtualized rendering is required.
+- When nodes need to load children asynchronously from a server.
+- When selection, activation, focus, and navigation events must be observable separately.
+- When drag/copy/move across branches must be supported with structural events.
 
-| Input                      | Data need to be passed as input |
-| -------------------------- | ------------------------------- |
-| **nodes** (ITreeNode)      | `Tree Data`                     |
-| **options** (ITreeOptions) | `Tree options `                 |
-| **showLine** (boolean)     | `show branch lines in tree`     |
+## API
 
-## Events
-
-| Event                  | Time of triggering       | return type        |
-| ---------------------- | ------------------------ | ------------------ |
-| **onSelectChange**     | `on selection of option` | **OnSelectChange** |
-| **onToggleExpanded**   | `on toggle`              | **TreeEvent**      |
-| **onActivate**         | `on click label `        | **TreeEvent**      |
-| **onDeactivate**       | `on click label `        | **TreeEvent**      |
-| **onNodeActivate**     | `- `                     | **TreeEvent**      |
-| **onNodeDeactivate**   | `- `                     | **TreeEvent**      |
-| **onSelect**           | `- `                     | **TreeEvent**      |
-| **onDeselect**         | `- `                     | **TreeEvent**      |
-| **onFocus**            | `on focus `              | **TreeEvent**      |
-| **onBlur**             | `on blur `               | **TreeEvent**      |
-| **onUpdateData**       | `- `                     | **TreeEvent**      |
-| **onInitialized**      | `on initialize `         | **TreeEvent**      |
-| **onMoveNode**         | `- `                     | **TreeEvent**      |
-| **onCopyNode**         | `- `                     | **TreeEvent**      |
-| **onLoadNodeChildren** | `- `                     | **TreeEvent**      |
-| **onChangeFilter**     | `- `                     | **TreeEvent**      |
-| **onEvent**            | `- `                     | **TreeEvent**      |
-| **onStateChange**      | `- `                     | **TreeEvent**      |
-
-## Material Icons
-
-`<link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round&display=block" rel="stylesheet" />`
-
-## Sample Data
-
+```html
+<dx-tree-v2
+  [nodes]="nodes"
+  [options]="options"
+  [showLine]="true"
+  (onActivate)="onActivate($event)"
+  (onMoveNode)="onMove($event)">
+</dx-tree-v2>
 ```
 
-nodes: any[] = [
-    {
+### dx-tree-v2
 
-      label: 'Home',
-      isExpanded: true,
-      icon: 'home',
-      hideExpansionIcon: true,
-      classes: 'root-margin',
-      children: [
-        {
-          label: 'Packages',
-          icon: 'inventory_2',
-          children: [
-            {
-              label: 'Youth Allowance',
-              iconColor: '#5e7892',
-              children: [
-                {
-                  label: 'Version 1',
-                  icon: 'burst_mode',
-                  iconColor: '#23a3d0',
-                  children: [{
-                    label: 'Rule Flow',
-                    iconColor: '#2BC3A8'
-                  },
-                  {
-                    label: 'Rules',
-                    iconColor: '#F7B673'
-                  },
-                  {
-                    label: 'Data Structure',
-                    iconColor: '#EB5C5C'
-                  },]
-                },
-                {
-                  label: 'Version 2',
-                  icon: 'burst_mode',
-                  iconColor: '#23a3d0',
-                  children: [{
-                    label: 'Rule Flow',
-                    iconColor: '#2BC3A8'
-                  },
-                  {
-                    label: 'Rules',
-                    iconColor: '#F7B673'
-                  },
-                  {
-                    label: 'Data Structure',
-                    iconColor: '#EB5C5C'
-                  },]
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[nodes]` | Tree data (required) | `ITreeNode` | - |
+| `[options]` | Tree configuration (children field, id field, async loader, actionMapping, allowDrag, virtualization, filter, etc.) | `ITreeOptions` | - |
+| `[showLine]` | Render connector lines between nodes | `boolean` | `false` |
 
-                },
-              ]
-            },
+### Events
 
+All events emit a `TreeEvent` payload.
 
-            {
-              label: 'Test'
-            }
-          ]
-        },
-        {
-          label: 'Rule Flow',
+| Event | Description | Type |
+|-------|-------------|------|
+| `(onToggleExpanded)` | Emitted when a node's expanded state changes | `EventEmitter<TreeEvent>` |
+| `(onActivate)` | Emitted when a node becomes active | `EventEmitter<TreeEvent>` |
+| `(onDeactivate)` | Emitted when a node is deactivated | `EventEmitter<TreeEvent>` |
+| `(onNodeActivate)` | Emitted for each node activation | `EventEmitter<TreeEvent>` |
+| `(onNodeDeactivate)` | Emitted for each node deactivation | `EventEmitter<TreeEvent>` |
+| `(onSelect)` | Emitted when a node is selected | `EventEmitter<TreeEvent>` |
+| `(onDeselect)` | Emitted when a node is deselected | `EventEmitter<TreeEvent>` |
+| `(onFocus)` | Emitted when a node receives focus | `EventEmitter<TreeEvent>` |
+| `(onBlur)` | Emitted when a node loses focus | `EventEmitter<TreeEvent>` |
+| `(onUpdateData)` | Emitted when the tree data is updated | `EventEmitter<TreeEvent>` |
+| `(onInitialized)` | Emitted once the tree has initialised | `EventEmitter<TreeEvent>` |
+| `(onMoveNode)` | Emitted when a node is moved via drag-and-drop | `EventEmitter<TreeEvent>` |
+| `(onCopyNode)` | Emitted when a node is copied | `EventEmitter<TreeEvent>` |
+| `(onLoadNodeChildren)` | Emitted when children finish loading asynchronously | `EventEmitter<TreeEvent>` |
+| `(onChangeFilter)` | Emitted when the filter text changes | `EventEmitter<TreeEvent>` |
+| `(onEvent)` | Emitted for every internal event | `EventEmitter<TreeEvent>` |
+| `(onStateChange)` | Emitted when the tree state changes | `EventEmitter<TreeEvent>` |
 
-        },
-        {
-          label: 'Rules',
+### Types
 
-        },
-        {
-          label: 'Data Structure',
+```typescript
+interface TreeEvent {
+  eventName?: any;
+  node?: TreeNode;
+  treeModel?: TreeModel;
+  isExpanded?: boolean;
+  to?: any;
+  from?: any;
+}
+```
 
-        },
-      ]
-    },
+Refer to the bundled `ITreeNode` and `ITreeOptions` interfaces (re-exported from `@ngdx/dijta`) for the full node and options shapes.
 
+## Examples
+
+### Basic
+
+```typescript
+nodes = [
+  { id: 1, name: 'Root', children: [
+    { id: 2, name: 'Child A' },
+    { id: 3, name: 'Child B' },
+  ]},
 ];
 
+options: ITreeOptions = {};
+```
+
+```html
+<dx-tree-v2 [nodes]="nodes" [options]="options"></dx-tree-v2>
+```
+
+### Drag-and-drop with move handler
+
+```typescript
+options: ITreeOptions = {
+  allowDrag: true,
+  allowDrop: true,
+};
+```
+
+```html
+<dx-tree-v2
+  [nodes]="nodes"
+  [options]="options"
+  (onMoveNode)="persistMove($event)">
+</dx-tree-v2>
+```
+
+### Async children loading
+
+```typescript
+options: ITreeOptions = {
+  getChildren: (node) => this.api.loadChildren(node.data.id),
+};
+```
+
+```html
+<dx-tree-v2 [nodes]="nodes" [options]="options"></dx-tree-v2>
+```
+
+### With connector lines
+
+```html
+<dx-tree-v2
+  [nodes]="nodes"
+  [options]="options"
+  [showLine]="true">
+</dx-tree-v2>
+```
+
+## Import
+
+```typescript
+import { DxTreeV2Module } from '@ngdx/dijta';
+
+@NgModule({
+  imports: [DxTreeV2Module]
+})
+export class YourModule { }
 ```

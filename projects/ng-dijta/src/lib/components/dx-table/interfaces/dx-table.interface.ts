@@ -27,6 +27,7 @@ export type DxTableColumnType =
   | 'avatar_group'
   | 'input'
   | 'select'
+  | 'multi-select'
   | 'multi_chip'
   | 'icon-text'
   | 'link'
@@ -46,7 +47,9 @@ export type DxTableColumnType =
   | 'lookup'
   | 'file'
   | 'ONLY_HTML'
-  | 'flat-action';
+  | 'flat-action'
+  | 'custom'
+  | 'hove-menu';
 
 export type FilterType = 'filter' | 'pagination' | 'setting' | 'export';
 
@@ -89,7 +92,21 @@ export interface DxTableColumn<T> {
   footerCalculate?: (column: DxTableColumn<T>, row: any) => string;
   htmlView?: boolean;
   options?: Observable<KeyValueModel[]>;
-  component?: Type<any>; // Dynamic component
+  component?: Type<any>; // 👈 for dynamic component
+  sortMenu?: DxColumnSortMenuConfig;
+}
+
+export type DxSortDirection = 'asc' | 'desc' | '';
+
+export interface DxColumnSortMenuConfig {
+  options?: DxColumnSortMenuOption[];
+  defaultDirection?: DxSortDirection;
+}
+
+export interface DxColumnSortMenuOption {
+  label: string;
+  direction: DxSortDirection;
+  icon?: string;
 }
 export interface Footer {
   title?: string;
@@ -147,8 +164,15 @@ export interface DxTableSetting {
   leftDropDown?: BulkActions;
   paginatorMultiSelect?: boolean;
   isHidePageSizeSelection?: boolean;
+  /** Hide the entire toolbar row (left actions, paginator, right actions). @default false */
+  hideToolbar?: boolean;
   enableRowClick?: boolean;
   enableUI?: boolean;
+  defaultSort?: {
+    columnDef: string;
+    direction: DxSortDirection;
+  };
+  columnDefaultSorts?: Record<string, DxSortDirection>;
   tabConfig?: {
     type?: 'tabs' | 'pills' | 'options' | 'wrapped' | 'slider';
     scrollMode?: boolean | 'normal' | 'auto';

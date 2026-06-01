@@ -5,14 +5,14 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { DxOutletModule } from '../../core/outlet/outlet.module';
-import { DxOverlayModule } from '../../core/overlay/nz-overlay.module';
+import { DxOverlayModule } from '../../core/overlay/dx-overlay.module';
 import { DxNoAnimationModule } from '../../core/no-animation/dx-no-animation.module';
 
-// import { NzPopconfirmComponent, NzPopconfirmDirective } from './popconfirm';
+// import { DxPopconfirmComponent, DxPopconfirmDirective } from './popconfirm';
 
 @NgModule({
-    //   declarations: [NzPopconfirmComponent, NzPopconfirmDirective],
-    //   exports: [NzPopconfirmComponent, NzPopconfirmDirective],
+    //   declarations: [DxPopconfirmComponent, DxPopconfirmDirective],
+    //   exports: [DxPopconfirmComponent, DxPopconfirmDirective],
     imports: [
         BidiModule,
         CommonModule,
@@ -20,7 +20,7 @@ import { DxNoAnimationModule } from '../../core/no-animation/dx-no-animation.mod
         DxOutletModule,
         DxOverlayModule,
         DxNoAnimationModule,
-        // NzToolTipModule,
+        // DxToolTipModule,
         A11yModule
     ]
 })

@@ -8,8 +8,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { CurrencyInputDirective } from '../../core/UI/core/currency/directive/dx-currency.directive';
 import { DxInputComponent } from './dx-input.component';
 import { DxDirectiveModule } from '../../directive/public-api';
-import { TranslocoModule } from '@ngneat/transloco';
-import { NgxMaskModule } from 'ngx-mask'; @NgModule({
+import { TranslocoModule } from '@jsverse/transloco';
+import { NgxMaskDirective } from 'ngx-mask';
+@NgModule({
   declarations: [DxInputComponent, CurrencyInputDirective],
   imports: [
     CommonModule,
@@ -17,7 +18,7 @@ import { NgxMaskModule } from 'ngx-mask'; @NgModule({
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
-    NgxMaskModule,
+    NgxMaskDirective,
     MatAutocompleteModule,
     MatTooltipModule,
     DxDirectiveModule,
@@ -25,7 +26,8 @@ import { NgxMaskModule } from 'ngx-mask'; @NgModule({
   ],
   providers: [
     CurrencyPipe,
-    DecimalPipe
+    DecimalPipe,
+
   ],
   exports: [DxInputComponent],
 })

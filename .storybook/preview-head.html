@@ -1,0 +1,150 @@
+<!--
+  Storybook-only theme token overrides, scoped to the html.dx-theme-* classes
+  that withThemeByClassName toggles (see .storybook/preview.ts). This makes the
+  addon-themes toolbar switcher actually re-skin stories.
+
+  The shipped ng-dijta library is unchanged: it ships a single light palette at
+  :root (projects/ng-dijta/src/lib/theme/partials/_default.scss). We override
+  the CSS *variables* (tokens) here, never the final properties — components read
+  var(--token), so redefining a token flows through, even past the `!important`
+  on `body { background-color: var(--background-light) }` (!important governs the
+  declaration, not the variable lookup).
+
+  IMPORTANT — the class is applied to <html>, not <body>. The library declares
+  many derived tokens (--dx-* MD3 aliases and Material --mdc-*/--mat-* overrides)
+  at :root, e.g. `--mdc-filled-button-container-color: var(--primary-base)`. Those
+  var() lookups resolve on the :root element (<html>). To make them recompute
+  against our overridden base tokens, the override must live on the SAME element —
+  hence `html.dx-theme-*` and withThemeByClassName({ parentSelector: 'html' }).
+  Putting the class on <body> would leave all :root-declared derived tokens stuck
+  on the original palette (the bug this fixes).
+
+  These live here (not an imported .css) because the Storybook Angular webpack
+  builder has no CSS loader for a bare `import './x.css'` in preview.ts.
+
+  Caveat: the library uses a prebuilt Material theme (deeppurple-amber), not
+  mat.define-theme — so some Material-native surfaces may not fully darken in
+  dark mode. Accepted for now (a full fix needs a Material theming refactor).
+-->
+<style id="dx-storybook-theme-overrides">
+  /* Light — base palette already lives at :root; re-assert key tokens so
+     switching back from dark/ocean fully restores the light scheme. */
+  html.dx-theme-light {
+    --primary-base: #cc0000;
+    --primary-on-base: #ffffff;
+    --primary-light: #ff0000;
+    --primary-on-light: #ffffff;
+    --primary-dark: #990000;
+    --primary-on-dark: #ffffff;
+    --primary-hover: #cc0000;
+    --primary-on-hover: #ffffff;
+    --secondary-base: #f2994a;
+    --secondary-on-base: #ffffff;
+    --background-base: #f6f7fb;
+    --background-light: #f6f7fb;
+    --background-on-light: #2f2f2f;
+    --background-dark: #2f2f2f;
+    --background-on-dark: #ffffff;
+    --surface-base: #ffffff;
+    --surface-on-base: #2f2f2f;
+    --surface-light: #f3f7ff;
+    --surface-on-light: #2f2f2f;
+    --model-box-bg: #ffffff;
+    --color-heading-primary: #1d2939;
+    --color-heading-secondary: #344054;
+    --color-text-primary: #475467;
+    --color-text-secondary: #667085;
+    --color-text-muted: #98a2b3;
+    --color-text-label: #6b7280;
+    --color-text-value: #111827;
+    --color-input-label: #6b7280;
+    --color-input-value: #111827;
+    --color-table-header-text: #1b1718;
+    --color-table-body-text: #2f2f2f;
+    --btn-default-text: #344054;
+    --input-focused-fc: #1d6cc0;
+    --input-border-fc: #030303e3;
+    --input-label-fc: #030303cf;
+    --error-fc: #bd3232;
+  }
+
+  /* Dark — derived neutral-dark palette. The brand red remains (reads on dark);
+     surfaces, backgrounds and text invert to a dark scheme. */
+  html.dx-theme-dark {
+    --background-base: #121212;
+    --background-light: #121212;
+    --background-on-light: #e5e7eb;
+    --background-dark: #000000;
+    --background-on-dark: #ffffff;
+    --surface-base: #1e1e1e;
+    --surface-on-base: #e5e7eb;
+    --surface-light: #242424;
+    --surface-on-light: #e5e7eb;
+    --model-box-bg: #1e1e1e;
+    --color-heading-primary: #f3f4f6;
+    --color-heading-secondary: #e5e7eb;
+    --color-text-primary: #d1d5db;
+    --color-text-secondary: #9ca3af;
+    --color-text-muted: #6b7280;
+    --color-text-label: #9ca3af;
+    --color-text-value: #f9fafb;
+    --color-input-label: #9ca3af;
+    --color-input-value: #f9fafb;
+    --color-table-header-text: #f3f4f6;
+    --color-table-body-text: #e5e7eb;
+    --btn-default-text: #e5e7eb;
+    --input-focused-fc: #6ba8e8;
+    --input-border-fc: #ffffffb3;
+    --input-label-fc: #ffffffcf;
+    --error-fc: #f08a8a;
+    --primary-light: #ff4d4d; /* lifted for contrast on dark surfaces */
+  }
+
+  /* Brand "Ocean" — alternate primary/secondary on light surfaces. Copy this
+     block and tweak the primary/secondary tokens to add more brands; add a
+     html.dx-theme-ocean-dark block (ocean primary + dark surfaces) for a
+     brand-dark combo. */
+  html.dx-theme-ocean {
+    --primary-base: #0b6bcb;
+    --primary-on-base: #ffffff;
+    --primary-light: #3b82f6;
+    --primary-on-light: #ffffff;
+    --primary-dark: #084c99;
+    --primary-on-dark: #ffffff;
+    --primary-hover: #0b6bcb;
+    --primary-on-hover: #ffffff;
+    --secondary-base: #06b6d4;
+    --secondary-on-base: #ffffff;
+    --secondary-light: #67e8f9;
+    --secondary-on-light: #083344;
+    --input-focused-fc: #0b6bcb;
+  }
+</style>
+
+ <link
+    href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+    rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+  // Typography classes (.heading-1, .subbody, .paragraph, ...) defined in
+  // projects/ng-dijta/src/lib/theme/typography/_default-typography.scss are
+  // scoped under .dx-typography by theme-builder. Add the class to <body>
+  // so stories pick up the global type ramp. withThemeByClassName toggles
+  // dx-theme-light / dx-theme-dark via classList.add/remove, preserving this.
+  //
+  // This script runs from <head> before <body> exists, so document.body is
+  // null at this point — defer until DOM is ready.
+  (function ensureTypographyClass() {
+    var apply = function () { document.body.classList.add('dx-typography'); };
+    if (document.body) {
+      apply();
+    } else if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', apply, { once: true });
+    } else {
+      // readyState is 'interactive' or 'complete' but body may still be parsing.
+      // Use queueMicrotask as a tick fallback.
+      Promise.resolve().then(apply);
+    }
+  })();
+</script>

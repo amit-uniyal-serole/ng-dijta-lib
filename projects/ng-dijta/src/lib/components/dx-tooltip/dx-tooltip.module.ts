@@ -6,9 +6,10 @@ import { DxOutletModule } from '../../core/outlet/outlet.module';
 import { DxOverlayModule } from '../../core/overlay/nz-overlay.module';
 import { DxNoAnimationModule } from '../../core/no-animation/dx-no-animation.module';
 import { DxToolTipComponent, DxTooltipDirective } from './dx-tooltip';
+import { DxDirectiveModule } from '../../directive';
 @NgModule({
     declarations: [DxToolTipComponent, DxTooltipDirective],
     exports: [DxToolTipComponent, DxTooltipDirective],
-    imports: [BidiModule, CommonModule, OverlayModule, DxOutletModule, DxOverlayModule, DxNoAnimationModule]
+    imports: [BidiModule, CommonModule, OverlayModule, DxOutletModule, DxOverlayModule, DxNoAnimationModule,DxDirectiveModule]
 })
 export class DxToolTipModule { }

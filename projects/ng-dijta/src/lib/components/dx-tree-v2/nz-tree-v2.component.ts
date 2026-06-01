@@ -61,7 +61,7 @@ import { TreeModel } from './models/tree.model';
           [treeAllowDrop]="node.allowDrop"
           [treeDrag]="node"
           [treeDragEnabled]="node.allowDrag()">
-          <span *ngIf="!nzTitle" class="ant-tree-title" [innerHTML]="node.displayField"></span>
+          <span *ngIf="!nzTitle" class="ant-tree-title" [innerHTML]="node.displayField | dxsafe: 'html'"></span>
           <ng-container
             [ngTemplateOutlet]="nzTitle"
             [ngTemplateOutletContext]="{ $implicit:node, node: node, index: index }">

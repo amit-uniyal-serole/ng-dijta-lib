@@ -1,8 +1,7 @@
 <div class="file-picker-wrapper">
   <div class="uploader-wrapper">
-    <div class="upload-container">
+    <div class="upload-container" [class.disabled-uploader]="uploadType !== 'multi' && files?.length > 0">
       <ng-template #dxFileListRender></ng-template>
-
       <dx-upload [(dxFileList)]="files" [dxAccept]="imgAcceptType" [dxFileType]="imgFileType" dxListType="picture"
         dxType="drag" [dxFileListRender]="dxFileListRender" (dxChange)="handleFileChange($event)"
         [dxBeforeUpload]="beforeUpload" [dxDisabled]="files?.length === fileMaxCount"

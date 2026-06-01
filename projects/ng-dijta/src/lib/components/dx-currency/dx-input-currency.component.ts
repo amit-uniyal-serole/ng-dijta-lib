@@ -23,33 +23,57 @@ import {
   UI_COMPONENT_CONFIG,
 } from '../../core/UI/service/input/ui-component.config';
 import { DxCurrencyService } from './service/dx-currency.service';
+import { Subscription } from 'rxjs';
+import { NumberFormatVariant } from '../../core/UI/constant/currency-default';
 @Component({
   selector: 'dx-input-currency',
   template: `
     <div
-      class="dx-field-wrapper"
+      class="ngdx-field-wrapper"
       [class.none-label]="noneLabel"
       [ngClass]="outline"
       [class.display-view]="viewOnly"
-      [class.dx-disable]="disabled"
+      [class.dx-disable]="isDisabled"
       [class.left-align-label]="labelPosition === 'left'"
       [class.required]="required || ctrRequired" 
       [class]="outerLabelErrorType"
-       [class.none-border]="noneBorder">
-      <mat-label class="dx-outer-label-wrapper">
-    <span class="dx-outer-label">
-      <ng-content select="[dxLabel]"></ng-content>
-      <span *ngIf="required || ctrRequired" class="astrict">*</span>
-    </span>
-  </mat-label>
-      <mat-form-field appearance="outline">
-        <mat-label class="dx-input-label">
-          <ng-content select="dx-label"></ng-content>
+      [class.none-border]="noneBorder">
+      <mat-label class="dx-outer-label" *ngIf="outline === 'outer-label'">
+          <ng-content select="[dxLabel]"></ng-content>
+          <span *ngIf="required || ctrRequired" class="astrict">*</span>
+      </mat-label>
+      <mat-form-field appearance="outline" floatLabel="always">
+        <mat-label *ngIf="outline !== 'outer-label'">
+            <ng-content select="dx-label"></ng-content>
         </mat-label>
         <span matPrefix>
           <ng-content select="dx-prefix"></ng-content>
         </span>
+        <span matTextPrefix *ngIf="currencySymbol">
+          {{ currencySymbol }}
+        </span>
+        @if(appCurrencyConfig) {
           <input
+            type="text"
+            [id]="id"
+            matInput
+            [decimalPlaces]="decimalPlaces"
+            [formControl]="control"
+            [localizedNumberFormat]="appCurrencyConfig"
+            (ngModelChange)="inputChange($event)"
+            (blur)="onBlur($event)"
+            [readonly]="readonly || viewOnly || isDisabled"
+            [tabIndex]="tabIndex"
+            [minlength]="minLength"
+            [maxlength]="maxLength"
+            [placeholder]="tooltip"
+            (keypress)="onlyNumberKey($event)"
+            [required]="required || ctrRequired"
+            appNumericOnly
+          />
+        } @else {
+          <input
+            type="text"
             [id]="id"
             [type]="type"
             matInput
@@ -57,7 +81,7 @@ import { DxCurrencyService } from './service/dx-currency.service';
             numberInput
             (ngModelChange)="inputChange($event)"
             (blur)="onBlur($event)"
-            [readonly]="readonly || viewOnly || disabled"
+            [readonly]="readonly || viewOnly || isDisabled"
             [tabIndex]="tabIndex"
             (keyup)="onKey()"
             [minlength]="minLength"
@@ -69,9 +93,11 @@ import { DxCurrencyService } from './service/dx-currency.service';
             [seprater]="seprater"
             appNumericOnly
           />
+        }
+          
         
         <span matSuffix>
-          <ng-container *ngIf="standard; else non_standard_input_icon">
+          <ng-container *ngIf="standard && !currencySymbol; else non_standard_input_icon">
             <span class="currency-prefix">{{ symbol }}</span>
           </ng-container>
           <ng-template #non_standard_input_icon>
@@ -105,13 +131,15 @@ import { DxCurrencyService } from './service/dx-currency.service';
 export class DxInputCurrencyComponent
   implements OnChanges, ControlValueAccessor, OnInit, Validator {
   @Output() blur: EventEmitter<FocusEvent> = new EventEmitter<FocusEvent>();
-  @Input() disabled = false;
+  @Input() appCurrencyConfig?: NumberFormatVariant;
+  @Input() currencySymbol?: NumberFormatVariant;
+  @Input() decimalPlaces?: number;
   @Input() noneLabel = false;
   @Input() readonly = false;
   @Input() viewOnly: boolean = false;
   @Input() noneBorder: boolean = false;
   @Input() outline: 'floating' | 'none-floating' | 'outer-label' =
-    'none-floating';
+    'outer-label';
   @Input() outerLabelErrorType: 'astrict-error' | 'filled-error' = 'filled-error';
   @Input() tabIndex: number | undefined;
   @Input() labelPosition: 'left' | 'top' = 'top';
@@ -137,6 +165,7 @@ export class DxInputCurrencyComponent
   // To set required 
   set required(value: BooleanInput) {
     this._required = coerceBooleanProperty(value);
+    this.cd.detectChanges();
   }
   protected _required: boolean | undefined;
 
@@ -156,6 +185,18 @@ export class DxInputCurrencyComponent
   onChange: Function = () => { };
   onTouched: Function = () => { };
   control: FormControl = new FormControl();
+
+  @Input() disabled: boolean = false;
+
+  // Internal state for disabled set by ControlValueAccessor (via formControl.disable())
+  private _cvaDisabled: boolean = false;
+
+  // Combined disabled state (either @Input or CVA disabled)
+  get isDisabled(): boolean {
+    return this.disabled || this._cvaDisabled;
+  }
+
+  filterSubscription!: Subscription;
   constructor(
     @Optional() @Inject(UI_COMPONENT_CONFIG) config: UIConfigWrapper,
     @Inject(LOCALE_ID) public locale: string,
@@ -176,16 +217,16 @@ export class DxInputCurrencyComponent
     }
     this.control?.updateValueAndValidity();
   }
-
   ngAfterViewInit(): void {
-    const ngControl: NgControl = this.injector.get(NgControl);
-    if (ngControl) {
-      setTimeout(() => {
-        this.control = ngControl.control as FormControl;
-        this.control.markAsUntouched();
-        this.ctrRequired = this.control.hasValidator(Validators.required);
-        this.cd.detectChanges();
-      });
+    const ngControl: NgControl | null = this.injector.get(NgControl, null);
+
+    if (ngControl?.control instanceof FormControl) {
+      this.control = ngControl.control;
+      this.ctrRequired = this.control.hasValidator(Validators.required);
+      this.cd.detectChanges();
+    } else {
+      // fallback if not bound to form control
+      this.control = new FormControl();
     }
   }
 
@@ -195,6 +236,7 @@ export class DxInputCurrencyComponent
   }
 
   inputChange(event: string): void {
+
     this.value = event;
     this.onChange(this.value);
   }
@@ -213,9 +255,11 @@ export class DxInputCurrencyComponent
     this.onTouched = fn;
   }
 
-  setDisabledState?(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+  // Method called by the form when the control's disabled state changes
+  setDisabledState(isDisabled: boolean): void {
+    this._cvaDisabled = isDisabled;
   }
+
 
   onBlur(value: FocusEvent): void {
     this.blur.emit(value);
@@ -224,10 +268,18 @@ export class DxInputCurrencyComponent
     }
   }
   onlyNumberKey(evt: KeyboardEvent): boolean {
-    const ASCIICode = (evt.which) ? evt.which : evt.keyCode
-    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57) && ASCIICode !== 43 && ASCIICode !== 45 && ASCIICode !== 44 && ASCIICode !== 46)
-      return false;
-    return true;
+    // Allow digits 0-9, +, -, ',', '.', and the K/M/B/T/k/m/b/t shortcuts
+    // used by the compact-notation feature in `onKey()`.
+    const key = evt.key;
+    if (/^[0-9+\-.,KMBTkmbt]$/.test(key)) {
+      return true;
+    }
+    // Control-style keys (Backspace, Tab, Arrow, Delete, …) have multi-char `key`
+    // values and should never be blocked.
+    if (key && key.length > 1) {
+      return true;
+    }
+    return false;
   }
 
   onKey(): void {
@@ -269,13 +321,20 @@ export class DxInputCurrencyComponent
     }
     return val;
   }
+  ngOnDestroy(): void {
+    if (this.filterSubscription) {
+      this.filterSubscription?.unsubscribe();
+    }
+  }
   validate(control: AbstractControl): ValidationErrors | null {
     if (!this.ctrRequired) {
       this.ctrRequired = control.hasValidator(Validators.required);
       this.cd.detectChanges();
+      this.cd.detectChanges();
     }
     if (!control.hasValidator(Validators.required)) {
       this.ctrRequired = control.hasValidator(Validators.required);
+      this.cd.detectChanges();
       this.cd.detectChanges();
     }
     return null;

@@ -10,7 +10,7 @@ import { FilesAcceptDirective } from './directives/attribute.directive';
 import { FilesDiscardDirective } from './directives/discard.directive';
 import { FilesNativeDirective } from './directives/native.directive';
 import { FileSizeValidator, FilesLimitValidator, FilesAcceptValidator } from './directives/validators.directive';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 
 
 
@@ -37,6 +37,7 @@ import { TranslocoModule } from '@ngneat/transloco';
     FileUploadComponent,
     FileUploadDropZoneComponent,
     FileUploadListItemComponent,
+    FileUploadIconComponent,
     FileUploadAttributeComponent,
     FileSizeValidator,
     FilesLimitValidator,

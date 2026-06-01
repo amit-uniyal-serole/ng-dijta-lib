@@ -1,105 +1,171 @@
-dx-dual-Listbox
-=========
+---
+category: Components
+type: Data Entry
+title: Dual Listbox
+---
 
-The **dx-dual-listbox** is a component that provides two lists controls side-by-side that allows items in one list to be selected and moved* to the other list via drag-and-drop and/or a button-based interface. 
-The component supports multiple select options from the list, programatic setting of list sources, and layout with direction and button formatting.
+Two-column transfer list that lets the user move items between an "available" list and a "confirmed" list. Supports drag-and-drop, client-side and server-side filtering, single and bulk transfer, sorting, pinning, avatars and custom display formatters.
 
-\* Technically, the dual-list component does not move items from one array to another. Rather it makes a copy from the source array of the item and adds it to the destination array, or removes it from the destination array. Thus, the source array is a master list of all available item and the destintion array is a list of items that have been selected from the master list. Therefore, in order for an item to be in the destination array it must also exist in the source array.
+## When To Use
 
+- When the user must select a subset of items from a larger pool (permissions, columns, tags, members).
+- When ordering of selected items matters (manual move-up / move-down / drag to reorder).
+- When the list of source items is large enough to require filtering.
+- When source data is paged server-side and search must round-trip through an API.
+- When items need to display an avatar, icon, or subtitle in addition to the name.
 
-
-## How to use?
-
-```
-$ npm i @ngdx/dijta
-```
-
-## Integration
-
-The **dx-dual-listbox** should work as-is with webpack/angular-cli. Just add the `DxDualListboxModule`:
-
-````typescript
-import { DxDualListboxModule } from '@ngdx/dijta';
-
-@NgModule({
-    imports: [ DxDualListboxModule ],
-    ...
-})
-export class AppModule {}
-
-
-## Usage
-Basic usage is:
-```html
-<dx-dual-listbox [config]="config"  [source]="source"
-[(destination)]="confirmed"   (onDestinationChange)="destinationChange($event)"></dx-dual-listbox>
-````
-## Additional Features
-
->Extend **DxListBoxAdditionalFeatures** to the source/destination model
-
-## Input
-
-The following parameters are available for the dual-list:
-| Input | Data need to be passed as input |
-| ------------- | ------------- |
-| **key** |  The unique identifier field of each object in the `source` and `destination` arrays, default is `_id`. (Note: with a source of an array of strings, each string is its own id.)|
-| **display** |  The field of each object for displaying the object each the lists, default is `_name`. Or, a function that returns a string that can be used for displaying an object. (Note: with a source of an array of strings, each string is its own display.)|
-| **height** | The height of the lists, default is `100px`|
-| **format** | A format object, default is `{ direction: 'left-to-right', draggable: true, locale: undefined }`|
-| **filter** | A boolean whether or not to display a filter for the lists, default is `false`.|
-| **sort** | A boolean whether or not to keep the lists sorted, default is `false`.|
-| **compare** | A compare function to be used for sorting the lists. Note if sort is not set and compare is set, then sort will be set `true`.|
-| **source** | The source array of objects or strings for the list. (This is the universal, master list of all possible objects.)|
-| **destination** | The destination array of objects or strings selected from the source. Note, the `destination` array can have prexisting elements.|
-| **disabled** | The dual-list is disabled, default is `false`|
-|**hideDefaulLabel** | Hide default labels|
-|**subtitleAsEmailFg** | Pass subtitleAsEmailFg as `true`, If subtitle value is `email` to open mail senders|
-
-## Format
-
-The format object allows for the text for the add, remove, all, and none buttons to be set. It also can be used to set the layout direction with the source being on the left-hand side as the default, toggling drag-and-drop, and explicitly setting the locale for the filter string comparision. The default locale is undefined and will use host environment's current locale. An example format object:
-
-```typescript
-export class MyComponent {
-    ...
-    format = {
-        direction: DualListComponent.LTR, draggable: true, locale: 'da' };
-    ...
-}
-```
-
-## Output
-
-**(onDestinationChange)** - An event triggered when the destination array changes.
-
-Then used in an html template:
+## API
 
 ```html
 <dx-dual-listbox
-  [config]="config"
   [source]="source"
-  [(destination)]="confirmed"
-  (onDestinationChange)="destinationChange($event)"
-></dx-dual-listbox>
+  [destination]="destination"
+  [config]="config"
+  (onDestinationChange)="destination = $event">
+</dx-dual-listbox>
 ```
 
-## Extending
-The html template packaged with this component is based on Bootstap 3; however it can be overridden for customization. Here is an example:
+### dx-dual-listbox
+
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[source]` | Items available for selection | `any[]` | `-` |
+| `[destination]` | Selected items (two-way, updated via `(onDestinationChange)`) | `any[]` | `-` |
+| `[config]` | Configuration object (see `DualListConfig`) | `DualListConfig` | `-` |
+| `[compare]` | Custom compare function for sorting | `(a, b) => number` | `-` |
+| `[displaySelectedCount]` | Toggles showing selected counts | `SelectedCount` | `-` |
+| `[id]` | Unique id used when dragging between multiple lists | `string` | `dual-list-{n}` |
+
+### Events
+
+| Event | Description | Type |
+|-------|-------------|------|
+| `(onDestinationChange)` | Emitted when the selected list changes | `EventEmitter<any[]>` |
+| `(onServiceFilterChange)` | Emitted when server-side filter input changes | `EventEmitter<ServerFilterModel>` |
+
+### Types
 
 ```typescript
-import { Component } from '@angular/core';
-import { DxDualListboxComponent } from '@ngdx/dijta';
+interface DualListConfig {
+  key: string;                       // primary key property when items are objects
+  display: string | string[] | ((item: any) => string); // display formatter
+  height?: string;                   // list height (e.g. '200px')
+  filter?: boolean;                  // show filter inputs
+  sort?: boolean;                    // enable sorting
+  disabled?: boolean;                // disable entire transfer UI
+  format?: DefaultDualListFormat;    // direction, draggable, locale
+  showAvatar?: boolean;              // render avatars in rows
+  availableListTitle?: string;
+  confirmedListTitle?: string;
+  enableBulkTransfer?: boolean;      // show "move all" buttons
+  hideDefaulLabel?: boolean;
+  subtitleAsEmailFg?: boolean;
+  serverFilter?: boolean;            // emit onServiceFilterChange instead of filtering locally
+  enableSingleItemSort?: boolean;    // per-row up/down buttons
+  enableColumnPinning?: boolean;     // allow pinning selected items
+}
 
-@Component({
-    selector: 'custom-dual-list',
-    templateUrl: './custom-dual-list.component.html',
-    styleUrls: [ './custom-dual-list.component.scss' ]
-})
-export class CustomDualListComponent extends DxDualListboxComponent {
+interface DefaultDualListFormat {
+  direction?: 'left-to-right' | 'right-to-left';
+  draggable?: boolean;
+  locale?: undefined;
+}
+
+interface ServerFilterModel {
+  event: ListBoxSearchEvent;
+  search: string;
 }
 ```
 
-### Result
+## Examples
 
-![Dual ListBox](result.png)
+### Basic transfer list
+
+```typescript
+source = [
+  { id: 1, name: 'Alice' },
+  { id: 2, name: 'Bob' },
+  { id: 3, name: 'Carol' }
+];
+destination = [];
+
+config: DualListConfig = {
+  key: 'id',
+  display: 'name',
+  filter: true,
+  sort: true,
+  height: '300px'
+};
+```
+
+```html
+<dx-dual-listbox
+  [source]="source"
+  [destination]="destination"
+  [config]="config"
+  (onDestinationChange)="destination = $event">
+</dx-dual-listbox>
+```
+
+### With avatars, bulk transfer and custom titles
+
+```typescript
+config: DualListConfig = {
+  key: 'id',
+  display: 'name',
+  showAvatar: true,
+  enableBulkTransfer: true,
+  availableListTitle: 'Team members',
+  confirmedListTitle: 'Reviewers',
+  height: '400px'
+};
+```
+
+```html
+<dx-dual-listbox
+  [source]="users"
+  [destination]="reviewers"
+  [config]="config"
+  (onDestinationChange)="reviewers = $event">
+</dx-dual-listbox>
+```
+
+### Server-side filtering
+
+```html
+<dx-dual-listbox
+  [source]="pagedUsers"
+  [destination]="selected"
+  [config]="{ key: 'id', display: 'name', serverFilter: true, filter: true }"
+  (onServiceFilterChange)="loadPage($event)"
+  (onDestinationChange)="selected = $event">
+</dx-dual-listbox>
+```
+
+### Reorderable selection with pinning
+
+```html
+<dx-dual-listbox
+  [source]="columns"
+  [destination]="visibleColumns"
+  [config]="{
+    key: 'field',
+    display: 'title',
+    enableSingleItemSort: true,
+    enableColumnPinning: true,
+    height: '360px'
+  }"
+  (onDestinationChange)="visibleColumns = $event">
+</dx-dual-listbox>
+```
+
+## Import
+
+```typescript
+import { DxDualListboxModule } from '@ngdx/dijta';
+
+@NgModule({
+  imports: [DxDualListboxModule]
+})
+export class YourModule { }
+```

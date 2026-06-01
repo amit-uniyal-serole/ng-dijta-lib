@@ -3,7 +3,8 @@
   "ignorePatterns": [
     "projects/**/*"
   ],
-  "overrides": [{
+  "overrides": [
+    {
       "files": [
         "*.ts"
       ],

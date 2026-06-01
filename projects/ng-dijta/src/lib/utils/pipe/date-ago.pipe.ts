@@ -1,24 +1,25 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { formatDistanceToNow } from 'date-fns';
-import { utcToZonedTime } from 'date-fns-tz';
+import moment from 'moment';
 
 @Pipe({
   name: 'dateAgo',
 })
 export class DateAgoPipe implements PipeTransform {
-  transform(value: string | number | Date | undefined, timezone: string): string | null {
+  transform(value: string | number | Date | undefined,
+    timezone: string): string | null {
     if (!value) {
-      return '-';
+      return '-'
     }
     if (!timezone) {
       timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     }
-    return this.getDateTimeValue(value, timezone);
+    if (value) {
+      value = this.getDateTimeValue(value, timezone);
+    }
+    return value.toString();
   }
 
-  getDateTimeValue(value: string | number | Date, timezone: string): string {
-    const date = new Date(value);
-    const zonedDate = utcToZonedTime(date, timezone);
-    return formatDistanceToNow(zonedDate, { addSuffix: true });
+  getDateTimeValue(value: string | number | Date, timezone: string) {
+    return moment(value).tz(timezone).fromNow()
   }
 }

@@ -5,7 +5,9 @@ import {
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges
+  ViewChild,
+  SimpleChanges,
+  ElementRef
 } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { CustomLabelColor } from '../../../dx-button/dx-button.model';
@@ -18,6 +20,8 @@ import {
   MultiActionButtonSettings,
   SubmenuActionModel,
 } from '../../interfaces/dx-table.interface';
+import { CdkOverlayOrigin } from '@angular/cdk/overlay';
+import { MatButton } from '@angular/material/button';
 export type DROPDOWN_PANEL_WIDTH = 'fit-with-dropdown';
 interface PanelWidth {
   ['min-width']: string;
@@ -41,33 +45,20 @@ export class DxBulkActionsComponent<T> implements OnInit, OnChanges {
     new EventEmitter<string>();
   @Output() onClickMarkAsDefault: EventEmitter<MenuAction> =
     new EventEmitter<MenuAction>();
-  // @ViewChild('bulkActionMenu') bulkActionMenu!: ElementRef;
-  // @ViewChild('bulkActionDropDownIcon') bulkActionDropDownIcon!: ElementRef;
-  // @ViewChild('bulkActionDropDownLabel') bulkActionDropDownLabel!: ElementRef;
-  // @ViewChild('bulkActionDropDownLabelWrapper')
-  // bulkActionDropDownLabelWrapper!: ElementRef;
   bulkActionMenuLabel!: string | undefined;
-  //isBulkDropdownOpen: boolean = false;
   filteredBulkActionsList: MenuAction[] | undefined = [];
   filteredGroupsList: ReplaySubject<BulkActionGroups[]> = new ReplaySubject<BulkActionGroups[]>(1);
   bulkActionsList: MenuAction[] | undefined = [];
   groupsList: BulkActionGroups[] | undefined = [];
   searchText!: string;
-  // constructor(private renderer: Renderer2) {
-  //   this.renderer?.listen('window', 'click', (e: Event) => {
-  //     if (
-  //       e?.target !== this.bulkActionMenu?.nativeElement &&
-  //       e?.target !== this.bulkActionDropDownIcon?.nativeElement &&
-  //       e?.target !== this.bulkActionDropDownLabel?.nativeElement &&
-  //       e?.target !== this.bulkActionDropDownLabelWrapper?.nativeElement
-  //     ) {
-  //       this.isBulkDropdownOpen = false;
-  //     }
-  //   });
-  // }
+  isOpen = false;
+  panelWidth: string | number = 'auto';
+  @ViewChild('button') button!: MatButton;
+  readonly _elementRef: ElementRef | undefined;
 
   ngOnInit(): void {
     this.setPaginatorDropdownLabel(this.bulkAction?.label);
+    this.setInitialActive()
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (
@@ -85,18 +76,33 @@ export class DxBulkActionsComponent<T> implements OnInit, OnChanges {
         label: this.bulkAction?.createNewAction?.label ?? 'New Custom View',
       };
       this.setPaginatorDropdownLabel(this.bulkAction?.label);
+      this.setInitialActive();
     }
   }
-  // bulkActionActonMenu(): void {
-  //   this.isBulkDropdownOpen = !this.isBulkDropdownOpen;
-  // }
   fillLabelColor(color: string): CustomLabelColor {
     const customColor: CustomLabelColor = {
       color: color,
     };
     return customColor;
   }
+  private setInitialActive(): void {
+    if (!this.groupsList?.length) return;
+    const actions = this.groupsList.flatMap(group => group.actions ?? []);
+    actions.forEach(action => (action.active = false));
+    const defaultAction =
+      actions.find(action => action.label === this.bulkActionMenuLabel) ||
+      actions.find(action => action.active)
+    if (defaultAction) {
+      defaultAction.active = true;
+      this.bulkActionMenuLabel = defaultAction.label;
+    }
+  }
   bulkActionMenuClick(event: MenuAction): void {
+    this.groupsList?.forEach(group =>
+      group.actions?.forEach(action => (action.active = false))
+    );
+    event.active = true;
+    this.isOpen = false;
     if (this.bulkAction?.itemLabelAsMenuLabel) {
       this.setPaginatorDropdownLabel(event?.label);
     }
@@ -125,12 +131,14 @@ export class DxBulkActionsComponent<T> implements OnInit, OnChanges {
     }
   }
   onBtnSingleEvent(event: MultiActionButtonSettings): void {
+    this.isOpen = false;
     this.onClickBulkMenuAction.emit({
       label: event?.title!,
       type: event?.type,
     });
   }
   onBtnMultiEvent(event: string): void {
+    this.isOpen = false;
     this.onClickBulkMenuAction.emit({
       label: event!,
       type: event,
@@ -218,5 +226,23 @@ export class DxBulkActionsComponent<T> implements OnInit, OnChanges {
   }
   onMarkAsDefault(event: MenuAction): void {
     this.onClickMarkAsDefault.emit(event)
+  }
+  openOption(): void {
+    this.isOpen = true;
+    this.panelWidth = this._getOverlayWidth(this.button._elementRef);
+  }
+  /** Gets how wide the overlay panel should be. */
+  private _getOverlayWidth(
+    preferredOrigin: ElementRef<ElementRef> | CdkOverlayOrigin | undefined,
+  ): string | number {
+    if (this.panelWidth === 'auto') {
+      const refToMeasure =
+        preferredOrigin instanceof CdkOverlayOrigin
+          ? preferredOrigin.elementRef
+          : preferredOrigin || this._elementRef;
+      return refToMeasure?.nativeElement.getBoundingClientRect().width;
+    }
+
+    return this.panelWidth === null ? '' : this.panelWidth;
   }
 }

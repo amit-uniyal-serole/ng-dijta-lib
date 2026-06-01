@@ -9,6 +9,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DxImageComponent } from './varient/dx-image/dx-image.component';
 import { DxImpageUploadPopupComponent } from './varient/dx-impage-upload-popup/dx-impage-upload-popup.component';
 import { DxButtonModule } from '../dx-button';
+import { MatIconModule } from '@angular/material/icon';
+import { TranslocoModule } from '@jsverse/transloco';
+import { MatInput } from "@angular/material/input";
 @NgModule({
   declarations: [
     DxImageUploadV1Component,
@@ -23,8 +26,11 @@ import { DxButtonModule } from '../dx-button';
     FormsModule,
     ReactiveFormsModule,
     MatDialogModule,
-    DxButtonModule
-  ],
+    DxButtonModule,
+    MatIconModule,
+    TranslocoModule,
+    MatInput
+],
   exports: [
     FilePickerModule,
     DxImageUploadV1Component,

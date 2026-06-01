@@ -15,6 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { EmailListTableViewComponent } from './email-list-table-view/email-list-table-view.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
+import { DxDirectiveModule } from '../../directive';
 @NgModule({
     declarations: [
         DxEmailComponent,
@@ -34,7 +35,8 @@ import { MatTableModule } from '@angular/material/table';
         MatMenuModule,
         ReactiveFormsModule,
         MatCheckboxModule,
-        MatTableModule
+        MatTableModule,
+        DxDirectiveModule
     ],
     exports: [
         DxEmailComponent,

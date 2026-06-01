@@ -1,0 +1,101 @@
+@charset 'utf-8';
+//styles import from dijta
+// @import "partials/reset";
+// @import "partials/mixins";
+// @import "partials/common";
+// @import "partials/color";
+// @import "partials/elevation";
+// @import "partials/responsive";
+@import "partials/default";
+// @import "partials/material/email-list";
+// @import "partials/material/compose-email";
+// @import "partials/material/email-detail-view";
+// @import "partials/canvas";
+// @import "partials/dx-tree-v2";
+// @import "partials/font-weight";
+// @import "./border-radius/border-radius";
+// @import "./typography/deep-map";
+
+// Indigit Typography Start
+@import "./typography/default-typography";
+@import "./typography/typography";
+// Indigit Typography End
+
+@import "./partials/layout/entry.scss";
+@import "./partials/layout/compact";
+@import "./layout/sidenav/vertical.scss";
+@import "./layout/notification.scss";
+@import "./layout/sidenav/horizantal.scss";
+@import "./inline-dropdown/dx-inline-dropdown";
+@import "toastr/toastr.scss";
+
+@import './dx-card/index';
+@import "./tile/title-entry";
+@import "./drawer/drawer";
+@import "./drawer/profile-drawer";
+@import "./partials/material/datetime-picker";
+@import "./loader/animations/all-animation";
+@import "partials/material/icon-selection";
+
+// @import "./navigation-menu/dx-navigation-menu";
+// @import "./navigation-menu/dx-menu-accordian";
+// @import "partials/material/table-responsive";
+// @import "partials/model-box";
+@import "./sidebar/compact-menu";
+
+@import "./tooltip/tooltip";
+@import "./popover/popover";
+@import "./tag/tag";
+@import "./empty/index.scss";
+@import "./upload/index.scss";
+@import "./partials/material/topbar";
+
+
+// New CSS
+
+@import "./material-override/input";
+@import "./material-override/dialog";
+@import "./material-override/datetime";
+@import "./material-override/mat-chip";
+@import "./material-override/checkbox";
+@import "./material-override/radio";
+@import "./material-override/button";
+@import "./material-override/card";
+@import "./material-override/table";
+@import "./material-override/list";
+@import "./material-override/tab";
+@import "./material-override/panel";
+@import "./material-override/mat-datetime-picker";
+@import "./material-override/chip-autocomplete";
+@import "./material-override/field";
+@import "./material-override/expansion";
+
+@import "./dual-listbox/dual-listbox";
+@import "./header/header";
+@import "./kanban/kanban";
+@import "./pagination/pagination";
+@import "./cascader/cascader-li";
+@import "./cascader/cascader";
+@import "./dropdown/dropdown";
+@import "./loading/loading-backdrop";
+@import "./loading/loading";
+@import './select/select';
+@import './common/cursor';
+@import './tab/tab';
+@import './tree/tree';
+
+// Bootstrap Override
+
+@import './bootstrap/_override';
+@import './common/elevation';
+@import './common/cursor';
+@import './common/anchor';
+@import './common/scrollbar';
+@import './mat-toolbar/mat-toolbar';
+@import './mat-list/mat-list';
+@import './common/icon';
+@import './common/width';
+// TUI
+@import './tui/tui-calendar.scss';
+@import './tui/tui-date-picker.scss';
+@import './tui/tui-time-picker.scss';

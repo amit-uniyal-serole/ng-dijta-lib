@@ -1,0 +1,72 @@
+.dx-profile-drawer {
+  .dx-drawer-body {
+    padding: 0px;
+
+    .dx-profile-wrapper {
+      .profile {
+        background-color: var(--surface-light);
+      }
+      .profile-actions {
+        .action-items {
+          border: 0.3px solid #a7a9ab7d;
+          height: 39px;
+        }
+      }
+
+      .profile-footer {        
+        border-top: 1px solid #cccc;
+        color: #434343;
+        background: #fff;
+      }
+      .close {
+        right: 7px;
+        top: 4px;
+        color: #c31717;
+      }
+    }
+  }
+}
+
+.tenant-title {  
+  letter-spacing: 0.15px;
+}
+
+.profile-tenant-wrapper {
+  line-height: 0 !important;
+
+  .profile-company-name {
+    width: 85%;
+  }
+}
+
+.tenant-menu-items {
+  height: 58px !important;
+  border-bottom: 0.5px solid #dfdfdfb0 !important;
+
+  .selected-tenant-item-btn {
+    height: 20px;
+    background: var(--primary-base);
+    width: 20px;
+
+    margin-right: -5px;
+
+    .select-comp-icon {
+      color: var(--primary-on-base) !important;
+      font-size: 16px !important;      
+    }
+  }
+}
+
+.cdk-overlay-pane .mat-mdc-menu-panel.profile-tenant-menu-panel {
+  min-height: 50px !important;
+  max-width: 260px !important;
+  min-width: 260px !important;
+  .mat-menu-content:not(:empty) {
+    padding: 0px !important;
+  }
+}
+
+.focus-tenant-name {
+  background-color: var(--primary-hover);
+  border-radius: 4px;
+}

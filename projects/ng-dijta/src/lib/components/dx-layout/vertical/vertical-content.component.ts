@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { Menu } from "../../dx-side-bar";
+import { Menu } from "../../dx-sidebar";
 enum FIX_SIZE {
     IN = 240,
     OUT = 0,
@@ -9,13 +9,13 @@ enum FIX_SIZE {
     selector: 'dx-vertical-content',
     template: `
         <dx-layout-content>
-            <div style="display: flex;height: 100vh;">
+            <div style="display: flex">
                 <dx-layout-sider [nzWidth]="size" nzTheme="light">
-                    <div class="side">
+                    <div class="overflow-auto w-100" scrollHeight>
                         <dx-vertical [menu]="menu" [style.width]="size + 'px'"></dx-vertical>
                     </div>
                 </dx-layout-sider>
-                <div class="inner-content">
+                <div class="overflow-auto" scrollHeight>
                     <ng-content></ng-content>
                 </div>
             </div>
@@ -23,9 +23,9 @@ enum FIX_SIZE {
     `,
     styles: [
         `
-            .main-container {
-                padding-top: 5rem;
-            }
+        .main-container {
+            padding-top: 5rem;
+        }
         `
     ]
 })

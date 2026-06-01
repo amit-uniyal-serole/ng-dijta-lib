@@ -20,7 +20,7 @@ import { SliderDimension, SliderPosition } from "../../clases/slider";
 import { ConverterService } from "../../services/converter.service";
 
 @Component({
-    selector: "color-picker",
+    selector: "dx-color-picker",
     templateUrl: "./color-picker.component.html",
     styleUrls: ["./color-picker.component.scss"],
     encapsulation: ViewEncapsulation.None,

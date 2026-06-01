@@ -4,7 +4,7 @@ import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { RouterModule } from "@angular/router";
-import { TranslocoModule } from "@ngneat/transloco";
+import { TranslocoModule } from "@jsverse/transloco";
 import { CoreUiModule } from "../../core/UI/core-ui.module";
 import { DxDirectiveModule } from "../../directive";
 import { DxButtonModule } from "../dx-button";
@@ -24,6 +24,7 @@ import { DxCardCheckboxComponent } from './core/dx-card-checkbox/dx-card-checkbo
 import { DxCardCurrencyComponent } from './core/dx-card-currency/dx-card-currency.component';
 import { DxCardDateComponent } from './core/dx-card-date/dx-card-date.component';
 import { DxCardDateTimeComponent } from "./core/dx-card-date/dx-card-datetime.component";
+import { MatIconModule } from "@angular/material/icon";
 import { DxCardDescriptionComponent } from './core/dx-card-description/dx-card-description.component';
 import { DxCardEmailComponent } from './core/dx-card-email/dx-card-email.component';
 import { DxCardImageComponent } from './core/dx-card-image/dx-card-image.component';
@@ -46,6 +47,11 @@ import { DxDetailsCardComponent } from './variant/dx-details-card/dx-details-car
 import { DxFormCardComponent } from './variant/dx-form-card/dx-form-card.component';
 import { DxCardAdditionalContentComponent } from './core/dx-card-additional-content/dx-card-additional-content.component'
 import { AbilityModule } from "@casl/angular";
+import { LocalizedNumberPipe } from "../../pipe/localized-number.pipe";
+import { DxInputPhoneModule } from "../dx-input-phone";
+import { DxGroupAction } from "./core/dx-group-action/dx-group-action.component";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatButtonModule } from "@angular/material/button";
 
 @NgModule({
     declarations: [
@@ -78,6 +84,7 @@ import { AbilityModule } from "@casl/angular";
         DxCardDateTimeComponent,
         DxCardImageComponent,
         DxCardAdditionalContentComponent,
+        DxGroupAction
     ],
     imports: [
         CommonModule,
@@ -95,10 +102,15 @@ import { AbilityModule } from "@casl/angular";
         DxTagInputModule,
         DxDirectiveModule,
         RouterModule,
+        MatIconModule,
         FilePickerModule,
         ImagePreviewModule,
         TranslocoModule,
-        AbilityModule
+        AbilityModule,
+        LocalizedNumberPipe,
+        DxInputPhoneModule,
+        MatMenuModule,
+        MatButtonModule
     ],
     exports: [
         DxCardComponent,
@@ -115,13 +127,23 @@ import { AbilityModule } from "@casl/angular";
         BasicLaunchTileComponent,
         BasicLinkTileComponent,
         NewMonitoringTileComponent,
+        DxTileHeaderComponent,
+        DxTileFooterComponent,
         DxFormCardComponent,
         DxCardCheckboxComponent,
         DxTagInputModule,
         DxCardContentComponent,
         DxDropdownDetailsComponent,
         DxCardDateTimeComponent,
-        DxCardAdditionalContentComponent
+        DxCardAdditionalContentComponent,
+        DxGroupAction,
+        DxCardCurrencyComponent,
+        DxCardDateComponent,
+        DxCardEmailComponent,
+        DxCardImageComponent,
+        DxCardTextComponent,
+        DxCardTextWrapperComponent,
+        DxCardUrlComponent
     ]
 })
 export class DxCardModule { }

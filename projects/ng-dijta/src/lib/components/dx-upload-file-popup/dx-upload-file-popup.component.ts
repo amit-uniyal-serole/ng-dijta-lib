@@ -1,12 +1,11 @@
-import { Component, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { fileObject } from './upload-file.model';
 
 @Component({
   selector: 'dx-upload-file-popup',
   templateUrl: './dx-upload-file-popup.component.html',
-  styleUrls: ['./dx-upload-file-popup.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./dx-upload-file-popup.component.scss']
 })
 export class DxUploadFilePopupComponent implements OnInit {
   title: string = 'Upload File';

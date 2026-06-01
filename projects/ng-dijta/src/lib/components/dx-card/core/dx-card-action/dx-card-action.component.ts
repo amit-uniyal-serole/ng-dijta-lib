@@ -13,8 +13,8 @@ export class DxCardActionComponent<T> implements OnChanges {
   @Input() data: T | undefined;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['actions'].currentValue !== changes['actions'].previousValue) {
-      this.actions = ButtonActionTransform.updateActionSettings(this.actions!)
+    if (changes['actions'].currentValue !== changes['actions'].previousValue || changes['data'].currentValue !== changes['data'].previousValue) {
+      this.actions = ButtonActionTransform.updateActionSettings(this.actions!, this.data)
     }
   }
 

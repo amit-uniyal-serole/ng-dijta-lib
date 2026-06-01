@@ -5,9 +5,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DxTitleModule } from '../dx-title/dx-title.module';
 import { MatTableModule } from '@angular/material/table';
 import { DxButtonModule } from '../dx-button';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 @NgModule({
     declarations: [DxUploadFilePopupComponent],
+    exports: [DxUploadFilePopupComponent],
     imports: [
         CommonModule,
         MatDialogModule,

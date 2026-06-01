@@ -1,0 +1,27 @@
+<div   class="dx-kanban-view-columns" >
+    <div class="dx-kanban-board-header d-flex align-items-center justify-content-between" [ngStyle]="column?.color? headerBackgroundColor(column?.color): null">
+        <div class="d-flex align-items-start flex-column">
+            <h3 class="subtitle mb-0">{{column?.name | transloco}}</h3>
+            <h3 *ngIf="column?.totalAmountUrl" class="body mb-0"><dx-currency [amount]="totalAmount" 
+                [decimal]="column.totalAmountUrl?.currencyFormat?.decimal"
+                [currencyCode]="column.totalAmountUrl?.currencyFormat?.currencyCode"
+                [appCurrencyConfig]="column.totalAmountUrl?.currencyFormat?.appCurrencyConfig"></dx-currency></h3>
+            </div>
+        <span [ngStyle]="column?.color? columnContentCountBackgroundColor(column?.color): null" class="column-content-count-badge">{{column?.content?.length}}</span>
+    </div>
+    <div id="{{column.id}}" class="dx-kanban-board-container"  infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+    [scrollWindow]="false" (scrolled)="onScroll()" dLoading [backdrop]="true" [zIndex]="99"
+    [message]="'Loading, please wait...'" [loading]="isBusy" [style.height.px]="height">
+
+        <!-- column content -->
+        <div *ngFor="let content of column?.content" cdkDrag [cdkDragDisabled]="true" [cdkDragData]="content"
+            class="dx-kanban-board-card example-box">
+            <!-- card -->
+            <div class="item-placeholder" *cdkDragPlaceholder>
+            </div>
+            <dx-kanban-board-card-wrapper (onClickAction)="onClickAction($event, content)"
+                [type]="column?.variant" [content]="content"></dx-kanban-board-card-wrapper>
+        </div>
+        
+    </div>
+</div>

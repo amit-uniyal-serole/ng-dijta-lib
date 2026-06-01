@@ -1,206 +1,206 @@
-# DxButton
+---
+category: Components
+type: General
+title: Button
+---
 
-A versatile button component with support for multi-action dropdowns, confirmation popovers, loading states, and permission-based visibility.
+A versatile button for triggering actions. Wraps Angular Material `mat-button` and adds loading states, a multi-action dropdown, confirmation popover, permission gating, and conditional styling.
 
-## Overview
+## When To Use
 
-`DxButton` is the primary button component in ng-dijta. It supports a main action with an optional multi-action dropdown, five animated loader styles, an inline confirmation popover before executing actions, and CASL-based permission gating. Use it wherever you need a styled button with rich interaction patterns.
-
-## Module Import
-
-```typescript
-import { DxButtonModule } from 'ng-dijta';
-
-@NgModule({
-  imports: [DxButtonModule]
-})
-```
-
-## Selector
-
-`<dx-button>`
+- When the user needs to trigger an operation such as submitting a form, opening a dialog, deleting a record, or navigating.
+- Use the **multi-action dropdown** when a single trigger exposes several related actions (e.g. *Edit / Duplicate / Delete*).
+- Use the **confirmation popover** for destructive or irreversible actions.
+- Use the **loading state** for actions that take noticeable time (network calls, long computations).
+- Use the **permission** input to hide or disable the button based on the current user's ability.
 
 ## API
 
-### Inputs
+```html
+<dx-button
+  title="Save"
+  icon="save"
+  dxType="primary"
+  (onActionSelect)="onSave()">
+</dx-button>
+```
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `title` | `string` | — | Button label text. Supports i18n via Transloco. |
-| `data` | `T` | — | Generic data payload passed to condition directives for dynamic class evaluation. |
-| `condition` | `ConditionClass` | — | Condition directive config for applying CSS classes dynamically based on `data`. |
-| `permission` | `DxPermission` | — | CASL permission config (`{ apiName, permission }`). Disables and shows a lock icon when permission is denied. |
-| `disabled` | `boolean` | — | Disables the button when `true`. |
-| `show` | `boolean` | `true` | Controls whether the button is rendered. |
-| `src` | `string` | — | Path to an image displayed inside the button. |
-| `class` | `ButtonClasses` | `'dxBtn'` | Base style class: `'dxBtn'` (primary), `'secondary-btn'`, or `'dxIconClass'`. |
-| `customClass` | `string[]` | — | Additional CSS classes applied to the button element, overriding the `class` input. |
-| `multiActionDropDown` | `MultiActionDropDown` | — | Configuration object for the dropdown portion of a split-button. See `MultiActionDropDown` interface. |
-| `icon` | `string` | — | Material Icons ligature name displayed before the title. |
-| `size` | `'default' \| 'small' \| 'big'` | `'default'` | Controls button size via CSS modifier classes. |
-| `confirmationPopover` | `ConfirmationPopover` | — | When `isShow: true`, intercepts the click and shows a confirmation popover before emitting `onActionSelect`. |
-| `isLoading` | `boolean` | `false` | When `true`, renders the loader animation and disables the button. |
-| `loaderType` | `ButtonLoaderType` | `'semi-circle'` | Loader animation style: `'semi-circle'`, `'arc'`, `'dual-arc'`, `'pulse'`, or `'refresh'`. |
-| `isReverseElement` | `boolean` | `false` | When `true`, reverses the layout order of icon and label (column-reverse). |
-| `id` | `string` | `dx-button-{n}` | Auto-generated unique element ID. Can be overridden. |
+### dx-button
 
-### MultiActionDropDown Interface
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[title]` | Button text label | `string` | - |
+| `[data]` | Custom payload carried with the button (generic `T`) | `T` | - |
+| `[dxType]` | Button appearance type | `'primary' \| 'default'` | `'primary'` |
+| `[class]` | Built-in style variant | `'dxBtn' \| 'secondary-btn' \| 'dxIconClass' \| 'text'` | `'dxBtn'` |
+| `[customClass]` | Additional CSS classes to append | `string[]` | - |
+| `[icon]` | Material icon name to display | `string` | - |
+| `[src]` | Image source URL for a custom icon | `string` | - |
+| `[size]` | Button size variant | `'small' \| 'big' \| ''` | `''` |
+| `[color]` | Custom text color (CSS color) | `string` | - |
+| `[disabled]` | Whether the button is disabled | `boolean` | `false` |
+| `[show]` | Whether the button is rendered | `boolean` | `true` |
+| `[isLoading]` | Show the loading indicator | `boolean` | `false` |
+| `[loaderType]` | Loading indicator animation | `'semi-circle' \| 'arc' \| 'dual-arc' \| 'pulse' \| 'refresh'` | `'semi-circle'` |
+| `[isReverseElement]` | Render the icon *after* the label | `boolean` | `false` |
+| `[id]` | Unique button id (auto-generated when omitted) | `string` | `dx-button-{n}` |
+| `[permission]` | CASL permission that gates button rendering | `DxPermission` | - |
+| `[condition]` | Conditional CSS class configuration | `ConditionClass` | - |
+| `[confirmationPopover]` | Confirmation-dialog configuration | `ConfirmationPopover` | - |
+| `[multiActionDropDown]` | Multi-action dropdown configuration | `MultiActionDropDown` | - |
+
+### Events
+
+| Event | Description | Type |
+|-------|-------------|------|
+| `(onActionSelect)` | Emitted when the button itself is clicked | `EventEmitter<void>` |
+| `(onClickMenuAction)` | Emitted when a dropdown menu item is selected; payload is the item's `event` key | `EventEmitter<string>` |
+
+### Types
 
 ```typescript
+type ButtonClasses   = 'dxBtn' | 'secondary-btn' | 'dxIconClass' | 'text';
+type ButtonLoaderType = 'semi-circle' | 'arc' | 'dual-arc' | 'pulse' | 'refresh';
+
 interface MultiActionDropDown {
-  show?: boolean;          // Whether to render the split-button dropdown
-  disable?: boolean;       // Disables the dropdown toggle button
-  label?: string;          // Optional label shown on the dropdown toggle
-  isOnlyDropdown?: boolean; // Renders only the dropdown with no main action button
+  show?: boolean;
+  disable?: boolean;
+  label?: string;
+  isOnlyDropdown?: boolean;
   permission?: DxPermission;
   menuList: MultiActionMenuList[];
 }
 
 interface MultiActionMenuList {
   id?: string;
-  label: string;           // Menu item label
-  event: string;           // Event string emitted via onClickMenuAction
+  label: string;
+  event: string;
   show?: boolean;
-  icon?: string;           // Material Icons ligature
+  icon?: string;
   disable?: boolean;
-  src?: string;            // Image path
-  color?: string;          // Hex color for icon and label
+  src?: string;
+  color?: string;
   confirmationPopover?: ConfirmationPopover;
   classCondition?: ConditionClass;
   permission?: DxPermission;
+  btnType?: ButtonClasses;
 }
-```
 
-### ConfirmationPopover Interface
-
-```typescript
 interface ConfirmationPopover {
   isShow: boolean;
   header?: {
     title?: string;
     closeIcon?: boolean;
-    icon?: { isShow: boolean; icon?: string; color?: string; };
+    icon?: { isShow: boolean; icon?: string; color?: string };
   };
-  popoverPlacement?: 'top' | 'topLeft' | 'topRight' | 'leftTop' | 'left' | 'leftBottom'
-    | 'rightTop' | 'right' | 'rightBottom' | 'bottomLeft' | 'bottom' | 'bottomRight';
-  content: { message: string; };
-  actions: {
-    secondary: { title: string; }; // Cancel button label
-    primary: { title: string; };   // Confirm button label
-  };
+  popoverPlacement?:
+    | 'top'    | 'topLeft'    | 'topRight'
+    | 'bottom' | 'bottomLeft' | 'bottomRight'
+    | 'left'   | 'leftTop'    | 'leftBottom'
+    | 'right'  | 'rightTop'   | 'rightBottom';
+  content: { message: string };
+  actions: Actions;
 }
 ```
 
-### Outputs
+## Examples
 
-| Event | Type | Description |
-|-------|------|-------------|
-| `onActionSelect` | `EventEmitter<void>` | Emitted when the main button is clicked (after confirmation if configured). |
-| `onClickMenuAction` | `EventEmitter<string>` | Emitted when a dropdown menu item is clicked, with the item's `event` string as payload. |
+### Basic
 
-### Public Methods
+```html
+<dx-button title="Submit" (onActionSelect)="onSubmit()"></dx-button>
+```
 
-| Method | Signature | Description |
-|--------|-----------|-------------|
-| `click()` | `(): void` | Programmatically triggers `onActionSelect`. |
-| `toggleMultiActonMenu()` | `(): void` | Opens or closes the multi-action dropdown. |
-| `fillLabelColor(color)` | `(color: string): CustomLabelColor` | Returns a style object `{ color }` for applying hex color to menu item icons/labels. |
-
-## Usage Examples
-
-### Basic Usage
+### With icon
 
 ```html
 <dx-button
   title="Save"
+  icon="save"
+  dxType="primary"
   (onActionSelect)="onSave()">
 </dx-button>
 ```
 
-### Secondary Style with Icon
+### Loading state
 
 ```html
 <dx-button
-  title="Delete"
-  class="secondary-btn"
-  icon="delete"
-  (onActionSelect)="onDelete()">
-</dx-button>
-```
-
-### Loading State
-
-```html
-<dx-button
-  title="Submitting..."
+  title="Processing..."
   [isLoading]="isSubmitting"
-  loaderType="arc"
-  (onActionSelect)="onSubmit()">
+  loaderType="pulse"
+  [disabled]="isSubmitting"
+  (onActionSelect)="submit()">
 </dx-button>
 ```
 
-### Multi-Action Split Button
+### Confirmation popover
 
 ```typescript
-multiActionDropDown: MultiActionDropDown = {
-  show: true,
-  menuList: [
-    { label: 'Edit',   event: 'edit',   icon: 'edit' },
-    { label: 'Delete', event: 'delete', icon: 'delete', color: '#f44336' }
-  ]
-};
-```
-
-```html
-<dx-button
-  title="Actions"
-  [multiActionDropDown]="multiActionDropDown"
-  (onActionSelect)="onPrimaryAction()"
-  (onClickMenuAction)="onMenuAction($event)">
-</dx-button>
-```
-
-### Confirmation Popover on Click
-
-```typescript
-confirmationPopover: ConfirmationPopover = {
+confirmConfig: ConfirmationPopover = {
   isShow: true,
-  header: { title: 'Confirm Delete', closeIcon: true },
-  content: { message: 'This action cannot be undone.' },
+  header: {
+    title: 'Confirm Delete',
+    closeIcon: true,
+    icon: { isShow: true, icon: 'warning', color: '#ff0000' }
+  },
+  content: { message: 'Are you sure you want to delete this item?' },
   actions: {
-    secondary: { title: 'Cancel' },
-    primary: { title: 'Delete' }
+    confirm: { label: 'Delete', color: 'warn' },
+    cancel:  { label: 'Cancel' }
   }
 };
 ```
 
 ```html
 <dx-button
-  title="Delete Record"
-  [confirmationPopover]="confirmationPopover"
+  title="Delete"
+  icon="delete"
+  class="secondary-btn"
+  [confirmationPopover]="confirmConfig"
   (onActionSelect)="onDelete()">
 </dx-button>
 ```
 
-### Permission-Gated Button
+### Multi-action dropdown
+
+```typescript
+multiAction: MultiActionDropDown = {
+  show: true,
+  label: 'Actions',
+  menuList: [
+    { label: 'Edit',      event: 'edit',      icon: 'edit' },
+    { label: 'Duplicate', event: 'duplicate', icon: 'content_copy' },
+    { label: 'Delete',    event: 'delete',    icon: 'delete', color: 'red' }
+  ]
+};
+```
 
 ```html
 <dx-button
-  title="Approve"
-  [permission]="{ apiName: 'approvals', permission: 'create' }"
-  (onActionSelect)="onApprove()">
+  title="More"
+  [multiActionDropDown]="multiAction"
+  (onClickMenuAction)="handleAction($event)">
 </dx-button>
 ```
 
-## Features
+### Permission-gated
 
-- Split-button with configurable multi-action dropdown menu
-- Five animated loader variants: semi-circle, arc, dual-arc, pulse, refresh
-- Inline confirmation popover intercepting the click before action emission
-- Per-button and per-menu-item CASL permission gating with lock icon indicator
-- Dynamic CSS class application via `ConditionClass` directive
-- Three size variants: default, small, big
-- Support for Material Icons, image sources, and reversed icon/label layout
-- Transloco i18n support on all text content
-- Auto-prevention of double-click via `appPreventDoubleClick` directive
-- Unique auto-generated element ID for accessibility and testing
+```html
+<dx-button
+  title="Admin Only"
+  [permission]="{ module: 'users', action: 'create' }"
+  (onActionSelect)="createUser()">
+</dx-button>
+```
+
+## Import
+
+```typescript
+import { DxButtonModule } from '@ngdx/dijta';
+
+@NgModule({
+  imports: [DxButtonModule]
+})
+export class YourModule { }
+```

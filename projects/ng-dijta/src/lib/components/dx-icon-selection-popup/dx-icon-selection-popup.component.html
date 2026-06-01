@@ -1,34 +1,35 @@
-<div mat-dialog-title class="icon-picker-header">
-  <h3 class="heading-6">{{'Select Icon' | transloco}}</h3>
+<div mat-dialog-title>
+  <h3 class="heading-6 mb-0">{{'Select Icon' | transloco}}</h3>
   <div class="icon-picker-close">
-    <span (click)="close()" class="material-icons-outlined">
+    <span (click)="close()" class="material-icons-outlined close">
       cancel
     </span>
   </div>
-  <div class="row pt-2">
-    <div class="col-md-4">
-      <dx-autocomplete-select [(ngModel)]="selectedCategory" [options]="iconCategoryList"
-        (ngModelChange)="onChangeCategory($event)">
-        <dx-label>{{'Select Category' | transloco}}</dx-label>
-      </dx-autocomplete-select>
-    </div>
-    <div class="col-md-7">
-      <dx-input type="text" [(ngModel)]="search" (onEnter)="filterItem()">
-        <dx-label>{{'Search' | transloco}}</dx-label>
-        <dx-suffix>
-          <button class="search-icon" (click)="filterItem()">
-            <span class="material-icons-outlined">
-              search
-            </span>
-          </button>
-        </dx-suffix>
-      </dx-input>
-    </div>
 
-  </div>
 </div>
 <div>
   <div mat-dialog-content class="icon-picker-wrapper">
+    <div class="row position-sticky top-0 bg-white">
+      <div class="col-md-4">
+        <dx-autocomplete-select [(ngModel)]="selectedCategory" [options]="iconCategoryList"
+          (ngModelChange)="onChangeCategory($event)">
+          <dx-label>{{'Select Category' | transloco}}</dx-label>
+        </dx-autocomplete-select>
+      </div>
+      <div class="col-md-7">
+        <dx-input type="text" [(ngModel)]="search" (onEnter)="filterItem()">
+          <dx-label>{{'Search' | transloco}}</dx-label>
+          <dx-suffix>
+            <button class="search-icon" (click)="filterItem()">
+              <span class="material-icons">
+                search
+              </span>
+            </button>
+          </dx-suffix>
+        </dx-input>
+      </div>
+
+    </div>
     <div class="icon-search" *ngIf="isBusy; else iconListRef">
       <ng-container *ngFor="let item of loaderArray">
         <dx-skeleton-loader [theme]="chipSkeleton"></dx-skeleton-loader>
@@ -52,7 +53,7 @@
     </ng-template>
 
   </div>
-  <div mat-dialog-actions class="justify-content-end">
+  <div mat-dialog-actions class="justify-content-end icon-wrapper">
     <mat-paginator class="icon-paginator" [length]="icons?.totalElements" [pageSize]="listPaginationRequest.pageSize"
       aria-label="Select page" role="table" (page)="onPage($event)">
     </mat-paginator>

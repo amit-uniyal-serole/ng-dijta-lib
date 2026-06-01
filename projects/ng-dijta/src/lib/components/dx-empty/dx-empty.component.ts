@@ -41,7 +41,7 @@ type DxEmptyNotFoundImageType = typeof DxEmptyDefaultImages[number] | null | str
       </p>
       <div class="dx-empty-footer" *ngIf="dxNotFoundFooter">
         <ng-container *dxStringTemplateOutlet="dxNotFoundFooter">
-          {{ nzNotFoundFooter }}
+          {{ dxNotFoundFooter }}
         </ng-container>
       </div>
     `,

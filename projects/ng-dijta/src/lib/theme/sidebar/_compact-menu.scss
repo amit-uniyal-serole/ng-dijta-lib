@@ -1,0 +1,74 @@
+.flex_menu__sidebar {
+    background-color: var(--primary-base, #00828e);
+    color: var(--primary-on-base, #fff);
+    height: 100vh;
+  .flex_menu__sub_sidebar {
+    z-index: 99;
+  }
+
+  .flex_menu__wrapper {
+    width: 75px;
+    z-index: 9;
+    background-color: var(--primary-base, #00828e);
+    color: var(--primary-on-base, #fff);
+    a {
+      height: 70px;
+      width: 75px;
+      cursor: pointer;
+      background-color: inherit;
+      color: inherit !important;
+      cursor: pointer;
+      &.menu_active {
+        background-color: var(--primary-dark);
+        color: var(--primary-on-dark);
+        &::after {
+          content: "";
+          background-color: var(--secondary-light);
+          position: absolute;
+          left: 0;
+          width: 3px;
+          z-index: 99;
+          height: 100%;
+      }
+      }
+      &:hover {
+        background-color: var(--primary-dark);
+        color: var(--primary-on-dark);
+      }
+    }
+  }
+
+
+}
+.horizontal {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: normal;
+  overflow: auto;
+  .nav-item {
+    width: 10rem;
+    height: 37px !important;
+    border-color: var(--primary-on-light);
+    &::after {
+      background-color: #fff;
+    }
+    &:hover {
+      background-color: var(--primary-base);
+      color: var(--primary-on-base);
+    }
+  }
+}
+dx-layout-sider {
+  background-color: var(--primary-base, #00828e);
+  color: var(--primary-on-base, #fff);
+}
+dx-flex-menu {
+  background-color: var(--primary-base, #00828e);
+  color: var(--primary-on-base, #fff);
+}
+
+.inner-content-area {
+  overflow-x: hidden;
+  overflow-y: auto;
+}

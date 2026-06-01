@@ -110,7 +110,7 @@ export class ChipSelectComponent implements OnChanges, ControlValueAccessor, Mat
   autofilled?: boolean | undefined;
   onContainerClick(event: MouseEvent): void {
     if (this.control.valid) {
-      this._focusMonitor.focusVia(this.areaInput, 'program');
+      // this._focusMonitor.focusVia(this.areaInput, 'program');
     }
   }
   ngOnChanges(changes: SimpleChanges): void {

@@ -1,6 +1,6 @@
-<div class="dx-field-wrapper input-variant-layout" [class.none-label]="noneLabel" [ngClass]="outline"
+<div class="ngdx-field-wrapper input-variant-layout" [class.none-label]="noneLabel" [ngClass]="outline"
   [class.error]="control?.invalid && (control.touched || control.dirty)">
-  <mat-form-field appearance="outline">
+  <mat-form-field appearance="outline" floatLabel="always">
     <span matPrefix class="material-icons">{{icon}}</span>
     <mat-label class="dx-input-label" *ngIf="!onTouched && placeholder">{{placeholder}}</mat-label>
     <input type="text" matInput [mask]="mask" [(ngModel)]="value" [placeholder]="placeholder"

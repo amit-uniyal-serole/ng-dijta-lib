@@ -10,7 +10,7 @@ import { PreviewLightboxComponent } from './file-preview-container/preview-light
 import { RefreshIconComponent } from './file-preview-container/file-preview-item/refresh-icon/refresh-icon.component';
 import { DxImagePreviewComponent } from './file-preview-container/dx-image-preview.component';
 import { DxUploadModule } from '../../dx-upload';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 @NgModule({
   imports: [
     CommonModule,

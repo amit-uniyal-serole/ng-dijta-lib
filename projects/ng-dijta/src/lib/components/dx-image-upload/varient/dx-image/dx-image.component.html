@@ -1,6 +1,6 @@
 <div class="example-tel-input-container" [attr.aria-labelledby]="_formField.getLabelId()" (focusin)="onFocusIn($event)"
   (focusout)="onFocusOut($event)">
-  <input type="hidden" class="example-tel-input-element" [formControl]="parts" aria-label="Area code" #area value="bu">
+  <input type="hidden" class="example-tel-input-element mat-mdc-input-element ng-untouched ng-pristine ng-valid mat-mdc-form-field-input-control mdc-text-field__input cdk-text-field-autofill-monitored"  [formControl]="parts" aria-label="Area code" #area value="bu">
   <div class="image-custom-input">
     <!-- Placeholder -->
     <div *ngIf="!value || value?.length===0" class="image-preview image-placeholder"
@@ -16,23 +16,23 @@
           <p class="paragraph mb-0">{{item.fileName}}</p>
 
           <div class="edit-btn">
-            <span class="material-icons-outlined edit" (click)="openImageUploader()">
-              edit
-            </span>
-            <span class="material-icons-outlined delete" (click)="remove(i)">
-              delete
-            </span>
+            <button class="edit" (click)="openImageUploader()">
+              <mat-icon aria-hidden="false" aria-label="Upload Icon" fontIcon="edit"></mat-icon>
+            </button>
+            <button class="delete" (click)="remove(i)">
+              <mat-icon aria-hidden="false" aria-label="Upload Icon" fontIcon="delete"></mat-icon>
+            </button>
           </div>
         </div>
       </ng-container>
     </ng-container>
     <!-- File Explorer Opener -->
-    <button  [tabIndex]="tabIndex" type="button" class="image-upload-btn" [class.img-upload-btn-flex]="value?.length>1"
+    <button [disabled]="readonly"  [tabIndex]="tabIndex" type="button" class="image-upload-btn" [class.img-upload-btn-flex]="value?.length>1"
       (click)="openImageUploader()">
-      <span class="material-icons upload-image-opener-btn">
+      <!-- <span class="material-icons upload-image-opener-btn">
         upload
-      </span>
-      {{uploadBtnTitle}}
+      </span> -->
+      <p class="paragraph mb-0">Choose file</p>
     </button>
 
   </div>

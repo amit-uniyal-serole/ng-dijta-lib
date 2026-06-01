@@ -10,7 +10,7 @@ import { CoreUiModule } from '../../core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { IconService } from './service/icon.service';
 import { MatIconModule } from '@angular/material/icon';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 import { DxAutocompleteSelectModule } from '../dx-autocomplete-select';
 import { DxEmptyModule } from '../dx-empty';
 import { MatFormFieldModule } from '@angular/material/form-field';

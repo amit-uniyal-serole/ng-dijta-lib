@@ -7,6 +7,7 @@ import { InputMaskModule } from '../../core/UI/core/input-mask/input-mask.module
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DxInputUrlComponent } from './dx-input-url.component';
 import { DxUrlValidatorDirective } from './dx-url-validator.directive';
+import { DxDirectiveModule } from '../../directive';
 @NgModule({
   declarations: [DxInputUrlComponent, DxUrlValidatorDirective],
   imports: [
@@ -17,6 +18,7 @@ import { DxUrlValidatorDirective } from './dx-url-validator.directive';
     ReactiveFormsModule,
     InputMaskModule,
     MatTooltipModule,
+    DxDirectiveModule
   ],
 
   exports: [DxInputUrlComponent, DxUrlValidatorDirective],

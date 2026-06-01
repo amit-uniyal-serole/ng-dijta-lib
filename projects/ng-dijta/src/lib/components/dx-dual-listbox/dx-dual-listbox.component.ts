@@ -1,6 +1,6 @@
 import {
 	Component, DoCheck, EventEmitter, Input, IterableDiffers, OnChanges,
-	Output, SimpleChange
+	Output, SimpleChange, ViewEncapsulation
 } from '@angular/core';
 
 
@@ -16,7 +16,7 @@ var nextId = 0;
 @Component({
 	selector: 'dx-dual-listbox',
 	templateUrl: './dx-dual-listbox.component.html',
-	styleUrls: ['./dx-dual-listbox.component.scss']
+	encapsulation: ViewEncapsulation.None
 })
 export class DxDualListboxComponent implements DoCheck, OnChanges {
 	@Input() compare!: compareFunction | undefined;
@@ -44,7 +44,7 @@ export class DxDualListboxComponent implements DoCheck, OnChanges {
 
 	key = '_id';
 	display: any = '_name';
-	height = '100px';
+	height = '200px';
 	filter = false;
 	format = DxDualListboxComponent.DEFAULT_FORMAT;
 	sort = false;

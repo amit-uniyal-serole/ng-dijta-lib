@@ -5,7 +5,8 @@
         class="flex-chip-badge flex-badge-live" [ngStyle]="showBackgroundColor(chip)"
         [class.icon-text]="column?.type === 'icon-text'" [class.icon-shadow]="chip?.name">
         <span [class]="chip?.iconClass ?? 'material-icons-outlined'" class="table-chip-icons"
-          [ngStyle]="chipColor(chip)" [class.margin-right-5]="chip?.name" *ngIf="chip?.icon" (click)="iconClick(chip.type)">{{chip?.icon}}</span>
+          [ngStyle]="chipColor(chip)" [class.margin-right-5]="chip?.name" *ngIf="chip?.icon"
+          (click)="iconClick(chip.type)">{{chip?.icon}}</span>
         <img class="chip-img" [src]="chip?.src" *ngIf="chip?.src" alt="chip">
         <span class="table-chip-text" *ngIf="chip?.name">{{chip?.name && chip?.name !=='' ? (chip?.name |
           transloco):''}}</span>
@@ -36,7 +37,7 @@
       {{ reason?.icon ?? 'priority_high' }}
     </span>
     <ng-template #reasonMessage>
-      <div class="paragraph mb-0" [innerHTML]="(reason?.message | transloco)"></div>
+      <div class="paragraph mb-0" [innerHTML]="(reason?.message  | dxsafe: 'html' | transloco)"></div>
     </ng-template>
   </span>
 </span>

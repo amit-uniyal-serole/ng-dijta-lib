@@ -1,4 +1,7 @@
+import { NumberFormatVariant } from "../../../core/UI/constant/currency-default";
+import { GroupAction } from "../../dx-card";
 import { DxDetailsCardContent } from "../../dx-card/model/dx-details-card.model";
+import { LookupApiConfig } from "../../dx-lookup";
 
 export type ColumnVariants = 'standard';
 
@@ -12,6 +15,15 @@ export interface KanbanViewColumnsModel {
     color?: string;
     sequence: number;
     variant: ColumnVariants;
+    apiConfig?: LookupApiConfig<any>
+    totalAmountUrl?: {
+        currencyFormat?: {
+            decimal?: number;
+            currencyCode?: string;
+            appCurrencyConfig?: NumberFormatVariant
+        };
+        config: LookupApiConfig<any>
+    };
     content: KanbanViewColumnContent[];
 }
 export interface KanbanViewColumnContent {
@@ -19,12 +31,15 @@ export interface KanbanViewColumnContent {
     sequence: number;
     header?: KanbanViewContentHeader;
     data?: DxDetailsCardContent[];
+
     footer?: KanbanViewContentFooter;
+    original?: any
 }
 
 export interface KanbanViewContentHeader {
     title?: string;
-    actions?: KanbanViewContentHeaderAction[]
+    actions?: KanbanViewContentHeaderAction[],
+    actionGroup?: GroupAction;
 }
 export interface KanbanViewContentHeaderAction {
     label: string;

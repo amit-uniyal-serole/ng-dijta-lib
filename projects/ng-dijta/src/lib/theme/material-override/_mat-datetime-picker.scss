@@ -1,0 +1,80 @@
+:root{
+    --mat-datepicker-calendar-date-selected-state-background-color:var(--primary-base);
+    --mat-datepicker-calendar-date-hover-state-background-color:var(--background-light);    
+    --mdc-outlined-button-label-text-color: var(--btn-default-text);
+  }
+  
+.ngx-mat-timepicker-meridian{    
+    .mat-mdc-outlined-button.mat-primary{
+    --mdc-text-button-label-text-color:var(--primary-base);
+    --mdc-outlined-button-label-text-color:var(--primary-base);
+    }
+}
+  
+.dx-datetime-picker {
+.mat-datepicker-content {
+    display: block;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px -1px #0003, 0 4px 5px #00000024, 0 1px 10px #0000001f;
+    background-color: #fff;
+    color: #000000de;
+}
+ngx-mat-month-view .mat-calendar-body-cell {
+    position: unset;
+}
+.mat-calendar-body-cell-content.mat-focus-indicator {
+    position: absolute;
+}
+.mat-calendar-body-today.mat-calendar-body-selected {
+    box-shadow: inset 0 0 0 1px #fff;
+}
+.mat-calendar-body-cell-content {
+    top: 5%;
+    left: 5%;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 90%;
+    height: 90%;
+    line-height: 1;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 999px;
+}
+.mat-calendar-body-selected {
+    background-color: var(--primary-base);
+    color: var(--primary-on-base) !important;
+}
+.mat-calendar-body-cell-content, .mat-date-range-input-separator {
+    color: #000000de;
+    border-color: transparent;
+}
+.mat-calendar-body-cell:before, .mat-calendar-body-cell:after, .mat-calendar-body-cell-preview {
+    content: "";
+    position: absolute;
+    top: 5%;
+    left: 0;
+    z-index: 0;
+    box-sizing: border-box;
+    height: 90%;
+    width: 100%;
+}
+.mat-calendar-body-cell:before, .mat-calendar-body-cell:after, .mat-calendar-body-cell-preview {
+    content: "";
+    position: absolute;
+    top: 5%;
+    left: 0;
+    z-index: 0;
+    box-sizing: border-box;
+    height: 90%;
+    width: 100%;
+}
+.mat-calendar-body-today:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+    border-color: #00000061;
+}
+}
+.mat-calendar-body-disabled{
+    opacity: 0.5 !important;
+}

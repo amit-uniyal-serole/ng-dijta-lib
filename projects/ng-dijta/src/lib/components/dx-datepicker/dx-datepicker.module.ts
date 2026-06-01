@@ -12,7 +12,7 @@ import { DxDirectiveModule } from '../../directive';
 import { DxDatePipe } from './pipe/dxDate.pipe';
 import { DxDateService } from './service/dx-date.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 @NgModule({
   declarations: [DxDatepickerComponent, DxDatePipe],
   imports: [

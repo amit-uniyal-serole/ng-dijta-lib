@@ -1,0 +1,126 @@
+:root {
+  --mdc-outlined-button-disabled-label-text-color: rgba(0, 0, 0, 0.38);
+  --mdc-button-height: 2rem; /* 32px */
+  --mdc-button-padding: 0.4rem 0.9375rem; /* 6.4px 15px */
+  --mdc-button-default-background: #fff;
+  --mdc-button-border-radius: 0.3125rem; /* 5px */
+  --mdc-button-small-height: 1.5rem; /* 24px */
+  --mdc-button-big-height: 2.5rem; /* 40px */
+  --mdc-filled-button-container-color: var(--primary-base);
+  --mdc-filled-button-label-text-color: var(--primary-on-base);
+  --mdc-outlined-button-label-text-font: inherit;
+  --mdc-protected-button-label-text-font: inherit;
+  --mdc-filled-button-label-text-font: inherit;
+  --mdc-text-button-label-text-font: inherit;
+  --mdc-extended-fab-label-text-font: inherit;
+  --mdc-outlined-button-label-text-size: 0.8125rem; /* 13px */
+  --mdc-button-height: 1.75rem; /* 28px */
+  --mdc-text-button-container-height: 1.875rem; /* 30px */
+  --mdc-filled-button-container-height: 2.125rem; /* 34px */
+  --mdc-text-button-label-text-size: 0.875rem; /* 14px */
+  --mdc-text-button-label-text-tracking: 0.0892857143em;
+  --mdc-text-button-label-text-weight: 500;
+  --mdc-text-button-label-text-transform: none;
+  --mdc-filled-button-label-text-size: 0.875rem; /* 14px */
+  --mdc-filled-button-label-text-tracking: 0.0892857143em;
+  --mdc-filled-button-label-text-weight: 500;
+  --mdc-filled-button-label-text-transform: none;
+  --mdc-protected-button-label-text-size: 0.875rem; /* 14px */
+  --mdc-protected-button-label-text-tracking: 0.0892857143em;
+  --mdc-protected-button-label-text-weight: 500;
+  --mdc-protected-button-label-text-transform: none;
+  --mdc-outlined-button-label-text-size: 0.875rem; /* 14px */
+  --mdc-outlined-button-label-text-tracking: 0.0892857143em;
+  --mdc-outlined-button-label-text-weight: 500;
+  --mdc-outlined-button-label-text-transform: none;  
+  --mdc-outlined-button-container-height: 2.2rem;
+}
+.mat-mdc-outlined-button .mat-mdc-button-touch-target {
+  height: 32px;
+}
+.mat-mdc-paginator-touch-target {
+  height: 34px;
+  border-radius: 4px
+}
+
+.mat-mdc-icon-button .mat-mdc-button-touch-target {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+.border-radius {
+  &-top-left-none {
+    border-top-left-radius: unset !important;
+  }
+
+  &-top-right-none {
+    border-top-right-radius: unset !important;
+  }
+
+  &-bottom-left-none {
+    border-bottom-left-radius: unset !important;
+  }
+
+  &-bottom-right-none {
+    border-bottom-right-radius: unset !important;
+  }
+}
+
+.transparent-button {
+  background-color: transparent;
+  border: none;
+
+  &:focus {
+    outline: none;
+  }
+}
+.mat-mdc-outlined-button {
+  font-family: inherit !important;
+}
+.mdc-button {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: inherit !important;
+}
+
+
+.btn-styling-none{
+  border: none;
+  background-color: unset;
+}
+.mat-mdc-outlined-button {
+  font-weight: 400 !important;
+}
+.mat-mdc-unelevated-button {
+  padding: 0px 15px !important;
+  
+}
+.mdc-button {
+  &.text {
+     width: 100%;
+    background: transparent !important;
+    border: none !important;
+    padding: 0px 10px !important;
+    border-radius: 10px !important;
+    .mdc-button__label {
+      align-items: flex-start !important;
+      width: 100%;
+    }
+  }
+}
+.group-action {
+  --mat-menu-item-label-text-font: inherit;
+  --mat-menu-item-label-text-size: 14px;
+  .mat-mdc-menu-item {
+    min-height: 30px !important;
+    padding: 0px !important;
+    height: 30px !important;
+  }
+  &.mat-mdc-menu-panel {
+      padding: 10px;
+  }
+}
+.mat-mdc-menu-content, .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text {
+  font-family: inherit !important;
+}

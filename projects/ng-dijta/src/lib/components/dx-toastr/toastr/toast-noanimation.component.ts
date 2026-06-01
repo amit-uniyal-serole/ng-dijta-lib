@@ -30,7 +30,7 @@ import { ToastrService } from './toastr.service';
     {{ title | transloco }} <ng-container *ngIf="duplicatesCount">[{{ duplicatesCount + 1 }}]</ng-container>
   </div>
   <div *ngIf="message && options.enableHtml" role="alert" aria-live="polite"
-    [class]="options.messageClass" [innerHTML]="message | transloco">
+    [class]="options.messageClass" [innerHTML]="message  | dxsafe: 'html' | transloco">
   </div>
   <div *ngIf="message && !options.enableHtml" role="alert" aria-live="polite"
     [class]="options.messageClass" [attr.aria-label]="message | transloco">

@@ -14,6 +14,7 @@ import {
   Self,
   ViewChild,
   ViewEncapsulation,
+  inject,
 } from '@angular/core';
 import { MatFormFieldControl } from '@angular/material/form-field';
 
@@ -32,7 +33,7 @@ import {
   parsePhoneNumberFromString,
   PhoneNumber,
 } from 'libphonenumber-js';
-import { CountryCode, Examples } from './data/country-code';
+import { CountryCode, Examples, allCountriesCode } from './data/country-code';
 import { Country } from './model/country.model';
 import { PhoneNumberFormat } from './model/phone-number-format.model';
 
@@ -47,9 +48,10 @@ import {
 } from '@angular/material/core';
 import { MatInput } from '@angular/material/input';
 import { MatMenu } from '@angular/material/menu';
-import { Subject } from 'rxjs';
+import { Subject, firstValueFrom } from 'rxjs';
 import { phoneNumberValidator } from './dx-mat-intl-tel-input.validator';
 import { isEqual } from 'lodash';
+import { HttpClient } from '@angular/common/http';
 
 class NgxMatIntlTelInputBase {
   readonly stateChanges = new Subject<void>();
@@ -108,6 +110,7 @@ export class PhoneContactComponent
   @Input() disableIsoToNumber!: boolean;
   @Input() tabIndex: number | undefined;
   @Input() autoChangeFeature: boolean = false;
+  @Input() countriesUrl: string = '/api/dx-mstd-api/country/all';
 
   @Input()
   get format(): PhoneNumberFormat {
@@ -150,6 +153,7 @@ export class PhoneContactComponent
   onTouched = () => { };
 
   propagateChange = (_: any) => { };
+  http = inject(HttpClient);
 
   constructor(
     private _changeDetectorRef: ChangeDetectorRef,
@@ -175,10 +179,28 @@ export class PhoneContactComponent
     }
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    try {
+      if (this.countriesUrl) {
+        const countryList = await firstValueFrom(
+          this.http.get<any[]>(this.countriesUrl)
+        );
+        this.onlyCountries = countryList.map(
+          c => (c?.iso2Cd ?? '').toLowerCase()
+        );
+      }
+    } catch (error) {
+      // error case: still run init
+    } finally {
+      this.init();
+    }
+  }
+
+  private init(): void {
     if (!this.searchPlaceholder) {
       this.searchPlaceholder = 'Search ...';
     }
+    
     if (this.preferredCountries?.length) {
       this.preferredCountries?.forEach((iso2) => {
         const preferredCountry = this.allCountries
@@ -188,6 +210,10 @@ export class PhoneContactComponent
           this.preferredCountriesInDropDown.push(preferredCountry);
         }
       });
+    }
+    
+    if (this.onlyCountries?.length === 0) {
+      this.onlyCountries = allCountriesCode.map((c) => c.keyTt);
     }
     if (this.onlyCountries.length) {
       this.allCountries = this.allCountries.filter((c) =>

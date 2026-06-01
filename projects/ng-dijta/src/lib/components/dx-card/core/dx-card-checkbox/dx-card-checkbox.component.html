@@ -10,10 +10,7 @@
 </ng-container>
 <ng-template #variant2Ref>
     <span class="d-flex align-items-center">
-        <dx-checkbox *ngIf="!data?.checkBoxConfig?.hideCheckBox" [(ngModel)]="data.value" [disabled]="data?.checkBoxConfig?.disable">            
-        </dx-checkbox>
-        &nbsp;&nbsp;
-        <dx-label *ngIf="data?.checkBoxConfig?.displayLabel">
+        <dx-label *ngIf="data?.checkBoxConfig">
             <ng-template
                 *ngTemplateOutlet="checkBoxLabelRef; context:{config:data?.checkBoxConfig, value:data.value}"></ng-template>
         </dx-label>

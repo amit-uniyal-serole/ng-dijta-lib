@@ -16,8 +16,8 @@ export class MatTableResponsiveDirective
     implements OnInit, AfterViewInit, OnDestroy {
     private onDestroy$ = new Subject<boolean>();
 
-    private thead!: HTMLTableSectionElement;
-    private tbody!: HTMLTableSectionElement;
+    private thead!: HTMLTableSectionElement | null;
+    private tbody!: HTMLTableSectionElement | null;
 
     private theadChanged$ = new BehaviorSubject(true);
     private tbodyChanged$ = new Subject<boolean>();
@@ -35,11 +35,20 @@ export class MatTableResponsiveDirective
         this.thead = this.table.nativeElement.querySelector('thead');
         this.tbody = this.table.nativeElement.querySelector('tbody');
 
-        this.theadObserver.observe(this.thead, {
-            characterData: true,
-            subtree: true
-        });
-        this.tbodyObserver.observe(this.tbody, { childList: true });
+        if (this.thead) {
+            this.theadObserver.observe(this.thead, {
+                characterData: true,
+                subtree: true
+            });
+        } else {
+           // console.warn('thead not found in the table');
+        }
+
+        if (this.tbody) {
+            this.tbodyObserver.observe(this.tbody, { childList: true });
+        } else {
+           // console.warn('tbody not found in the table');
+        }
     }
 
     ngAfterViewInit() {
@@ -47,23 +56,29 @@ export class MatTableResponsiveDirective
          * Set the "data-column-name" attribute for every body row cell, either on
          * thead row changes (e.g. language changes) or tbody rows changes (add, delete).
          */
-
-        combineLatest([this.theadChanged$, this.tbodyChanged$]).pipe(
-            mapTo([this.thead?.rows?.item(0), this.tbody?.rows]),
-            map(([headRow, bodyRows]: any) => [
-                [...headRow.children].map(headerCell => headerCell.textContent),
-                [...bodyRows].map(row => [...row.children])
-            ]),
-            takeUntil(this.onDestroy$)
-        ).subscribe(([columnNames, rows]: any) => rows.forEach(rowCells =>
-            rowCells.forEach(cell =>
-                this.renderer.setAttribute(
-                    cell,
-                    'data-column-name',
-                    columnNames[cell.cellIndex]
-                )
+        combineLatest([this.theadChanged$, this.tbodyChanged$])
+            .pipe(
+                mapTo([
+                    this.thead?.rows?.item(0),
+                    this.tbody?.rows
+                ]),
+                map(([headRow, bodyRows]: any) => [
+                    [...(headRow?.children || [])].map(headerCell => headerCell.textContent || ''),
+                    [...(bodyRows || [])].map(row => [...row.children])
+                ]),
+                takeUntil(this.onDestroy$)
             )
-        ))
+            .subscribe(([columnNames, rows]: any) => {
+                rows.forEach(rowCells =>
+                    rowCells.forEach(cell =>
+                        this.renderer.setAttribute(
+                            cell,
+                            'data-column-name',
+                            columnNames[cell.cellIndex]
+                        )
+                    )
+                );
+            });
     }
 
     ngOnDestroy(): void {
@@ -71,5 +86,6 @@ export class MatTableResponsiveDirective
         this.tbodyObserver.disconnect();
 
         this.onDestroy$.next(true);
+        this.onDestroy$.complete();
     }
 }

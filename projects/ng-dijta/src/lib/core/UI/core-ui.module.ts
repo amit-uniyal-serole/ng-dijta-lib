@@ -13,7 +13,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 import { DateComponent } from '../../core/UI/core/date/date.component';
 import { ProfileComponent } from '../../core/UI/core/profile/profile.component';
 import { DateAgoPipe } from '../../utils/pipe/date-ago.pipe';

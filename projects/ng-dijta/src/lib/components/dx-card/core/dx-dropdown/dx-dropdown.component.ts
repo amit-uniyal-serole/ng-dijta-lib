@@ -6,6 +6,7 @@ import { DxDetailsCardContent } from '../../model/dx-details-card.model';
   selector: 'dx-details-dropdown',
   template: `
     <div class="dx-dropdown-wrapper">
+        <span *ngIf="!displayDropdown || displayDropdown.length === 0">-</span>
         <ng-container *ngFor="let option of displayDropdown">
                 <div [ngClass]="{'value-align':!option?.color}" class="dx-dropdown" >
                     <span class="dot" 

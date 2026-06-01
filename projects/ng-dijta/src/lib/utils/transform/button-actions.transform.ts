@@ -21,6 +21,7 @@ export class ButtonActionTransform {
                     src: firstMenu[0]?.src,
                     icon: firstMenu[0]?.icon,
                     confirmationPopover: firstMenu[0]?.confirmationPopover,
+                    permission: firstMenu[0].permission,
                     multiActionDropDown: {
                         ...buttonActions?.multiActionDropDown,
                         menuList: cloneMenu ?? []

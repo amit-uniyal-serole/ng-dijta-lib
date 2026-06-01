@@ -10,21 +10,20 @@ import {
   Injector,
   Input,
   LOCALE_ID,
-  OnInit,
   Optional,
   Output,
   ViewEncapsulation,
 } from '@angular/core';
 import {
   ControlValueAccessor,
-  FormControl,
-  NgControl,
   NG_VALUE_ACCESSOR,
   Validators,
   NG_VALIDATORS,
   Validator,
   AbstractControl,
   ValidationErrors,
+  FormControl,
+  NgControl,
 } from '@angular/forms';
 import { KeyValueModel } from '../../core/UI/model/keyValue';
 
@@ -37,23 +36,23 @@ import {
   selector: "dx-input-url",
   template: `
     <div
-      class="dx-field-wrapper"
+      class="ngdx-field-wrapper"
       [class.none-label]="noneLabel"
       [ngClass]="outline"
       [class.display-view]="viewOnly"
       [class.dx-disable]="disabled"
       [class.left-align-label]="labelPosition === 'left'"
-      [class.required]="required" 
+      [class.required]="required || ctrRequired" 
       [class]="outerLabelErrorType">
-      <mat-label class="dx-outer-label-wrapper">
-    <span class="dx-outer-label">
-      <ng-content select="[dxLabel]"></ng-content>
-      <span *ngIf="required" class="astrict">*</span>
-    </span>
-  </mat-label>
-      <mat-form-field appearance="outline">
-        <mat-label class="dx-input-label">
-          <ng-content select="dx-label"></ng-content>
+      <mat-label class="dx-outer-label" *ngIf="outline === 'outer-label'">
+        <span class="dx-outer-label d-flex align-items-center">
+          <ng-content select="[dxLabel]"></ng-content>
+          <span *ngIf="required || ctrRequired" class="astrict">*</span>
+        </span>
+      </mat-label>
+      <mat-form-field appearance="outline" floatLabel="always">
+        <mat-label *ngIf="outline !== 'outer-label'" class="dx-input-label">
+            <ng-content select="dx-label"></ng-content>
         </mat-label>
         <span matPrefix>
         <span class="material-icons">
@@ -62,11 +61,13 @@ import {
           <ng-content select="dx-prefix"></ng-content>
         </span>
         <input
+            dxNoLeadingTrailingSpaces
             type="url"
             matInput
             dxUrlValidator
-            [formControl]="control"
-            [tabIndex]="tabIndex"
+            [custom]="customUrlValidation"
+            [ngModel]="value"
+             [tabIndex]="tabIndex"
             (ngModelChange)="inputChange($event)"
             (blur)="onBlur($event)"
             [readonly]="readonly || viewOnly || disabled"
@@ -74,8 +75,9 @@ import {
             [maxlength]="maxLength"
             [placeholder]="tooltip"
             ngDefaultControl
-            [required]="required"
+            [required]="required || ctrRequired"
             [id]="id"
+            [formControl]="control"
           />
         <span matSuffix>
           <ng-content select="dx-suffix"></ng-content>
@@ -84,8 +86,11 @@ import {
           <ng-content select="dx-hint"> </ng-content>
         </mat-hint>
         <mat-error>
-          <ng-content select="dx-error"></ng-content>
-          <span *ngIf="control?.errors?.urlInvalid">URL Invalid</span>
+          <ng-content select="dx-error"></ng-content>          
+          <span *ngIf="control?.errors?.['NoleadingTrailingSpaces'];else inValidUrlRef" class="space-error">{{ 'Please remove any extra spaces from the start or end of your URL.' }}</span>
+          <ng-template #inValidUrlRef>
+            <span *ngIf="control?.errors?.urlInvalid">URL Invalid</span>  
+          </ng-template>
         </mat-error>
       </mat-form-field>
     </div>
@@ -104,7 +109,7 @@ import {
   ],
   encapsulation: ViewEncapsulation.None,
 })
-export class DxInputUrlComponent implements ControlValueAccessor, OnInit, Validator {
+export class DxInputUrlComponent implements ControlValueAccessor, Validator {
 
   @Output() onClickOption: EventEmitter<KeyValueModel> =
     new EventEmitter<KeyValueModel>();
@@ -118,8 +123,10 @@ export class DxInputUrlComponent implements ControlValueAccessor, OnInit, Valida
   @Input() viewOnly: boolean = false;
   @Input() outerLabelErrorType: 'astrict-error' | 'filled-error' = 'filled-error';
   @Input() tabIndex!: number;
+  @Input() customUrlValidation = false;
   // Pass tooltips info to input
   @Input() tooltip: string | undefined;
+  ctrRequired: boolean | undefined;
   static nextId = 0;
   @HostBinding()
   id = `dx-input-url-${DxInputUrlComponent.nextId++}`;
@@ -132,7 +139,7 @@ export class DxInputUrlComponent implements ControlValueAccessor, OnInit, Valida
   // To get required 
   @Input()
   get required(): boolean {
-    return this._required ?? this.control?.hasValidator(Validators.required) ?? false;
+    return this._required ?? false;
   }
   // To set required 
   set required(value: BooleanInput) {
@@ -140,9 +147,10 @@ export class DxInputUrlComponent implements ControlValueAccessor, OnInit, Valida
   }
   protected _required: boolean | undefined;
 
-  value: string = "";
-  @Input() labelPosition: 'left' | 'top' = 'top';
   control: FormControl = new FormControl();
+
+  @Input() value: string | undefined;
+  @Input() labelPosition: 'left' | 'top' = 'top';
   @HostListener("focusout", ["$event.target"]) onFocusout() {
     this.onTouched();
   }
@@ -159,14 +167,14 @@ export class DxInputUrlComponent implements ControlValueAccessor, OnInit, Valida
     this.outline = config?.value?.outline ?? "none-floating";
   }
 
+  // To bind component with controller
   ngAfterViewInit(): void {
     const ngControl: NgControl = this.injector.get(NgControl);
     if (ngControl) {
       setTimeout(() => {
         this.control = ngControl.control as FormControl;
         this.control.markAsUntouched();
-        // this.required =
-        //   this.required ?? this.control.hasValidator(Validators.required);
+        this.ctrRequired = this.control.hasValidator(Validators.required);
         this.cd.detectChanges();
       });
     }
@@ -211,12 +219,12 @@ export class DxInputUrlComponent implements ControlValueAccessor, OnInit, Valida
     }
   }
   validate(control: AbstractControl): ValidationErrors | null {
-    if (!this.required) {
-      this.required = control.hasValidator(Validators.required);
+    if (!this.ctrRequired) {
+      this.ctrRequired = control.hasValidator(Validators.required);
       this.cd.detectChanges();
     }
     if (!control.hasValidator(Validators.required)) {
-      this.required = control.hasValidator(Validators.required);
+      this.ctrRequired = control.hasValidator(Validators.required);
       this.cd.detectChanges();
     }
     return null;

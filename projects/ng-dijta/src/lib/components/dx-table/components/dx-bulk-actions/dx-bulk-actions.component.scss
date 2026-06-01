@@ -35,10 +35,15 @@
     border: none;
     cursor: pointer;
     text-transform: capitalize;
-
+    letter-spacing: normal;
+    
     &.rectangular {
       border-radius: 9px;
       padding: 3px 7px;
+      max-width: 140px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .mat-icon {
@@ -67,14 +72,6 @@
     }
   }
 
-  .bt-filter {
-    &.mat-flat-button {
-      line-height: 24px;
-      padding: 1px;
-      border-radius: 6px;
-      margin: 0px 5px;
-    }
-  }
 
   .mat-button-disabled {
     .filter {
@@ -113,12 +110,9 @@
   width: 100%;
   background-color: transparent;
   border: none;
-  color: #000000;
+  color: inherit;
   height: 35px;
   font-size: 14px !important;
-  // &:last-child {
-  //   padding-bottom: 5px;
-  // }
 
   &:hover {
     color: var(--primary-base);

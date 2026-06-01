@@ -16,4 +16,4 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   ],
   exports: [DxBasicTileComponent],
 })
-export class DxBasicTileModule {}
+export class DxBasicTileModule { }

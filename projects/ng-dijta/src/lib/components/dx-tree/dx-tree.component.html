@@ -1,13 +1,11 @@
 <div class="tree-wrapper" [class.tree-border]="isBorder">
   <span *ngIf="treeDataSource && isAllCollapseBtn">
-    <span class="material-icons-outlined toggle-icons" *ngIf="!isExpanded" (click)="toggleTree(true)">
+    <mat-icon *ngIf="!isExpanded" (click)="toggleTree(true)">
       expand_circle_down
-    </span>
-    <span>
-      <span class="material-icons-outlined toggle-icons" *ngIf="isExpanded" (click)="toggleTree(false)">
-        expand_less
-      </span>
-    </span>
+    </mat-icon>
+    <mat-icon *ngIf="isExpanded" (click)="toggleTree(false)">
+      expand_less
+    </mat-icon>
   </span>
   <div>
     <mat-tree #treeSelector *ngIf="treeDataSource" [dataSource]="dataSource" [treeControl]="treeControl">
@@ -18,9 +16,9 @@
         <!-- parent toggle actions -->
         <button *ngIf="node?.data?.isParentNode" class="expand-icon" mat-icon-button matTreeNodeToggle
           [attr.aria-label]="'toggle ' + node.filename">
-          <span class="material-icons">
+          <mat-icon>
             {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-          </span>
+          </mat-icon>
           <span class="folder" *ngIf="!treeControl.isExpanded(node) && !hideIcons"> <svg
               xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -46,14 +44,14 @@
             <div class="node-wrapper">
               <div class="node-left-section">
                 <!-- isCompleted -->
-                <span class="material-icons icon completed-icon" *ngIf="node?.data?.isCompleted">
+                <mat-icon class="icon completed-icon" *ngIf="node?.data?.isCompleted">
                   done
-                </span>
+                </mat-icon>
                 <!-- mat icon -->
-                <span *ngIf="node?.data?.matIcon && !node?.data?.imgSrc" class="material-icons-outlined icon"
+                <mat-icon *ngIf="node?.data?.matIcon && !node?.data?.imgSrc" class="icon"
                   [class.fade-icon]="node?.data?.isCompleted">
                   {{node?.data?.matIcon}}
-                </span>
+                </mat-icon>
                 <!-- image -->
                 <div class="dx-tree-node-img" *ngIf="node?.data?.imgSrc">
                   <img [src]="node?.data?.imgSrc" width="100%" height="100%">
@@ -76,9 +74,9 @@
         [class.highlight-node-second]="selectedNode === node" [matTreeNodePaddingIndent]="treeNodePadding">
         <button class="expand-icon" mat-icon-button matTreeNodeToggle
           [attr.aria-label]="'toggle ' + (node.filename | transloco)">
-          <span class="material-icons">
+          <mat-icon>
             {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-          </span>
+          </mat-icon>
           <span class="folder" *ngIf="!treeControl.isExpanded(node) && !hideIcons"> <svg
               xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -102,13 +100,13 @@
           <div class="node-flex">
             <div class="parent-wrapper">
               <div class="node-left-section">
-                <span class="material-icons icon completed-icon" *ngIf="node?.data?.isCompleted">
+                <mat-icon class="icon completed-icon" *ngIf="node?.data?.isCompleted">
                   done
-                </span>
-                <span *ngIf="node?.data?.matIcon && !node?.data?.imgSrc" class="material-icons-outlined icon"
+                </mat-icon>
+                <mat-icon *ngIf="node?.data?.matIcon && !node?.data?.imgSrc" class="icon"
                   [class.fade-icon]="node?.data?.isCompleted">
                   {{node?.data?.matIcon}}
-                </span>
+                </mat-icon>
                 <div class="dx-tree-node-img" *ngIf="node?.data?.imgSrc">
                   <img [src]="node?.data?.imgSrc" width="100%" height="100%">
                 </div>

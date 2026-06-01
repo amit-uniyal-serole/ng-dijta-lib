@@ -4,15 +4,15 @@
 <ng-template #default_text_internal>
   <div class="link-wrapper" (click)="$event.stopPropagation()">
     <ng-container *ngIf="data?.type === 'internal';else external">
-      <a dx-tooltip dxTooltipTitle="{{data?.displayLabel}}" [target]="data.openInNewTab ? '_blank': '_self'"
+      <a dx-tooltip dxTooltipTitle="{{data?.displayLabel}}" [target]="data?.openInNewTab ? '_blank': '_self'"
         [routerLink]="data?.path" [queryParams]="data?.params">
         {{data?.displayLabel | transloco}}
       </a>
     </ng-container>
 
     <ng-template #external>
-      <a dx-tooltip dxTooltipTitle="{{data?.displayLabel}}" [target]="data.openInNewTab ? '_blank': '_self'"
-        href="{{prepareExtranalLink(data)}}">{{data?.displayLabel |
+      <a dx-tooltip dxTooltipTitle="{{data?.displayLabel}}" [target]="data?.openInNewTab ? '_blank': '_self'"
+        [href]="externalUrl | dxsafe: 'url'">{{data?.displayLabel |
         transloco}}</a>
     </ng-template>
   </div>

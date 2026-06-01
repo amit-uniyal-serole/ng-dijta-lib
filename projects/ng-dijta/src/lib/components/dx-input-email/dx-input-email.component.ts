@@ -40,19 +40,18 @@ import {
   encapsulation: ViewEncapsulation.None,
 })
 export class DxInputEmailComponent
-  implements OnInit, ControlValueAccessor, Validator {
+  implements ControlValueAccessor, Validator {
   @Output() blur: EventEmitter<FocusEvent> = new EventEmitter<FocusEvent>();
   @Input() disabled: boolean = false;
   @Input() noneLabel: boolean = false;
   @Input() viewOnly: boolean = false;
   @Input() readonly: boolean = false;
-  @Input() mask: string = '';
   @Input() outline: 'floating' | 'none-floating' | 'outer-label' = 'none-floating';
   @Input() placeholder: string = 'Email';
   @Input() pattern!: string;
   @Input() icon: string = 'mail';
   @Input() labelPosition: 'left' | 'top' = 'top';
-  @Input() tabIndex:number | undefined;  
+  @Input() tabIndex: number | undefined;
   _EMAIL_REGEXP = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
   value: string = '';
 
@@ -61,11 +60,11 @@ export class DxInputEmailComponent
   // Pass tooltips info to input
   @Input() tooltip: string | undefined;
   private _id: string | undefined;
-  @Input() set id(value:string | undefined){
-    this._id=value;
+  @Input() set id(value: string | undefined) {
+    this._id = value;
   };
 
-  get id():string | undefined{
+  get id(): string | undefined {
     return this._id
   }
 
@@ -95,6 +94,12 @@ export class DxInputEmailComponent
 
   onChange: Function = () => { };
   onTouched: Function = () => { };
+
+  @Input() mask: string | undefined;
+  @Input() maskingPatterns;
+  @Input() dropSpecialCharacters: boolean = false;
+  @Input() prefix: string | undefined;
+  @Input() specialCharacters: string[] = []
   constructor(
     @Optional() @Inject(UI_COMPONENT_CONFIG) config: UIConfigWrapper,
     @Optional() @Inject(LOCALE_ID) public locale: string,
@@ -104,16 +109,6 @@ export class DxInputEmailComponent
     this.outline = config?.value?.outline ?? 'none-floating';
   }
 
-  ngOnInit(): void {
-    if (this.minLength) {
-      this.control?.addValidators(Validators.minLength(this.minLength));
-    }
-    if (this.maxLength) {
-      this.control?.addValidators(Validators.maxLength(this.maxLength));
-    }
-    this.control?.addValidators(Validators.pattern(/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/))
-    this.control?.updateValueAndValidity();
-  }
 
   ngAfterViewInit(): void {
     const ngControl: NgControl = this.injector.get(NgControl);
@@ -122,9 +117,21 @@ export class DxInputEmailComponent
         this.control = ngControl.control as FormControl;
         this.control.markAsUntouched();
         this.ctrRequired = this.control.hasValidator(Validators.required);
+        this.addValidators();
         this.cd.detectChanges();
       });
     }
+  }
+
+  private addValidators(): void {
+    if (this.minLength) {
+      this.control?.addValidators(Validators.minLength(this.minLength));
+    }
+    if (this.maxLength) {
+      this.control?.addValidators(Validators.maxLength(this.maxLength));
+    }
+    this.control?.addValidators(Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$$/))
+    this.control?.updateValueAndValidity();
   }
 
   public get invalid(): boolean {

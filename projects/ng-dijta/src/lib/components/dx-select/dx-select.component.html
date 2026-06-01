@@ -1,36 +1,34 @@
-<div class="dx-field-wrapper dx-select" [class.none-label]="noneLabel" [ngClass]="outline"
-  [class.left-align-label]="labelPosition==='left'" [class.required]="required || ctrRequired"
-  [class.display-view]="viewOnly" [class.dx-disable]="disabled" [class]="outerLabelErrorType"
-  [class.none-border]="noneBorder">
-  <mat-label class="dx-outer-label-wrapper">
-    <span class="dx-outer-label">
+<div class="ngdx-field-wrapper" [class.none-label]="noneLabel" [ngClass]="outline" [class.display-view]="viewOnly"
+  [class.dx-disable]="disabled || controlDisable" [class.left-align-label]="labelPosition === 'left'" floatLabel="never"
+  [class.required]="required || ctrRequired" [class]="outerLabelErrorType" [class.none-border]="noneBorder"
+  [class.readonly]="readonly">
+  <mat-label class="dx-outer-label">
+    <span class="dx-outer-label d-flex align-items-center">
       <ng-content select="[dxLabel]"></ng-content>
       <span *ngIf="required || ctrRequired" class="astrict">*</span>
     </span>
   </mat-label>
-  <mat-form-field appearance="outline">
-    <mat-label class="dx-input-label">
+  <mat-form-field appearance="outline" floatLabel="always">
+    <mat-label *ngIf="outline !== 'outer-label'">
       <ng-content select="dx-label"></ng-content>
     </mat-label>
     <span matPrefix>
       <ng-content select="dx-prefix"></ng-content>
     </span>
-
-    <mat-select [id]="id" *ngIf="!multiSelect" [formControl]="control" [required]="required || ctrRequired"
-      (ngModelChange)="inputChange($event)" [disabled]="disabled || readonly || viewOnly"
-      (selectionChange)="onUserSelection($event)">
+  
+    <mat-select [id]="id" *ngIf="!multiSelect" [formControl]="control"  [required]="required || ctrRequired"
+      [disabled]="disabled || controlDisable || readonly || viewOnly" (selectionChange)="onUserSelection($event)" (ngModelChange)="inputChange($event)">
       <mat-option *ngIf="emptyOption" [value]="undefined">None</mat-option>
       <ng-container *ngFor="let option of options">
-        <mat-option [disabled]="disabled || readonly || viewOnly" [value]="option?.keyTt"
-          [appOptionBackgroundColor]="option?.color"
-          *ngIf="option?.permission ? (option?.permission?.permission | ablePure: option?.permission?.apiName | async) : true">
-          <div [innerHTML]="option?.valueTt"></div>
+        <mat-option [value]="option?.keyTt" [appOptionBackgroundColor]="option?.color"
+          *ngIf="option?.permission ? (option?.permission?.permission | ablePure: option?.permission?.apiName | async) : true" [disabled]="disabled || controlDisable || readonly || viewOnly" >
+          <div [innerHTML]="option?.valueTt | dxsafe: 'html'"></div>
         </mat-option>
       </ng-container>
     </mat-select>
-    <mat-select [id]="id" *ngIf="multiSelect" [formControl]="control" [required]="required || ctrRequired"
-      (ngModelChange)="inputChange($event)" [disabled]="disabled || readonly || viewOnly" [changeChipColor]="'#3f51b5'"
-      multiple>
+
+    <mat-select [id]="id" *ngIf="multiSelect"  [disabled]="disabled || controlDisable || readonly || viewOnly" [formControl]="control"
+      [required]="required || ctrRequired" (ngModelChange)="inputChange($event)" multiple>
       <mat-select-trigger>
         <div class="options-container">
           <div *ngFor="let optionValue of control?.value">
@@ -53,9 +51,10 @@
       </mat-optgroup>
       <mat-option [disabled]="disabled || readonly || viewOnly" [appOptionBackgroundColor]="option?.color"
         *ngFor="let option of getOptions()" [value]="option?.keyTt">
-        {{option?.valueTt}}
+        {{option?.valueTt}} {{ option?.color}}
       </mat-option>
     </mat-select>
+
     <span matSuffix>
       <ng-content select="dx-suffix"></ng-content>
     </span>

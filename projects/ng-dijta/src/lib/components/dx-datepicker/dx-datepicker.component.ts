@@ -1,6 +1,6 @@
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
-import { ChangeDetectorRef, Component, EventEmitter, forwardRef, HostBinding, HostListener, Inject, Injector, Input, Optional, Output, Self, ViewEncapsulation, } from '@angular/core';
-import { ControlValueAccessor, FormControl, NgControl, NG_VALUE_ACCESSOR, Validators, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
+import { ChangeDetectorRef, Component, EventEmitter, forwardRef, HostBinding, HostListener, Inject, Input, Optional, Output, ViewEncapsulation, } from '@angular/core';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Moment } from 'moment';
 import { DateDefault } from '../../core/UI/constant/currency-default';
 import { UIConfigWrapper, UI_COMPONENT_CONFIG } from '../../core/UI/service/input/ui-component.config';
@@ -70,27 +70,13 @@ export class DxDatepickerComponent<D> implements ControlValueAccessor, Validator
   constructor(
     @Optional()
     @Inject(UI_COMPONENT_CONFIG) config: UIConfigWrapper,
-    public injector: Injector,
     private readonly cd: ChangeDetectorRef,
   ) {
     this.outline = config?.value?.outline ?? 'none-floating';
     this.format = `${config?.value?.dateFormat ?? DateDefault.DEFAULT_DATE_PICKER_FORMAT}`;
   }
-
-  ngAfterViewInit(): void {
-    const ngControl: NgControl = this.injector.get(NgControl);
-    if (ngControl) {
-      setTimeout(() => {
-        this.control = ngControl.control as FormControl;
-        this.control.markAsUntouched();
-        this.ctrRequired = this.control.hasValidator(Validators.required);
-        this.cd.detectChanges();
-      });
-    }
-  }
   writeValue(value: Date): void {
     this.onTouched();
-    this.value = this.control.value;
     this.value = value;
   }
 

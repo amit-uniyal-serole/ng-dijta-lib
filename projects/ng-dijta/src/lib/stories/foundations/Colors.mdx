@@ -1,0 +1,209 @@
+import { Meta, ColorPalette, ColorItem, Unstyled } from '@storybook/blocks';
+
+<Meta title="Foundations/Colors" />
+
+# Colors
+
+Every colour in `@ngdx/dijta` is exposed as a CSS custom property declared on
+`:root` in
+[`theme/partials/_default.scss`](?path=/docs/foundations-colors--docs). Components
+reference these variables (e.g. `background: var(--primary-base)`) — never raw
+hex — so the whole library re-skins by overriding the variables.
+
+Swatches below are filled from the **live** variables, so they always reflect
+the values currently loaded in the theme.
+
+## Brand
+
+<ColorPalette>
+  <ColorItem
+    title="Primary"
+    subtitle="base #CC0000 · light #FF0000 · dark #990000 · hover #CC0000"
+    colors={{
+      '--primary-base': 'var(--primary-base)',
+      '--primary-light': 'var(--primary-light)',
+      '--primary-dark': 'var(--primary-dark)',
+      '--primary-hover': 'var(--primary-hover)',
+    }}
+  />
+  <ColorItem
+    title="Primary · on-color"
+    subtitle="Foreground colour placed on primary surfaces — all #FFFFFF"
+    colors={{
+      '--primary-on-base': 'var(--primary-on-base)',
+      '--primary-on-light': 'var(--primary-on-light)',
+      '--primary-on-dark': 'var(--primary-on-dark)',
+      '--primary-on-hover': 'var(--primary-on-hover)',
+    }}
+  />
+  <ColorItem
+    title="Secondary"
+    subtitle="base #F2994A · light #F5C092 · dark #F2994A"
+    colors={{
+      '--secondary-base': 'var(--secondary-base)',
+      '--secondary-light': 'var(--secondary-light)',
+      '--secondary-dark': 'var(--secondary-dark)',
+    }}
+  />
+  <ColorItem
+    title="Secondary · on-color"
+    subtitle="Foreground colour placed on secondary surfaces — all #FFFFFF"
+    colors={{
+      '--secondary-on-base': 'var(--secondary-on-base)',
+      '--secondary-on-light': 'var(--secondary-on-light)',
+      '--secondary-on-dark': 'var(--secondary-on-dark)',
+    }}
+  />
+</ColorPalette>
+
+## Surface &amp; background
+
+<ColorPalette>
+  <ColorItem
+    title="Background"
+    subtitle="base #F6F7FB · light #F6F7FB · dark #2F2F2F"
+    colors={{
+      '--background-base': 'var(--background-base)',
+      '--background-light': 'var(--background-light)',
+      '--background-dark': 'var(--background-dark)',
+    }}
+  />
+  <ColorItem
+    title="Background · on-color"
+    subtitle="on-base #2F2F2F · on-light #2F2F2F · on-dark #FFFFFF"
+    colors={{
+      '--background-on-base': 'var(--background-on-base)',
+      '--background-on-light': 'var(--background-on-light)',
+      '--background-on-dark': 'var(--background-on-dark)',
+    }}
+  />
+  <ColorItem
+    title="Surface"
+    subtitle="base #FFFFFF · light #F3F7FF"
+    colors={{
+      '--surface-base': 'var(--surface-base)',
+      '--surface-light': 'var(--surface-light)',
+    }}
+  />
+  <ColorItem
+    title="Surface · on-color"
+    subtitle="on-base #2F2F2F · on-light #2F2F2F"
+    colors={{
+      '--surface-on-base': 'var(--surface-on-base)',
+      '--surface-on-light': 'var(--surface-on-light)',
+    }}
+  />
+</ColorPalette>
+
+## Text &amp; headings
+
+<ColorPalette>
+  <ColorItem
+    title="Headings"
+    subtitle="primary #1D2939 · secondary #344054"
+    colors={{
+      '--color-heading-primary': 'var(--color-heading-primary)',
+      '--color-heading-secondary': 'var(--color-heading-secondary)',
+    }}
+  />
+  <ColorItem
+    title="Body text"
+    subtitle="primary #475467 · secondary #667085 · muted #98A2B3"
+    colors={{
+      '--color-text-primary': 'var(--color-text-primary)',
+      '--color-text-secondary': 'var(--color-text-secondary)',
+      '--color-text-muted': 'var(--color-text-muted)',
+    }}
+  />
+  <ColorItem
+    title="Label / value"
+    subtitle="label #6B7280 · value #111827"
+    colors={{
+      '--color-text-label': 'var(--color-text-label)',
+      '--color-text-value': 'var(--color-text-value)',
+    }}
+  />
+</ColorPalette>
+
+## Inputs
+
+<ColorPalette>
+  <ColorItem
+    title="Input text"
+    subtitle="label #6B7280 · value #111827"
+    colors={{
+      '--color-input-label': 'var(--color-input-label)',
+      '--color-input-value': 'var(--color-input-value)',
+    }}
+  />
+  <ColorItem
+    title="Input state"
+    subtitle="focused #1D6CC0 · border rgba(3,3,3,.89) · label rgba(3,3,3,.81) · error #BD3232"
+    colors={{
+      '--input-focused-fc': 'var(--input-focused-fc)',
+      '--input-border-fc': 'var(--input-border-fc)',
+      '--input-label-fc': 'var(--input-label-fc)',
+      '--error-fc': 'var(--error-fc)',
+    }}
+  />
+</ColorPalette>
+
+## Tables
+
+<ColorPalette>
+  <ColorItem
+    title="Table text"
+    subtitle="header #1B1718 · body #2F2F2F"
+    colors={{
+      '--color-table-header-text': 'var(--color-table-header-text)',
+      '--color-table-body-text': 'var(--color-table-body-text)',
+    }}
+  />
+  <ColorItem
+    title="Misc"
+    subtitle="default button text #344054 · model-box bg #FFFFFF"
+    colors={{
+      '--btn-default-text': 'var(--btn-default-text)',
+      '--model-box-bg': 'var(--model-box-bg)',
+    }}
+  />
+</ColorPalette>
+
+## Colour utility classes
+
+The library also ships background/foreground utility classes (in
+`theme/partials/_color.scss`) that pair a surface variable with its matching
+`on-*` text variable. Apply them to any element:
+
+<Unstyled>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '8px', maxWidth: '640px' }}>
+    {[
+      ['primary-base', '--primary-base', '--primary-on-base'],
+      ['primary-light', '--primary-light', '--primary-on-light'],
+      ['primary-dark', '--primary-dark', '--primary-on-dark'],
+      ['secondary-base', '--secondary-base', '--secondary-on-base'],
+      ['secondary-light', '--secondary-light', '--secondary-on-light'],
+      ['secondary-dark', '--secondary-dark', '--secondary-on-dark'],
+      ['background-base', '--background-base', '--background-on-base'],
+      ['background-light', '--background-light', '--background-on-light'],
+      ['background-dark', '--background-dark', '--background-on-dark'],
+      ['surface-base', '--surface-base', '--surface-on-base'],
+      ['surface-light', '--surface-light', '--surface-on-light'],
+    ].map(([cls, bg, fg]) => (
+      <div
+        key={cls}
+        style={{
+          background: `var(${bg})`,
+          color: `var(${fg})`,
+          padding: '12px',
+          borderRadius: '6px',
+          border: '1px solid rgba(0,0,0,.1)',
+          fontSize: '13px',
+          fontFamily: 'monospace',
+        }}
+      >
+        .{cls}
+      </div>
+    ))}
+  </div>
+</Unstyled>

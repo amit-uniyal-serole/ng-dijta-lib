@@ -1,21 +1,28 @@
-<div class="dx-field-wrapper" [class.none-label]="noneLabel" [ngClass]="outline" [class.dx-disable]="disabled"
-  [class.none-border]="noneBorder">
-  <mat-form-field appearance="outline">
-    <mat-label class="dx-input-label">
+<div class="ngdx-field-wrapper" [class.none-label]="noneLabel" [ngClass]="outline" [class.display-view]="viewOnly"
+  [class.dx-disable]="disabled" [class.left-align-label]="labelPosition === 'left'" floatLabel="never"
+  [class.required]="required" [class]="outerLabelErrorType" [class.no-error-space]="noErrorSpace">
+  <mat-label class="dx-outer-label" *ngIf="outline === 'outer-label'">
+    <ng-content select="[dxLabel]"></ng-content>
+    <span *ngIf="required" class="astrict">*</span>
+  </mat-label>
+  <mat-form-field appearance="outline" floatLabel="always">
+    <mat-label *ngIf="outline !== 'outer-label'">
       <ng-content select="dx-label"></ng-content>
     </mat-label>
     <span matPrefix>
       <ng-content select="dx-prefix"></ng-content>
     </span>
-    <mat-chip-list [id]="id" #chipList [formControl]="control.control" (ngModelChange)="inputChange($event)"
-      [disabled]="disabled">
-      <mat-chip *ngFor="let chip of chips" [selectable]="selectable" [removable]="removable" (removed)="remove(chip)">
-        {{chip | transloco}}
-        <span matChipRemove class="material-icons" *ngIf="removable">cancel</span>
-      </mat-chip>
-      <input (blur)="onBlur($event)" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-        [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
-    </mat-chip-list>
+    <mat-chip-grid #chipGrid aria-label="Enter keywords" [(ngModel)]="chips" [disabled]="disabled"
+      [required]="required">
+      <mat-chip-row *ngFor="let chip of chips" [selectable]="selectable" [removable]="removable"
+        (removed)="remove(chip)">
+        {{chip}}
+        <button matChipRemove aria-label="'remove ' + keyword" *ngIf="removable">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-row>
+    </mat-chip-grid>
+    <input [matChipInputFor]="chipGrid" (matChipInputTokenEnd)="add($event)" />
     <span matSuffix>
       <ng-content select="dx-suffix"></ng-content>
     </span>

@@ -1,6 +1,6 @@
 <div class="dx-mat-tel-input-container d-flex">
   <button type="button" mat-button [matMenuTriggerFor]="!hideSelection ? menu : undefined" class="country-selector"
-    [disabled]="disabled || readonly" (click)="countryBtn()">
+    [disabled]="disabled || readonly" (click)="countryBtn()" [title]="selectedCountry?.name">
     <span class="country-selector-flag flag" [ngClass]="selectedCountry?.flagClass"></span>
     <span class="country-selector-code" *ngIf="selectedCountry?.dialCode">+{{ selectedCountry.dialCode }}</span>
   </button>
@@ -23,13 +23,16 @@
     </ng-container>
     <ng-container *ngFor="let country of allCountries">
       <button type="button" mat-menu-item class="country-list-button" *ngIf="country | search: searchCriteria"
-        (click)="onCountrySelect(country, focusable)">
-        <div class="icon-wrapper">
-          <div class="flag" [ngClass]="country.flagClass"></div>
+        (click)="onCountrySelect(country, focusable)" [class.country-active]="country?.dialCode === selectedCountry?.dialCode">
+        <div class="d-flex aling-items-center gap-1">
+          <div class="icon-wrapper  dx-mat-tel-input-container">
+            <div class="flag" [ngClass]="country.flagClass"></div>
+          </div>
+          <div class="label-wrapper paragraph">
+            {{ country.name }} +{{ country.dialCode }}
+          </div>
         </div>
-        <div class="label-wrapper">
-          {{ country.name }} +{{ country.dialCode }}
-        </div>
+        
       </button>
     </ng-container>
   </mat-menu>

@@ -4,7 +4,8 @@ import { DxToggleComponent } from './dx-toggle.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
+import { DxLabelDirective } from '../../directive';
 
 @NgModule({
   declarations: [
@@ -16,8 +17,9 @@ import { TranslocoModule } from '@ngneat/transloco';
     MatFormFieldModule,
     ReactiveFormsModule,
     MatSlideToggleModule,
-    TranslocoModule
+    TranslocoModule,
+    DxLabelDirective
   ],
-  exports: [DxToggleComponent]
+  exports: [DxToggleComponent,DxLabelDirective]
 })
 export class DxToggleModule { }

@@ -12,9 +12,14 @@ export class DxLinkComponent<T> {
   @Input() data!: Link<T>;
   @Input() column!: DxTableColumn<T>;
   target!: string;
-  constructor(private readonly router: Router) { }
+
+  externalUrl: string | undefined;
+  constructor(
+    private readonly router: Router) { }
   ngOnInit(): void {
-    this.target = this.column?.setting?.linkSettings?.target ?? '_blank'
+    this.target = this.column?.setting?.linkSettings?.target ?? '_blank';
+    this.externalUrl = `${this.data?.path}${this.data?.params ? this.prepareQueryParams(this.data?.params, this.data?.path) : ''}`;
+
   }
   onClickLink(data: Link<T>): void {
     if (data?.type === 'internal') {
@@ -26,16 +31,13 @@ export class DxLinkComponent<T> {
     }
   }
 
-  prepareExtranalLink(data: Link<T>): string {
-    return `${data?.path}` + this.prepareQueryParams(data?.params);
-  }
-  private prepareQueryParams(params: Params | undefined): string {
+  private prepareQueryParams(params: Params | undefined, path?: string): string {
     let queryParams = '';
     if (params) {
       Object.keys(params).forEach((key: string, index: number) => {
         const prepare = `${key}=${params[key]}`;
         if (index === 0) {
-          queryParams = queryParams.concat('?');
+          queryParams = queryParams.concat((path ?? '').includes('?') ? '&' : '?');
         }
         queryParams = queryParams.concat(prepare);
       })

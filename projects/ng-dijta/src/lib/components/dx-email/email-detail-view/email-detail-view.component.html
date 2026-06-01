@@ -70,14 +70,15 @@
                               arrow_back_ios
                             </span>{{email?.from?.email}}<span class="material-icons-outlined">
                               arrow_forward_ios
-                            </span> </div>
+                            </span>
+                          </div>
                         </div>
                         <div class="email-info">
                           <div class="info-label">to:</div>
                           <div class="info-value">
                             me <span class="material-icons-outlined">
                               arrow_back_ios
-                            </span>hughes.brian@company.com<span class="material-icons-outlined">
+                            </span>hughes.brian&#64;company.com<span class="material-icons-outlined">
                               arrow_forward_ios
                             </span>
                           </div>
@@ -126,7 +127,7 @@
             </div>
             <div class="body">
               <!-- <quill-view-html [content]="email?.body"></quill-view-html> -->
-              <div [innerHtml]="email?.body"></div>
+              <div [innerHtml]="email?.body  | dxsafe: 'html'"></div>
             </div>
 
           </div>

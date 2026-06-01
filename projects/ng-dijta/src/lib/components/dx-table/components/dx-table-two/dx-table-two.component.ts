@@ -2,7 +2,7 @@ import { Subscription } from 'rxjs';
 import { MatTable } from '@angular/material/table';
 import { DxTableData, DxTableMenuAction, DxTableRowEdit } from './../../interfaces/dx-additional.interface';
 import { DxTableColumn, DxTableSetting, OnAction } from './../../interfaces/dx-table.interface';
-import { Component, Input,  ViewChild, TemplateRef, EventEmitter, Output } from '@angular/core';
+import { Component, Input, ViewChild, TemplateRef, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'dx-table-two',
@@ -24,7 +24,7 @@ export class DxTableTwoComponent<T>  {
   >();
   @Output() onToggleEventChange: EventEmitter<DxTableData<T>> = new EventEmitter<DxTableData<T>>();
   @Output() onClickMenuAction: EventEmitter<DxTableMenuAction<T>> = new EventEmitter<
-  DxTableMenuAction<T>
+    DxTableMenuAction<T>
   >();
   @Output() onClickEditRow: EventEmitter<DxTableRowEdit<T>> = new EventEmitter<DxTableRowEdit<T>>();
   subscription!: Subscription;
@@ -44,13 +44,13 @@ export class DxTableTwoComponent<T>  {
   eventChange(event: DxTableData<T> | undefined): void {
     this.onEventChange.emit(event);
   }
-  onToggleChange(event:DxTableData<T> | undefined): void {
+  onToggleChange(event: DxTableData<T> | undefined): void {
     this.onToggleEventChange?.emit(event)
   }
-  onMenuAction(event:DxTableMenuAction<T>):void{
+  onMenuAction(event: DxTableMenuAction<T>): void {
     this.onClickMenuAction.emit(event)
   }
-  onEditRowAction(event:DxTableRowEdit<T>):void{
+  onEditRowAction(event: DxTableRowEdit<T>): void {
     this.onClickEditRow.emit(event)
   }
 }

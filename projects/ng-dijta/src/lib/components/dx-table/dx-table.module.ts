@@ -17,16 +17,20 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import { TranslocoModule } from '@ngneat/transloco';
+import { DxDirectiveModule } from '../../directive';
+import { DxDropdownComponent } from './components/dx-dropdown/dx-dropdown.component';
+import { DxTableHtmlComponent } from './components/dx-table-html/dx-table-html.component';
+import { DxTableLookupComponent } from './components/dx-table-lookup/dx-table-lookup.component';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { DxEmptyModule } from '../dx-empty';
+import { TranslocoModule } from '@jsverse/transloco';
 import { DxTagInputModule } from '../../components/dx-tag-input';
 import { CoreUiModule } from '../../core/UI/core-ui.module';
 import { DxOutletModule } from '../../core/outlet/outlet.module';
-import { DxDirectiveModule } from '../../directive';
 import { DxButtonModule } from '../dx-button/dx-button.module';
 import { DxCardModule } from '../dx-card/dx-card.module';
 import { DxCurrencyModule } from '../dx-currency';
 import { DxDatepickerModule } from '../dx-datepicker';
-import { DxEmptyModule } from '../dx-empty';
 import { DxPopoverModule } from '../dx-popover';
 import { DxSkeletonLoaderModule } from '../dx-skeleton-loader/dx-skeleton-loader.module';
 import { DxToolTipModule } from '../dx-tooltip/dx-tooltip.module';
@@ -37,7 +41,6 @@ import { DxBulkActionsComponent } from './components/dx-bulk-actions/dx-bulk-act
 import { DxCellProgressBarComponent } from './components/dx-cell-progress-bar/dx-cell-progress-bar.component';
 import { DxColumnSorterComponent } from './components/dx-column-sorter/dx-column-sorter.component';
 import { DxContextMenuComponent } from './components/dx-context-menu/dx-context-menu.component';
-import { DxDropdownComponent } from './components/dx-dropdown/dx-dropdown.component';
 import { DxEditTableRowComponent } from './components/dx-edit-table-row/dx-edit-table-row.component';
 import { DxFileCellComponent } from './components/dx-file-cell/dx-file-cell.component';
 import { DxSVGCellComponent } from './components/dx-file-cell/dx-svg.component';
@@ -49,12 +52,11 @@ import { DxTableCheckboxComponent } from './components/dx-table-checkbox/dx-tabl
 import { DxTableCurrencyComponent } from './components/dx-table-currency/dx-table-currency.component';
 import { DxTableDateComponent } from './components/dx-table-date/dx-table-date.component';
 import { DxTableFieldWrapperComponent } from './components/dx-table-field-wrapper/dx-table-field-wrapper.component';
-import { DxTableHtmlComponent } from './components/dx-table-html/dx-table-html.component';
 import { DxTableInputComponent } from './components/dx-table-input/dx-table-input.component';
-import { DxTableLookupComponent } from './components/dx-table-lookup/dx-table-lookup.component';
 import { DxTableMenuComponent } from './components/dx-table-menu/dx-table-menu.component';
 import { DxTableMultiChipComponent } from './components/dx-table-multi-chip/dx-table-multi-chipcomponent';
 import { DxTableSelectComponent } from './components/dx-table-select/dx-table-select.component';
+import { DxTableMultiSelectComponent } from './components/dx-table-multi-select/dx-table-multi-select.component';
 import { DxTableServiceDataComponent } from './components/dx-table-service-data/dx-table-service-data.component';
 import { DxTableSkeletonComponent } from './components/dx-table-skeleton/dx-table-skeleton.component';
 import { DxTableSlideToggleComponent } from './components/dx-table-slide-toggle/dx-table-slide-toggle.component';
@@ -65,6 +67,8 @@ import { DxTagCellComponent } from './components/dx-tag-cell/dx-tag-cell.compone
 import { MatTableResponsiveDirective } from './directive/mat-table-responsive.directive';
 import { ResizeColumnDirective } from './resize-column.directive';
 import { ModalModule } from '../modal';
+import { DxTableTabComponent } from './components/dx-table-tab/dx-table-tab.componet';
+import { DropDownModule } from '../dropdown';
 import { FlexTableCellComponent } from './ngx-table/flex-table-cell/flex-table-cell.component';
 import { FlexTableHeaderRowComponent } from './ngx-table/flex-table-header-row/flex-table-header-row.component';
 import { FlexTableRowComponent } from './ngx-table/flex-table-row/flex-table-row.component';
@@ -75,9 +79,12 @@ import { DxDefaultComponent } from './components/dx-default/dx-default.component
 import { AbilityModule } from '@casl/angular';
 import { SelectModule } from '../select';
 import { MatSelectModule } from '@angular/material/select';
-import { DxTabsModule } from '../dx-tab/dx-tab.module';
 import { DxFlatActionComponent } from './components/dx-flat-action/dx-flat-action.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { InlineEditTableComponent } from './components/inline-edit-table/inline-edit-table.component';
+import { LocalizedNumberPipe } from '../../pipe/localized-number.pipe';
+import { DxInputPhoneModule } from '../dx-input-phone';
+import { TabsModule } from '../tab/tabs.module';
 import { DxPopupComponent } from '../dx-popup/dx-popup.component';
 import { MatDialogModule } from "@angular/material/dialog";
 @NgModule({
@@ -110,17 +117,22 @@ import { MatDialogModule } from "@angular/material/dialog";
     DxTagInputModule,
     RouterModule,
     DxDirectiveModule,
+    OverlayModule,
     DxEmptyModule,
     DxOutletModule,
     ImagePreviewModule,
     TranslocoModule,
     ModalModule,
+    TabsModule,
+    DropDownModule,
     AbilityModule,
     SelectModule,
     MatSelectModule,
     ReactiveFormsModule,
     FormsModule,
-    DxTabsModule,
+    MatFormFieldModule,
+    LocalizedNumberPipe,
+    DxInputPhoneModule,
     MatDialogModule
 ],
   declarations: [
@@ -137,6 +149,7 @@ import { MatDialogModule } from "@angular/material/dialog";
     DxTableInputComponent,
     ResizeColumnDirective,
     DxTableSelectComponent,
+    DxTableMultiSelectComponent,
     DxTableSkeletonComponent,
     DxTableMultiChipComponent,
     DxBulkActionsComponent,
@@ -157,6 +170,7 @@ import { MatDialogModule } from "@angular/material/dialog";
     DxDropdownComponent,
     DxTableHtmlComponent,
     DxTableLookupComponent,
+    DxTableTabComponent,
 
     // Flex Table
     FlexTableComponent,

@@ -7,6 +7,6 @@ import { ReplaySubject } from 'rxjs';
 export class DxTimelineService {
   check$ = new ReplaySubject(1);
   markForCheck(): void {
-    this.check$.next(undefined);
+    this.check$.next(null);
   }
 }

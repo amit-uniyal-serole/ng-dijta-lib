@@ -1,7 +1,7 @@
 <ng-container *ngIf="type === 'ONLY_HTML';else defaultHTML">
     <div class="html-content">
         <div class="html-content-length-table" [class.path-color]="!!links" [class.more]="dataLen >= 200"
-            [style.max-height.px]="200" [innerHTML]="shortText"></div>
+            [style.max-height.px]="200" [innerHTML]="shortText  | dxsafe: 'html'"></div>
 
         <div class="show_more_container" (click)="$event.stopPropagation()">
             <span dx-tooltip [dxTooltipTitle]="'View Full Details' | transloco"
@@ -15,7 +15,7 @@
 
 <ng-template #defaultHTML>
     <div class="paragraph html-cell overflow-hidden" [@expandCollapse]="(!showMore)? 'expanded' : 'collapsed'"
-        [innerHtml]="data"></div>
+        [innerHtml]="data  | dxsafe: 'html'"></div>
     <a *ngIf="dataLen > 200" class="show px-0 text-decoration-none py-2" (click)="showMore=!showMore">
         {{(showMore)? ('Show More' | transloco) : ('Show Less' | transloco)}}
     </a>
@@ -33,7 +33,7 @@
             </button>
         </div>
         <div class="card-model-body">
-            <div class="display-text" [innerHtml]="data | transloco"></div>
+            <div class="display-text" [innerHtml]="data  | dxsafe: 'html' | transloco"></div>
         </div>
         <div class="card-model-footer">
             <button type="button" (click)="close()">Close</button>

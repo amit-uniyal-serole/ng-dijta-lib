@@ -8,7 +8,6 @@ import {
   VerticalConnectionPos
 } from '@angular/cdk/overlay';
 import { Component, ElementRef, Host, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
-// import { AppendToBodyDirection, AppendToBodyDirectionsConfig, AppendToBodyScrollStrategyType, fadeInOut } from 'ng-dx/utils';
 import { DropDownDirective } from './dropdown.directive';
 import { AppendToBodyDirection, AppendToBodyScrollStrategyType, AppendToBodyDirectionsConfig } from '../../utils/cdk-overlay-config.type';
 import { fadeInOut } from '../../core/animation/fade-in-out';

@@ -1,0 +1,407 @@
+
+$ngx-btn-normal-config: (
+  text: (
+    color: var(--primary-base, #526ecc),
+    padding: 0,
+  ),
+  text-dark: (
+    color: var(--primary-base, #526ecc),
+    padding: 0,
+  ),
+  common: (
+    color: var(--ngx-text, #191919),
+    min-width: 64px,
+    background-color: var(--ngx-btn-common-bg, #ffffff),
+    border-color: var(--ngx-btn-common-border-color, #dbdbdb),
+  ),
+  stress: (
+    color: var(--primary-on-base, #ffffff),
+    min-width: 64px,
+    background-color: var(--primary-base, #526ecc)
+  ),
+  primary: (
+    color: var(--primary-on-base, #ffffff),
+    min-width: 64px,
+    background-color: var(--primary-base, #526ecc)
+  ),
+  danger: (
+    color: #ffffff,
+    min-width: 64px,
+    background-color: #c7000b,
+  ),
+  xs: (
+    padding: 0 4px,
+    height: 24px,
+    font-size: var(--ngx-font-size-sm, 12px),
+    min-width: 48px,
+  ),
+  sm: (
+    padding: var(--ngx-btn-sm-padding, 0 16px),
+    height: 24px,
+    font-size:  var(--ngx-font-size-sm, 12px),
+    min-width: 56px,
+  ),
+  lg: (
+    padding: var(--ngx-btn-lg-padding, 0 24px),
+    height: 32px,
+    font-size: var(--ngx-font-size-lg, 14px),
+    min-width: 72px,
+  ),
+  left: (
+    border-radius: var(--ngx-border-radius, 2px) 0 0 var(--ngx-border-radius, 2px),
+  ),
+  right: (
+    border-radius: 0 var(--ngx-border-radius, 2px) var(--ngx-border-radius, 2px) 0,
+  ),
+  default: (
+    border-radius: var(--ngx-border-radius, 2px),
+  ),
+);
+
+$ngx-btn-pseudo-config: (
+  text: (
+    hover: (
+      background-color: transparent,
+      color: var(--primary-base, #526ecc),
+    ),
+    active: (
+      background-color: transparent,
+      color: var(--primary-base, #526ecc),
+    ),
+  ),
+  text-dark: (
+    hover: (
+      background-color: transparent,
+      color: var(--primary-base, #526ecc),
+    ),
+    active: (
+      background-color: transparent,
+      color: var(--primary-base, #526ecc),
+    ),
+  ),
+  common: (
+    hover: (
+      border-color: var(--primary-base, #5e7ce0),
+      color: var(--primary-base, #526ecc),
+      background-color: #ffffff,
+    ),
+    active: (
+      border-color: var(--primary-base, #5e7ce0),
+      color: var(--primary-base, #526ecc),
+      background-color: #ffffff,
+    ),
+  ),
+  stress: (
+    hover: (
+      background-color: var(--primary-hover, #7693f5),
+      color: var(--primary-on-hover, #ffffff)
+    ),
+    active: (
+      background-color: var(--primary-base),
+    ),
+  ),
+  primary: (
+    hover: (
+      background-color: var(--primary-hover, #7693f5),
+      color: var(--primary-on-hover, #ffffff)
+    ),
+    active: (
+      background-color: var(--primary-base),
+    ),
+  ),
+  danger: (
+    hover: (
+      background-color: var(--ngx-contrast-hover, #cc272a),
+    ),
+    active: (
+      background-color: var(--ngx-contrast-active, #78080e),
+    ),
+  ),
+);
+
+.ngx-btn {
+  padding: var(--ngx-btn-padding, 0 20px);
+  font-size: var(--ngx-font-size-md, 12px);
+  height: 28px;
+  line-height: var(--ngx-line-height-base, 1.5);
+  border-radius: var(--ngx-btn-border-radius, 2px);
+  border-width: 1px;
+  border-color: transparent;
+  background-color: transparent;
+  position: relative;
+  overflow: hidden;
+  transform: scale(1);
+  @each $type in common, stress, primary, danger, left, right, xs, sm, lg, text, text-dark {
+    &.ngx-btn-#{$type} {
+      @each $key, $value in map-get($ngx-btn-normal-config, $type) {
+        #{$key}: $value;
+      }
+    }
+  }
+  @each $type in text, text-dark, common, stress, primary, danger {
+    &.ngx-btn-#{$type} {
+      @each $pseudo, $value in map-get($ngx-btn-pseudo-config, $type) {
+        &:#{$pseudo} {
+          @each $key, $value2 in map-get(map-get($ngx-btn-pseudo-config, $type), $pseudo) {
+            #{$key}: $value2;
+          }
+        }
+      }
+    }
+  }
+
+  &.ngx-btn-common {
+    &:disabled {
+      color: var(--ngx-btn-common-text-disabled, #c2c2c2);
+      background: var(--ngx-btn-common-bg-disabled, #f5f5f5);
+      border-color: var(--ngx-btn-common-border-disabled, #e6e6e6);
+    }
+  }
+
+  &.ngx-btn-primary {
+    &:disabled {
+      color: #ffffff;
+      background: #beccfa;
+      border-color: transparent;
+    }
+  }
+
+  &.ngx-btn-danger {
+    &:disabled {
+      color: #ffffff;
+      background: #faa7a3;
+      border: 1px solid #faa7a3;
+    }
+  }
+
+  &.ngx-btn-text-dark {
+    &:disabled {
+      color: var(--ngx-disabled-text, #c2c2c2);
+    }
+  }
+
+  &.ngx-btn-text {
+    &:disabled {
+      color: var(--ngx-disabled-text, #c2c2c2);
+    }
+  }
+
+  &.bordered {
+    &.ngx-btn-common {
+      color: var(--ngx-text, #191919);
+      border-color: transparent;
+
+      &:hover,
+      &:focus {
+        border-color: var(--ngx-primary-hover, #7693f5);
+      }
+
+      &:active {
+        border-color: var(--primary-base);
+      }
+    }
+
+    &.ngx-btn-stress,
+    &.ngx-btn-primary {
+      border-color: var(--primary-base);
+      color: var(--primary-base);
+      background-color:  var(--primary-on-base);
+    }
+
+    &.ngx-btn-success {
+      border-color: #029931;
+      color: #029931;
+      background-color: #ffffff;
+    }
+
+    &.ngx-btn-warning {
+      border-color: #ffb700;
+      color: #ffb700;
+      background-color: #ffffff;
+    }
+
+    &.ngx-btn-danger {
+      border-color: #f23030;
+      color: #f23030;
+      background-color: #ffffff;
+    }
+  }
+
+  &.d-btn-icon:not(.ngx-btn-primary):not(.ngx-btn-danger):not(.ngx-btn-common) {
+    &:hover,
+    &:focus {
+      border: 1px solid #f2f2f3;
+      background-color: #f2f2f3;
+    }
+
+    &:disabled {
+      background-color: #f5f5f5;
+    }
+  }
+
+  &:not(:disabled) {
+    &.ngx-btn-text,
+    &.ngx-btn-text-dark {
+      &.d-btn-icon-wrap {
+        color: var(--ngx-text, #191919);
+
+        .ngx-icon-fix {
+          color: #595959;
+        }
+
+        &:hover {
+          color: #191919;
+
+          .ngx-icon-fix {
+            color: #191919;
+          }
+        }
+      }
+    }
+  }
+
+  &.mouseDown:not(:disabled) {
+    transform: scale(0.95);
+  }
+}
+
+.ngx-loading {
+  .ngx-loading-default-spinner {
+    div {
+      background-color: var(--ngx-text, #191919);
+    }
+  }
+}
+
+:host {
+  display: inline-block;
+}
+
+.ngx-btn {
+  transition:
+    background-color var(--ngx-animation-duration-slow, 300ms) var(--ngx-animation-ease-in-out-smooth, cubic-bezier(0.645, 0.045, 0.355, 1)),
+    border-color var(--ngx-animation-duration-slow, 300ms) var(--ngx-animation-ease-in-out-smooth, cubic-bezier(0.645, 0.045, 0.355, 1)),
+    color var(--ngx-animation-duration-slow, 300ms) var(--ngx-animation-ease-in-out-smooth, cubic-bezier(0.645, 0.045, 0.355, 1));
+  border-style: solid;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:disabled,
+  &[disabled] {
+    cursor: not-allowed;
+  }
+
+  &.d-btn-icon {
+    padding: 8px 8px;
+    line-height: 1em;
+    min-width: unset;
+    border: 1px solid transparent; // 待废弃，兼容旧版本button common类型无边框
+
+    &:not(.ngx-btn-common) {
+      border: 1px solid transparent;
+    }
+
+    &.ngx-btn-xs,
+    &.ngx-btn-sm {
+      padding: 4px;
+    }
+
+    &.ngx-btn-xs {
+      min-width: 24px;
+    }
+
+    &.ngx-btn-sm {
+      min-width: 24px;
+    }
+
+    &.ngx-btn-lg {
+      .icon {
+        font-size: var(--ngx-font-size-icon, 16px);
+      }
+
+      min-width: 32px;
+    }
+  }
+
+  &:not(.d-btn-icon) {
+    .icon-fix {
+      font-size: var(--ngx-font-size-icon, 16px);
+    }
+  }
+}
+
+.ngx-icon-fix {
+  position: relative;
+  font-size:20px;
+  pointer-events: none;
+  .mat-icon {
+    height: auto !important;
+    width: auto !important;
+  }
+
+
+  &::before {
+    transition: color var(--ngx-animation-duration-slow, 300ms) var(--ngx-animation-ease-in-out-smooth, cubic-bezier(0.645, 0.045, 0.355, 1));
+  }
+}
+
+.ngx-btn.ngx-btn-common:not(:disabled) {
+  .ngx-icon-fix {
+    color: var(--ngx-text, #191919)-weak;
+  }
+
+  &:hover,
+  &:active,
+  &:focus {
+    .ngx-icon-fix {
+      color: #191919;
+    }
+  }
+}
+
+.button-content {
+  display: inline-block;
+  position: relative;
+  pointer-events: none;
+}
+
+.clear-right-8 {
+  margin-right: 8px;
+}
+
+.ngx-btn-more-text-omits {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ngx-btn-circle {
+  border-radius: 100%;
+}
+
+.ngx-button-water-wave {
+  position: absolute;
+  background-color: #ffffff;
+  border-radius: 50%;
+  opacity: 0;
+  width: 20px;
+  height: 20px;
+  transform: translate(-50%, -50%);
+  animation: waterWave var(--ngx-animation-duration-slow, 300ms) var(--ngx-animation-linear, cubic-bezier(0, 0, 1, 1));
+}
+
+@keyframes waterWave {
+  0% {
+    opacity: 0.2;
+    width: 30px;
+    height: 30px;
+  }
+
+  100% {
+    opacity: 0;
+    width: 200px;
+    height: 200px;
+  }
+}

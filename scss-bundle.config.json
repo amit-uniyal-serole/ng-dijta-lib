@@ -1,6 +1,6 @@
 {
   "bundlerOptions": {
-    "entryFile": "./projects/ng-dijta/src/lib/core/theme/tui/css/css/_style.scss",
+    "entryFile": "./projects/ng-dijta/src/lib/theme/_style.scss",
     "outFile": "./dist/ng-dijta/theme/_dx-theme.scss"
   }
 }

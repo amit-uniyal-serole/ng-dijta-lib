@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core";
 import { DxColorsComponent } from "./dx-colors.component";
 import { CommonModule } from "@angular/common";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ColorPickerComponent } from "./components/color-picker/color-picker.component";
 import { ConverterService } from "./services/converter.service";
 import { SliderDirective } from "./directives/slider.directive";
@@ -19,6 +18,6 @@ import { DxColorsTriggerDirective } from "./directives/dx-colors-trigger.directi
     ],
     imports: [CommonModule],
     providers: [ConverterService, PanelFactoryService],
-    exports: [DxColorsComponent, DxColorsTriggerDirective],
+    exports: [DxColorsComponent, ColorPickerComponent, PanelComponent, DxColorsTriggerDirective],
 })
 export class DxColorsModule { }

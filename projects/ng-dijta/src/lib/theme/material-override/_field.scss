@@ -1,0 +1,73 @@
+// Input With Readonly
+.readonly {
+    .mat-form-field-label {
+        color: #A5A5A5 !important;
+
+        .dx-input-label {
+            font-weight: bold !important;
+        }
+
+    }
+
+    .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+        color: #F8F8FA !important;
+    }
+
+    .mdc-text-field--outlined {
+        background-color: #F8F8FA !important;
+    }
+}
+
+//
+.mat-mdc-form-field-error-wrapper{
+    padding: 0px;
+}
+
+// Server Side Auto Complete Field
+.ngdx-field-wrapper {
+    &.dx-field-server-side-autocomplete {
+
+        &.outer-label {
+            &.left-align-label {
+                &.dx-field-server-side-autocomplete {
+                    align-items: start;
+
+                    .dx-outer-label-wrapper {
+                        padding-top: 9px;
+                    }
+                }
+            }
+            .btn-styles-none {
+                position: absolute;
+                right: 0px;
+               top: -7px;
+            }
+        }
+
+        &.dx-field-server-side-autocomplete {
+            .mat-mdc-form-field-flex {
+
+                .mat-mdc-form-field-icon-suffix {
+                    display: flex;
+                    align-items: center;
+                    padding: 0px 3px;
+                    border-radius: 0px 3px 3px 0px;
+                    align-self: auto;
+                    margin: 1px;
+                    position: relative;
+                }
+            }
+
+        }
+    }
+}
+
+.server-side-autocomplete-panel {
+    padding: 0px !important;
+}
+
+.mat-mdc-standard-chip.mdc-evolution-chip--with-trailing-action .mdc-evolution-chip__action--trailing {
+    padding-left: 2px;
+    padding-right: 2px;
+}
+

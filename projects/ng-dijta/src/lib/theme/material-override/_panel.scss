@@ -1,0 +1,35 @@
+:root {
+    --dx-menu-item: 38px;
+    --dx-menu-container-shape: 4px;
+    --dx-menu-container-color: #fff;
+}
+.mat-mdc-menu-item {
+    min-height: var(--dx-menu-item) !important;
+}
+.mat-mdc-menu-content {
+    padding: 0px !important;
+}
+.mat-mdc-menu-panel {
+    // border-radius: var(--dx-menu-container-shape) !important;
+    // background-color: var(--dx-menu-container-color) !important;
+}
+
+.bulk-action-panel {
+    min-height: 32px !important;
+    max-height: calc(100vh - 50vh) !important;  
+}
+  
+//   .cdk-overlay-pane .mat-menu-panel.bulk-action-panel.parent-menu {
+//     min-width: 190px !important;
+//   }
+  
+//   .bulk-action-panel {
+//     .mat-menu-content:not(:empty) {
+//       padding-top: 0px;
+//       padding-bottom: 0px;
+//     }
+//   }
+
+.mat-mdc-menu-content, .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text {
+    font-family: inherit !important;
+}

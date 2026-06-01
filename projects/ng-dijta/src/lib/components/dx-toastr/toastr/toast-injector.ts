@@ -94,7 +94,7 @@ export class ToastInjector implements Injector {
     private _parentInjector: Injector
   ) { }
 
-  get<T>(token: any, notFoundValue?: T, flags?: InjectFlags): T | ToastPackage {
+  get<T>(token: any, notFoundValue?: T, flags?: any): T | ToastPackage {
     if (token === ToastPackage) {
       return this._toastPackage;
     }

@@ -1,119 +1,96 @@
-# dx-toggle
+---
+category: Components
+type: Data Entry
+title: Toggle
+---
 
-Toggle switch (slide switch) form control with configurable label position.
+An on/off switch form control wrapping Angular Material `mat-slide-toggle`. Implements `ControlValueAccessor` + `Validator` and projects an optional label via the `[dxLabel]` directive.
 
-## Overview
-
-`dx-toggle` wraps Angular Material's `<mat-slide-toggle>` as a form-integrated boolean control. It supports `disabled`, `readonly` states, label-touch sensitivity, and label placement before or after the toggle. Implements `ControlValueAccessor` for use with Reactive and Template-Driven Forms.
-
-## Module Import
-
-```typescript
-import { DxToggleModule } from 'ng-dijta';
-
-@NgModule({
-  imports: [DxToggleModule]
-})
-export class AppModule {}
-```
-
-## Selector
-
-`<dx-toggle>`
+## When To Use
+- When a boolean setting needs an immediate, visible on/off affordance (notifications on/off, feature flag).
+- When the field must integrate with template-driven or reactive forms.
+- When the label must support translation or custom template content via `[dxLabel]`.
+- When required validation is needed for the on-state (e.g. accept-terms toggle).
 
 ## API
 
-### Inputs
+```html
+<dx-toggle [(ngModel)]="isEnabled">
+  <ng-container dxLabel>Enable notifications</ng-container>
+</dx-toggle>
+```
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `disabled` | `boolean` | `false` | Disable the toggle — user cannot interact |
-| `readonly` | `boolean` | `false` | Read-only mode — visually shown but value cannot be changed |
-| `labelPosition` | `'before' \| 'after'` | `'after'` | Position of the label relative to the toggle |
-| `labelTouchSensitive` | `boolean` | `true` | Whether clicking the label area also toggles the switch |
-| `tabIndex` | `number` | — | Tab index for keyboard navigation |
-| `id` | `string` | auto-generated | Element ID (auto-incremented `dx-toggle-N`) |
+### dx-toggle
 
-### Outputs
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[disabled]` | Whether the toggle is disabled | `boolean` | `false` |
+| `[readonly]` | Whether the toggle is read-only | `boolean` | `false` |
+| `[required]` | Mark the control as required (must be `true` to pass validation) | `boolean` | `false` |
+| `[labelPosition]` | Placement of the projected label | `'before' \| 'after'` | `'after'` |
+| `[labelTouchSensitive]` | Whether clicking the label also toggles the control | `boolean` | `true` |
+| `[tabIndex]` | Tab index of the underlying input | `number` | - |
+| `[id]` | Element id (auto-generated when omitted) | `string` | `dx-toggle-{n}` |
 
-| Event | Type | Description |
-|-------|------|-------------|
-| `blur` | `EventEmitter<FocusEvent>` | Emitted when the toggle loses focus |
+### Events
+
+| Event | Description | Type |
+|-------|-------------|------|
+| `(blur)` | Emitted when the toggle loses focus | `EventEmitter<FocusEvent>` |
 
 ### Content Slots
 
-| Slot | Selector | Description |
-|------|----------|-------------|
-| Label | `<dx-label>` | Text label displayed beside the toggle |
-| Error | `<dx-error>` | Error message shown when validation fails |
+- `[dxLabel]` - Label content projected next to the toggle.
 
-> **Note:** If `dx-label` or `dx-error` cause "unknown element" errors, add `CUSTOM_ELEMENTS_SCHEMA` to your module:
-> ```typescript
-> import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-> @NgModule({ schemas: [CUSTOM_ELEMENTS_SCHEMA] })
-> ```
+## Examples
 
-## Usage Examples
+### Basic (template-driven)
 
-### Basic Reactive Form
+```html
+<dx-toggle [(ngModel)]="darkMode">
+  <ng-container dxLabel>Dark mode</ng-container>
+</dx-toggle>
+```
+
+### Label before the toggle
+
+```html
+<dx-toggle [(ngModel)]="autoSave" labelPosition="before">
+  <ng-container dxLabel>Auto-save</ng-container>
+</dx-toggle>
+```
+
+### Reactive form with required
 
 ```typescript
-// component.ts
-form = this.fb.group({
-  notifications: [true]
+form = new FormGroup({
+  acceptTerms: new FormControl(false, Validators.requiredTrue),
 });
 ```
 
 ```html
-<!-- component.html -->
 <form [formGroup]="form">
-  <dx-toggle formControlName="notifications">
-    <dx-label>Enable Notifications</dx-label>
+  <dx-toggle formControlName="acceptTerms" [required]="true">
+    <ng-container dxLabel>I accept the terms and conditions</ng-container>
   </dx-toggle>
 </form>
 ```
 
-### Template-Driven Form
+### Disabled
 
 ```html
-<dx-toggle [(ngModel)]="isActive" name="active">
-  <dx-label>Active</dx-label>
+<dx-toggle [(ngModel)]="value" [disabled]="true">
+  <ng-container dxLabel>Read-only setting</ng-container>
 </dx-toggle>
 ```
 
-### Label Before Toggle
+## Import
 
-```html
-<dx-toggle
-  formControlName="darkMode"
-  labelPosition="before">
-  <dx-label>Dark Mode</dx-label>
-</dx-toggle>
+```typescript
+import { DxToggleModule } from '@ngdx/dijta';
+
+@NgModule({
+  imports: [DxToggleModule]
+})
+export class YourModule { }
 ```
-
-### Disabled Toggle
-
-```html
-<dx-toggle formControlName="feature" [disabled]="true">
-  <dx-label>Feature Flag (read-only)</dx-label>
-</dx-toggle>
-```
-
-### With Blur Event
-
-```html
-<dx-toggle
-  [(ngModel)]="setting"
-  (blur)="onToggleBlur($event)">
-  <dx-label>Auto-Save</dx-label>
-</dx-toggle>
-```
-
-## Features
-
-- **Material slide toggle** — built on Angular Material's `<mat-slide-toggle>`
-- **ControlValueAccessor** — compatible with `formControlName`, `formControl`, and `ngModel`
-- **Label position control** — place label `before` or `after` the toggle switch
-- **Touch sensitivity** — configurable whether clicking the label area toggles the switch
-- **Read-only and disabled states** — distinct modes for form display pages vs editable forms
-- **Content projection** — `<dx-label>` and `<dx-error>` slots for label and validation messages

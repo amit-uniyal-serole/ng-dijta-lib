@@ -1,59 +1,109 @@
-```ts
-import { DxTimelineModule } from '@ngdx/dijta';
-```
+---
+category: Components
+type: Data Display
+title: Timeline
+---
+
+A vertical display of a series of events in chronological order. Items are projected as `<dx-timeline-item>` children and can be laid out left, right, alternating, or fully custom.
+
+## When To Use
+- When events need to be displayed in chronological order (activity feeds, audit logs, history views).
+- When a process has multiple stages and you want to show progress visually.
+- When an item stream needs a "pending" placeholder at the tail for in-flight work.
+- When each event has rich content (title, description, custom dot icon) rather than a simple list row.
 
 ## API
 
 ```html
-<dx-timeline>
-  <dx-timeline-item>step1 2015-09-01</dx-timeline-item>
-  <dx-timeline-item>step2 2015-09-01</dx-timeline-item>
-  <dx-timeline-item>step3 2015-09-01</dx-timeline-item>
-  <dx-timeline-item>step4 2015-09-01</dx-timeline-item>
+<dx-timeline dxMode="left">
+  <dx-timeline-item>Created a new account.</dx-timeline-item>
+  <dx-timeline-item dxColor="green">Verified email address.</dx-timeline-item>
+  <dx-timeline-item dxColor="red">Password changed.</dx-timeline-item>
 </dx-timeline>
 ```
 
 ### dx-timeline
 
-Timeline
-
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `[dxPending]` | Set the last ghost node's existence or its content | `string\|boolean\|TemplateRef<void>` | `false` |
-| `[dxPendingDot]` | Set the dot of the last ghost node when pending is true | `string\|TemplateRef<void>` | `<i dx-icon dxType="loading"></i>` |
-| `dxzReverse]` | Reverse nodes or not | `boolean` | `false` |
-| `[dxMode]` | By sending `alternate` the timeline will distribute the nodes to the left and right | `'left' \| 'alternate' \| 'right' \| 'custom'` | - |
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[dxMode]` | Layout mode for timeline items | `'left' \| 'right' \| 'alternate' \| 'custom'` | `'left'` |
+| `[dxPending]` | Pending state indicator; `true` shows a default spinner, string/template shows custom content | `string \| boolean \| TemplateRef<void>` | - |
+| `[dxPendingDot]` | Custom dot for the pending item | `string \| TemplateRef<void>` | - |
+| `[dxReverse]` | Reverse the order of items | `boolean` | `false` |
+| `[outline]` | Visual variant of the timeline | `'calender' \| 'timeline-detail-view' \| 'none'` | `'none'` |
 
 ### dx-timeline-item
 
-Node of timeline
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[dxColor]` | Color of the item dot (preset keyword or CSS color) | `'red' \| 'blue' \| 'green' \| 'grey' \| 'gray' \| 'transprant' \| string` | `'blue'` |
+| `[dxPosition]` | Forces the item onto a side (only meaningful in `dxMode="custom"`) | `'left' \| 'right'` | - |
+| `[dxDot]` | Custom dot content (icon name or template) | `string \| TemplateRef<void>` | - |
+| `[dxCustom]` | Custom item template | `string \| TemplateRef<void>` | - |
+| `[dxLabel]` | Optional label rendered opposite the content | `string \| TemplateRef<void>` | - |
+| `[timelineItemTileLabel]` | Secondary tile label | `string` | `''` |
+| `[backgroundNone]` | Remove the item background | `boolean` | `false` |
+| `[calenderData]` | Data model used by the calendar timeline variant | `TimeLineCalenderBoxModel` | - |
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `[dxColor]` | Set the circle's color to `'blue' \| 'red' \| 'green' \| 'gray'`| `string` | `blue` |
-| `[dxDot]` | Customize timeline dot | `string \| TemplateRef<void>` | - |
-| `[dxPosition]` | Customize position, only works when `nzMode` is `custom` | `'left' \| 'right'` | - |
-| `[dxLabel]` | Set the label |  `string \| TemplateRef<void>` | - |
+### Types
 
-### Variant
-  ### dx-calender-timeline
-  ```Html
-   <dx-calender-timeline [data]="data"></dx-calender-timeline>
-  ```
-  
+```typescript
+type DxTimelineMode      = 'left' | 'right' | 'alternate' | 'custom';
+type DxTimelinePosition  = 'left' | 'right';
+type DxTimelineItemColor = 'red' | 'blue' | 'green' | 'grey' | 'gray' | 'transprant';
+```
 
-  | Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `data` | nodes | `TimeLineCalenderModel[]` | `[]` |
+## Examples
 
+### Alternating layout
 
-  ### dx-timeline-detail-view
-  ```Html
-   <dx-timeline-detail-view [data]="data"></dx-timeline-detail-view>
-  ```
-  
+```html
+<dx-timeline dxMode="alternate">
+  <dx-timeline-item>Step 1</dx-timeline-item>
+  <dx-timeline-item dxColor="green">Step 2</dx-timeline-item>
+  <dx-timeline-item dxColor="red">Step 3</dx-timeline-item>
+</dx-timeline>
+```
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `data` | nodes | `TimeLineCalenderModel[]` | `[]` |
-            
+### With pending state
+
+```html
+<dx-timeline [dxPending]="'Uploading attachments...'">
+  <dx-timeline-item>File selected</dx-timeline-item>
+  <dx-timeline-item dxColor="green">Validated</dx-timeline-item>
+</dx-timeline>
+```
+
+### Custom dot
+
+```html
+<dx-timeline>
+  <dx-timeline-item dxDot="check_circle" dxColor="green">
+    Deployment succeeded
+  </dx-timeline-item>
+  <dx-timeline-item dxDot="error" dxColor="red">
+    Rollback triggered
+  </dx-timeline-item>
+</dx-timeline>
+```
+
+### Reversed order
+
+```html
+<dx-timeline [dxReverse]="true">
+  <dx-timeline-item>Oldest</dx-timeline-item>
+  <dx-timeline-item>Middle</dx-timeline-item>
+  <dx-timeline-item>Newest</dx-timeline-item>
+</dx-timeline>
+```
+
+## Import
+
+```typescript
+import { DxTimelineModule } from '@ngdx/dijta';
+
+@NgModule({
+  imports: [DxTimelineModule]
+})
+export class YourModule { }
+```

@@ -57,32 +57,9 @@ export class DxKanbanViewComponent implements OnChanges {
 
   }
 
-  onClickAction(event: string, content: KanbanViewColumnContent): void {
-    let eventData: KanbanCardActionEvent = {
-      type: event,
-      data: content
-    }
-    this.onKanbanCardAction.emit(eventData);
+  onClickAction(event: KanbanCardActionEvent): void {
+    this.onKanbanCardAction.emit(event);
   }
 
-  getContrastColor(color: string): string {
-    // Convert color to RGB format
-    const hex: string = color.replace("#", "");
-    const r: number = parseInt(hex.substr(0, 2), 16);
-    const g: number = parseInt(hex.substr(2, 2), 16);
-    const b: number = parseInt(hex.substr(4, 2), 16);
 
-    // Calculate perceived brightness
-    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-
-    // Determine contrast color
-    return brightness > 128 ? "#000000" : "#ffffff";
-  }
-
-  headerBackgroundColor(color: string) {
-    return {
-      backgroundColor: color,
-      color: this.getContrastColor(color)
-    }
-  }
 }

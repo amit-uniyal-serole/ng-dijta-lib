@@ -9,10 +9,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { SearchPipe } from './phone-contact/search.pipe';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
+import { PhoneViewComponent } from './phone-contact/phone-view.component';
 
 @NgModule({
-  declarations: [DxInputPhoneComponent, PhoneContactComponent, SearchPipe],
+  declarations: [DxInputPhoneComponent, PhoneContactComponent, SearchPipe, PhoneViewComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -26,6 +27,6 @@ import { TranslocoModule } from '@ngneat/transloco';
     ReactiveFormsModule,
     TranslocoModule
   ],
-  exports: [DxInputPhoneComponent, PhoneContactComponent]
+  exports: [DxInputPhoneComponent, PhoneContactComponent, PhoneViewComponent]
 })
 export class DxInputPhoneModule { }

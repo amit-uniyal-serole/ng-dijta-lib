@@ -1,14 +1,19 @@
 <ng-container *ngIf="link;else other_text_cell">
-  <div class="anchor-link" *ngIf="link.displayLabel;else default_text" (click)="$event.stopPropagation()">
+  <div class="anchor-link" *ngIf="link?.displayLabel || link?.displayLabel === false;else default_text"
+    (click)="$event.stopPropagation()">
     <ng-container *ngIf="link?.type === 'internal';else external">
       <a dx-tooltip dxTooltipTitle="{{data?.displayLabel}}" [routerLink]="link?.path" [queryParams]="link?.params"
-        (click)="onClick.emit()">{{link?.displayLabel | transloco}}</a>
+        (click)="onClick.emit()">
+        <ng-template *ngTemplateOutlet="labelRef; context:{config:link}"></ng-template>
+      </a>
     </ng-container>
 
     <ng-template #external>
       <a dx-tooltip dxTooltipTitle="{{data?.displayLabel}}" [href]="prepareExtranalLink(link)"
-        [target]="link?.openInNewTab ? '_blank': '_self'">{{link?.displayLabel ?? ''}} <svg *ngIf="link?.openInNewTab"
-          width="15px" height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        [target]="link?.openInNewTab ? '_blank': '_self'">
+        <ng-template *ngTemplateOutlet="labelRef; context:{config:link}"></ng-template>
+        <svg *ngIf="link?.openInNewTab" width="15px" height="15px" viewBox="0 0 24 24" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
           <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
           <g id="SVGRepo_iconCarrier">
@@ -43,8 +48,12 @@
           [ngStyle]="showBackgroundColor(column?.backgroundClass,color)"
           [ngClass]="{'flex-badge flex-badge-live': column?.backgroundClass}">
           <span *ngIf=" column?.backgroundClass" [ngStyle]="{'background-color': color}" class="dot"></span>
-          <span [innerHtml]="text | transloco" [class.fw-bold]="column?.isNestedCol"
-            class="status-text fw-medium custom-font-family subbody text-cell" [class.compares]="column?.compares"></span>
+          <span [class.fw-bold]="column?.isNestedCol" class="status-text custom-font-family text-cell"
+            [class.compares]="column?.compares">
+            {{
+            text | transloco
+            }}
+          </span>
         </span>
 
         <div *ngIf="reason" class="reason material-icons-outlined" dx-tooltip
@@ -52,7 +61,7 @@
           {{ reason?.icon ?? 'priority_high' }}
         </div>
         <ng-template #reasonMessage>
-          <div class="paragraph mb-0" [innerHTML]="reason?.message | transloco"></div>
+          <div class="paragraph mb-0" [innerHTML]="reason?.message  | dxsafe: 'html' | transloco"></div>
         </ng-template>
       </span>
 
@@ -65,4 +74,23 @@
 
   </span>
 </ng-template>
-<dx-default [show]="!data && !link"></dx-default>
+
+<ng-template #labelRef let-config="config">
+  @if (link?.fieldType === 'checkbox') {
+  <ng-container [ngSwitch]="link?.fieldType">
+    <ng-container *ngSwitchCase="true">
+      {{link?.trueAs ?? 'True'}}
+    </ng-container>
+    <ng-container *ngSwitchCase="false">
+      {{link?.falseAs ?? 'False'}}
+    </ng-container>
+    <ng-container *ngDeafultCase>
+      {{link?.displayLabel | transloco}}
+    </ng-container>
+  </ng-container>
+  } @else {
+  {{link?.displayLabel | transloco}}
+  }
+
+</ng-template>
+<dx-default [show]="!data && data !='0'"></dx-default>

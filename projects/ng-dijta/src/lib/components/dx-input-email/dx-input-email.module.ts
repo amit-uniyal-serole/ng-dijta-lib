@@ -6,6 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { InputMaskModule } from '../../core/UI/core/input-mask/input-mask.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { NgxMaskDirective } from 'ngx-mask';
+import { DxDirectiveModule } from '../../directive';
 @NgModule({
   declarations: [DxInputEmailComponent],
   imports: [
@@ -15,7 +17,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatInputModule,
     ReactiveFormsModule,
     InputMaskModule,
-    MatTooltipModule
+    MatTooltipModule,
+    NgxMaskDirective,
+    DxDirectiveModule
   ],
   exports: [DxInputEmailComponent],
 })

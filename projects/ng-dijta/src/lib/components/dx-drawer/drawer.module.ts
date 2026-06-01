@@ -7,8 +7,9 @@ import { DxOutletModule } from '../../core/outlet/outlet.module';
 import { DxDrawerContentDirective } from './drawer-content.directive';
 import { DxDrawerComponent } from './drawer.component';
 import { DxDrawerServiceModule } from './drawer.service.module';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 import { DxToolTipModule } from '../dx-tooltip';
+import { DxDirectiveModule } from '../../directive';
 
 @NgModule({
     imports: [
@@ -19,7 +20,8 @@ import { DxToolTipModule } from '../dx-tooltip';
         DxOutletModule,
         DxDrawerServiceModule,
         TranslocoModule,
-        DxToolTipModule
+        DxToolTipModule,
+        DxDirectiveModule
     ],
     exports: [DxDrawerComponent, DxDrawerContentDirective],
     declarations: [DxDrawerComponent, DxDrawerContentDirective]

@@ -1,9 +1,9 @@
 import {
-    Component,
-    EventEmitter,
-    Input, OnDestroy,
-    OnInit,
-    Output
+  Component,
+  EventEmitter,
+  Input, OnDestroy,
+  OnInit,
+  Output
 } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
@@ -44,7 +44,7 @@ export class DxConfigTableComponent<T> implements OnInit, OnDestroy {
     private readonly tableServiceService: TableServiceService,
     private readonly genericService: GenericService,
     private readonly dialog: MatDialog,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getTableConfig(this.configUrl);
@@ -113,7 +113,7 @@ export class DxConfigTableComponent<T> implements OnInit, OnDestroy {
    *
    * @param event DxFilter Emits on click of paginator bar actions (except refresh)
    */
-  onClickHeaderActions(event: DxFilter): void {  
+  onClickHeaderActions(event: DxFilter): void {
     if (event.type === 'refresh') {
       this.getTableData(this.tableConfig);
     } else if (event.type === 'filter') {
@@ -163,9 +163,9 @@ export class DxConfigTableComponent<T> implements OnInit, OnDestroy {
       this.tableConfig?.filterSettings;
     this.filterSubscription = dialogRef
       .afterClosed()
-      .subscribe((result:FilterResult) => {
+      .subscribe((result: FilterResult) => {
         if (result) {
-          this.setPreviousFilterValues = result;        
+          this.setPreviousFilterValues = result;
           this.tableConfig.pageable = this.genericService.onSearch(
             result,
             this.tableConfig?.pageable
@@ -177,10 +177,10 @@ export class DxConfigTableComponent<T> implements OnInit, OnDestroy {
   /**
    * @description set previous filtered data
    */
-  private previousFilterData():void{
+  private previousFilterData(): void {
     if (this.setPreviousFilterValues && this.tableConfig.filterSettings) {
       for (const key in this.setPreviousFilterValues) {
-        this.tableConfig.filterSettings.forEach((item:DxTableFilterSettings) => {
+        this.tableConfig.filterSettings.forEach((item: DxTableFilterSettings) => {
           if (item && item.name === key) {
             item.defaultValue = this.setPreviousFilterValues[key];
           }

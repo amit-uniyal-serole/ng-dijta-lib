@@ -2,55 +2,104 @@
 category: Components
 type: Data Display
 title: Empty
-cols: 1
-cover: https://gw.alipayobjects.com/zos/alicdn/MNbKfLBVb/Empty.svg
 ---
 
-Empty state placeholder.
+Placeholder component for "no data" states. Renders an illustration, a description line and an optional footer. The `dx-embed-empty` companion selects an appropriate size automatically based on the host component (table / list / select / cascader / transfer).
 
 ## When To Use
 
-When there is no data provided, display for friendly tips.
-
-```ts
-import { DxEmptyModule } from '@ngdx/dijta';
-```
+- When a list, table or panel has no data to render.
+- When a search or filter returns no matching results.
+- When a default empty illustration and message are sufficient (no custom design needed).
+- When an embedded component (table, list, select) needs an automatically sized empty state.
 
 ## API
 
+```html
+<dx-empty
+  [dxNotFoundImage]="'default'"
+  [dxNotFoundContent]="'No records found'"
+  [dxNotFoundFooter]="footerTpl">
+</dx-empty>
+```
+
 ### dx-empty
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `[dxNotFoundImage]` | Customize image. Will tread as image url when string provided | `string \| TemplateRef<void>` | - |
-| `[dxNotFoundContent]` | Custom description | `string \| TemplateRef<void> \| null` | - |
-| `[dxNotFoundFooter]` | Custom Footer | `string \| TemplateRef<void>` | - |
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[dxNotFoundImage]` | Built-in image name, image URL, or a `TemplateRef` | `'default' \| 'simple' \| string \| TemplateRef<void> \| null` | `'default'` |
+| `[dxNotFoundContent]` | Description text or template. Pass `null` to hide | `string \| TemplateRef<void> \| null` | `-` |
+| `[dxNotFoundFooter]` | Optional footer (string or template) | `string \| TemplateRef<void>` | `-` |
 
-### `DX_CONFIG`
+### dx-embed-empty
 
-The `dxEmpty` interface has properties as follows:
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[nzComponentName]` | Host component name. Drives automatic sizing: `'table' \| 'list' \| 'select' \| 'tree-select' \| 'cascader' \| 'transfer'` | `string` | `-` |
+| `[specificContent]` | Override content — string, component `Type` or `TemplateRef` | `DxEmptyCustomContent` | `-` |
 
-| Properties | Description | Type |
-| ----- | --- | ---- |
-| `dxDefaultEmptyContent` | User default empty component. You can restore the system default empty content by providing `undefined` | `Type<any>\|TemplateRef<string>\|string\|undefined` |
+### Types
 
-### InjectionToken
+```typescript
+type DxEmptySize = 'normal' | 'small' | '';
+type DxEmptyCustomContent = Type<any> | TemplateRef<any> | string;
+```
 
-| Token | Description | Parameters |
-| ----- | --- | ---- |
-| `DX_EMPTY_COMPONENT_NAME` | Would be injected to `DX_DEFAULT_EMPTY_CONTENT`, telling that component its parent component's name | `string` |
+## Examples
 
-### Global Customizable Empty Content
+### Default empty state
 
-You may notice or used some inputs like `dxNotFoundContent` in some components. Now they would use `Empty` component. So you can provide `dxDefaultEmptyContent` to customize them.
+```html
+<dx-empty></dx-empty>
+```
 
-```ts
-{
-  provide: DX_CONFIG,
-  useValue: {
-    empty: {
-      dxDefaultEmptyContent
-    }
-  }
-}
+### Simple illustration with custom text
+
+```html
+<dx-empty
+  dxNotFoundImage="simple"
+  dxNotFoundContent="No results match your search">
+</dx-empty>
+```
+
+### Custom image and action footer
+
+```html
+<dx-empty
+  [dxNotFoundImage]="'/assets/illustrations/no-data.svg'"
+  dxNotFoundContent="You haven't added any items yet"
+  [dxNotFoundFooter]="footer">
+</dx-empty>
+
+<ng-template #footer>
+  <button mat-flat-button color="primary" (click)="create()">Create item</button>
+</ng-template>
+```
+
+### Hide the description
+
+```html
+<dx-empty [dxNotFoundContent]="null"></dx-empty>
+```
+
+### Embedded in a data component
+
+```html
+<dx-embed-empty nzComponentName="table"></dx-embed-empty>
+
+<dx-embed-empty
+  nzComponentName="select"
+  [specificContent]="'No options available'">
+</dx-embed-empty>
+```
+
+## Import
+
+```typescript
+import { DxEmptyModule } from '@ngdx/dijta';
+
+@NgModule({
+  imports: [DxEmptyModule]
+})
+export class YourModule { }
 ```

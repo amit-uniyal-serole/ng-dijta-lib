@@ -11,12 +11,14 @@
     </dx-table-checkbox>
   </ng-container>
   <ng-container *ngSwitchCase="'file'">
-    <dx-file-cell *ngIf="!isBusy;else AvatarSkeletonLoader" [column]="column" [files]="source?.dxFiles">
+    <dx-file-cell *ngIf="!isBusy;else AvatarSkeletonLoader" [column]="column" [files]="source?.dxFiles" (fileView)="onFileViewClick($event)">
     </dx-file-cell>
   </ng-container>
   <ng-container *ngSwitchCase="'currency'">
+
     <dx-table-currency *ngIf="!isBusy;else showTextLoader" [data]="source?.data[column?.field]"
-      [setting]="column?.setting?.currency" [column]="column" [currencySetting]="source?.currency?.[column?.field]">
+      [setting]="column?.setting?.currency" [column]="column" [currencySetting]="source?.currency?.[column?.field]"
+      [config]="source?.currency ? source?.currency[column.field] : undefined">
     </dx-table-currency>
   </ng-container>
   <ng-container *ngSwitchCase="'date'">
@@ -41,8 +43,9 @@
       (onUpdate)="updateInput()" [setting]="source?.input" [isEditable]="source?.isEditable"></dx-table-input>
   </ng-container>
   <ng-container *ngSwitchCase="'select'">
-    <dx-table-select [(ngModel)]="source?.data[column?.field]" [options]="column?.options"
-      (ngModelChange)="updateInput($event)">
+
+    <dx-table-select [(ngModel)]="source?.data[column?.field]" name="select{{id}}" #selectRef="ngModel"
+      [options]="column?.options" (ngModelChange)="updateInput($event)">
     </dx-table-select>
   </ng-container>
 
@@ -115,6 +118,10 @@
     <dx-table-menu [menu]="source?.menu" [data]="source?.data"
       (onClickBulkMenuAction)="onClickRowAction($event)"></dx-table-menu>
   </ng-container>
+  <ng-container *ngSwitchCase="'hove-menu'">
+    <dx-table-menu [menu]="source?.menu" [data]="source?.data"
+      (onClickBulkMenuAction)="onClickRowAction($event)" type="onhover"></dx-table-menu>
+  </ng-container>
   <ng-container *ngSwitchCase="'email'">
     <ng-container *ngIf="source?.data[column?.field]">
       <div class="text-with-icon">
@@ -122,7 +129,7 @@
           mail
         </span>
         <a (click)="$event.stopPropagation()" dx-tooltip dxTooltipTitle="{{source?.data[column?.field]}}"
-          href="mailto:{{source?.data[column?.field]}}">
+          [href]="'mailto:'+source?.data[column?.field] | dxsafe: 'url'">
           {{source?.data[column?.field]}}
         </a>
       </div>
@@ -130,16 +137,19 @@
   </ng-container>
   <ng-container *ngSwitchCase="'contact'">
     <div *ngIf="!isBusy;else showTextLoader">
-      <ng-container *ngIf="source?.data[column?.field]">
+      @if(source?.data[column?.field]) {
         <div class="text-with-icon">
-          <span class="material-icons phone-icon">
-            phone
-          </span>
           <a (click)="$event.stopPropagation()" dx-tooltip dxTooltipTitle="{{source?.data[column?.field]}}"
-            href="tel:{{source?.data[column?.field]}}">{{source?.data[column?.field]}}</a>
+            [href]="'tel:'+ source?.data[column?.field] | dxsafe: 'url'" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+            <div class="d-flex aling-items-center">
+              <dx-phone-view [phoneNumber]="source?.data[column?.field]"></dx-phone-view>
+            </div>
+          </a>
         </div>
-
-      </ng-container>
+      } @else {
+        -
+      }
+     
     </div>
   </ng-container>
   <!-- URL -->
@@ -208,6 +218,7 @@
     <dx-skeleton-loader appearance="circle" [theme]="iconTextSkeleton"></dx-skeleton-loader>
   </div>
 </ng-template>
+
 
 
 <!--  -->

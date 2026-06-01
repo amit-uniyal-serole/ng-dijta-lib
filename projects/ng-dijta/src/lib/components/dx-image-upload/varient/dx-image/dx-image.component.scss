@@ -1,28 +1,26 @@
 .image-upload-btn {
-  border: none;
-  background: var(--primary-base);
-  color: var(--primary-on-base);
-  border-radius: 5px;
-  margin: 0px 4px;
-  font-size: 14px;
-  font-weight: 500;
-  position: absolute;
-  right: -5px;
-  display: flex;
-  top: 9px;
-  padding: 5px 8px;
-  align-items:flex-end;
+     border: 0.091rem solid #edededd4;
+    margin: 0px 4px;
+    font-size: 14px;
+    font-weight: 500;
+    position: absolute;
+    right: -5px;
+    display: flex;
+    padding: 4px 8px;
+    align-items: flex-end;
+    top: 9px;
+    background: #f8f7f7;
+    border-radius: 5px;
   &:focus {
     outline: none;
   }
-  &.img-upload-btn-flex{
+
+  &.img-upload-btn-flex {
     position: unset !important;
   }
 
   .upload-image-opener-btn {
-    color: var(--primary-on-base) !important;
     font-size: 18px;
-    padding-right: 3px;
   }
 }
 
@@ -34,12 +32,12 @@
 
   .image-preview {
     border: 1px solid #ccc;
-    padding: 2px;
+    padding: 1px 3px;
     border-radius: 5px;
     position: relative;
     display: flex;
     align-items: center;
-    margin: 1px;
+    margin: -1px;
 
     p {
       padding: 0px 1px;
@@ -60,6 +58,31 @@
       box-shadow: rgba(71, 73, 74, 0.29) -1px 0px 2px 0px, rgba(194, 188, 188, 0.48) 0px 0;
       border-bottom-right-radius: 5px;
       border-top-right-radius: 5px;
+      height: 100%;
+
+      button {      
+        border: none;
+        padding: 0px;
+        height: 100%;
+        border-left: 1px solid #ccc !important;
+
+        .mat-icon {
+          padding-top: 1px;
+          font-size: 15px;
+        }
+
+        &.edit {
+          .mat-icon {
+            color: #3f8cf4;
+          }
+        }
+
+        &.delete {
+          .mat-icon {
+            color: #FF3D00;
+          }
+        }
+      }
 
       .material-icons-outlined {
 
@@ -79,10 +102,12 @@
     }
 
     &.image-placeholder {
-      border: none ;
-      &.hide-placeholder{
+      border: none;
+
+      &.hide-placeholder {
         visibility: hidden;
       }
+
       p {
         font-weight: 500;
       }

@@ -81,7 +81,7 @@ import { Notifications, ReadNotification } from './header-model/model';
                                           </div>
                                         </div>
                                         <p class="subbody mb-0" [innerHtml]="
-                                            notificationItem?.notificationData
+                                            notificationItem?.notificationData  | dxsafe: 'html'
                                           "></p>
                                         <p class="notification-time paragraph mb-0">
                                           {{

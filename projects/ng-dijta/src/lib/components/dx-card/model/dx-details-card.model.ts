@@ -5,14 +5,14 @@ import { DATE_FORMAT } from '../../../utils/date.util';
 import { AdapterDataModel } from '../../dx-image-upload/model/dx-image-upload.model';
 import { Actions } from '../../dx-popover/model/popover.model';
 import { AvatarStatus, NgDxAvatarSettings } from '../../dx-avatar/model/avatar';
-import { Link } from '../../dx-table/interfaces/dx-additional.interface';
+import { CurrencySetting, Link } from '../../dx-table/interfaces/dx-additional.interface';
 
 export type CARD_COLUMN_TYPE =
   | 'col-md-12'
   | 'col-md-6'
   | 'col-md-4'
   | 'col-md-3';
-export type CARD_DATA_TYPE = 'text' | 'date' | 'currency' | 'URL' | 'Email' | 'datetime' | 'Check Box' | 'User' | 'Popover' | 'dropdown' | 'HTML' | 'image' | 'ONLY_HTML';
+export type CARD_DATA_TYPE = 'text' | 'date' | 'contact' | 'currency' | 'URL' | 'Email' | 'datetime' | 'Check Box' | 'User' | 'Popover' | 'dropdown' | 'HTML' | 'image' | 'ONLY_HTML';
 export type CARD_LABEL_ALIGNMENT = 'left' | 'right';
 export interface DxDetailsCard {
   col?: CARD_COLUMN_TYPE;
@@ -54,6 +54,7 @@ export interface DxDetailsCardContent {
   adapterData?: AdapterDataModel;
   textOverlap?: boolean;
   link?: Link<any>;
+  currencySettings?: CurrencySetting;
 }
 
 export interface DisplayPopoverConfig {

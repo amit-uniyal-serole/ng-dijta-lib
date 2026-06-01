@@ -4,20 +4,20 @@ import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { CompactContentComponent } from './compact/compact-content.component';
-import { CompactLayoutComponent } from './compact/compact-layout.component';
 import { DxLayoutContentComponent } from './content.component';
 import { DxLayoutFooterComponent } from './footer.component';
 import { DxLayoutHeaderComponent } from './header.component';
 import { DxLayoutComponent } from './layout.component';
 import { DxSiderTriggerComponent } from './sider-trigger.component';
 import { DxLayoutSiderComponent } from './sider.component';
-import { DxSideBarModule } from '../dx-side-bar/dx-side-bar.module';
 import { LayoutWrapperComponent } from './layout-wrapper.component';
 import { HorizontalLayoutComponent } from './horizontal/horizontal-layout.component';
 import { HorizontalContentComponent } from './horizontal/horizontal-content.component';
 import { VerticalContentComponent } from './vertical/vertical-content.component';
 import { VerticalLayoutComponent } from './vertical/vertical-layout.component';
-import { LayoutServiceService } from './layout-service.service';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { DxDirectiveModule } from '../../directive';
+import { DxSideBarModule } from '../dx-sidebar';
 @NgModule({
     declarations: [
         DxLayoutComponent,
@@ -26,7 +26,6 @@ import { LayoutServiceService } from './layout-service.service';
         DxLayoutFooterComponent,
         DxLayoutSiderComponent,
         DxSiderTriggerComponent,
-        CompactLayoutComponent,
         CompactContentComponent,
         LayoutWrapperComponent,
         HorizontalLayoutComponent,
@@ -43,7 +42,6 @@ import { LayoutServiceService } from './layout-service.service';
         DxLayoutContentComponent,
         DxLayoutFooterComponent,
         DxLayoutSiderComponent,
-        CompactLayoutComponent,
         CompactContentComponent,
         VerticalContentComponent,
         VerticalLayoutComponent
@@ -54,6 +52,8 @@ import { LayoutServiceService } from './layout-service.service';
         DxSideBarModule,
         LayoutModule,
         PlatformModule,
+        MatSidenavModule,
+        DxDirectiveModule
     ]
 })
 export class DxLayoutModule { }

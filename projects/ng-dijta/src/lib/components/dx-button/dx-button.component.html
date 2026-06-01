@@ -4,12 +4,11 @@
     dx-popover [dxHeader]="confirmationPopover?.header" [dxPopoverContent]="confirmationPopover?.content?.message"
     [dxPopoverTrigger]="confirmationPopover?.isShow ? 'click' : ''" [dxActionButton]="confirmationPopover?.actions"
     [dxPopoverPlacement]="confirmationPopover?.popoverPlacement" (sendDetailData)="click()" appPreventDoubleClick
-    mat-flat-button [ngClass]="customClass ? customClass : 'dxBtn'" [class.btn-small]="size==='small'" [class.btn-big]="size==='big'"
-    (throttledClick)="!confirmationPopover?.isShow ? click() : ''" class="dx-btn-outline body  btn-pointer primaryBtn"
-    [class.dxBtn]="class === 'dxBtn'"
-    [class.secondary-btn]="class === 'secondary-btn'"
-    [class.dxIconClass]="class === 'dxIconClass'"
-     [type]="class === 'dxBtn' ? 'submit': 'button'"
+    mat-flat-button [ngClass]="customClass ? customClass : 'dxBtn'" [class.btn-small]="size==='small'"
+    [class.btn-big]="size==='big'" (throttledClick)="!confirmationPopover?.isShow ? click() : ''"
+    class="dx-btn-outline button  btn-pointer primaryBtn" [class.dxBtn]="class === 'dxBtn'"
+    [class.secondary-btn]="class === 'secondary-btn'" [class.dxIconClass]="class === 'dxIconClass'"
+    [type]="class === 'dxBtn' ? 'submit': 'button'"
     [disabled]="!(permission ? (permission?.permission | ablePure: permission?.apiName | async) : true) || disabled || isLoading">
     <ng-container *ngTemplateOutlet="dxBtnLoaders"></ng-container>
     <span class="no-permission-btn"
@@ -28,23 +27,20 @@
   </button>
 
   <button [id]="id" [class.hidden]="isListEmpty" #dropDownToggle [dxConditionClass]="data" [condition]="condition"
-    mat-flat-button  [ngClass]="customClass ? customClass : 'dxBtn'" [class.btn-small]="size==='small'" [class.btn-big]="size==='big'"
-    (keyup.enter)="toggleMultiActonMenu()" (click)="toggleMultiActonMenu()"
-    class="dx-btn-outline btn-pointer multi-action-menu body" [class.dxBtn]="class === 'dxBtn'"
-    [class.secondary-btn]="class === 'secondary-btn'"
-    [class.dxIconClass]="class === 'dxIconClass'"
-    
+    mat-flat-button [ngClass]="customClass ? customClass : 'dxBtn'" [class.btn-small]="size==='small'"
+    [class.btn-big]="size==='big'" (keyup.enter)="toggleMultiActonMenu()" (click)="toggleMultiActonMenu()"
+    class="dx-btn-outline btn-pointer multi-action-menu button" [style.width.px]="10" [class.dxBtn]="class === 'dxBtn'"
+    [class.secondary-btn]="class === 'secondary-btn'" [class.dxIconClass]="class === 'dxIconClass'"
     [disabled]="multiActionDropDown?.disable" [type]="class === 'dxBtn' ? 'submit': 'button'"
     [class.is-only-dropdown]="multiActionDropDown?.isOnlyDropdown">
     <span class="d-flex align-items-center">
       <span #dropDownLabel *ngIf="multiActionDropDown?.label"
         class="multi-action-dropdown-label">{{multiActionDropDown?.label | transloco}}</span>
-      <span #dropDownIcon class="material-icons-outlined dx-btn-multi-action-icon">
+      <span #dropDownIcon class="material-icons dx-btn-multi-action-icon">
         arrow_drop_down
       </span>
     </span>
   </button>
-
   <div #multiActonMenu [class.hidden]="isMultiActionDropdownOpen" id="multiActionPanel" class="multi-action-panel">
     <div #subaction>
       <ng-container *ngFor="let item of multiActionDropDown?.menuList;let index = i">
@@ -53,13 +49,14 @@
           <button mat-flat-button [id]="item?.id ?  item.id: id + '-'+ i" [dxConditionClass]="data"
             [condition]="item?.classCondition" [class.btn-small]="size==='small'" [class.btn-big]="size==='big'"
             dx-tooltip dxTooltipTitle="{{item?.label}}" dxTooltipPlacement="left" [disabled]="item?.disable"
-            class="dx-btn-outline menu-btns body" (click)="multiActionMenuClick(item?.event, item?.confirmationPopover)"
+            class="dx-btn-outline menu-btns  text-truncate button"
+            (click)="multiActionMenuClick(item?.event, item?.confirmationPopover)"
             (keyup.enter)="multiActionMenuClick(item?.event, item?.confirmationPopover)">
             <div class="dx-multi-btn-icon">
-              <span class="material-icons-outlined action-icons" [ngStyle]="fillLabelColor(item?.color)"
+              <span class="material-icons action-icons" [ngStyle]="fillLabelColor(item?.color)"
                 *ngIf="item?.icon">{{item?.icon}}</span>
               <img [src]="item?.src" class="bottom-icon" *ngIf="item?.src" alt="img">
-              <span class="multi-action-items" [ngStyle]="fillLabelColor(item?.color)">{{item?.label |
+              <span class="multi-action-items button" [ngStyle]="fillLabelColor(item?.color)">{{item?.label |
                 transloco}}</span>
             </div>
           </button>
@@ -71,24 +68,23 @@
   </div>
 </div>
 <ng-template #showDefaultBtn>
-  <button *ngIf="title || icon || src" dx-popover [id]="id" [dxHeader]="confirmationPopover?.header" [dxConditionClass]="data"
-    [condition]="condition" [dxPopoverContent]="confirmationPopover?.content?.message"
-    [ngClass]="customClass ? customClass : 'dxBtn col'"
-    [class]="class"
+  <button *ngIf="title || icon || src" dx-popover [id]="id" [dxHeader]="confirmationPopover?.header"
+    [dxConditionClass]="data" [condition]="condition" [dxPopoverContent]="confirmationPopover?.content?.message"
+    [ngClass]="customClass ? customClass : 'dxBtn col'" [class]="class"
     [dxPopoverTrigger]="confirmationPopover?.isShow ? 'click' : ''" [dxActionButton]="confirmationPopover?.actions"
     [dxPopoverPlacement]="confirmationPopover?.popoverPlacement" (sendDetailData)="click()"
     [class.btn-small]="size==='small'" [class.btn-big]="size==='big'" appPreventDoubleClick mat-flat-button
-    (throttledClick)="!confirmationPopover?.isShow ? click() : ''" class="dx-btn-outline body btn-pointer"
-    [class.dxBtn]="class === 'dxBtn'"
-    [class.secondary-btn]="class === 'secondary-btn'"
-    [class.dxIconClass]="class === 'dxIconClass'"
-     [type]="class === 'dxBtn' ? 'submit': 'button'"
+    (throttledClick)="!confirmationPopover?.isShow ? click() : ''" class="border dx-btn-outline button btn-pointer"
+    [class.dxBtn]="class === 'dxBtn'" [class.secondary-btn]="class === 'secondary-btn'"
+    [class.dxIconClass]="class === 'dxIconClass'" [type]="class === 'dxBtn' ? 'submit': 'button'"
     [disabled]="!(permission ? (permission?.permission | ablePure: permission?.apiName | async) : true) || (disabled || isLoading)"
-    [class.dx-button-column-reverse]="isReverseElement">
-    <ng-container *ngTemplateOutlet="dxBtnLoaders"></ng-container>
-    <span class="dx-btn-mat-icons material-icons" *ngIf="icon">{{icon}}</span>
-    <img [src]="src" class="bottom-icon" *ngIf="src" alt="img">{{title | transloco}}
-    <ng-content select="dx-button-template"></ng-content>
+    [class.dx-button-column-reverse]="isReverseElement" [class.text]="class === 'text'" [changeChipColor]="color" [isButton]="true" [buttonTextColor]="!!color">
+    <div class="d-flex align-items-center gap-1">
+      <ng-container *ngTemplateOutlet="dxBtnLoaders"></ng-container>
+      <span class="dx-btn-mat-icons material-icons" *ngIf="icon">{{icon}}</span>
+      <img [src]="src" class="bottom-icon" *ngIf="src" alt="img">{{title | transloco}}
+      <ng-content select="dx-button-template"></ng-content>
+    </div>
   </button>
 </ng-template>
 

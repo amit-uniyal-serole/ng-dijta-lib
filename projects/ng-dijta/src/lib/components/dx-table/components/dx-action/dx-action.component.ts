@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Skeleton, SkeletonLoaderModel } from '../../../dx-skeleton-loader';
 import { DxTableData } from '../../interfaces/dx-additional.interface';
 import { DxTableColumn, OnAction, actionType } from '../../interfaces/dx-table.interface';
@@ -21,11 +21,11 @@ export class DxActionComponent<T> implements OnInit {
   @Output() onExpand: EventEmitter<DxTableData<T>> = new EventEmitter<DxTableData<T>>();
   @Output() onExternalAction: EventEmitter<OnAction<DxTableData<T>>> = new EventEmitter<OnAction<DxTableData<T>>>()
   @ViewChild(MatMenuTrigger) trigger!: MatMenuTrigger;
-  showMenu : boolean = false;
+  showMenu: boolean = false;
   iconSkeleton: SkeletonLoaderModel = Skeleton.Icon
   allowAction: Array<actionType> | undefined = [];
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.allowAction = this.columns?.actionType ?? [];

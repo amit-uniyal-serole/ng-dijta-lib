@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'dx-card',
@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./dx-card.component.scss']
 })
 export class DxCardComponent {
-
+  @Input() title: string | undefined;
+  @Input() borderNone: boolean = false;
 }

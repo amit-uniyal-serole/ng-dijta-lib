@@ -1,104 +1,358 @@
-<div mat-dialog-title class="lookup-header">
-    <h6 class="heading-6 pb-2">{{lookUpHeaderSettings?.title}}</h6>
-    <span class="material-icons popup-close" (click)="onClose()">
-        close
-    </span>
+<div mat-dialog-title class="lookup-header d-flex align-items-center">
+    <h6 class="heading-6 m-0 p-0">{{lookUpHeaderSettings?.title ?? this.moduleDefinition?.modulePluralName}}</h6>
+    <button class="close transparent-button" (click)="onClose()">
+        <mat-icon aria-hidden="false" aria-label="close" fontIcon="close"></mat-icon>
+    </button>
 </div>
+<div dLoading [backdrop]="true" [zIndex]="99"
+    [message]="sampleDownloading ? 'Downloading, please wait...':'Loading, please wait...'" [loading]="(popupLoader$ | async) || (customViewloader$ | async) || (moduleDetailsLoader$|async) || picklistLoading || sampleDownloading">
+<dx-tab-group (selectedTabChange)="onTabChange($event)">
+    <dx-tab *ngFor="let tab of tabs; let i = index">
+        <dx-tab-header [title]="tab.title"></dx-tab-header>
+        <dx-tab-content>
+        </dx-tab-content>
+    </dx-tab>
+</dx-tab-group>
+
 <mat-dialog-content class="mat-dialog-content">
-    <dx-loader [name]="'lookup-modal-loader'"
+    <!-- <dx-loader [name]="'lookup-modal-loader'"
         [show]="(popupLoader$ | async) || (customViewloader$ | async) || (moduleDetailsLoader$|async) || picklistLoading"
         [fullScreen]=" false">
-    </dx-loader>
-    <div class="row mt-2" *ngIf="!!lookupApiConfig?.searchBasedOn">
+    </dx-loader> -->
+
+    @if(fileUploadConfig){
+    <div class="row pb-1 dx-mode-picker-row">
+        <dx-radio-button [options]="modeOptions" displayType="horizantal"
+            [(ngModel)]="mode" (onRadioChange)="onModeChange($event.value)"
+            name="lookupMode"></dx-radio-button>
+    </div>
+    }
+
+    @if(fileUploadConfig && mode === 'file'){
+    <div class="row mt-2 dx-file-upload-row">
+        <div class="col-md-12">
+            <input #fileInput type="file" hidden
+                [accept]="fileUploadConfig.accept ?? '.csv'"
+                (change)="onFileSelected(fileInput)" />
+
+            @if(!selectedFile){
+            <div class="dx-file-drop-zone"
+                [class.dx-file-drop-zone--dragover]="isDragOver"
+                [class.dx-file-drop-zone--error]="!!fileError"
+                (dragover)="onDragOver($event)"
+                (dragleave)="onDragLeave($event)"
+                (drop)="onFileDropped($event)">
+                <div class="dx-file-drop-zone__empty">
+                    <mat-icon class="dx-file-drop-zone__icon" aria-hidden="true">cloud_upload</mat-icon>
+                    <dx-button
+                        title="Browse"
+                        [disabled]="fileUploadLoading || sampleDownloading"
+                        (onActionSelect)="fileInput.click()"></dx-button>
+                    <span class="dx-file-drop-zone__hint">drop a file here</span>
+                    <span class="dx-file-drop-zone__formats d-flex">
+                        *File supported: {{ fileUploadConfig.accept ?? '.csv' }} only (max {{ (fileUploadConfig.maxSize ?? 10485760) / 1024 / 1024 }} MB)                        
+                        @if (fileUploadConfig.sampleFile) {                            
+                        <span class="dx-file-drop-zone__sample-separator" aria-hidden="true">·</span>
+                        <button type="button"
+                                class="dx-file-drop-zone__sample-link"
+                                [disabled]="fileUploadLoading || sampleDownloading"
+                                (click)="onDownloadTemplate()">
+                            <mat-icon class="dx-file-drop-zone__sample-icon" aria-hidden="true">download</mat-icon>
+                            Download Template
+                        </button>
+                        }
+                    </span>
+                </div>
+
+                @if(fileError){
+                <div class="dx-file-drop-zone__error" role="alert" aria-live="polite">
+                    <mat-icon aria-hidden="true">error_outline</mat-icon>
+                    <span>{{ fileError }}</span>
+                </div>
+                }
+            </div>
+            } @else {
+            <div class="dx-file-card" role="status">
+                <div class="dx-file-card__icon-wrapper">
+                    <mat-icon  aria-hidden="true">description</mat-icon>
+                </div>
+                <div class="dx-file-card__info">
+                    <span class="dx-file-card__name">{{ selectedFile.name }}</span>
+                    <span class="dx-file-card__size">{{ formatFileSize(selectedFile.size) }}</span>
+                </div>
+
+                @if (uploadStatus === 'uploaded') {
+                <span class="dx-file-card__badge dx-file-card__badge--success">
+                    <mat-icon aria-hidden="true">check_circle</mat-icon>
+                    Uploaded
+                </span>
+                }
+                @if (uploadStatus === 'failed') {
+                <span class="dx-file-card__badge dx-file-card__badge--error">
+                    <mat-icon aria-hidden="true">error_outline</mat-icon>
+                    Failed
+                </span>
+                }
+
+                <div class="dx-file-card__actions">
+                    <button mat-stroked-button color="warn" type="button"
+                        [disabled]="fileUploadLoading"
+                        (click)="onRemoveFile()">
+                        <mat-icon class="m-0">close</mat-icon>                        
+                    </button>
+
+                    @if (uploadStatus === 'idle') {
+                    <dx-button
+                        title="Fetch" icon="sync"
+                        [disabled]="fileUploadLoading"
+                        [isLoading]="fileUploadLoading"
+                        (onActionSelect)="onUploadFile()"></dx-button>
+                    }
+                    @if (uploadStatus === 'failed') {
+                    <dx-button
+                        title="Retry" icon="refresh"
+                        [disabled]="fileUploadLoading"
+                        [isLoading]="fileUploadLoading"
+                        (onActionSelect)="onUploadFile()"></dx-button>
+                    }
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+    }
+
+    @if(!!lookupApiConfig?.searchBasedOn && additionalFilter.length === 0 && mode === 'manual'){
+    <div class="row mt-2">
         <div class="col-md-4">
-            <dx-input *ngIf="(!selectedRecordsItems?.length) && (!isEdit || isAddMore)" [formControl]="searchControl">
+            @if((!selectedRecordsItems?.length) && (!isEdit || isAddMore)){
+            <dx-input [formControl]="searchControl">
                 <dx-label>{{lookUpHeaderSettings?.searchInputLabel}}</dx-label>
                 <dx-suffix>
                     <div class="d-flex">
-                        <span class="material-icons-outlined cursor-pointer form-builder-list-search-icon mx-1"
-                            (click)="search()">
-                            search
-                        </span>
-                        <span class="mx-2"></span>
-                        <span *ngIf="searchControl?.value?.length"
-                            class="material-icons-outlined cursor-pointer form-builder-list-close-icon icon-color"
-                            (click)="clear()">
-                            cancel
-                        </span>
+                        <button class="cursor-pointer transparent-button" (click)="search()">
+                            <mat-icon class="form-builder-list-search-icon" aria-hidden="false" aria-label="search"
+                                fontIcon="search"></mat-icon>
+                        </button>
+                        @if(searchControl?.value?.length){
+                        <button class="cursor-pointer transparent-button" (click)="clear()">
+                            <mat-icon class="form-builder-list-close-icon delete-icon-color" aria-hidden="false"
+                                aria-label="cancel" fontIcon="cancel"></mat-icon>
+                        </button>
+                        }
                     </div>
                 </dx-suffix>
 
             </dx-input>
+            }
         </div>
         <!-- Action Buttons -->
-        <div *ngIf="isEdit && !isAddMore" class="col-md-8  text-align-end my-3">
-            <ng-container *ngIf="unassignedList?.length;else addMorActionsRef">
-                <button mat-button class="confirm-unassign" (click)="unAssignedRecords()">Unassign</button>
-            </ng-container>
-            <ng-template #addMorActionsRef>
-                <dx-button class="secondary-btn" (onActionSelect)="onUnassignAll()" title="Unassign All"></dx-button>
-                <span class="mx-1"></span>
-                <dx-button (onActionSelect)="onClickAddMore()" title="Add More"></dx-button>
-            </ng-template>
+        @if(isEdit && !isAddMore){
+        <div class="col-md-8  text-align-end my-3">
+            @if(unassignedList?.length){
+            <button mat-button class="confirm-unassign" (click)="unAssignedRecords()">Unassign</button>
+            } @else {
+            <dx-button class="secondary-btn" (onActionSelect)="onUnassignAll()" title="Unassign All"></dx-button>
+            <span class="mx-1"></span>
+            <dx-button (onActionSelect)="onClickAddMore()" title="Add More"></dx-button>
+            }
+
         </div>
+        }
     </div>
+    }
+
+    @if(mode === 'manual' && additionalFilter && additionalFilter?.length > 0){
+    <form #f="ngForm" class="lookup-addition-filter">
+        <div class="row mt-2">
+            <div class="col-md-10">
+                <div class="row">
+                    @for(filter of additionalFilter; track filter){
+                    @if(filter.type === 'SELECT'){
+
+                    <div [class]="filter?.colSize ?? 'col-md-3'">
+                        <dx-autocomplete-select [multiple]="filter?.multi" [(ngModel)]="filter.value"
+                            [options]="(filter?.options$) ? (filter?.options$ | async) ?? [] : filter?.options"
+                            #input="ngModel" name="{{filter.field}}" (onEnter)="onFilterSearch()">
+                            <dx-label>{{filter?.label}}</dx-label>
+                        </dx-autocomplete-select>
+                    </div>
+                    }
+                    @if(filter.type === 'TEXT'){
+
+                    <div [class]="filter?.colSize ?? 'col-md-3'">
+                        <dx-input [(ngModel)]="filter.value"
+                            #input="ngModel" name="{{filter?.field}}"
+                            (onEnter)="onFilterSearch()">
+                            <dx-label>{{filter?.label}}</dx-label>
+                        </dx-input>
+                    </div>
+                    }
+                    @if(filter.type === 'CHIP'){
+                    <div [class]="filter?.colSize ?? 'col-md-3'" class="ngdx-field-wrapper none-floating">
+                        <mat-form-field class="w-100" floatLabel="always" appearance="outline">
+                            <mat-label>{{ filter?.label }}</mat-label>
+                            <mat-chip-grid #chipGrid aria-label="Enter keywords">
+                                @for (keyword of filter.value; track keyword) {
+                                <mat-chip-row (removed)="removeKeyword(filter, keyword)">
+                                    {{ keyword }}
+                                    <button matChipRemove [attr.aria-label]="'remove ' + keyword">
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                </mat-chip-row>
+                                }
+                            </mat-chip-grid>
+
+                            <input [matChipInputFor]="chipGrid" (matChipInputTokenEnd)="addKeyword(filter, $event)"
+                                [(ngModel)]="filter.tempKeyword" name="{{ filter?.field }}"
+                                (enterKeyPressed)="onFilterSearch()" (paste)="handlePaste(filter, $event)"
+                                #input="ngModel" />
+                            <mat-hint *ngIf="filter?.hint">{{filter?.hint}}</mat-hint>
+                            <mat-hint align="end" *ngIf="filter?.maxLength">
+                                {{filter.value.length}} / {{filter?.maxLength}} items added
+                            </mat-hint>
+                            <mat-error *ngIf="filter.value.length >= filter?.maxLength">
+                                Maximum {{filter.maxLength}} items allowed
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    }
+
+                    }
+                </div>
+            </div>
+            <div class="col-md-2 mt-2 d-flex justify-content-end mb-2">
+                <dx-button class="secondary-btn" title="Reset"
+                    (onActionSelect)="onFilterReset()"></dx-button> &nbsp;
+                <dx-button title="Search"
+                    (onActionSelect)="onFilterSearch()"></dx-button>
+            </div>
+        </div>
+    </form>
+    }
+
+    @if(mode === 'manual' && lookupApiConfig?.newSearchFilter?.searchParams){
+    <div class="my-2">
+        <from [formGroup]="filterFg" class="row">
+            <div class="row">
+                @for(search of lookupApiConfig?.newSearchFilter?.searchParams; track search){
+
+                @if(search.type === 'TEXT'){
+                <div class="col-md-3">
+                    <dx-input [formControlName]="search.field">
+                        <dx-label>{{search?.label}}</dx-label>
+                    </dx-input>
+                </div>
+                }
+                @if(search.type === 'SELECT'){
+
+                <div class="col-md-3">
+                    <dx-select [formControlName]="search.field"
+                        [options]="search?.option ?? (search?.option$ | async) ?? []">
+                        <dx-label>{{search?.label}}</dx-label>
+                    </dx-select>
+                </div>
+                }
+
+                }
+            </div>
+            <div class="row lookup-search">
+                <div class="col-md-8"></div>
+                <div class="col-md-2">
+                    <dx-button class="secondary-btn" [title]="'Clear Filter'" (onActionSelect)="reset()"></dx-button>
+                </div>
+                <div class="col-md-2">
+                    <dx-button [title]="'Filter Table'" [disabled]="filterFg?.invalid"
+                        (onActionSelect)="onSearch()"></dx-button>
+                </div>
+            </div>
+
+
+        </from>
+    </div>
+    }
+    @if(bluckAction && mode === 'manual') {
+        <div *ngIf="(setting.pageSize === selectedRecords?.length || setting.totalItems === selectedRecords?.length) &&  (setting?.totalItems ?? 0) > (setting.pageSize ?? 0)  && customSelection"
+            class="text-wrapper-checkbox body d-flex justify-content-center align-items-center p-2">
+            <span>All {{!selectAll ? (setting.totalItems | number): (setting.pageSize | number)}} item on this page are
+                selected.</span>
+            <div class="text-checkbox">
+                <input type="checkbox" id="myCheckbox" [(ngModel)]="selectAll" />
+                <label for="myCheckbox">
+                    @if(selectAll === true) {
+                    Select all {{setting?.totalItems | number}} items
+                    }
+                    @if(selectAll === false) {
+                    Clear Selection
+                    }
+                </label>
+            </div>
+        </div>
+    }
+    @if (mode === 'file' && selectedFile && uploadStatus === 'uploaded') {
+        @if ((setting?.totalItems ?? 0) > 0) {
+            <div class="text-wrapper-checkbox body d-flex justify-content-center align-items-center p-2">
+                <span>{{ selectedRecords?.length ?? 0 }} of {{ setting?.totalItems }} items selected</span>
+            </div>
+        }
+        <!-- @else {
+            <div class="text-wrapper-checkbox body d-flex justify-content-center align-items-center p-2 dx-csv-empty-msg">
+                <span>No valid site codes found in the uploaded file.</span>
+            </div>
+        } -->
+    }
+
+    @if (mode === 'manual' || (mode === 'file' && uploadStatus === 'uploaded')) {
     <div class="lookup-modal-table mb-4">
+        @if((!selectedRecordsItems?.length || isEdit)){
         <!-- All Records -->
-        <ng-container *ngIf="(!selectedRecordsItems?.length || isEdit);else confirmationRef">
-            <dx-table *ngIf="!(popupLoader$ | async) && !(customViewloader$ | async)"
-                [isBusy]="(skeletonLoader$ | async)!"
-                [columns]="columns && columns?.length >0 ? columns :temparoryColumns" [dataSource]="dataSource"
-                [setting]="setting" (onPaginationClick)="onPaginate($event)" (onSort)="onSort($event)"
-                (onClickTablePageSize)="onClickTablePageSize($event)" (onRowSelection)="onSelect($event)"
-                (onFilterClick)="onHeaderActionClick($event)" (onCheckboxChange)="onCheckboxChange($event,isEdit)"
-                [SelectedRows]="singleRowSelection" [SelectedCheckboxes]="isEdit? {}: multiRowSelection"
-                (onCheckboxSelectionChange)="onCheckboxSelectionChange($event)">
-                <table-content *ngIf="!dataSource?.length && (skeletonLoader$ | async)===false">
-                    <div class="lookup-table-icon-wrapper">
-                        <span class="material-icons-outlined primary-icon">
-                            search_off
-                        </span>
-                        <div class="subtitle fw-semibold my-2">
-                            No records found
-                        </div>
-                    </div>
-                </table-content>
-            </dx-table>
-        </ng-container>
+        @if(!(popupLoader$ | async) && !(customViewloader$ | async)){
+        <dx-table #table [isBusy]="(skeletonLoader$ | async)!"
+            [columns]="columns && columns?.length >0 ? columns :temparoryColumns" [dataSource]="dataSource"
+            [setting]="setting" (onPaginationClick)="onPaginate($event)" (onSort)="onSort($event)"
+             (onRowSelection)="onSelect($event)"
+            (onFilterClick)="onHeaderActionClick($event)" (onCheckboxChange)="onCheckboxChange($event,isEdit)"
+            [SelectedRows]="singleRowSelection" [SelectedCheckboxes]="isEdit? {}:   multiRowSelection"
+            (onCheckboxSelectionChange)="onCheckboxSelectionChange($event)" [showDefaultEmptyContent]="true">
+        </dx-table>
+        }
+        } @else {
         <!-- Confirmation Records  -->
-        <ng-template #confirmationRef>
-            <dx-table [pageSizeList]="pageSizeList" *ngIf="!(popupLoader$ | async) && !(customViewloader$ | async)"
-                [isBusy]="(skeletonLoader$ | async)!"
-                [columns]="columns && columns?.length >0 ? columns :temparoryColumns"
-                [dataSource]="selectedRecordsItems" [setting]="setting" (onPaginationClick)="onPaginate($event)"
-                (onSort)="onSort($event)" (onClickTablePageSize)="onClickTablePageSize($event)"
-                (onRowSelection)="onSelect($event)" (onFilterClick)="onHeaderActionClick($event)"
-                (onCheckboxChange)="onCheckboxChange($event)" [SelectedRows]="singleRowSelection"
-                [SelectedCheckboxes]="multiRowSelection">
-                <table-content *ngIf="!selectedRecordsItems?.length && (skeletonLoader$ | async)===false">
-                    <div class="lookup-table-icon-wrapper">
-                        <span class="material-icons-outlined primary-icon">
-                            search_off
-                        </span>
-                        <div class="subtitle fw-semibold my-2">
-                            No records found
-                        </div>
-                    </div>
-                </table-content>
-            </dx-table>
-        </ng-template>
+        @if(!(popupLoader$ | async) && !(customViewloader$ | async)){
+        <dx-table #table [pageSizeList]="pageSizeList" [isBusy]="(skeletonLoader$ | async)!"
+            [columns]="columns && columns?.length >0 ? columns :temparoryColumns" [dataSource]="selectedRecordsItems"
+            [setting]="setting" (onPaginationClick)="onPaginate($event)" (onSort)="onSort($event)"
+             (onRowSelection)="onSelect($event)"
+            (onFilterClick)="onHeaderActionClick($event)" (onCheckboxChange)="onCheckboxChange($event)"
+            [SelectedRows]="singleRowSelection" [SelectedCheckboxes]="multiRowSelection"
+            [showDefaultEmptyContent]="true">
+        </dx-table>
+        }
+        }
+
+
     </div>
+    }
 </mat-dialog-content>
-<mat-dialog-actions align="end" *ngIf="actions?.enable">
-    <ng-container *ngIf="(!selectedRecordsItems?.length) && (!isEdit || isAddMore) && enableTwoStepConfirmation">
-        <dx-button [disabled]="!selectedRecords?.length" (onActionSelect)="onClickNext()" title="Next"></dx-button>
-    </ng-container>
-    <ng-container *ngIf="selectedRecordsItems?.length || !enableTwoStepConfirmation">
-        <dx-button *ngIf="enableTwoStepConfirmation" (onActionSelect)="onClickBack()" title="Back"
-            class="secondary-btn"></dx-button>
-        <dx-button (onActionSelect)="onClose()" title="Cancel" class="secondary-btn"></dx-button>
-        <dx-button (onActionSelect)="onClickConfirm()"
-            [disabled]="(popupLoader$ | async) || (customViewloader$ | async) || (moduleDetailsLoader$|async) || picklistLoading || (skeletonLoader$ | async)"
-            [title]="submitButtonTitle && submitButtonTitle?.trim() !=='' ? submitButtonTitle : 'Add'"></dx-button>
-    </ng-container>
+</div>
+@if(actions?.enable){
+<mat-dialog-actions align="end">
+
+    @if((!selectedRecordsItems?.length) && (!isEdit || isAddMore) && enableTwoStepConfirmation){
+    <dx-button [disabled]="!selectedRecords?.length || tableRef?.form?.invalid" (onActionSelect)="onClickNext()"
+        title="Next"></dx-button>
+    }
+    @if(selectedRecordsItems?.length || !enableTwoStepConfirmation){
+    @if(enableTwoStepConfirmation){
+    <dx-button (onActionSelect)="onClickBack()" title="Back" class="secondary-btn"></dx-button>
+    }
+    <dx-button (onActionSelect)="onClose()" title="Cancel" class="secondary-btn"></dx-button>
+    <div class="mx-2"></div>
+    <dx-button (onActionSelect)="onClickConfirm()"
+        [disabled]="(popupLoader$ | async) || (customViewloader$ | async) || (moduleDetailsLoader$|async) || picklistLoading || (skeletonLoader$ | async) || selectedRecords?.length === 0 || tableRef?.form?.invalid"
+        [title]="submitButtonTitle && submitButtonTitle?.trim() !=='' ? submitButtonTitle : 'Add'"
+        [isLoading]="isLoading"></dx-button>
+    }
 </mat-dialog-actions>
+}

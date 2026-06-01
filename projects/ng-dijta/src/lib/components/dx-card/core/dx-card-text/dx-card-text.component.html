@@ -46,7 +46,7 @@
       [ngClass]="{'flex-badge flex-badge-live': isStatus}">
       <span *ngIf=" isStatus" [ngStyle]="{'background-color': color}" class="dot"></span>
       <span class="material-icons dx-card-text-icon" *ngIf="icon">{{icon}}</span>
-      <span class="status-text" [ngClass]="{'font-color':highLightData}"> {{text | transloco}}</span>
+      <span class="status-text" [class.break-long-text]="!isStatus" [ngClass]="{'font-color':highLightData}"> {{text | transloco}}</span>
     </span>
     <p [cdkCopyToClipboard]="text" *ngIf="enableTextCopy && text && text !='-'"
       class="material-icons-outlined copy-clipboard" [matTooltip]="clickToCopy" (mouseenter)="changeText()"

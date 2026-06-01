@@ -6,7 +6,7 @@
     <div class="dx-notification-message">
         <h3 class="body fw-semibold mb-0" *ngIf="data?.title">{{data?.title}}</h3>
         <div class="message-area">
-            <div class="body mb-0" *ngIf="data?.message" [innerHtml]="data?.message | transloco">
+            <div class="body mb-0" *ngIf="data?.message" [innerHtml]="data?.message  | dxsafe: 'html' | transloco">
             </div>
             <div class="isRead" [id]="id+'-'+'markread'" [class.un-read]="data?.isRead" (click)="markMessageAsRead()">
             </div>

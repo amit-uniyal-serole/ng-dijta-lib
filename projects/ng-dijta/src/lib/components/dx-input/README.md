@@ -1,237 +1,177 @@
-# dx-input
+---
+category: Components
+type: Form
+title: Input
+---
 
-A versatile text and number input field with support for autocomplete, currency formatting, input masking, and @mentions.
+Text / number form field built on Angular Material `mat-form-field` + `matInput`. Adds currency formatting, input masking (via `ngx-mask`), autocomplete options, mention support, outer-label layouts and integrates with Reactive Forms through `ControlValueAccessor` and `Validator`.
 
-## Overview
+## When To Use
 
-`dx-input` is the primary text input component in ng-dijta. It implements `ControlValueAccessor` and `Validator`, making it a first-class Angular forms citizen that works seamlessly with both reactive and template-driven forms. Use it for any single-line text or numeric input — it supports autocomplete dropdowns, locale-aware currency symbol display, ngx-mask patterns, and a mentions directive for @tagging workflows.
+- Any time a single-line text or number input is required inside a form.
+- Use `isCurrency` for monetary values with locale-aware formatting.
+- Use `isAutoComplete` with `options` for suggest-as-you-type selections.
+- Use `mask` for pattern-driven inputs (phone numbers, ids, tax codes).
 
-## Module Import
+## Label Variants
 
-```typescript
-import { DxInputModule } from 'ng-dijta';
+`dx-input` supports two label layouts, selected via the `outline` input. The label content is projected — use the correct projection slot for the variant.
 
-@NgModule({
-  imports: [DxInputModule]
-})
-export class AppModule {}
-```
+### `none-floating` (default) — label above the field
 
-## Selector
-
-`<dx-input>`
-
-## API
-
-### Inputs
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `type` | `'text' \| 'number'` | `'text'` | HTML input type |
-| `disabled` | `boolean` | `false` | Disables the input |
-| `readonly` | `boolean` | `false` | Sets the input to read-only (border visible) |
-| `viewOnly` | `boolean` | `false` | View-only mode — no border, no interaction |
-| `required` | `boolean` | `false` | Marks the field as required; also auto-detected from FormControl validators |
-| `noneLabel` | `boolean` | `false` | Hides the label |
-| `noneBorder` | `boolean` | `false` | Removes the input border |
-| `applyTrim` | `boolean` | `false` | Trims whitespace from the input value on change |
-| `isCurrency` | `boolean` | `false` | Shows a currency symbol prefix/suffix |
-| `currencyFormat` | `'wide' \| 'narrow'` | `'narrow'` | Currency symbol format (e.g. `USD` vs `$`) |
-| `currencyPosition` | `'left' \| 'right'` | `'left'` | Position of the currency symbol |
-| `isAutoComplete` | `boolean` | `false` | Enables the autocomplete dropdown |
-| `options` | `KeyValueModel[]` | — | Autocomplete options array |
-| `outline` | `'floating' \| 'none-floating' \| 'outer-label'` | `'none-floating'` | Label style; can be set globally via `UI_COMPONENT_CONFIG` |
-| `labelPosition` | `'left' \| 'top'` | `'top'` | Position of outer label (used with `outer-label` outline) |
-| `outerLabelErrorType` | `'astrict-error' \| 'filled-error'` | `'filled-error'` | Error display style for outer-label mode |
-| `tooltip` | `string` | — | Placeholder / tooltip text |
-| `mask` | `string` | — | ngx-mask pattern string (e.g. `'000-000-0000'`) |
-| `maskingPatterns` | `object` | — | Custom pattern definitions for ngx-mask |
-| `minLength` | `number` | — | Minimum value length (adds `Validators.minLength`) |
-| `maxLength` | `number` | — | Maximum value length (adds `Validators.maxLength`) |
-| `tabIndex` | `number` | — | Tab order index |
-| `id` | `string` | auto | Unique element ID (auto-generated) |
-| `mentionConfigData` | `MentionConfig` | — | Configuration for the @mentions directive |
-
-### Outputs
-
-| Event | Type | Description |
-|-------|------|-------------|
-| `onClickOption` | `EventEmitter<KeyValueModel>` | Emitted when an autocomplete option is selected |
-| `blur` | `EventEmitter<FocusEvent>` | Emitted when the input loses focus |
-| `onEnter` | `EventEmitter<void>` | Emitted when the Enter key is pressed |
-| `onInputChange` | `EventEmitter<string>` | Emitted on every keystroke with the current value |
-
-### KeyValueModel Interface
-
-```typescript
-interface KeyValueModel {
-  keyTt: string | number | boolean; // option value
-  valueTt: string;                  // display label
-  subtitle?: string;
-  color?: string;
-  data?: any;
-  disabled?: boolean;
-}
-```
-
-## Usage Examples
-
-### Basic Reactive Form
-
-```typescript
-// component.ts
-import { FormBuilder, Validators } from '@angular/forms';
-
-form = this.fb.group({
-  name: ['', Validators.required],
-  notes: ['']
-});
-
-constructor(private fb: FormBuilder) {}
-```
+Project the label through a `<dx-label>` element.
 
 ```html
-<!-- component.html -->
-<form [formGroup]="form">
-  <dx-input formControlName="name">
-    <dx-label>Full Name</dx-label>
-    <dx-error *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
-      Name is required
-    </dx-error>
-  </dx-input>
-</form>
-```
-
-### Template-Driven Form
-
-```html
-<dx-input [(ngModel)]="name" required>
-  <dx-label>Full Name</dx-label>
+<dx-input
+  mask="000-000-0000"
+  [dropSpecialCharacters]="false"
+  formControlName="phone">
+  <dx-label>Display Label</dx-label>
 </dx-input>
 ```
 
-### With Autocomplete
+### `outer-label` — label rendered outside the Material form field
+
+Set `outline="outer-label"` and project the label via the `dxLabel` attribute on any host element (e.g. `<p>`, `<span>`).
+
+```html
+<dx-input
+  outline="outer-label"
+  mask="000-000-0000"
+  [dropSpecialCharacters]="false"
+  formControlName="phone">
+  <p dxLabel>Display Label</p>
+</dx-input>
+```
+
+> Picking the wrong slot silently drops the label. `<dx-label>` is only read when `outline !== 'outer-label'`; `[dxLabel]` is only read when `outline === 'outer-label'`.
+
+## API
+
+```html
+<dx-input
+  [(ngModel)]="value"
+  placeholder="Name"
+  [required]="true">
+  <dx-label>Name</dx-label>
+</dx-input>
+```
+
+### dx-input
+
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[type]` | Native input type | `'text' \| 'number'` | `'text'` |
+| `[value]` | Current value | `string` | - |
+| `[disabled]` | Disables the input | `boolean` | `false` |
+| `[readonly]` | Renders the input as read-only | `boolean` | `false` |
+| `[viewOnly]` | Read-only view mode used for detail screens | `boolean` | `false` |
+| `[required]` | Marks the field as required | `boolean` | `false` |
+| `[outline]` | Field appearance | `'floating' \| 'none-floating' \| 'outer-label'` | `'none-floating'` |
+| `[labelPosition]` | Label placement when `outline = 'outer-label'` | `'left' \| 'top'` | `'top'` |
+| `[outerLabelErrorType]` | Error display strategy for outer-label layout | `'astrict-error' \| 'filled-error'` | `'filled-error'` |
+| `[noneLabel]` | Hide the label row | `boolean` | `false` |
+| `[noneBorder]` | Remove the field border | `boolean` | `false` |
+| `[noErrorSpace]` | Remove the reserved error space below the field | `boolean` | `false` |
+| `[tooltip]` | Tooltip shown on the field | `string` | - |
+| `[minLength]` | Minimum allowed length | `number` | - |
+| `[maxLength]` | Maximum allowed length | `number` | - |
+| `[tabIndex]` | Tab index of the input | `number` | - |
+| `[applyTrim]` | Trim whitespace on value change | `boolean` | `false` |
+| `[isCurrency]` | Enable currency formatting | `boolean` | `false` |
+| `[currencyFormat]` | Currency symbol width | `'wide' \| 'narrow'` | `'narrow'` |
+| `[currencyPosition]` | Currency symbol placement | `'left' \| 'right'` | `'left'` |
+| `[isAutoComplete]` | Enable Material autocomplete | `boolean` | `false` |
+| `[options]` | Options shown when autocomplete is enabled | `KeyValueModel[]` | - |
+| `[mask]` | `ngx-mask` pattern | `string` | - |
+| `[maskingPatterns]` | Custom mask pattern definitions | `object` | - |
+| `[dropSpecialCharacters]` | Strip mask delimiters from the emitted value | `boolean` | `false` |
+| `[specialCharacters]` | Allowed special characters | `string[]` | `[]` |
+| `[prefix]` | Prefix displayed before the value | `string` | - |
+| `[mentionConfigData]` | Configuration for the mentions directive | `MentionConfig` | - |
+| `[id]` | Unique element id (auto-generated when omitted) | `string` | `dx-input-{n}` |
+
+### Events
+
+| Event | Description | Type |
+|-------|-------------|------|
+| `(onInputChange)` | Emitted on every input value change | `EventEmitter<string>` |
+| `(onEnter)` | Emitted when the user presses Enter | `EventEmitter<void>` |
+| `(onClickOption)` | Emitted when an autocomplete option is picked | `EventEmitter<KeyValueModel>` |
+| `(blur)` | Emitted on field blur | `EventEmitter<FocusEvent>` |
+
+## Examples
+
+### Basic with Reactive Forms
+
+```html
+<dx-input formControlName="name" placeholder="Name" [required]="true">
+  <dx-label>Name</dx-label>
+</dx-input>
+```
+
+### Currency
+
+```html
+<dx-input
+  type="number"
+  [isCurrency]="true"
+  currencyFormat="wide"
+  currencyPosition="left"
+  formControlName="amount">
+  <dx-label>Amount</dx-label>
+</dx-input>
+```
+
+### Autocomplete
 
 ```typescript
 options: KeyValueModel[] = [
-  { keyTt: 1, valueTt: 'Angular' },
-  { keyTt: 2, valueTt: 'React' },
-  { keyTt: 3, valueTt: 'Vue' },
+  { key: 'US', value: 'United States' },
+  { key: 'CA', value: 'Canada' },
+  { key: 'MX', value: 'Mexico' }
 ];
 ```
 
 ```html
 <dx-input
-  formControlName="framework"
   [isAutoComplete]="true"
   [options]="options"
-  (onClickOption)="onSelect($event)">
-  <dx-label>Framework</dx-label>
+  (onClickOption)="onPick($event)"
+  formControlName="country">
+  <dx-label>Country</dx-label>
 </dx-input>
 ```
 
-### With Currency Symbol
+### With mask (none-floating — default)
 
 ```html
 <dx-input
-  formControlName="salary"
-  type="number"
-  [isCurrency]="true"
-  currencyFormat="narrow"
-  currencyPosition="left">
-  <dx-label>Salary</dx-label>
-</dx-input>
-```
-
-### With Input Mask
-
-```html
-<!-- Phone number mask -->
-<dx-input
-  formControlName="phone"
   mask="000-000-0000"
-  tooltip="Enter phone number">
+  [dropSpecialCharacters]="false"
+  formControlName="phone">
   <dx-label>Phone</dx-label>
 </dx-input>
 ```
 
-### With Mentions
-
-```typescript
-mentionConfig: MentionConfig = {
-  mentions: [
-    {
-      triggerChar: '@',
-      items: ['Alice', 'Bob', 'Carol'],
-      labelKey: 'name'
-    }
-  ]
-};
-```
+### Outer label
 
 ```html
 <dx-input
-  formControlName="message"
-  [mentionConfigData]="mentionConfig">
-  <dx-label>Message</dx-label>
-</dx-input>
-```
-
-### Outer Label Style
-
-```html
-<dx-input
-  formControlName="email"
   outline="outer-label"
-  labelPosition="top"
-  outerLabelErrorType="astrict-error">
-  <div dxLabel>Email Address</div>
-  <dx-error *ngIf="form.get('email')?.invalid">
-    Valid email required
-  </dx-error>
+  labelPosition="left"
+  formControlName="taxId">
+  <p dxLabel>Tax ID</p>
 </dx-input>
 ```
 
-## Content Slots
-
-| Slot | Selector | Description |
-|------|----------|-------------|
-| Label (floating) | `dx-label` | Label inside the Material form field |
-| Label (outer) | `[dxLabel]` | Label shown above the field in outer-label mode |
-| Prefix | `dx-prefix` | Content before the input |
-| Suffix | `dx-suffix` | Content after the input |
-| Hint | `dx-hint` | Helper text below the field |
-| Error | `dx-error` | Validation error message |
-
-> **Note:** Use `schemas: [CUSTOM_ELEMENTS_SCHEMA]` in your module if `dx-label`, `dx-hint`, `dx-suffix`, `dx-prefix`, and `dx-error` report unknown element errors.
-
-## Global Configuration
-
-The `outline` default can be set application-wide using `UI_COMPONENT_CONFIG`:
+## Import
 
 ```typescript
-import { UI_COMPONENT_CONFIG } from 'ng-dijta';
+import { DxInputModule } from '@ngdx/dijta';
 
 @NgModule({
-  providers: [
-    {
-      provide: UI_COMPONENT_CONFIG,
-      useValue: { value: { outline: 'floating' } }
-    }
-  ]
+  imports: [DxInputModule]
 })
-export class AppModule {}
+export class YourModule { }
 ```
-
-## Features
-
-- Implements `ControlValueAccessor` and `Validator` — works with reactive and template-driven forms
-- Auto-detects `Validators.required` from FormControl — no need to pass `required` separately
-- Three label styles: floating, non-floating, and outer-label
-- Built-in autocomplete dropdown using `KeyValueModel[]` options
-- Locale-aware currency symbol via Angular's `getCurrencySymbol`
-- Input masking with ngx-mask (custom patterns supported)
-- @mentions support via `MentionConfig` directive
-- Whitespace trimming via `applyTrim`
-- `disabled`, `readonly`, and `viewOnly` modes with distinct visual styles
-- Auto-generated unique `id` for accessibility

@@ -1,0 +1,256 @@
+<div class="container-fluid mt-3">
+  <form [formGroup]="fg">
+    <dx-card>
+      <div class="row">
+        <div class="col-md-12">
+          <dx-image-input formControlName="input">
+            <dx-label>Text Input</dx-label>
+          </dx-image-input>
+        </div>
+        <div class="col-md-12">
+          <h3 class="subtitle">Floating Input</h3>
+        </div>
+        <div class="col-md-3">
+          <dx-input formControlName="input">
+            <dx-label>Text Input</dx-label>
+          </dx-input>
+        </div>
+        <div class="col-md-3">
+          <dx-select [options]="options" formControlName="select">
+            <dx-label>Select</dx-label>
+          </dx-select>
+        </div>
+        <div class="col-md-3">
+          <dx-autocomplete-select
+            [options]="options"
+            formControlName="autocomplete"
+          >
+            <dx-label>Autocomplete Select</dx-label>
+          </dx-autocomplete-select>
+        </div>
+        <div class="col-md-3">
+          <dx-input-currency formControlName="currency">
+            <dx-label>Currency</dx-label>
+          </dx-input-currency>
+        </div>
+        <div class="col-md-3">
+          <dx-input-phone formControlName="phone">
+            <dx-label>Phone Number</dx-label>
+          </dx-input-phone>
+        </div>
+        <div class="col-md-3">
+          <dx-radio-button [options]="options" formControlName="radio">
+            <dx-label>Radio</dx-label>
+          </dx-radio-button>
+        </div>
+        <div class="col-md-3">
+          <dx-chip-autocomplete
+            [options]="options"
+            formControlName="chipAutocomplete"
+          >
+            <dx-label>Chip Autocomplete</dx-label>
+          </dx-chip-autocomplete>
+        </div>
+        <div class="col-md-3">
+          <dx-number formControlName="number">
+            <dx-label>Number</dx-label>
+          </dx-number>
+        </div>
+        <div class="col-md-3">
+          <dx-tag-input formControlName="tag">
+            <dx-label>Tag Input</dx-label>
+          </dx-tag-input>
+        </div>
+        <div class="col-md-3">
+          <dx-server-side-autocomplete
+            formControlName="serverAutocomplete"
+            [lookupModalConfig]="config"
+          >
+            <dx-label>Server Side AutoComplete</dx-label>
+          </dx-server-side-autocomplete>
+        </div>
+        <div class="col-md-3">
+          <dx-chip-select [options]="options" formControlName="chipSelect">
+            <dx-label>Chip Select</dx-label>
+          </dx-chip-select>
+        </div>
+        <div class="col-md-3">
+          <dx-image-input formControlName="image">
+            <dx-label>Image Input</dx-label>
+          </dx-image-input>
+        </div>
+        <div class="col-md-3">
+          <dx-coordinates formControlName="coordinates">
+            <dx-label>Coordinates</dx-label>
+          </dx-coordinates>
+        </div>
+        <div class="col-md-3">
+          <dx-datepicker formControlName="datepicker">
+            <dx-label>Datepicker</dx-label>
+          </dx-datepicker>
+        </div>
+        <div class="col-md-3">
+          <dx-daterange formControlName="daterange">
+            <dx-label>Daterange</dx-label>
+          </dx-daterange>
+        </div>
+        <div class="col-md-3">
+          <dx-input-url formControlName="url">
+            <dx-label>URL</dx-label>
+          </dx-input-url>
+        </div>
+
+        <div class="col-md-3">
+          <dx-checkbox formControlName="checkbox">
+            <dx-label>Checkbox</dx-label>
+          </dx-checkbox>
+        </div>
+        <div class="col-md-3">
+          <dx-datetime-picker formControlName="datetime">
+            <dx-label>Date Time Picker</dx-label>
+          </dx-datetime-picker>
+        </div>
+        <div class="col-md-3">
+          <dx-time-picker-input
+            [mode]="'12h'"
+            [anteMeridiemAbbreviation]="'AM'"
+            [postMeridiemAbbreviation]="'PM'"
+            formControlName="timePicker"
+            [disabled]="true"
+          >
+            <dx-label>Time Picker</dx-label>            
+          </dx-time-picker-input>
+        </div>
+
+        <div class="col-md-12">
+          <dx-textarea formControlName="textarea">
+            <dx-label>Textarea</dx-label>
+          </dx-textarea>
+        </div>
+      </div>
+    </dx-card>
+    <br />
+    <dx-card>
+      <div class="row">
+        <div class="col-md-12">
+          <h3 class="subtitle">Outline Input</h3>
+        </div>
+        <div class="col-md-3">
+          <dx-input outline="outer-label" formControlName="input">
+            <div dxLabel>Text Input</div>
+          </dx-input>
+        </div>
+        <div class="col-md-3">
+          <dx-select
+            [options]="options"
+            outline="outer-label"
+            formControlName="select"
+          >
+            <div dxLabel>Select</div>
+          </dx-select>
+        </div>
+        <div class="col-md-3">
+          <dx-autocomplete-select
+            [options]="options"
+            outline="outer-label"
+            formControlName="autocomplete"
+          >
+            <div dxLabel>Autocomplete Select</div>
+          </dx-autocomplete-select>
+        </div>
+        <div class="col-md-3">
+          <dx-input-currency outline="outer-label" formControlName="currency">
+            <div dxLabel>Currency</div>
+          </dx-input-currency>
+        </div>
+        <div class="col-md-3">
+          <dx-input-phone outline="outer-label" formControlName="phone">
+            <div dxLabel>Phone Number</div>
+          </dx-input-phone>
+        </div>
+        <div class="col-md-3">
+          <dx-chip-autocomplete
+            [options]="options"
+            outline="outer-label"
+            formControlName="chipAutocomplete"
+          >
+            <div dxLabel>Chip Autocomplete</div>
+          </dx-chip-autocomplete>
+        </div>
+        <div class="col-md-3">
+          <dx-number outline="outer-label" formControlName="number">
+            <div dxLabel>Number</div>
+          </dx-number>
+        </div>
+        <div class="col-md-3">
+          <dx-tag-input outline="outer-label" formControlName="tag">
+            <div dxLabel>Tag Input</div>
+          </dx-tag-input>
+        </div>
+        <div class="col-md-3">
+          <dx-server-side-autocomplete
+            outline="outer-label"
+            formControlName="serverAutocomplete"
+            [lookupModalConfig]="config"
+          >
+            <div dxLabel>Server Side AutoComplete</div>
+          </dx-server-side-autocomplete>
+        </div>
+        <div class="col-md-3">
+          <dx-chip-select
+            [options]="options"
+            outline="outer-label"
+            formControlName="chipSelect"
+          >
+            <div dxLabel>Chip Select</div>
+          </dx-chip-select>
+        </div>
+        <div class="col-md-3">
+          <dx-image-input outline="outer-label" formControlName="image">
+            <div dxLabel>Image Input</div>
+          </dx-image-input>
+        </div>
+        <div class="col-md-3">
+          <dx-coordinates outline="outer-label" formControlName="coordinates">
+            <div dxLabel>Coordinates</div>
+          </dx-coordinates>
+        </div>
+        <div class="col-md-3">
+          <dx-datepicker outline="outer-label" formControlName="datepicker">
+            <div dxLabel>Datepicker</div>
+          </dx-datepicker>
+        </div>
+        <div class="col-md-3">
+          <dx-daterange outline="outer-label" formControlName="daterange">
+            <div dxLabel>Daterange</div>
+          </dx-daterange>
+        </div>
+        <div class="col-md-3">
+          <dx-radio-button [options]="options" formControlName="radio">
+            <dx-label>Radio</dx-label>
+          </dx-radio-button>
+        </div>
+        <div class="col-md-3">
+          <dx-checkbox formControlName="checkbox">
+            <dx-label>Checkbox</dx-label>
+          </dx-checkbox>
+        </div>
+        <div class="col-md-3">
+          <dx-datetime-picker outline="outer-label" formControlName="datetime">
+            <div dxLabel>Date Time Picker</div>
+          </dx-datetime-picker>
+        </div>
+        <div class="col-md-3">
+          <dx-input-url outline="outer-label" formControlName="url">
+            <div dxLabel>URL Input</div>
+          </dx-input-url>
+        </div>
+        <div class="col-md-12">
+          <dx-textarea outline="outer-label" formControlName="textarea">
+            <div dxLabel>Textarea</div>
+          </dx-textarea>
+        </div>
+      </div>
+    </dx-card>
+  </form>
+</div>

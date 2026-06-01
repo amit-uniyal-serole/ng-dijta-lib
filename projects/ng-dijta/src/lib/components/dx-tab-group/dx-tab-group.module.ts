@@ -5,13 +5,15 @@ import { DxTabGroupComponent } from './dx-tab-group.component';
 import { TabComponent } from './tab/tab.component';
 import { TabHeaderComponent } from './tab-header/tab-header.component';
 import { TabContentComponent } from './tab-content/tab-content.component';
-import { TranslocoModule } from '@ngneat/transloco';
+import { MatIconModule } from '@angular/material/icon';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @NgModule({
   declarations: [DxTabGroupComponent, TabComponent, TabHeaderComponent, TabContentComponent],
   imports: [
     CommonModule,
     MatTabsModule,
+    MatIconModule,
     TranslocoModule
   ],
   exports: [DxTabGroupComponent, TabComponent, TabHeaderComponent, TabContentComponent, MatTabsModule]

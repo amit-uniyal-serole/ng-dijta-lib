@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 import { CoreUiModule } from '../../core/UI/core-ui.module';
 import { DxAutocompleteSelectModule } from '../dx-autocomplete-select/dx-autocomplete-select.module';
 import { FlexTableModule } from '../dx-table/dx-table.module';

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injector, Input, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Injector, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { Skeleton, SkeletonLoaderModel } from '../../../dx-skeleton-loader';
 import { DxTableData, DxTableMenuAction, DxTableRowEdit, iconData } from '../../interfaces/dx-additional.interface';
 import { DxTableColumn, MenuAction, OnAction } from '../../interfaces/dx-table.interface';
@@ -9,12 +9,13 @@ import { TableLookupDataModel } from '../../interfaces/dx-table-lookup.interface
   templateUrl: './dx-table-field-wrapper.component.html',
   styleUrls: ['./dx-table-field-wrapper.component.scss']
 })
-export class DxTableFieldWrapperComponent<T> {
+export class DxTableFieldWrapperComponent<T> implements OnChanges {
 
   @Input() column!: DxTableColumn<T>;
   @Input() source!: DxTableData<T>;
   @Input() expandData!: DxTableData<T>;
   @Input() isBusy!: boolean
+  @Input() id!: string;
   @Output() onExpand: EventEmitter<DxTableData<T>> = new EventEmitter<DxTableData<T>>();
   @Output() onAction: EventEmitter<OnAction<DxTableData<T>>> = new EventEmitter<OnAction<DxTableData<T>>>();
   @Output() onEventChange: EventEmitter<DxTableData<T>> = new EventEmitter<DxTableData<T>>();
@@ -23,15 +24,17 @@ export class DxTableFieldWrapperComponent<T> {
   @Output() onEditRowAction: EventEmitter<DxTableRowEdit<T>> = new EventEmitter<DxTableRowEdit<T>>();
   @Output() onClickLookupLink: EventEmitter<TableLookupDataModel<T>> = new EventEmitter<TableLookupDataModel<T>>();
   @Output() onRowIconClick: EventEmitter<iconData<T>> = new EventEmitter<iconData<T>>();
+  @Output() fileView: EventEmitter<{ file: any; element: HTMLImageElement }> = new EventEmitter<{ file: any; element: HTMLImageElement }>();
 
   TextSkeleton: SkeletonLoaderModel = Skeleton.Text
   AvatarSkeleton: SkeletonLoaderModel = Skeleton.Avatar
   checkBoxLoader: SkeletonLoaderModel = Skeleton.CheckBox;
   chipSkeleton: SkeletonLoaderModel = Skeleton.chip;
   iconTextSkeleton: SkeletonLoaderModel = Skeleton.IconText
+
   // cache injectors for each row + column
   private injectorCache = new WeakMap<object, Map<string, Injector>>();
-  private readonly primitiveInjectorCache = new Map<string, Injector>();
+  private primitiveInjectorCache = new Map<string, Injector>();
 
   constructor(private readonly injector: Injector) { }
 
@@ -49,30 +52,30 @@ export class DxTableFieldWrapperComponent<T> {
   updateInput(): void {
     this.onEventChange.emit(this.source)
   }
-  onClickRowAction(event:MenuAction):void{
-    const payload:DxTableMenuAction<T>={
-      data:this.source,
-      event:event
+  onClickRowAction(event: MenuAction): void {
+    const payload: DxTableMenuAction<T> = {
+      data: this.source,
+      event: event
     }
-   this.onMenuAction.emit(payload)
+    this.onMenuAction.emit(payload)
   }
-  onToggleChange():void{    
+  onToggleChange(): void {
     this.onToggleEventChange.emit(this.source)
   }
-  onClickEditRowAction(event:string,data:DxTableData<T>):void{
-    const payload:DxTableRowEdit<T>={
-      type:event,
-      data:data
+  onClickEditRowAction(event: string, data: DxTableData<T>): void {
+    const payload: DxTableRowEdit<T> = {
+      type: event,
+      data: data
     }
     this.onEditRowAction.emit(payload)
   }
 
-  onLookupLink(data:TableLookupDataModel<T>):void{
+  onLookupLink(data: TableLookupDataModel<T>): void {
     this.onClickLookupLink.emit(data);
   }
 
-  onIconClick(event:string):void{
-    this.onRowIconClick.emit({data:this.source,type:event})
+  onIconClick(event: string): void {
+    this.onRowIconClick.emit({ data: this.source, type: event })
   }
 
   getInjector(row: any, column: DxTableColumn<any>): Injector {
@@ -96,6 +99,10 @@ export class DxTableFieldWrapperComponent<T> {
     }
   }
 
+  onFileViewClick(event: { file: any; element: HTMLImageElement }): void {
+    this.fileView.emit(event);
+  }
+
   private create(row: any, column: DxTableColumn<any>): Injector {
     return Injector.create({
       providers: [
@@ -105,4 +112,5 @@ export class DxTableFieldWrapperComponent<T> {
       parent: this.injector,
     });
   }
+
 }

@@ -1,4 +1,4 @@
-
-export * from './ng7-mat-breadcrumb.service';
-export * from './ng7-mat-breadcrumb.component';
-export * from './ng7-mat-breadcrumb.module';
+export * from './breadcrumb.model';
+export * from './dx-breadcrumb.service';
+export * from './dx-breadcrumb.component';
+export * from './dx-breadcrumb.module';

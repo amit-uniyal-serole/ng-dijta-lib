@@ -14,9 +14,11 @@ export class LatitudeMaskDirective implements OnInit {
   constructor(private el: ElementRef) { }
 
   ngOnInit() {
+    // `[#]` wraps the sign character in inputmask's optional-group syntax so
+    // users can type digits directly without first entering `+` / `-`.
     if (this.direction && this.direction === 2) {
       InputmaskConstructor({
-        mask: '#999° 99\' 99\" E',
+        mask: '[#]999° 99\' 99\" E',
         definitions: {
           'E': {
             validator: "[EW]",
@@ -31,7 +33,7 @@ export class LatitudeMaskDirective implements OnInit {
       }).mask(this.el.nativeElement);
     } else if (this.direction && this.direction === 1) {
       InputmaskConstructor({
-        mask: '#99° 99\' 99\" N',
+        mask: '[#]99° 99\' 99\" N',
         definitions: {
           'N': {
             validator: "[NS]",

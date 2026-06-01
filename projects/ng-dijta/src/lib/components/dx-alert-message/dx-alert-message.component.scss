@@ -1,39 +1,153 @@
-@import '../../core/theme/tui/css/css/partials/variables';
-.alert {
-  width: 100%;
-  margin: 10px 0 0 0;
-  padding: 0px;
-  border-radius: 6px;
+// Alert semantic design tokens.
+// Declared here with hard-coded fallbacks so the component renders correctly
+// even when a consumer has not imported the dx theme. Override these
+// `--dx-alert-*` custom properties at :root to re-theme. Fallback palette
+// mirrors the ng-zorro / antd alert defaults.
+:host {
+  display: block;
 
-  p {
+  --dx-alert-success-bg: #f6ffed;
+  --dx-alert-success-border: #b7eb8f;
+  --dx-alert-success-fg: #389e0d;
+
+  --dx-alert-info-bg: #e6f7ff;
+  --dx-alert-info-border: #91d5ff;
+  --dx-alert-info-fg: #0958d9;
+
+  --dx-alert-warning-bg: #fffbe6;
+  --dx-alert-warning-border: #ffe58f;
+  --dx-alert-warning-fg: #d48806;
+
+  --dx-alert-error-bg: #fff2f0;
+  --dx-alert-error-border: #ffccc7;
+  --dx-alert-error-fg: #cf1322;
+}
+
+.dx-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  margin: 8px 0 0;
+  padding: 8px 12px;
+  border: 1px solid transparent;
+  border-radius: var(--dx-radius-md, 6px);
+  font-size: 13px;
+  line-height: 1.5;
+  box-sizing: border-box;
+
+  &--success {
+    background: var(--dx-alert-success-bg, #f6ffed);
+    border-color: var(--dx-alert-success-border, #b7eb8f);
+
+    .dx-alert__icon,
+    .dx-alert__message {
+      color: var(--dx-alert-success-fg, #389e0d);
+    }
+  }
+
+  &--info {
+    background: var(--dx-alert-info-bg, #e6f7ff);
+    border-color: var(--dx-alert-info-border, #91d5ff);
+
+    .dx-alert__icon,
+    .dx-alert__message {
+      color: var(--dx-alert-info-fg, #0958d9);
+    }
+  }
+
+  &--warning {
+    background: var(--dx-alert-warning-bg, #fffbe6);
+    border-color: var(--dx-alert-warning-border, #ffe58f);
+
+    .dx-alert__icon,
+    .dx-alert__message {
+      color: var(--dx-alert-warning-fg, #d48806);
+    }
+  }
+
+  &--error {
+    background: var(--dx-alert-error-bg, #fff2f0);
+    border-color: var(--dx-alert-error-border, #ffccc7);
+
+    .dx-alert__icon,
+    .dx-alert__message {
+      color: var(--dx-alert-error-fg, #cf1322);
+    }
+  }
+
+  // Banner mode — edge-to-edge, no rounding, no top margin.
+  &--banner {
+    margin: 0;
+    border-radius: 0;
+    border-inline: 0;
+  }
+
+  // When a description is present the message reads as a bold title.
+  &--with-description {
+    align-items: flex-start;
+    padding: 12px;
+
+    .dx-alert__message {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .dx-alert__icon {
+      font-size: 22px;
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  &__icon {
+    flex: 0 0 auto;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+  }
+
+  &__body {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__message {
+    display: block;
+  }
+
+  &__description {
+    display: block;
+    color: var(--color-text-secondary, #667085);
     font-size: 13px;
   }
 
-  &.success {
-    background: $succesClr;
-    border-color: $succesBrClr;
+  &__action {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
 
-    p {
-      color: $succesBrClr;
+    &:empty {
+      display: none;
     }
   }
 
-  &.warning {
-    background: $warningClr;
-    border-color: $warningBrClr;
+  &__close {
+    flex: 0 0 auto;
+    align-self: flex-start;
 
-    p {
-      color: $warningBrClr;
+    .dx-alert__close-text {
+      font-size: 13px;
     }
   }
+}
 
-  &.error {
-    background: $errorClr;
-    border-color: $error-border-clr;
-
-    p {
-      color: $error-border-clr;
-      margin: 4px;
-    }
+@media (prefers-reduced-motion: reduce) {
+  .dx-alert {
+    transition: none;
   }
 }

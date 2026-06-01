@@ -1,0 +1,117 @@
+@import './button.component';
+
+:host ::ng-deep .ngx-btn-group {
+  display: flex;
+
+  & > * {
+    position: relative;
+
+    &:not(:first-child) {
+      .ngx-dropdown-toggle:not(d-button),
+      .ngx-btn {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        margin-left: -1px;
+
+        &.ngx-btn-primary {
+          margin-left: 0;
+        }
+      }
+
+      .ngx-dropdown-menu {
+        left: -1px;
+      }
+    }
+
+    &:not(:last-child) {
+      .ngx-dropdown-toggle,
+      .ngx-btn {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+
+    .ngx-dropdown-origin {
+      z-index: 0;
+    }
+
+    &:hover,
+    &:active {
+      z-index: 1;
+    }
+
+    &:focus-within {
+      z-index: 1;
+    }
+  }
+}
+
+:host ::ng-deep {
+  @each $type in xs, sm, lg {
+    .ngx-btn-group-#{$type} {
+      .ngx-btn {
+        @extend .ngx-btn-#{$type};
+      }
+    }
+  }
+}
+
+:host ::ng-deep {
+  d-button + d-button {
+    .ngx-btn-primary:not(:disabled)::before,
+    .ngx-btn-common:not(:disabled)::before,
+    .ngx-btn-danger:not(:disabled)::before {
+      content: '';
+      position: absolute;
+      top: 1px;
+      bottom: 1px;
+      left: 0;
+      width: 1px;
+    }
+
+    .ngx-btn-primary:not(:disabled)::before {
+      background-color: rgba($color: #ffffff, $alpha: 0.2);
+    }
+
+    .ngx-btn-common:not(:disabled)::before {
+      background-color: var(--ngx-btn-common-bg-hover, #ffffff);
+    }
+
+    .ngx-btn:disabled {
+      border-left-style: none;
+      margin-left: 0;
+    }
+  }
+
+  d-button:active + d-button,
+  d-button + d-button:active {
+    .ngx-btn-primary:not(:disabled)::before {
+      background-color: var(--primary-base);
+    }
+
+    .ngx-btn-common:not(:disabled)::before {
+      background-color: var(--ngx-btn-common-bg-active, #ffffff);
+    }
+
+    .ngx-btn-danger:not(:disabled)::before {
+      background-color: var(--ngx-contrast-active, #78080e);
+    }
+  }
+
+  d-button:focus-within + d-button,
+  d-button + d-button:focus-within,
+  d-button:hover + d-button,
+  d-button + d-button:hover {
+    .ngx-btn-primary:not(:disabled)::before {
+      background-color: var(--primary-hover);
+    }
+
+    .ngx-btn-common:not(:disabled)::before {
+      background-color: var(--ngx-btn-common-border-color-hover, #5e7ce0);
+    }
+
+    .ngx-btn-danger:not(:disabled)::before {
+      background-color: #cc272a;
+    }
+  }
+}

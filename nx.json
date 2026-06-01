@@ -1,0 +1,45 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "release": {
+    "projects": ["ng-dijta"],
+    "projectsRelationship": "independent",
+    "releaseTagPattern": "{projectName}@{version}",
+    "git": {
+      "commit": true,
+      "commitMessage": "chore(release): publish {version} [skip ci]",
+      "tag": true
+    },
+    "version": {
+      "conventionalCommits": true,
+      "generatorOptions": {
+        "fallbackCurrentVersionResolver": "disk"
+      }
+    },
+    "conventionalCommits": {
+      "types": {
+        "feat":     { "semverBump": "minor", "changelog": { "title": "🚀 Features" } },
+        "fix":      { "semverBump": "patch", "changelog": { "title": "🐞 Bug Fixes" } },
+        "perf":     { "semverBump": "patch", "changelog": { "title": "⚡ Performance" } },
+        "refactor": { "semverBump": "none",  "changelog": { "title": "♻️ Refactors" } },
+        "docs":     { "semverBump": "none",  "changelog": { "title": "📝 Documentation" } },
+        "build":    { "semverBump": "none",  "changelog": { "title": "🏗 Build" } },
+        "ci":       { "semverBump": "none",  "changelog": { "title": "🛠 CI" } },
+        "chore":    { "semverBump": "none",  "changelog": { "title": "🧹 Chores" } },
+        "test":     { "semverBump": "none",  "changelog": { "title": "✅ Tests" } },
+        "style":    { "semverBump": "none",  "changelog": { "title": "💄 Styles" } },
+        "revert":   { "semverBump": "none",  "changelog": { "title": "⏪ Reverts" } }
+      }
+    },
+    "changelog": {
+      "projectChangelogs": {
+        "createRelease": "github",
+        "renderer": "{workspaceRoot}/tools/release/changelog-renderer.js",
+        "renderOptions": {
+          "authors": true,
+          "commitReferences": true
+        }
+      },
+      "workspaceChangelog": false
+    }
+  }
+}

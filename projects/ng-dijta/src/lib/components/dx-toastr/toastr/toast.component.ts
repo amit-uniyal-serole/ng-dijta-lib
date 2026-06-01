@@ -55,7 +55,7 @@ import { ToastrService } from './toastr.service';
           role="alertdialog"
           aria-live="polite"
           [class]="options.messageClass"
-          [innerHTML]="message | transloco"
+          [innerHTML]="message  | dxsafe: 'html' | transloco"
         ></div>
         <div
           *ngIf="message && !options.enableHtml"

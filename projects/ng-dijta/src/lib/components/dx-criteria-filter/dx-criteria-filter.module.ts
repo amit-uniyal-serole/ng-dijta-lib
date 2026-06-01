@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DxButtonModule } from '../dx-button';
 import { DxChipAutocompleteModule } from '../dx-chip-autocomplete';
 import { DxDatepickerModule } from '../dx-datepicker';
@@ -16,6 +16,11 @@ import { DxAutocompleteSelectModule } from '../dx-autocomplete-select';
 import { DxLookupModule } from '../../components/dx-lookup';
 import { FilterOperatorBasedType } from './directive/filter-fields.pipe';
 import { DxToolTipModule } from '../dx-tooltip';
+import { ExpressionDirective } from './directive/expression.directive';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { DxServerSideAutocompleteModule } from '../dx-server-side-autocomplete';
+import { LookupConfigPipe } from './pipe/lookup-config.pipe';
 
 
 
@@ -23,7 +28,9 @@ import { DxToolTipModule } from '../dx-tooltip';
   declarations: [
     DxCriteriaFilterComponent,
     BalancedBracketsDirective,
-    FilterOperatorBasedType
+    FilterOperatorBasedType,
+    ExpressionDirective,
+    LookupConfigPipe
   ],
   imports: [
     CommonModule,
@@ -39,7 +46,11 @@ import { DxToolTipModule } from '../dx-tooltip';
     DxButtonModule,
     DxAutocompleteSelectModule,
     DxLookupModule,
-    DxToolTipModule
+    DxToolTipModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    DxServerSideAutocompleteModule
   ],
   exports: [DxCriteriaFilterComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

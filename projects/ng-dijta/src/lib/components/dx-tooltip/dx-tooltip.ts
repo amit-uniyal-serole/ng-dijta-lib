@@ -116,7 +116,7 @@ export class DxTooltipDirective extends DxTooltipBaseDirective {
           </div>
           <div class="dx-tooltip-inner" [ngStyle]="_contentStyleMap">
             <ng-container *dxStringTemplateOutlet="dxTitle; context: dxTitleContext">
-                <div [innerHTML]="dxTitle"></div>
+                <div [innerHTML]="dxTitle | dxsafe: 'html'"></div>
             </ng-container>
           </div>
         </div>

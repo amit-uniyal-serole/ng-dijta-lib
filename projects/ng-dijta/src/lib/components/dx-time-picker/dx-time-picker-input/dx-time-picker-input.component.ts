@@ -7,6 +7,9 @@ import moment from 'moment';
 @Component({
   selector: 'dx-time-picker-input',
   templateUrl: './dx-time-picker-input.component.html',
+  styleUrls: [
+    './dx-time-picker-input.component.scss'
+  ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -28,6 +31,7 @@ export class DxTimePickerInputComponent implements ControlValueAccessor, Validat
   @Input() readonly: boolean = false;
   @Input() outline: 'floating' | 'none-floating' | 'outer-label' = 'none-floating';
   @Input() labelPosition: 'left' | 'top' = 'top';
+  @Input() noneBorder: boolean = false;
 
   /* Use a custom template for the ok button */
   @Input()

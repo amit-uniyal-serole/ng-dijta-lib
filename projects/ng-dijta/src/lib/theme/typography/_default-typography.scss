@@ -1,0 +1,97 @@
+@import './theme-builder';
+@import './variables';
+@import './functions';
+
+// 1.2 - Minor Third Typo scale for global font
+
+$dx-typography: (
+  font: (
+    heading-1: (
+      font-weight: weight(regular),
+      font-size: fontSize(h1),
+      letter-spacing: 0.15px,
+      line-height: normal,
+    ),
+    heading-2: (
+      font-weight: weight(regular),
+      font-size: fontSize(h2),
+      letter-spacing: -0.5px,
+      line-height: normal,
+    ),
+    heading-3: (font-weight: weight(regular),
+      font-size: fontSize(h3),
+      letter-spacing: 0px,
+      line-height: normal,
+    ),
+    heading-4: (font-weight: weight(regular),
+      font-size: fontSize(h4),
+      letter-spacing: 0.25px,
+      line-height: normal,
+    ),
+    heading-5: (font-weight: weight(regular),
+      font-size: fontSize(h5),
+      letter-spacing: 0px,
+      line-height: normal,
+    ),
+    heading-6: (font-weight: weight(medium),
+      font-size: fontSize(h6),
+      letter-spacing: 0.15px,
+      line-height: normal,
+    ),
+    subtitle: (font-weight: weight(medium),
+      font-size: fontSize(subtitle),
+      letter-spacing: 0.15px,
+      line-height: normal,
+    ),
+    caption: (font-weight: weight(regular),
+      font-size: fontSize(paragraph),
+      letter-spacing: 0.46px,
+      line-height: normal,
+    ),
+    body: (font-weight: weight(regular),
+      font-size: fontSize(body),
+      letter-spacing: 0.1px,
+      line-height: normal,
+    ),
+    button: (font-weight: weight(regular),
+      font-size: fontSize(button),
+      letter-spacing: 0.25px,
+      line-height: 20px,
+    ),
+    subbody: (font-weight: weight(regular),
+      font-size: fontSize(subbody),
+      letter-spacing: 0.15px,
+      line-height: normal,
+    ),
+    paragraph: ( // Also work for the subtitle 1
+      font-weight: weight(regular),
+      font-size: fontSize(paragraph),
+      letter-spacing: 0.46px,
+      line-height: normal,
+    ),
+    label: (font-weight: weight(regular),
+      font-size: fontSize(label),
+      letter-spacing: 0.15px,
+      line-height: normal,
+    ),
+    input: (font-weight: weight(medium),
+    font-size: fontSize(input),
+    letter-spacing: 0.15px,
+    line-height: normal),
+    dx-input-label:(font-weight: weight(medium),
+      font-size: fontSize(label),
+      letter-spacing: 0.15px,
+      line-height: normal,
+    ),
+    info:(font-weight: weight(medium),
+      font-size: fontSize(info),
+      letter-spacing: 0.15px,
+      line-height: normal,
+    )
+    ),
+    
+    
+);
+
+@include theme-builder(dx-typography, $dx-typography);
+

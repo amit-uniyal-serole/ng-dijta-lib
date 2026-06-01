@@ -29,3 +29,8 @@
   transform: translateY(1px) translateX(0px) !important;
   color: var(--input-label-fc);
 }
+.radio-label-inner {
+  font-size: 16px;
+  letter-spacing: 0.15px;
+  line-height: normal;
+}

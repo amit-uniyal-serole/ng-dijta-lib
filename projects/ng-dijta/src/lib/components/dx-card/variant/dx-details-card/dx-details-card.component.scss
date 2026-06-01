@@ -1,36 +1,43 @@
 .dx-details-card-wrapper {
-  margin: 5px;
-
   .dx-details-card {
-    background-color: #fff;
-    border-radius: 6px;
+    background-color: var(--dx-card-background);
+    border-radius: var(--dx-card-border-radius);
     margin-bottom: 12px;
-
     .details-card-title {
-      padding: 20px;
-      padding-bottom: 0px;
-      font-weight: normal;
+      padding: var(--dx-card-header-padding);
+      font-weight: 400;
       font-style: normal;
+      border-bottom: 1px solid #f1f1f1;
     }
 
     .details-card-title-border {
-      border-bottom: 1px solid rgb(214 214 219 / 55%)
+      border-bottom: 1px solid;
+      border-width: var(--dx-card-header-border-bottom-width);
+      border-color: var(--dx-card-header-border-bottom-color);
+      border-radius: var(--dx-card-border-radius) var(--dx-card-border-radius) 0 0;
     }
 
     .details-card-content-wrapper {
-      padding:20px;
+      padding: 10px;
     }
 
-    &.details-card-border{
-      border: 0.1px solid #dce1e7;
+    &.details-card-border {
+      border-bottom: 1px solid;
+      border-width: var(--dx-card-header-border-bottom-width);
+      border-color: var(--dx-card-header-border-bottom-color);
       box-shadow:0 3px 2px #00000008;
     }
 
     .dx-details-card-label-value-wrapper {
+      display: flex;
       min-height: 35px;
       height: auto;
       hyphens: auto;
-      margin-bottom: 1.2rem;
+       color: var(--color-text-value);
+      &.top {
+        flex-direction: column;
+        margin-bottom: 10px;
+      }
       &.left {
         margin-bottom: 0.2rem;
         display: flex;
@@ -41,25 +48,29 @@
         border: none;
       }
       .dx-details-card-content-label {
-        flex: 0 0 32%;
+        flex:0 0 15rem;
         width: auto;
-        margin-right: 20px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        color: #59667a !important;
-        margin-bottom: 6px;
+        color: var(--color-text-label) !important;
+      }
+      &.top { 
+        .dx-details-card-content-label {
+          flex: none !important;
+          margin-bottom: 0px;
+        }
       }
 
       .dx-details-card-content-value {
         font-size: 14px;
         font-weight: 500;
-        color: #0B0F32;
+        color: inherit;
       }
       &.bottom-separator {
         &::after {
           content: '';
-          border-bottom: 0.8px solid #c3c3c3;
+          border-bottom: .046rem solid #f9f7f7;
           width: 100%;
           display: block;
           margin-top: 3px;

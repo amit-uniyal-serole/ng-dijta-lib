@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CurrencyConfig } from '../../../../core/UI/constant/currency-default';
+import { CurrencySetting } from '../../../dx-table/interfaces/dx-additional.interface';
 
 @Component({
   selector: 'dx-card-currency',
@@ -13,4 +14,5 @@ export class DxCardCurrencyComponent {
   @Input() digitsInfo?: string;
   @Input() locale?: string;
   @Input() setting?: CurrencyConfig;
+  @Input() currencySetting?: CurrencySetting;
 }

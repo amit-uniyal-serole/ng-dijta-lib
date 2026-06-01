@@ -90,8 +90,7 @@ export class MatTimepickerDirective
   AfterViewInit,
   OnDestroy,
   ControlValueAccessor,
-  MatFormFieldControl<any>
-{
+  MatFormFieldControl<any> {
   static nextId = 0;
 
   /** Whether the component is being rendered on the server. */
@@ -778,7 +777,7 @@ export class MatTimepickerDirective
   };
 
   ngOnDestroy() {
-    this.isAlive.next(undefined);
+    this.isAlive.next(null);
     this.isAlive.complete();
     this.stateChanges.complete();
 

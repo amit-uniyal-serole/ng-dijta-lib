@@ -1,0 +1,22 @@
+.menu-scroll {
+  overflow-y: hidden;
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    opacity: 1;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color:var(--primary-dark)
+  }
+}
+
+@media (hover: none) {
+  .scrollbox {
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(0,0,0,.2)
+    }
+  }
+}

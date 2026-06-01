@@ -1,109 +1,128 @@
 <form>
-  <div mat-dialog-title class="lookup-header d-flex mx-0 justify-content-between p-3 border-bottom align-items-center">
-    <h6 class="heading-6 pb-2">{{lookUpHeaderSettings?.title}}</h6>
-    <span class="material-icons popup-close" (click)="onClose()">
-      close
-    </span>
+  <div mat-dialog-title class="lookup-header d-flex align-items-center my-2">
+    <h6 class="heading-6 m-0 p-0">{{lookUpHeaderSettings?.title}}</h6>
+    <button class="close transparent-button" (click)="onClose()">
+      <mat-icon aria-hidden="false" aria-label="close" fontIcon="close"></mat-icon>
+    </button>
   </div>
-  <mat-dialog-content scrollHeight class="mat-dialog-content m-0 px-3">
-      <dx-loader [name]="'lookup-modal-loader'"
-        [show]="(popupLoader$ | async) || (customViewloader$ | async) || (moduleDetailsLoader$|async)"
-        [fullScreen]=" false">
-      </dx-loader>
-      <div class="row mt-2" *ngIf="!!lookupApiConfig?.searchBasedOn && additionalFilter.length === 0">
-        <div class="col-md-4">
-          <dx-input [formControl]="searchControl" (onEnter)="search()">
-            <dx-label>{{lookUpHeaderSettings?.searchInputLabel}}</dx-label>
-            <dx-suffix>
-              <div class="d-flex">
-                <span class="material-icons-outlined cursor-pointer form-builder-list-search-icon mx-1"
-                  (click)="search()">
-                  search
-                </span>
-                <span class="mx-2"></span>
-                <span *ngIf="searchControl?.value?.length"
-                  class="material-icons-outlined cursor-pointer lookup-list-close-icon icon-color" (click)="clear()">
-                  cancel
-                </span>
-              </div>
-            </dx-suffix>
-          </dx-input>
-        </div>
-      </div>
-      <form #f="ngForm" class="lookup-addition-filter" *ngIf="additionalFilter && additionalFilter.length > 0">
-        <div class="row mt-2">
+  <mat-dialog-content class="mat-dialog-content">
 
-          <div class="col-md-10">
-            <div class="row">
-              <div class="col-md-3" *ngFor="let filter of additionalFilter">
-                <dx-input [(ngModel)]="filter.value" #input="ngModel" name="{{filter.field}}"
-                  (onEnter)="onFilterSearch()">
-                  <dx-label>{{filter?.label}}</dx-label>
-                </dx-input>
-              </div>
+    <dx-loader [name]="'lookup-modal-loader'"
+      [show]="(popupLoader$ | async) || (customViewloader$ | async) || (moduleDetailsLoader$|async)"
+      [fullScreen]=" false">
+    </dx-loader>
+    @if(!!lookupApiConfig?.searchBasedOn && additionalFilter.length === 0){
+    <div class="row mt-2">
+      <div class="col-md-4">
+        <dx-input [formControl]="searchControl" (onEnter)="search()">
+          <dx-label>{{lookUpHeaderSettings?.searchInputLabel}}</dx-label>
+          <dx-suffix>
+            <div class="d-flex">
+              <button class="cursor-pointer transparent-button" (click)="search()">
+                <mat-icon class="form-builder-list-search-icon" aria-hidden="false" aria-label="search"
+                  fontIcon="search"></mat-icon>
+              </button>
+              @if (searchControl?.value?.length) {
+              <button class="cursor-pointer transparent-button" (click)="clear()">
+                <mat-icon class="form-builder-list-close-icon delete-icon-color" aria-hidden="false" aria-label="cancel"
+                  fontIcon="cancel"></mat-icon>
+              </button>
+              }
             </div>
-          </div>
-          <div class="col-md-2 mt-2 d-flex justify-content-end mb-2">
-            <dx-button class="secondary-btn" title="Reset" (onActionSelect)="onFilterReset()"></dx-button> &nbsp;
-            <dx-button title="Search" (onActionSelect)="onFilterSearch()"></dx-button>
-          </div>
-        </div>
-      </form>
+          </dx-suffix>
+        </dx-input>
+      </div>
+    </div>
+    }
+    @if(additionalFilter && additionalFilter.length > 0){
+    <form #f="ngForm" class="lookup-addition-filter">
+      <div class="row pt-3">
 
-      <div class="my-2" *ngIf="lookupApiConfig?.newSearchFilter?.searchParams">
-        <from [formGroup]="filterFg" class="row">
+        <div class="col-md-10">
           <div class="row">
-            <ng-container *ngFor="let search of lookupApiConfig?.newSearchFilter?.searchParams">
-
-              <ng-container *ngIf="search.type === 'TEXT'">
-                <div class="col-md-3">
-                  <dx-input [formControlName]="search.field">
-                    <dx-label>{{search?.label}}</dx-label>
-                  </dx-input>
-                </div>
-              </ng-container>
-              <ng-container *ngIf="search.type === 'SELECT'">
-                <div class="col-md-3">
-                  <dx-select [formControlName]="search.field" [options]="search.option ?? []">
-                    <dx-label>{{search?.label}}</dx-label>
-                  </dx-select>
-                </div>
-              </ng-container>
-
-            </ng-container>
-          </div>
-          <div class="lookup-search">
-            <dx-button class="secondary-btn" [title]="'Clear Filter'" (onActionSelect)="reset()"></dx-button>
-            <dx-button [title]="'Filter Table'" [disabled]="filterFg.invalid" (onActionSelect)="onSearch()"></dx-button>
-          </div>
-
-
-        </from>
-      </div>
-      <div class="lookup-modal-table mb-4">
-        <dx-table [pageSizeList]="pageSizeList" *ngIf="!(popupLoader$ | async) && !(customViewloader$ | async)"
-          [isBusy]="(skeletonLoader$ | async)!" [columns]="columns && columns?.length >0 ? columns :temparoryColumns"
-          [dataSource]="dataSource" [setting]="tableSettings" (onPaginationClick)="onPaginate($event)"
-          (onSort)="onSort($event)" (onClickTablePageSize)="onClickTablePageSize($event)"
-          (onRowSelection)="onSelect($event)" (onFilterClick)="onHeaderActionClick($event)"
-          (onCheckboxChange)="onCheckboxChange($event)" [SelectedRows]="singleRowSelection"
-          [SelectedCheckboxes]="multiRowSelection">
-          <table-content *ngIf="!dataSource?.length && (skeletonLoader$ | async)===false">
-            <div class="lookup-table-icon-wrapper">
-              <span class="material-icons-outlined primary-icon">
-                search_off
-              </span>
-              <div class="subtitle fw-semibold my-2">
-                No records found
-              </div>
+            @for(filter of additionalFilter; track filter){
+            @if (filter.type === 'SELECT') {
+            <div class="col-md-3">
+              <dx-select [(ngModel)]="filter.value"
+                [options]="(filter?.options$) ? (filter?.options$ | async) ?? [] : filter?.options" #input="ngModel"
+                name="{{filter.field}}" (onEnter)="onFilterSearch()">
+                <dx-label>{{filter?.label}}</dx-label>
+              </dx-select>
             </div>
-          </table-content>
-        </dx-table>
+            } @else {
+            <div class="col-md-3">
+              <dx-input [(ngModel)]="filter.value" #input="ngModel" name="{{filter.field}}"
+                (onEnter)="onFilterSearch()">
+                <dx-label>{{filter?.label}}</dx-label>
+              </dx-input>
+            </div>
+            }
+
+            }
+          </div>
+        </div>
+        <div class="col-md-2 mt-2 d-flex justify-content-end mb-2">
+          <dx-button class="secondary-btn" title="Reset" (onActionSelect)="onFilterReset()"></dx-button> &nbsp;
+          <dx-button title="Search" (onActionSelect)="onFilterSearch()"></dx-button>
+        </div>
       </div>
+    </form>
+    }
+
+    @if(lookupApiConfig?.newSearchFilter?.searchParams){
+    <div class="my-2">
+      <from [formGroup]="filterFg" class="row">
+        <div class="col-md-10">
+          <div class="row">
+            @for(search of lookupApiConfig?.newSearchFilter?.searchParams; track search){
+
+            @if(search.type === 'TEXT'){
+            <div class="col-md-3">
+              <dx-input [formControlName]="search.field">
+                <dx-label>{{search?.label}}</dx-label>
+              </dx-input>
+            </div>
+            }
+            @if(search.type === 'SELECT'){
+
+            <div class="col-md-3">
+              <dx-select [formControlName]="search.field" [options]="search.option ?? []">
+                <dx-label>{{search?.label}}</dx-label>
+              </dx-select>
+            </div>
+            }
+
+            }
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="row lookup-search">
+            <div class="col-md-6" *ngIf="!lookupApiConfig?.hideRest">
+              <dx-button class="secondary-btn" [title]="'Reset'" (onActionSelect)="reset()"></dx-button>
+            </div>
+            <div class="col-md-6 d-flex align-items-center">
+              <dx-button [title]="'Search'" [disabled]="filterFg.invalid" (onActionSelect)="onSearch()"></dx-button>
+            </div>
+          </div>
+        </div>
+      </from>
+    </div>
+    }
+    <div class="lookup-modal-table mb-4">
+      @if(!(popupLoader$ | async) && !(customViewloader$ | async)){
+      <dx-table #table [pageSizeList]="pageSizeList" [isBusy]="(skeletonLoader$ | async)!"
+        [columns]="columns && columns?.length >0 ? columns :temparoryColumns" [dataSource]="dataSource"
+        [setting]="tableSettings" (onPaginationClick)="onPaginate($event)" (onSort)="onSort($event)"
+        (onClickTablePageSize)="onClickTablePageSize($event)" (onRowSelection)="onSelect($event)"
+        (onFilterClick)="onHeaderActionClick($event)" (onCheckboxChange)="onCheckboxChange($event)"
+        [SelectedRows]="singleRowSelection" [SelectedCheckboxes]="multiRowSelection" [showDefaultEmptyContent]="true">
+      </dx-table>
+      }
+    </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end" class="m-0 px-4 gap-2 border-top">
     <dx-button class="secondary-btn" title="Cancel" (onActionSelect)="onClose()"></dx-button>
-    <dx-button (onActionSelect)="onClickSave()"
+    <dx-button [disabled]="tableRef?.form?.invalid" (onActionSelect)="onClickSave()"
       [title]="submitButtonTitle && submitButtonTitle?.trim() !=='' ? submitButtonTitle : 'Add'"></dx-button>
   </mat-dialog-actions>
 </form>

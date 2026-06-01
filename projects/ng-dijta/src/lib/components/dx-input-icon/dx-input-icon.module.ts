@@ -10,6 +10,7 @@ import { CoreUiModule } from '../../core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 @NgModule({
   declarations: [DxInputIconComponent],
   imports: [
@@ -23,7 +24,8 @@ import { MatButtonModule } from '@angular/material/button';
     DxIconSelectionPopupModule,
     MatIconModule,
     MatAutocompleteModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDialogModule
   ],
   exports: [DxInputIconComponent],
 })

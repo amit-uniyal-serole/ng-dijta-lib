@@ -29,10 +29,10 @@ import {
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import {
   MatMenuTrigger,
-  MenuPositionX,
-  MenuPositionY,
+  MenuPositionX as MenuPositionX,
+  MenuPositionY as MenuPositionY,
 } from '@angular/material/menu';
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty, isNil, isString } from 'lodash';
 import {
   UI_COMPONENT_CONFIG,
   UIConfigWrapper,
@@ -145,12 +145,12 @@ export class DxTagInputComponent implements ControlValueAccessor, Validator {
     if (ngControl) {
       setTimeout(() => {
         this.control = ngControl.control as FormControl;
-        this.control.markAsTouched();
-        this.ctrRequired = this.control.hasValidator(Validators.required);
+        this.control?.markAsTouched();
+        this.ctrRequired = this.control?.hasValidator(Validators.required);
         this.cd.detectChanges();
         if (this.focus) {
           setTimeout(() => {
-            this.input.nativeElement.focus()
+            this.input?.nativeElement?.focus()
           })
         }
       });
@@ -197,6 +197,9 @@ export class DxTagInputComponent implements ControlValueAccessor, Validator {
     color: string | undefined,
     id?: string | number
   ): void {
+    if (isString(this.value)) {
+      this.value = [];
+    }
     this.value.push({
       name: name,
       colorCode: color,

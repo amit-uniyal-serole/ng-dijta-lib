@@ -1,80 +1,101 @@
-<div class="dx-profile-wrapper">
-  <span class="material-icons close" (click)="close()">
+<div class="dx-profile-wrapper h-100 position-relative ">
+  <span class="material-icons color-inherit close position-absolute cursor-pointer" (click)="close()">
     close
   </span>
-  <div class="profile">
-    <div class="profile-image">
-      <ndx-avatar [avatarSettings]="avatarSettings" [src]="profile?.profileBasic?.imgSrc"
+  <div class="profile py-4 px-3  d-flex align-items-center color-inherit">
+    <div class="d-flex align-items-center justify-content-center color-inherit flex-column w-100 ">
+      <ndx-avatar [avatarSettings]="avatarSettings()" [src]="profile?.profileBasic?.imgSrc"
         [name]="profile?.profileBasic?.name | transloco">
       </ndx-avatar>
-      <h3 class="heading-6 m-2">{{profile?.profileBasic?.name | transloco}}</h3>
-      <p class="body mb-1"><a href="mailto:{{profile?.profileBasic?.email}}">{{profile?.profileBasic?.email}}</a>
+      <h3 class="subtitle mb-0 color-inherit fw-medium m-2">{{profile?.profileBasic?.name | transloco}}</h3>
+      <p class="paragraph">
+        <a [href]="'mailto:' + profile?.profileBasic?.email | dxsafe: 'url'">{{profile?.profileBasic?.email}}</a>
       </p>
-      <p class="subtitle">{{profile?.profileBasic?.designation | transloco}}</p>
+      <p class="paragraph color-inherit mb-0">{{profile?.profileBasic?.designation | transloco}}</p>
       <!-- tenant swither -->
-      <div *ngIf="selectedCompany && isCompListMoreThanOne();else onlySelectedCompanyText"
-        class="profile-tenant-label-wrapper cursor-pointer" [matMenuTriggerFor]="companyName" #t="matMenuTrigger"
-        [class.focus-tenant-name]="t?.menuOpen">
-        <h3 class="subtitle mx-1 mb-0 default-tenant"><span class="tenant-title">{{ selectedCompany?.name | transloco
+      @if(selectedCompany()) {
+      <button id="companyName" aria-label="Company Name"
+        class="bg-transparent color-inherit mt-2 border-0 p-0 w-75 d-flex align-items-center justify-content-center cursor-pointer"
+        [matMenuTriggerFor]="companyName" #t="matMenuTrigger" [class.focus-tenant-name]="t?.menuOpen"
+        aria-haspopup="menu" aria-expanded="false">
+        <span class="body color-inherit fw-semibold mx-1 mb-0 text-truncate"><span class="tenant-title subbody">{{
+            selectedCompany()?.name | transloco
             }}</span>
-        </h3>
-        <span *ngIf="isCompListMoreThanOne()
-          " class="material-icons-outlined">
-          keyboard_arrow_down
         </span>
+        @if(isCompListMoreThanOne()){
+        <mat-icon fontIcon="keyboard_arrow_down" aria-hidden="false" aria-label="Company"> </mat-icon>
+        }
+      </button>
+      } @else {
+      @if(selectedCompany()?.name){
+      <div class="w-75 d-flex align-items-center color-inherit justify-content-center">
+        <h3 class="subtitle mx-1 mb-0 text-truncate color-inherit">
+          <span class="tenant-title color-inherit">{{selectedCompany?.name | transloco }}</span>
+        </h3>
       </div>
-      <ng-template #onlySelectedCompanyText>
-        <div class="profile-tenant-label-wrapper">
-          <h3 *ngIf="selectedCompany?.name" class="subtitle mx-1 mb-0 default-tenant"><span class="tenant-title">{{
-              selectedCompany?.name | transloco }}</span></h3>
-        </div>
-      </ng-template>
-      <mat-menu #companyName="matMenu" class="profile-tenant-menu-panel" xPosition="before">
-        <ng-container *ngIf="
-            profile?.profileBasic?.companyList &&
-            profile?.profileBasic?.companyList?.length > 0
-          ">
-          <ng-container *ngFor="let comp of profile?.profileBasic?.companyList">
-            <div (click)="onSelectCompany(comp)" class="d-flex align-items-center justify-content-between"
-              [class.highlight-comp]="comp?.default">
-              <button *ngIf="comp?.name" mat-menu-item class="tenant-menu-items">
-                <div class="menu-items profile-tenant-wrapper">
-                  <ndx-avatar [avatarSettings]="logoAvatarSettings" [src]="comp?.logo"
-                    [name]="(comp?.name | transloco) ?? ''">
-                  </ndx-avatar>
-                  <div class="profile-company-name">
-                    <h3 [matTooltip]="comp?.name" [class.default-comp-name]="comp?.default"
-                      class="subtitle tenant-name-overflow-text">{{ comp?.name | transloco }}</h3>
-                    <button *ngIf="comp?.default" class="selected-tenant-item-btn">
-                      <span class="material-icons-outlined select-comp-icon">
-                        done
-                      </span>
-                    </button>
-                  </div>
-                </div>
-              </button>
+      }
+      }
+
+      <!--  -->
+      <mat-menu #companyName="matMenu" class="profile-tenant-menu-panel color-inherit">
+        @if(profile?.profileBasic?.companyList && profile?.profileBasic?.companyList?.length > 0) {
+        @for(comp of profile?.profileBasic?.companyList;track comp){
+        <div (click)="onSelectCompany(comp)" class="d-flex align-items-center color-inherit justify-content-between"
+          [class.highlight-comp]="comp?.default">
+          @if(comp?.name){
+          <button mat-menu-item class="tenant-menu-items color-inherit">
+            <div class="profile-tenant-wrapper menu-items color-inherit d-flex align-items-center">
+              @if(comp?.logo) {
+                <img [src]="comp?.logo" alt="{{(comp?.name | transloco) ?? ''}}" width="70px">
+              } @else {
+                <ndx-avatar [avatarSettings]="logoAvatarSettings()" [src]="comp?.logo"
+                [name]="(comp?.name | transloco) ?? ''">
+              </ndx-avatar>
+              }
+              <div class="profile-company-name color-inherit d-flex align-items-center">
+                <span [matTooltip]="comp?.name" [class.default-comp-name]="comp?.default"
+                  class="subbody text-truncate color-inherit my-0 mx-1 w-100">{{ comp?.name | transloco }}</span>
+                @if(comp?.default){
+                <button
+                  class="selected-tenant-item-btn d-flex align-items-center justify-content-center border-0 rounded-circle ">
+                  <mat-icon class="select-comp-icon m-0 d-flex align-items-center justify-content-center m-0">
+                    done
+                  </mat-icon>
+                </button>
+                }
+              </div>
             </div>
-          </ng-container>
-        </ng-container>
+          </button>
+          }
+        </div>
+        }
+        }
       </mat-menu>
       <!--  -->
 
     </div>
   </div>
-  <div class="profile-actions">
-    <div class="action-items" *ngFor="let action of profile?.profileBasic?.profileActions"
+  <div class="profile-actions d-flex color-inherit">
+    @for(action of profile?.profileBasic?.profileActions;track action){
+    <div
+      class="action-items color-inherit  cursor-pointer text-center d-flex align-items-center justify-content-center w-50 subbody fw-medium"
       (click)="submitAction(action)">
-      <span [ngStyle]="{color:action?.color??'#2F2F2F'}"> {{action?.label | transloco}}</span>
+      <span [ngStyle]="{color:action?.color??'#2F2F2F'}" [class]="action?.classes"> {{action?.label | transloco}}</span>
     </div>
+    }
   </div>
-  <div class="layout-type" *ngIf="profile?.profileBasic?.showLayoutOption">
-    <dx-radio-button [options]="option" [formControl]="layoutType" (onRadioChange)="onLayoutChange($event?.value)">
+  @if(profile?.profileBasic?.showLayoutOption){
+  <div class="layout-type">
+    <dx-radio-button [options]="option()" [formControl]="layoutType()" (onRadioChange)="onLayoutChange($event?.value)">
       <dx-radio-button-label>
-        <h3 class="subtitle">{{'LAYOUT' | transloco}}</h3>
+        <h3 class="paragraph mb-0">{{'LAYOUT' | transloco}}</h3>
       </dx-radio-button-label>
     </dx-radio-button>
   </div>
-  <div class="profile-footer" *ngIf="profile?.profileBasic?.footerTitle">
-    <span class="body">{{profile?.profileBasic?.footerTitle | transloco}}</span>
+  }
+  @if(profile?.profileBasic?.footerTitle){
+  <div class="profile-footer bottom-0 position-absolute w-100 py-3 text-center ">
+    <span class="paragraphfw-regular color-inherit">{{profile?.profileBasic?.footerTitle | transloco}}</span>
   </div>
+  }
 </div>

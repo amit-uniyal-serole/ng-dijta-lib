@@ -8,7 +8,7 @@ import { DxEmptySimpleComponent } from './partial/simple';
 import { DxEmbedEmptyComponent } from './dx-embed-empty.component';
 import { DxEmptyComponent } from './dx-empty.component';
 import { DxOutletModule } from '../../core/outlet/outlet.module';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @NgModule({
     imports: [BidiModule, CommonModule, PortalModule, DxOutletModule, TranslocoModule],

@@ -32,7 +32,7 @@ export class DxInputPhoneComponent implements ControlValueAccessor, OnChanges, V
   @Input() viewOnly: boolean = false;
   @Input() readonly: boolean = false;
   @Input() outline: 'floating' | 'none-floating' | 'outer-label' = 'none-floating';
-  value: string = '';
+  value: string | undefined;
   @Input() outerLabelErrorType: 'astrict-error' | 'filled-error' = 'filled-error';
   @Input() noneBorder: boolean = false;
   @Input() preferredCountries: Array<string> = [];
@@ -42,9 +42,10 @@ export class DxInputPhoneComponent implements ControlValueAccessor, OnChanges, V
   @Input() name: string | undefined;
   @Input() onlyCountries: Array<string> = [];
   @Input() errorStateMatcher: ErrorStateMatcher = new ErrorStateMatcher();
-  @Input() enableSearch = false;
+  @Input() enableSearch = false ;
   @Input() searchPlaceholder: string | undefined;
   @Input() describedBy = '';
+  @Input() ctrRequired: boolean = false;
   @Input() errorMessage = '';
   @Input() invalidErrorMessage: string | undefined;
   @Input() tabIndex: number | undefined;
@@ -97,7 +98,7 @@ export class DxInputPhoneComponent implements ControlValueAccessor, OnChanges, V
   }
 
   ngAfterViewInit(): void {
-    const ngControl: NgControl = this.injector.get(NgControl);
+    const ngControl: NgControl | null = this.injector.get(NgControl, null);
     if (ngControl) {
       setTimeout(() => {
         this.control = ngControl.control as FormControl;
@@ -149,12 +150,12 @@ export class DxInputPhoneComponent implements ControlValueAccessor, OnChanges, V
   }
 
   validate(control: AbstractControl): ValidationErrors | null {
-    if (!this.required) {
-      this.required = control.hasValidator(Validators.required);
+    if (!this.ctrRequired) {
+      this.ctrRequired = control.hasValidator(Validators.required);
       this.cd.detectChanges();
     }
     if (!control.hasValidator(Validators.required)) {
-      this.required = control.hasValidator(Validators.required);
+      this.ctrRequired = control.hasValidator(Validators.required);
       this.cd.detectChanges();
     }
     return null;

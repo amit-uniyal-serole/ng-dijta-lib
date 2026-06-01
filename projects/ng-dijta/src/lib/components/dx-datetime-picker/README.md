@@ -1,88 +1,153 @@
-## Selector 
-`<dx-datetime-picker></dx-datetime-picker>`
+---
+category: Components
+type: Data Entry
+title: Datetime Picker
+---
 
-## Module
-`DxDatetimePickerModule`
-## Usage inside form
+Combined date + time picker built on the Material datetime picker stack, with spinner controls, optional seconds and meridian (AM/PM), min/max bounds, and shared `dx-*` field styling. Integrates with Angular `ReactiveForms` via `ControlValueAccessor` and `Validator`.
+
+## When To Use
+
+- When the user needs to pick both a date and a time on a form.
+- When the time portion may include seconds or use 12-hour (AM/PM) formatting.
+- When min / max datetime bounds must be enforced.
+- When step sizes for hour, minute or second must be customized.
+- When a default starting datetime must be preset when the picker opens.
+
+## Label Variants
+
+`dx-datetime-picker` supports two label layouts, selected via the `outline` input. The label content is projected — use the correct projection slot for the variant.
+
+### `none-floating` (default) — label above the field
+
+Project the label through a `<dx-label>` element.
+
+```html
+<dx-datetime-picker formControlName="scheduledAt">
+  <dx-label>Display Label</dx-label>
+</dx-datetime-picker>
 ```
-<form [formGroup]="userForm">
-    <dx-datetime-picker [minDate]="minDate" [maxDate]="maxDate" formControlName="control" [showSpinners]="showSpinners" [showSeconds]="showSeconds"
-        [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond" [touchUi]="touchUi"
-        [color]="color" [enableMeridian]="enableMeridian">
-        <dx-prefix></dx-prefix>
-        <dx-label>Date Of Birth</dx-label>
-         <dx-hint>
-                This show how hint will work
-            </dx-hint>
-        <dx-suffix></dx-suffix>
-        <dx-error *ngIf="userForm.controls['dob'].invalid && userForm.controls['dob'].errors &&  userForm.controls['dob'].touched">
-            Please select valid Date</dx-error>
-        </dx-datetime-picker>
-</form>
 
-```    
-`**Note**: It is mandatory to use dxLabel Directive with element tag to display label outside field e.g: <div dxLabel>Date Of Birth</div>`
-## Inputs
+### `outer-label` — label rendered outside the Material form field
 
-| Input  | Data need to be passed as input |
-| ------------- | ------------- |
-| **disabled** (boolean) | `pass boolean value to enable or disable field (default value false)`  |
-| **maxDate** (Date) | `max Date `  |
-| **minDate** (Date) | `min Date `  |
-| **noneLabel** (boolean) | `pass boolean value to enable or disable label (default value false)`  |
-| **required** (boolean) | `use required for mandatory fields `  |
-| **formControlName** (string)  | `form control name of form group` |
-| **labelPosition** ('left' or 'top')  | `To Change Outer Label position   (default value top)` |
+Set `outline="outer-label"` and project the label via the `dxLabel` attribute on any host element (e.g. `<p>`, `<span>`).
 
-#### List of @Input of dx-datetime-picker
+```html
+<dx-datetime-picker outline="outer-label" formControlName="scheduledAt">
+  <p dxLabel>Display Label</p>
+</dx-datetime-picker>
+```
 
+> Picking the wrong slot silently drops the label. `<dx-label>` is only read when `outline !== 'outer-label'`; `[dxLabel]` is only read when `outline === 'outer-label'`.
 
+## API
 
-| @Input        	| Type     	| Default value 	| Description                                                          	|
-|---------------	|----------	|---------------	|----------------------------------------------------------------------	|
-| **disabled**      	| boolean  	| null          	| If true, the picker is readonly and can't be modified                	|
-| **showSpinners**  	| boolean  	| true          	| If true, the spinners above and below input are visible              	|
-| **showSeconds** 	| boolean  	| true          	| If true, it is not possible to select seconds                        	|
-| **disableMinute** 	| boolean  	| false          	| If true, the minute is readonly                        	|
-| **defaultTime** 	| Array  	| undefined          	| An array [hour, minute, second] for default time when the date is not yet defined                        	|
-| **stepHour**      	| number   	| 1             	| The number of hours to add/substract when clicking hour spinners     	|
-| **stepMinute**    	| number   	| 1             	| The number of minutes to add/substract when clicking minute spinners 	|
-| **stepSecond**    	| number   	| 1             	| The number of seconds to add/substract when clicking second spinners 	|
-| **color**    	   | ThemePalette   	| undefined             	| Color palette to use on the datepicker's calendar. 	|
-| **enableMeridian** | boolean   	| false             	| Whether to display 12H or 24H mode. 	|
-| **hideTime** | boolean   	| false             	| If true, the time is hidden. 	|
-| **touchUi**    	   | boolean   | false           | Whether the calendar UI is in touch mode. In touch mode the calendar opens in a dialog rather than a popup and elements have more padding to allow for bigger touch targets. 	|
-| **defaultTime** | [hour, minute, second] | [] | Set Default Value for time
+```html
+<dx-datetime-picker
+  formControlName="scheduledAt"
+  [minDate]="now"
+  [maxDate]="maxDate"
+  [showSeconds]="true"
+  [enableMeridian]="true"
+  (onDateChange)="onChange($event)">
+  <dx-label>Scheduled at</dx-label>
+</dx-datetime-picker>
+```
 
-## Import CUSTOM_ELEMENTS_SCHEMA 
+### dx-datetime-picker
 
-`import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'`
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| `[date]` | Initial value | `Date` | `-` |
+| `[startAt]` | Datetime the picker is anchored to when first opened | `Date` | `-` |
+| `[minDate]` | Earliest selectable datetime | `Date` | `-` |
+| `[maxDate]` | Latest selectable datetime | `Date` | `-` |
+| `[showSpinners]` | Show up / down spinners on hour / minute / second | `boolean` | `true` |
+| `[showSeconds]` | Show the seconds field | `boolean` | `false` |
+| `[enableMeridian]` | Use 12-hour format with AM / PM | `boolean` | `true` |
+| `[touchUi]` | Use touch-friendly modal UI | `boolean` | `false` |
+| `[stepHour]` | Hour spinner step | `number` | `1` |
+| `[stepMinute]` | Minute spinner step | `number` | `1` |
+| `[stepSecond]` | Second spinner step | `number` | `1` |
+| `[color]` | Material theme palette | `ThemePalette` | `'primary'` |
+| `[defaultTime]` | Default time applied when no value is present | `number[]` | `[]` |
+| `[outline]` | Field outline / label style | `'floating' \| 'none-floating' \| 'outer-label'` | `'none-floating'` |
+| `[outerLabelErrorType]` | Error style for outer-label mode | `'astrict-error' \| 'filled-error'` | `'filled-error'` |
+| `[labelPosition]` | Label placement | `'left' \| 'top'` | `'top'` |
+| `[noneLabel]` | Hide the label slot | `boolean` | `false` |
+| `[required]` | Marks the field as required | `boolean` | `false` |
+| `[disabled]` | Disabled state | `boolean` | `false` |
+| `[readonly]` | Read-only mode | `boolean` | `false` |
+| `[viewOnly]` | Display-only mode | `boolean` | `false` |
+| `[tabIndex]` | Native tab index | `number` | `-` |
+| `[id]` | Host element id | `string` | `dx-input-datetime-{n}` |
 
+### Events
 
-## Custom Date Format
+| Event | Description | Type |
+|-------|-------------|------|
+| `(onDateChange)` | Emitted when the datetime value changes | `EventEmitter<DatetimePickerModel<D>>` |
 
-const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
-  parse: {
-    dateInput: 'l, LTS'
-  },
-  display: {
-    dateInput: 'YYYY-MM-DD HH:mm',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  }
-};
+### Types
 
-{
-    provide: NgxMatDateAdapter,
-    useClass: CustomNgxDatetimeAdapter,
-    deps: [MAT_DATE_LOCALE]
-},
-{ provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
+```typescript
+interface DatetimePickerModel<D> {
+  name: string;
+  data: MatDatepickerInputEvent<D>;
+}
+```
 
+## Examples
 
->Include  **schemas: [CUSTOM_ELEMENTS_SCHEMA]** in module file if  **dx-label**, **dx-hint**, **dx-suffix**,  **dx-prefix** and **dx-error**  gives error as they custom elements using as ng-content
-     
-![Variant](./result.png)  
-     
-          
+### Basic
+
+```html
+<dx-datetime-picker formControlName="when">
+  <dx-label>When</dx-label>
+</dx-datetime-picker>
+```
+
+### With seconds and 24-hour clock
+
+```html
+<dx-datetime-picker
+  formControlName="runAt"
+  [showSeconds]="true"
+  [enableMeridian]="false">
+  <dx-label>Run at</dx-label>
+</dx-datetime-picker>
+```
+
+### Min / max bounds and custom step sizes
+
+```html
+<dx-datetime-picker
+  formControlName="slot"
+  [minDate]="now"
+  [maxDate]="endOfWeek"
+  [stepMinute]="15">
+  <dx-label>Slot</dx-label>
+</dx-datetime-picker>
+```
+
+### Required, outer label
+
+```html
+<dx-datetime-picker
+  formControlName="scheduledAt"
+  outline="outer-label"
+  [required]="true">
+  <dx-label>Scheduled at</dx-label>
+</dx-datetime-picker>
+```
+
+## Import
+
+```typescript
+import { DxDatetimePickerModule } from '@ngdx/dijta';
+
+@NgModule({
+  imports: [DxDatetimePickerModule]
+})
+export class YourModule { }
+```

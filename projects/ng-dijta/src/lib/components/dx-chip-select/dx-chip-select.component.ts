@@ -12,7 +12,6 @@ import {
   SimpleChanges,
   ViewEncapsulation,
   OnDestroy,
-  ChangeDetectionStrategy,
   HostBinding,
 } from '@angular/core';
 import {
@@ -53,7 +52,6 @@ import { Subscription } from 'rxjs';
     },
   ],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.Default
 })
 export class DxChipSelectComponent
   implements ControlValueAccessor, OnChanges, Validator, OnDestroy {

@@ -3,8 +3,11 @@ import { TabHeaderComponent } from '../tab-header/tab-header.component';
 
 @Component({
   selector: 'dx-tab',
-  templateUrl: './tab.component.html',
-  styleUrls: ['./tab.component.css']
+  template: `
+    <ng-template>
+      <ng-content select="dx-tab-content" t></ng-content>
+    <ng-template>
+  `
 })
 export class TabComponent {
 
@@ -13,6 +16,5 @@ export class TabComponent {
   @Input() title: string = '';
   @Input() disabled: boolean = false;
   @Input() isActive: boolean = false;
-  constructor() { }
 
 }

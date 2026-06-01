@@ -16,18 +16,18 @@
     }
 
     .other-preview-thumbnail {
-      width: 25px;
-      height: 25px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #706fd3;
-      border-radius: 4px;
-      color: #ffffff;
-      font-size: 12px;
-      font-weight: 700;
-      white-space: nowrap;
-      overflow: hidden;
+      width: 28px;
+    height: 17px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #706fd3;
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
 
       &.pdf {
         background: #e4394e;
