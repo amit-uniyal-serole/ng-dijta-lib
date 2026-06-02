@@ -160,18 +160,15 @@ $reset-filter:rgb(238, 62, 84);
 // instead of hard-coding pixel values.
 
 $dx-font-sizes: (
-  'h1':        var(--dx-font-size-h1,        48.8px),
-  'h2':        var(--dx-font-size-h2,        39.8px),
-  'h3':        var(--dx-font-size-h3,        33.2px),
-  'h4':        var(--dx-font-size-h4,        27.6px),
-  'h5':        var(--dx-font-size-h5,        23px),
-  'h6':        var(--dx-font-size-h6,        19px),
-  'subtitle':  var(--dx-font-size-subtitle,  16px),
+  'h1':        var(--dx-font-size-h1,        32.44px),
+  'h2':        var(--dx-font-size-h2,        28.83px),
+  'h3':        var(--dx-font-size-h3,        25.63px),
+  'h4':        var(--dx-font-size-h4,        22.78px),
+  'h5':        var(--dx-font-size-h5,        20.25px),
+  'h6':        var(--dx-font-size-h6,        18px),
   'body':      var(--dx-font-size-body,      16px),
   'subbody':   var(--dx-font-size-subbody,   14px),
   'paragraph': var(--dx-font-size-paragraph, 12px),
-  'label':     var(--dx-font-size-label,     13px),
-  'button':    var(--dx-font-size-button,    14px),
 );
 
 $dx-font-weights: (

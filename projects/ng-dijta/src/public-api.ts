@@ -11,6 +11,8 @@ export * from './lib/foundation/dx-shadow/index';
 export * from './lib/foundation/dx-z-index/index';
 export * from './lib/foundation/dx-icon/index';
 export * from './lib/foundation/dx-border/index';
+export * from './lib/foundation/dx-background/index';
+export * from './lib/foundation/dx-text/index';
 export * from './lib/components/dx-basic-tile/index';
 export * from './lib/components/dx-title/index';
 export * from './lib/components/dx-content/index';

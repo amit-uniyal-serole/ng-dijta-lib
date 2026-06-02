@@ -40,6 +40,16 @@
   flex-shrink: 0;
 }
 
+.dx-ts-meta-token {
+  font-family: 'Courier New', monospace;
+  font-size: 10px;
+  color: var(--dx-primary);
+  background: var(--dx-surface-variant, #f0f4ff);
+  border-radius: 3px;
+  padding: 1px 5px;
+  white-space: nowrap;
+}
+
 .dx-ts-level-label {
   font-size: 48px;
   font-weight: 700;

@@ -24,7 +24,7 @@
 }
 
 .dx-cp-section__title {
-  font-size: 19px;
+  font-size: var(--dx-font-size-h6, 18px);
   font-weight: 700;
   color: var(--dx-on-surface, #2f2f2f);
   margin: 0;

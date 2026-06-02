@@ -194,7 +194,7 @@ app-root {
 
 .dx-typo-weight-label {
   margin: 0;
-  font-size: 33.2px;
+  font-size: var(--dx-font-size-h3, 25.63px);
   line-height: 1;
   color: var(--dx-on-surface, #2f2f2f);
 }
@@ -233,7 +233,7 @@ app-root {
 }
 
 .dx-colors-section__title {
-  font-size: 19px;
+  font-size: var(--dx-font-size-h6, 18px);
   font-weight: 700;
   color: var(--dx-on-surface, #2f2f2f);
   margin: 0;

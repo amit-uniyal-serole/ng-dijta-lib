@@ -1,0 +1,109 @@
+<div class="dx-text-page">
+
+  <!-- ── Controls ────────────────────────────────────────────────────────── -->
+  <div class="dx-tx-controls">
+
+    <!-- Color -->
+    <div class="dx-tx-controls__group">
+      <span class="dx-tx-controls__label">Color</span>
+      <div class="dx-tx-btn-row">
+        @for (c of colors; track c.token) {
+          <button
+            class="dx-tx-color-btn"
+            [class.dx-tx-color-btn--active]="selectedColorToken === c.token"
+            (click)="selectColor(c.token)"
+          >
+            <span class="dx-tx-color-dot" [style.background]="c.cssVar"></span>
+            {{ c.label }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="dx-tx-controls__divider"></div>
+
+    <!-- Weight -->
+    <div class="dx-tx-controls__group">
+      <span class="dx-tx-controls__label">Weight</span>
+      <div class="dx-tx-btn-row">
+        @for (w of weights; track w.value) {
+          <button
+            class="dx-tx-weight-btn"
+            [class.dx-tx-weight-btn--active]="selectedWeight === w.value"
+            [style.font-weight]="w.value"
+            (click)="selectWeight(w.value)"
+          >
+            {{ w.value }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Active token hint -->
+    <div class="dx-tx-controls__hint">
+      <span class="dx-tx-hint-dot" [style.background]="selectedColor.cssVar"></span>
+      <code>{{ selectedColor.token }}</code>
+      <span class="dx-tx-hint-sep">·</span>
+      <span>{{ selectedWeight }}</span>
+    </div>
+
+  </div>
+
+  <!-- ── Scale Table ──────────────────────────────────────────────────────── -->
+  <div class="dx-tx-scale">
+
+    <!-- Header -->
+    <div class="dx-tx-scale-header">
+      <span class="dx-tx-col-level">Level</span>
+      <span class="dx-tx-col-token">Size Token</span>
+      <span class="dx-tx-col-px">px</span>
+      <span class="dx-tx-col-sample">Sample</span>
+    </div>
+
+    @for (row of scale; track row.key) {
+      <div class="dx-tx-row">
+        <span class="dx-tx-col-level">
+          <span class="dx-tx-level-badge">{{ row.label }}</span>
+        </span>
+        <code class="dx-tx-col-token dx-tx-token">{{ row.sizeToken }}</code>
+        <span class="dx-tx-col-px dx-tx-px">{{ row.sizePx }}</span>
+        <p
+          class="dx-tx-col-sample dx-tx-sample"
+          [style.font-size]="'var(' + row.sizeToken + ', ' + row.sizePx + ')'"
+          [style.font-weight]="selectedWeight"
+          [style.color]="selectedColor.cssVar"
+        >The quick brown fox jumps over the lazy dog.</p>
+      </div>
+    }
+
+  </div>
+
+  <!-- ── Paragraph Preview ────────────────────────────────────────────────── -->
+  <section class="dx-tx-preview-section">
+    <h2 class="dx-tx-preview-title">Paragraph Preview</h2>
+    <p class="dx-tx-preview-desc">
+      A realistic paragraph block using the selected color at body size.
+    </p>
+
+    <div class="dx-tx-preview-card">
+      <h3 class="dx-tx-preview-heading"
+          [style.color]="selectedColor.cssVar"
+          [style.font-weight]="selectedWeight">
+        Design System Typography
+      </h3>
+      <p class="dx-tx-preview-body"
+         [style.color]="selectedColor.cssVar"
+         [style.font-weight]="selectedWeight">
+        Good typography establishes clear hierarchy and improves readability.
+        Use the <strong [style.color]="selectedColor.cssVar">{{ selectedColor.token }}</strong> token
+        consistently across your UI — never use hardcoded hex values.
+      </p>
+      <p class="dx-tx-preview-sub"
+         [style.color]="selectedColor.cssVar"
+         [style.font-weight]="selectedWeight">
+        Caption · Small text · Use sparingly for secondary information.
+      </p>
+    </div>
+  </section>
+
+</div>

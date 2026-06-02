@@ -1,0 +1,88 @@
+<div class="dx-bg-page">
+
+  <!-- ── Token Scale ──────────────────────────────────────────────────────── -->
+  <section class="dx-bg-section">
+    <h2 class="dx-bg-section__title">Background Tokens</h2>
+    <p class="dx-bg-section__desc">
+      Surface and semantic background tokens paired with their "on-*" text color.
+      Click a swatch to preview it below.
+    </p>
+
+    @for (cat of categories; track cat) {
+      <div class="dx-bg-group">
+        <span class="dx-bg-group__label">{{ categoryLabel[cat] }}</span>
+        <div class="dx-bg-swatches">
+          @for (t of tokensFor(cat); track t.token) {
+            <button
+              class="dx-bg-swatch"
+              [class.dx-bg-swatch--active]="selectedToken === t.token"
+              [style.background]="t.cssVar"
+              (click)="select(t.token)"
+            >
+              <span class="dx-bg-swatch__name" [style.color]="t.onCssVar">{{ t.label }}</span>
+              <code class="dx-bg-swatch__token" [style.color]="t.onCssVar">{{ t.token }}</code>
+              <span class="dx-bg-swatch__hex"   [style.color]="t.onCssVar">{{ t.hex }}</span>
+              <span class="dx-bg-swatch__on"    [style.color]="t.onCssVar">on: {{ t.onToken }}</span>
+            </button>
+          }
+        </div>
+      </div>
+    }
+  </section>
+
+  <!-- ── Live Preview ─────────────────────────────────────────────────────── -->
+  <section class="dx-bg-section">
+    <h2 class="dx-bg-section__title">Applied Preview</h2>
+    <p class="dx-bg-section__desc">
+      How content looks when placed on the selected background.
+    </p>
+
+    <div class="dx-bg-preview" [style.background]="selected.cssVar">
+
+      <!-- Token pair badge -->
+      <div class="dx-bg-pair" [style.border-color]="selected.onCssVar" [style.color]="selected.onCssVar">
+        <span class="dx-bg-pair__row">
+          <span class="dx-bg-pair__pill dx-bg-pair__pill--bg" [style.color]="selected.onCssVar">Background</span>
+          <code>{{ selected.token }}</code>
+        </span>
+        <span class="dx-bg-pair__sep" [style.background]="selected.onCssVar"></span>
+        <span class="dx-bg-pair__row">
+          <span class="dx-bg-pair__pill dx-bg-pair__pill--on" [style.color]="selected.onCssVar">Text</span>
+          <code>{{ selected.onToken }}</code>
+        </span>
+      </div>
+
+      <!-- Sample card -->
+      <div class="dx-bg-card">
+        <div class="dx-bg-card__header">
+          <span class="dx-bg-card__title">Sample Card</span>
+          <span class="dx-bg-card__tag">Label</span>
+        </div>
+        <p class="dx-bg-card__body">
+          This card sits on <strong>{{ selected.label }}</strong>.
+          Body text uses <code>{{ selected.onToken }}</code> for legibility.
+        </p>
+        <div class="dx-bg-card__footer">
+          <button class="dx-bg-btn dx-bg-btn--primary">Primary</button>
+          <button
+            class="dx-bg-btn dx-bg-btn--ghost"
+            [style.color]="selected.onCssVar"
+            [style.border-color]="selected.onCssVar"
+          >Ghost</button>
+        </div>
+      </div>
+
+      <!-- Inline text samples -->
+      <div class="dx-bg-text-samples" [style.color]="selected.onCssVar">
+        <p class="dx-bg-text-samples__h">Heading text on this background</p>
+        <p class="dx-bg-text-samples__body">
+          Body copy reads at 16 px. Always pair this background with
+          <strong>{{ selected.onToken }}</strong> so contrast meets WCAG AA.
+        </p>
+        <p class="dx-bg-text-samples__small">Small / caption text · 12 px</p>
+      </div>
+
+    </div>
+  </section>
+
+</div>

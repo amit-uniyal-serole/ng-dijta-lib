@@ -8,7 +8,7 @@
     color: #434343;
 
     &.fill {
-      font-size: 19px;
+      font-size: var(--dx-font-size-h6, 18px);
       background: var(--primary-base);
       border-radius: 50%;
       margin-right: 9px;

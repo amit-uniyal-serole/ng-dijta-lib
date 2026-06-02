@@ -30,7 +30,7 @@ import { ClipboardModule } from "@angular/cdk/clipboard";
 import { AuthorizationInterceptor } from "./auth-interceptor";
 import { Criteria } from "./pages/criteria/criteria";
 import { Calendar } from "./pages/calendar/calendar";
-import { DxColorPaletteModule, DxTypeScaleModule, DxSpacingModule, DxBorderRadiusModule, DxShadowModule, DxZIndexModule, DxIconModule, DxBorderModule } from "projects/ng-dijta/src/public-api";
+import { DxColorPaletteModule, DxTypeScaleModule, DxSpacingModule, DxBorderRadiusModule, DxShadowModule, DxZIndexModule, DxIconModule, DxBorderModule, DxBackgroundModule, DxTextModule } from "projects/ng-dijta/src/public-api";
 import { PreviewComponent } from "./pages/preview/preview.component";
 
 
@@ -106,6 +106,8 @@ import { PreviewComponent } from "./pages/preview/preview.component";
     DxZIndexModule,
     DxIconModule,
     DxBorderModule,
+    DxBackgroundModule,
+    DxTextModule,
     ToastrModule.forRoot(),
     ],
     providers: [

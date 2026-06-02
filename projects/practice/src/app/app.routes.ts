@@ -6,7 +6,7 @@ import { Button } from './pages/button/button';
 import { Expansion } from './pages/expansion/expansion';
 import { Criteria } from './pages/criteria/criteria';
 import { Calendar } from './pages/calendar/calendar';
-import { DxColorPaletteComponent, DxTypeScaleComponent, DxSpacingComponent, DxBorderRadiusComponent, DxShadowComponent, DxZIndexComponent, DxIconExplorerComponent, DxBorderComponent } from 'projects/ng-dijta/src/public-api';
+import { DxColorPaletteComponent, DxTypeScaleComponent, DxSpacingComponent, DxBorderRadiusComponent, DxShadowComponent, DxZIndexComponent, DxIconExplorerComponent, DxBorderComponent, DxBackgroundComponent, DxTextComponent } from 'projects/ng-dijta/src/public-api';
 import { PreviewComponent } from './pages/preview/preview.component';
 
 export const routes: Routes = [
@@ -33,5 +33,7 @@ export const routes: Routes = [
   { path: 'shadow',        component: DxShadowComponent },
   { path: 'z-index',       component: DxZIndexComponent },
   { path: 'icons',         component: DxIconExplorerComponent },
-  { path: 'border',        component: DxBorderComponent },
+  { path: 'border',      component: DxBorderComponent },
+  { path: 'background',  component: DxBackgroundComponent },
+  { path: 'text',        component: DxTextComponent },
 ];

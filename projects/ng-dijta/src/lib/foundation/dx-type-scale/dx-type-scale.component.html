@@ -35,6 +35,7 @@
           <div class="dx-ts-meta-col">
             <span class="dx-ts-meta-key">Font Size</span>
             <span class="dx-ts-meta-val">{{ level.size }}</span>
+            <span class="dx-ts-meta-token">{{ level.sizeToken }}</span>
           </div>
           <div class="dx-ts-meta-col">
             <span class="dx-ts-meta-key">Letter Spacing</span>
@@ -75,7 +76,7 @@
             </p>
             <p class="dx-ts-sample-text"
                [style.font-family]="selectedFamily"
-               [style.font-size]="level.size"
+               [style.font-size]="'var(' + level.sizeToken + ', ' + level.size + ')'"
                [style.font-weight]="w.value"
                [style.letter-spacing]="level.letterSpacing"
                [style.line-height]="level.lineHeight">
