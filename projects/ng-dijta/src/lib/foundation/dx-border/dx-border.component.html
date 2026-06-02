@@ -65,7 +65,7 @@
               >
                 {{ token.name }}
                 @if (token.px > 0) {
-                  <span class="dx-bd-size-btn__px">{{ token.px }} px</span>
+                  <span class="dx-bd-size-btn__px">{{ token.px }}px</span>
                 }
               </button>
             }
@@ -92,7 +92,7 @@
 
         <div class="dx-bd-controls__divider"></div>
 
-        <!-- Color -->
+        <!-- Color — uses only design-system palette tokens -->
         <div class="dx-bd-controls__group">
           <span class="dx-bd-controls__label">Color</span>
           <div class="dx-bd-btn-row">
@@ -102,14 +102,55 @@
                 [class.dx-bd-size-btn--active]="selectedColor === c.name"
                 (click)="selectColor(c.name)"
               >
-                <span
-                  class="dx-bd-color-dot"
-                  [style.background]="c.cssVar"
-                ></span>
+                <span class="dx-bd-color-dot" [style.background]="c.cssVar"></span>
                 {{ c.label }}
               </button>
             }
           </div>
+        </div>
+
+        <div class="dx-bd-controls__divider"></div>
+
+        <!-- Sides -->
+        <div class="dx-bd-controls__group">
+          <span class="dx-bd-controls__label">Sides</span>
+          <div class="dx-bd-sides-picker">
+            <!-- Top -->
+            <button
+              class="dx-bd-sp-btn dx-bd-sp-top"
+              [class.dx-bd-sp-btn--active]="sides.top"
+              (click)="toggleSide('top')"
+              title="Top border"
+            >T</button>
+            <!-- Left -->
+            <button
+              class="dx-bd-sp-btn dx-bd-sp-left"
+              [class.dx-bd-sp-btn--active]="sides.left"
+              (click)="toggleSide('left')"
+              title="Left border"
+            >L</button>
+            <!-- Center preview box -->
+            <div class="dx-bd-sp-box" [ngStyle]="demoStyle"></div>
+            <!-- Right -->
+            <button
+              class="dx-bd-sp-btn dx-bd-sp-right"
+              [class.dx-bd-sp-btn--active]="sides.right"
+              (click)="toggleSide('right')"
+              title="Right border"
+            >R</button>
+            <!-- Bottom -->
+            <button
+              class="dx-bd-sp-btn dx-bd-sp-bottom"
+              [class.dx-bd-sp-btn--active]="sides.bottom"
+              (click)="toggleSide('bottom')"
+              title="Bottom border"
+            >B</button>
+          </div>
+          <button
+            class="dx-bd-size-btn"
+            [class.dx-bd-size-btn--active]="allSidesActive"
+            (click)="toggleAll()"
+          >All</button>
         </div>
 
         <!-- Active class hint -->
@@ -142,10 +183,10 @@
         <div class="dx-bd-row">
           <span class="dx-bd-row__label">Chip · Badge</span>
           <div class="dx-bd-row__items">
-            <span class="dx-bd-el-chip"                    [ngStyle]="demoStyle">Design</span>
-            <span class="dx-bd-el-chip dx-bd-el-chip--success" [ngStyle]="demoStyle">Active</span>
-            <span class="dx-bd-el-chip dx-bd-el-chip--warning" [ngStyle]="demoStyle">Pending</span>
-            <span class="dx-bd-el-chip dx-bd-el-chip--error"   [ngStyle]="demoStyle">Error</span>
+            <span class="dx-bd-el-chip"                          [ngStyle]="demoStyle">Design</span>
+            <span class="dx-bd-el-chip dx-bd-el-chip--success"   [ngStyle]="demoStyle">Active</span>
+            <span class="dx-bd-el-chip dx-bd-el-chip--warning"   [ngStyle]="demoStyle">Pending</span>
+            <span class="dx-bd-el-chip dx-bd-el-chip--error"     [ngStyle]="demoStyle">Error</span>
           </div>
         </div>
 
@@ -185,29 +226,63 @@
     </div>
   </section>
 
-  <!-- ── Utility Class Reference ─────────────────────────────────────── -->
+  <!-- ── Utility Class Reference ─────────────────────────────────────────── -->
   <section class="dx-bd-section">
     <h2 class="dx-bd-section__title">Utility Classes</h2>
     <p class="dx-bd-section__desc">
-      Generated from <code>$dx-borders</code> map — each class sets
-      <code>border-width</code> via its <code>--dx-border-*</code> token.
+      Generated from <code>$dx-borders</code> map — all-sides and per-side variants.
+      Each class sets <code>border-width</code> via its <code>--dx-border-*</code> token.
       Click any chip to copy.
     </p>
 
-    <div class="dx-bd-chips">
-      @for (name of borderNames; track name) {
-        <button
-          class="dx-bd-chip-btn"
-          [class.dx-bd-chip-btn--copied]="copiedClass === ('dx-border-' + name)"
-          (click)="copyClass('dx-border-' + name)"
-          [title]="'border-width: var(--dx-border-' + name + ')'">
-          @if (copiedClass === ('dx-border-' + name)) {
-            <mat-icon class="dx-bd-chip-btn__icon">check</mat-icon>
-          } @else {
-            dx-border-{{ name }}
+    <div class="dx-bd-util-table">
+
+      <!-- Header -->
+      <div class="dx-bd-util-row dx-bd-util-row--header">
+        <span class="dx-bd-util-label">Side</span>
+        @for (name of borderNames; track name) {
+          <span class="dx-bd-util-col-head">{{ name }}</span>
+        }
+      </div>
+
+      <!-- All sides -->
+      <div class="dx-bd-util-row">
+        <span class="dx-bd-util-label">All</span>
+        @for (name of borderNames; track name) {
+          <button
+            class="dx-bd-chip-btn"
+            [class.dx-bd-chip-btn--copied]="copiedClass === ('dx-border-' + name)"
+            (click)="copyClass('dx-border-' + name)"
+            [title]="'border-width: var(--dx-border-' + name + ')'">
+            @if (copiedClass === ('dx-border-' + name)) {
+              <mat-icon class="dx-bd-chip-btn__icon">check</mat-icon>
+            } @else {
+              dx-border-{{ name }}
+            }
+          </button>
+        }
+      </div>
+
+      <!-- Per-side rows -->
+      @for (side of sideKeys; track side.key) {
+        <div class="dx-bd-util-row">
+          <span class="dx-bd-util-label">{{ side.label }}</span>
+          @for (name of borderNames; track name) {
+            <button
+              class="dx-bd-chip-btn"
+              [class.dx-bd-chip-btn--copied]="copiedClass === ('dx-border-' + side.key + '-' + name)"
+              (click)="copyClass('dx-border-' + side.key + '-' + name)"
+              [title]="'border-' + side.key + '-width: var(--dx-border-' + name + ')'">
+              @if (copiedClass === ('dx-border-' + side.key + '-' + name)) {
+                <mat-icon class="dx-bd-chip-btn__icon">check</mat-icon>
+              } @else {
+                dx-border-{{ side.key }}-{{ name }}
+              }
+            </button>
           }
-        </button>
+        </div>
       }
+
     </div>
   </section>
 

@@ -30,9 +30,20 @@
   .dx-shadow-#{$name} { box-shadow: $value !important; }
 }
 
-// dx-border-* utility classes — one class per border-width token level.
+// dx-border-* utility classes — all sides and per-side variants.
 @each $name, $value in $dx-borders {
   .dx-border-#{$name} { border-width: $value !important; border-style: solid; }
+}
+
+$dx-border-sides: 'top', 'right', 'bottom', 'left';
+
+@each $side in $dx-border-sides {
+  @each $name, $value in $dx-borders {
+    .dx-border-#{$side}-#{$name} {
+      border-#{$side}-width: $value !important;
+      border-#{$side}-style: solid;
+    }
+  }
 }
 
 // dx-text-* / dx-bg-* color utility classes — mirrors $dx-colors map.

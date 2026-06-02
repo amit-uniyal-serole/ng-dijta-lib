@@ -6,14 +6,7 @@ import { Button } from './pages/button/button';
 import { Expansion } from './pages/expansion/expansion';
 import { Criteria } from './pages/criteria/criteria';
 import { Calendar } from './pages/calendar/calendar';
-import { DxColorPaletteComponent } from 'projects/ng-dijta/src/lib/foundation/dx-color-palette/dx-color-palette.component';
-import { DxTypeScaleComponent } from 'projects/ng-dijta/src/lib/foundation/dx-type-scale/dx-type-scale.component';
-import { DxSpacingComponent } from 'projects/ng-dijta/src/lib/foundation/dx-spacing/dx-spacing.component';
-import { DxBorderRadiusComponent } from 'projects/ng-dijta/src/lib/foundation/dx-border-radius/dx-border-radius.component';
-import { DxShadowComponent } from 'projects/ng-dijta/src/lib/foundation/dx-shadow/dx-shadow.component';
-import { DxZIndexComponent } from 'projects/ng-dijta/src/lib/foundation/dx-z-index/dx-z-index.component';
-import { DxIconExplorerComponent } from 'projects/ng-dijta/src/lib/foundation/dx-icon/dx-icon-explorer.component';
-import { DxBorderComponent } from 'projects/ng-dijta/src/lib/foundation/dx-border/dx-border.component';
+import { DxColorPaletteComponent, DxTypeScaleComponent, DxSpacingComponent, DxBorderRadiusComponent, DxShadowComponent, DxZIndexComponent, DxIconExplorerComponent, DxBorderComponent } from 'projects/ng-dijta/src/public-api';
 import { PreviewComponent } from './pages/preview/preview.component';
 
 export const routes: Routes = [

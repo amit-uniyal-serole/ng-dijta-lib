@@ -30,14 +30,7 @@ import { ClipboardModule } from "@angular/cdk/clipboard";
 import { AuthorizationInterceptor } from "./auth-interceptor";
 import { Criteria } from "./pages/criteria/criteria";
 import { Calendar } from "./pages/calendar/calendar";
-import { DxColorPaletteModule } from "projects/ng-dijta/src/lib/foundation/dx-color-palette/dx-color-palette.module";
-import { DxTypeScaleModule } from "projects/ng-dijta/src/lib/foundation/dx-type-scale/dx-type-scale.module";
-import { DxSpacingModule } from "projects/ng-dijta/src/lib/foundation/dx-spacing/dx-spacing.module";
-import { DxBorderRadiusModule } from "projects/ng-dijta/src/lib/foundation/dx-border-radius/dx-border-radius.module";
-import { DxShadowModule } from "projects/ng-dijta/src/lib/foundation/dx-shadow/dx-shadow.module";
-import { DxZIndexModule } from "projects/ng-dijta/src/lib/foundation/dx-z-index/dx-z-index.module";
-import { DxIconModule } from "projects/ng-dijta/src/lib/foundation/dx-icon/dx-icon.module";
-import { DxBorderModule } from "projects/ng-dijta/src/lib/foundation/dx-border/dx-border.module";
+import { DxColorPaletteModule, DxTypeScaleModule, DxSpacingModule, DxBorderRadiusModule, DxShadowModule, DxZIndexModule, DxIconModule, DxBorderModule } from "projects/ng-dijta/src/public-api";
 import { PreviewComponent } from "./pages/preview/preview.component";
 
 
