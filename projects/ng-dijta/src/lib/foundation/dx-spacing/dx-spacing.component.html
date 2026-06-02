@@ -1,0 +1,221 @@
+<div class="dx-spacing-page">
+
+  <!-- ── Scale Overview ──────────────────────────────────────────────── -->
+  <section class="dx-sp-section">
+    <h2 class="dx-sp-section__title">Spacing Scale</h2>
+    <p class="dx-sp-section__desc">
+      6-step scale (0–5) mapped to Bootstrap utility classes and
+      <code>--dx-spacing-*</code> CSS tokens. Root font-size: 16 px.
+    </p>
+
+    <div class="dx-sp-scale">
+      @for (step of steps; track step.index) {
+        <button
+          class="dx-sp-card"
+          [class.dx-sp-card--active]="selectedStep === step.index"
+          (click)="selectStep(step.index)"
+        >
+          <div class="dx-sp-card__bar-wrap" aria-hidden="true">
+            <div
+              class="dx-sp-card__bar"
+              [style.height.rem]="step.value === 0 ? 0.125 : step.value"
+            ></div>
+          </div>
+
+          <span class="dx-sp-card__step">{{ step.index }}</span>
+          <span class="dx-sp-card__rem">{{ step.label }}</span>
+          <span class="dx-sp-card__px">{{ step.px }} px</span>
+
+          @if (step.token) {
+            <code class="dx-sp-card__token">{{ step.token }}</code>
+          } @else {
+            <span class="dx-sp-card__token dx-sp-card__token--empty">—</span>
+          }
+        </button>
+      }
+    </div>
+  </section>
+
+  <!-- ── Interactive Box-Model Demo ──────────────────────────────────── -->
+  <section class="dx-sp-section">
+    <h2 class="dx-sp-section__title">Interactive Demo</h2>
+
+    <div class="dx-sp-demo">
+
+      <!-- Controls -->
+      <div class="dx-sp-demo__controls">
+
+        <div class="dx-sp-type-toggle" role="group" aria-label="Spacing type">
+          <button
+            class="dx-sp-type-btn"
+            [class.dx-sp-type-btn--active]="activeType === 'padding'"
+            (click)="activeType = 'padding'"
+          >
+            <span class="dx-sp-type-btn__dot dx-sp-type-btn__dot--pad"></span>
+            Padding
+          </button>
+          <button
+            class="dx-sp-type-btn"
+            [class.dx-sp-type-btn--active]="activeType === 'margin'"
+            (click)="activeType = 'margin'"
+          >
+            <span class="dx-sp-type-btn__dot dx-sp-type-btn__dot--mar"></span>
+            Margin
+          </button>
+          <button
+            class="dx-sp-type-btn"
+            [class.dx-sp-type-btn--active]="activeType === 'gap'"
+            (click)="activeType = 'gap'"
+          >
+            <span class="dx-sp-type-btn__dot dx-sp-type-btn__dot--gap"></span>
+            Gap
+          </button>
+        </div>
+
+        <div class="dx-sp-step-btns" role="group" aria-label="Spacing step">
+          @for (step of steps; track step.index) {
+            <button
+              class="dx-sp-step-btn"
+              [class.dx-sp-step-btn--active]="selectedStep === step.index"
+              (click)="selectStep(step.index)"
+              [attr.aria-pressed]="selectedStep === step.index"
+            >
+              {{ step.index }}
+            </button>
+          }
+        </div>
+
+        <!-- Active summary pill -->
+        <div class="dx-sp-summary">
+          <code class="dx-sp-summary__class">{{ demoClass }}</code>
+          <span class="dx-sp-summary__sep">·</span>
+          <span class="dx-sp-summary__value">
+            {{ activeType }}: {{ selected.label }}
+          </span>
+          @if (selected.px > 0) {
+            <span class="dx-sp-summary__px">({{ selected.px }} px)</span>
+          }
+        </div>
+
+      </div>
+
+      <!-- Visual -->
+      <div class="dx-sp-demo__canvas">
+
+        @if (activeType === 'padding') {
+          <!-- Padding: the element itself has coloured padding area -->
+          <div class="dx-bm-wrap">
+            <div
+              class="dx-bm-element dx-bm-element--padding"
+              [style.padding.rem]="selected.value"
+            >
+              <div class="dx-bm-content">
+                <span class="dx-bm-content__label">content</span>
+              </div>
+            </div>
+
+            <!-- Arrows + labels only when padding > 0 -->
+            @if (selected.value > 0) {
+              <div class="dx-bm-legend dx-bm-legend--padding">
+                <span class="dx-bm-legend__dot"></span>
+                padding area — {{ selected.label }} on each side
+              </div>
+            }
+          </div>
+        }
+
+        @if (activeType === 'margin') {
+          <!-- Margin: stage padding simulates the margin space visually -->
+          <div class="dx-bm-wrap">
+            <div
+              class="dx-bm-stage"
+              [style.padding.rem]="selected.value"
+            >
+              <div class="dx-bm-element dx-bm-element--margin">
+                <div class="dx-bm-content">
+                  <span class="dx-bm-content__label">element</span>
+                </div>
+              </div>
+            </div>
+
+            @if (selected.value > 0) {
+              <div class="dx-bm-legend dx-bm-legend--margin">
+                <span class="dx-bm-legend__dot"></span>
+                margin area — {{ selected.label }} on each side
+              </div>
+            }
+          </div>
+        }
+
+        @if (activeType === 'gap') {
+          <!-- Gap: flex container — the tinted background shows through the gap -->
+          <div class="dx-bm-wrap">
+            <div class="dx-bm-gap" [style.gap.rem]="selected.value">
+              <div class="dx-bm-gap__item"><span class="dx-bm-content__label">Item 1</span></div>
+              <div class="dx-bm-gap__item"><span class="dx-bm-content__label">Item 2</span></div>
+              <div class="dx-bm-gap__item"><span class="dx-bm-content__label">Item 3</span></div>
+            </div>
+
+            @if (selected.value > 0) {
+              <div class="dx-bm-legend dx-bm-legend--gap">
+                <span class="dx-bm-legend__dot"></span>
+                gap between each item — {{ selected.label }}
+              </div>
+            } @else {
+              <div class="dx-bm-legend dx-bm-legend--gap">
+                <span class="dx-bm-legend__dot"></span>
+                gap: 0 — items flush together
+              </div>
+            }
+          </div>
+        }
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Utility Class Reference ─────────────────────────────────────── -->
+  <section class="dx-sp-section">
+    <h2 class="dx-sp-section__title">Utility Classes</h2>
+    <p class="dx-sp-section__desc">Click any chip to copy the class name.</p>
+
+    <div class="dx-sp-ref">
+      <!-- Header row -->
+      <div class="dx-sp-ref__row dx-sp-ref__row--header">
+        <div class="dx-sp-ref__prop-col">Property</div>
+        <div class="dx-sp-ref__chips-col">
+          @for (step of steps; track step.index) {
+            <span class="dx-sp-ref__step-head">{{ step.index }}</span>
+          }
+        </div>
+      </div>
+
+      @for (group of utilityGroups; track group.prefix) {
+        <div class="dx-sp-ref__row">
+          <div class="dx-sp-ref__prop">
+            <code class="dx-sp-ref__prop-name">{{ group.property }}</code>
+            <span class="dx-sp-ref__css-prop">{{ group.cssProperty }}</span>
+          </div>
+
+          <div class="dx-sp-ref__chips">
+            @for (step of steps; track step.index) {
+              <button
+                class="dx-sp-chip"
+                [class.dx-sp-chip--copied]="copiedClass === (group.prefix + '-' + step.index)"
+                (click)="copyClass(group.prefix + '-' + step.index)"
+                [title]="group.cssProperty + ': ' + step.label + ' (' + step.px + ' px)'"
+              >
+                @if (copiedClass === (group.prefix + '-' + step.index)) {
+                  <mat-icon class="dx-sp-chip__icon">check</mat-icon>
+                } @else {
+                  {{ group.prefix }}-{{ step.index }}
+                }
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+</div>

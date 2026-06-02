@@ -1,0 +1,282 @@
+<div class="dx-zi-page">
+
+  <!-- ── Scale Overview ──────────────────────────────────────────────── -->
+  <section class="dx-zi-section">
+    <h2 class="dx-zi-section__title">Z-Index Scale</h2>
+    <p class="dx-zi-section__desc">
+      14-layer stacking scale from <code>hide</code> (-1) to <code>notification</code> (1200).
+      Each layer ships as a <strong>CSS custom property</strong> (<code>--dx-z-*</code>) and a
+      generated <strong>utility class</strong> (<code>.dx-z-*</code>) — use whichever fits the context.
+    </p>
+
+    <div class="dx-zi-scale">
+      @for (token of tokens; track token.name) {
+        <button
+          class="dx-zi-card"
+          [class.dx-zi-card--active]="selectedToken === token.name"
+          [class.dx-zi-card--negative]="token.value < 0"
+          (click)="select(token.name)"
+        >
+          <div class="dx-zi-card__badge">{{ token.value }}</div>
+          <div class="dx-zi-card__identifiers">
+            <code class="dx-zi-card__var">{{ token.token }}</code>
+            <code class="dx-zi-card__cls">.dx-z-{{ token.name }}</code>
+          </div>
+          <span class="dx-zi-card__usage">{{ token.usage }}</span>
+        </button>
+      }
+    </div>
+  </section>
+
+  <!-- ── Usage Mode + Snippet ────────────────────────────────────────── -->
+  <section class="dx-zi-section">
+    <h2 class="dx-zi-section__title">Implementation</h2>
+    <p class="dx-zi-section__desc">
+      Choose how to apply the selected layer. Both produce the same stacking result —
+      pick the approach that suits the context.
+    </p>
+
+    <div class="dx-zi-impl">
+
+      <!-- Mode toggle -->
+      <div class="dx-zi-mode-bar">
+        <button
+          class="dx-zi-mode-btn"
+          [class.dx-zi-mode-btn--active]="usageMode === 'variable'"
+          (click)="setMode('variable')"
+        >
+          <mat-icon class="dx-zi-mode-btn__icon" aria-hidden="true">css</mat-icon>
+          CSS Variable
+        </button>
+        <button
+          class="dx-zi-mode-btn"
+          [class.dx-zi-mode-btn--active]="usageMode === 'class'"
+          (click)="setMode('class')"
+        >
+          <mat-icon class="dx-zi-mode-btn__icon" aria-hidden="true">tag</mat-icon>
+          Utility Class
+        </button>
+      </div>
+
+      <!-- Selected layer context -->
+      <div class="dx-zi-impl__context">
+        <span class="dx-zi-impl__layer-name">{{ selected.name }}</span>
+        <span class="dx-zi-impl__sep">·</span>
+        <span class="dx-zi-impl__value">{{ selected.value }}</span>
+        <span class="dx-zi-impl__sep">·</span>
+        <span class="dx-zi-impl__usage">{{ selected.usage }}</span>
+      </div>
+
+      <!-- Snippet panel: CSS Variable -->
+      @if (usageMode === 'variable') {
+        <div class="dx-zi-snippet dx-zi-snippet--variable">
+          <div class="dx-zi-snippet__header">
+            <span class="dx-zi-snippet__lang">CSS / SCSS</span>
+            <button
+              class="dx-zi-snippet__copy"
+              (click)="copy(variableSnippet)"
+              [title]="'Copy CSS variable usage'"
+            >
+              @if (isCopied(variableSnippet)) {
+                <mat-icon>check</mat-icon> Copied
+              } @else {
+                <mat-icon>content_copy</mat-icon> Copy
+              }
+            </button>
+          </div>
+          <pre class="dx-zi-snippet__body"><code><span class="dx-zi-tok-comment">/* apply z-index via CSS custom property */</span>
+<span class="dx-zi-tok-selector">.my-element</span> &#123;
+  <span class="dx-zi-tok-prop">z-index</span>: <span class="dx-zi-tok-fn">var</span>(<span class="dx-zi-tok-var">{{ selected.token }}</span>);
+&#125;</code></pre>
+          <div class="dx-zi-snippet__note">
+            <mat-icon class="dx-zi-snippet__note-icon" aria-hidden="true">info</mat-icon>
+            Override by redefining <code>{{ selected.token }}</code> in your theme — no class changes needed.
+          </div>
+        </div>
+      }
+
+      <!-- Snippet panel: Utility Class -->
+      @if (usageMode === 'class') {
+        <div class="dx-zi-snippet dx-zi-snippet--class">
+          <div class="dx-zi-snippet__header">
+            <span class="dx-zi-snippet__lang">HTML</span>
+            <button
+              class="dx-zi-snippet__copy"
+              (click)="copy(classSnippet)"
+              [title]="'Copy utility class usage'"
+            >
+              @if (isCopied(classSnippet)) {
+                <mat-icon>check</mat-icon> Copied
+              } @else {
+                <mat-icon>content_copy</mat-icon> Copy
+              }
+            </button>
+          </div>
+          <pre class="dx-zi-snippet__body"><code><span class="dx-zi-tok-comment">&lt;!-- apply z-index via utility class --&gt;</span>
+<span class="dx-zi-tok-tag">&lt;div</span> <span class="dx-zi-tok-attr">class</span>=<span class="dx-zi-tok-str">"dx-z-{{ selected.name }}"</span><span class="dx-zi-tok-tag">&gt;</span>
+  &hellip;
+<span class="dx-zi-tok-tag">&lt;/div&gt;</span></code></pre>
+          <div class="dx-zi-snippet__note">
+            <mat-icon class="dx-zi-snippet__note-icon" aria-hidden="true">info</mat-icon>
+            Equivalent to writing <code>z-index: var({{ selected.token }})</code> inline —
+            the class references the same token.
+          </div>
+        </div>
+      }
+
+    </div>
+  </section>
+
+  <!-- ── Stacking Demo ───────────────────────────────────────────────── -->
+  <section class="dx-zi-section">
+    <h2 class="dx-zi-section__title">Stacking Layers Demo</h2>
+    <p class="dx-zi-section__desc">
+      Layers rendered at their actual z-index values inside an isolated stacking context.
+      Click a layer to select it and see both usage forms in the panel above.
+    </p>
+
+    <div class="dx-zi-demo">
+      <div class="dx-zi-stack">
+        @for (token of stackLayers; track token.name) {
+          <div
+            class="dx-zi-layer"
+            [class.dx-zi-layer--active]="selectedToken === token.name"
+            [style.z-index]="token.value"
+            (click)="select(token.name)"
+          >
+            <span class="dx-zi-layer__value">{{ token.value }}</span>
+            <span class="dx-zi-layer__name">{{ token.name }}</span>
+          </div>
+        }
+      </div>
+
+      <!-- Details panel -->
+      <div class="dx-zi-detail">
+        <div class="dx-zi-detail__row">
+          <span class="dx-zi-detail__label">Layer</span>
+          <strong class="dx-zi-detail__name">{{ selected.name }}</strong>
+          <span class="dx-zi-detail__value-badge">{{ selected.value }}</span>
+        </div>
+        <div class="dx-zi-detail__row">
+          <span class="dx-zi-detail__label">Usage</span>
+          <span class="dx-zi-detail__usage">{{ selected.usage }}</span>
+        </div>
+
+        <div class="dx-zi-detail__divider"></div>
+
+        <!-- CSS Variable row -->
+        <div class="dx-zi-detail__impl-row">
+          <div class="dx-zi-detail__impl-label">
+            <mat-icon class="dx-zi-detail__impl-icon" aria-hidden="true">css</mat-icon>
+            CSS Variable
+          </div>
+          <button
+            class="dx-zi-detail__copy-btn"
+            (click)="copy(cssVarOf(selected))"
+            [title]="'Copy: ' + cssVarOf(selected)"
+          >
+            <code>z-index: var({{ selected.token }})</code>
+            @if (isCopied(cssVarOf(selected))) {
+              <mat-icon class="dx-zi-detail__copy-icon dx-zi-detail__copy-icon--ok">check</mat-icon>
+            } @else {
+              <mat-icon class="dx-zi-detail__copy-icon">content_copy</mat-icon>
+            }
+          </button>
+        </div>
+
+        <!-- Utility Class row -->
+        <div class="dx-zi-detail__impl-row">
+          <div class="dx-zi-detail__impl-label">
+            <mat-icon class="dx-zi-detail__impl-icon" aria-hidden="true">tag</mat-icon>
+            Utility Class
+          </div>
+          <button
+            class="dx-zi-detail__copy-btn"
+            (click)="copy(classOf(selected))"
+            [title]="'Copy: ' + classOf(selected)"
+          >
+            <code>class="dx-z-{{ selected.name }}"</code>
+            @if (isCopied(classOf(selected))) {
+              <mat-icon class="dx-zi-detail__copy-icon dx-zi-detail__copy-icon--ok">check</mat-icon>
+            } @else {
+              <mat-icon class="dx-zi-detail__copy-icon">content_copy</mat-icon>
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Reference Table ─────────────────────────────────────────────── -->
+  <section class="dx-zi-section">
+    <h2 class="dx-zi-section__title">Reference</h2>
+    <p class="dx-zi-section__desc">
+      Every layer listed with both its copyable <strong>CSS variable</strong> and
+      <strong>utility class</strong>. Click either chip to copy.
+    </p>
+
+    <div class="dx-zi-ref">
+      <!-- Header -->
+      <div class="dx-zi-ref__header">
+        <span class="dx-zi-ref__col dx-zi-ref__col--var">CSS Variable</span>
+        <span class="dx-zi-ref__col dx-zi-ref__col--cls">Utility Class</span>
+        <span class="dx-zi-ref__col dx-zi-ref__col--val">Value</span>
+        <span class="dx-zi-ref__col dx-zi-ref__col--use">Typical usage</span>
+      </div>
+
+      @for (token of tokens; track token.name) {
+        <div
+          class="dx-zi-ref__row"
+          [class.dx-zi-ref__row--active]="selectedToken === token.name"
+          [class.dx-zi-ref__row--negative]="token.value < 0"
+          (click)="select(token.name)"
+        >
+          <!-- CSS Variable chip -->
+          <div class="dx-zi-ref__col dx-zi-ref__col--var">
+            <button
+              class="dx-zi-chip dx-zi-chip--var"
+              [class.dx-zi-chip--copied]="isCopied(cssVarOf(token))"
+              (click)="$event.stopPropagation(); copy(cssVarOf(token))"
+              [title]="cssVarOf(token)"
+            >
+              @if (isCopied(cssVarOf(token))) {
+                <mat-icon class="dx-zi-chip__icon">check</mat-icon>
+              } @else {
+                {{ token.token }}
+              }
+            </button>
+          </div>
+
+          <!-- Utility Class chip -->
+          <div class="dx-zi-ref__col dx-zi-ref__col--cls">
+            <button
+              class="dx-zi-chip dx-zi-chip--cls"
+              [class.dx-zi-chip--copied]="isCopied(classOf(token))"
+              (click)="$event.stopPropagation(); copy(classOf(token))"
+              [title]="'class=' + classOf(token)"
+            >
+              @if (isCopied(classOf(token))) {
+                <mat-icon class="dx-zi-chip__icon">check</mat-icon>
+              } @else {
+                .dx-z-{{ token.name }}
+              }
+            </button>
+          </div>
+
+          <!-- Value badge -->
+          <div class="dx-zi-ref__col dx-zi-ref__col--val">
+            <span class="dx-zi-ref__badge" [class.dx-zi-ref__badge--negative]="token.value < 0">
+              {{ token.value }}
+            </span>
+          </div>
+
+          <!-- Usage -->
+          <div class="dx-zi-ref__col dx-zi-ref__col--use">
+            <span class="dx-zi-ref__usage-text">{{ token.usage }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+</div>

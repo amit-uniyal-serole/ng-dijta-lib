@@ -1,29 +1,189 @@
-<dx-vertical-layout>
-  <header style="height: 100%;">
-    <dx-header [companyInfo]="companyInfo" [headerIcons]="headerIcons" [currentUser]="currentUser"></dx-header>
-  </header>
-  <content>
-    <ng-container *ngIf="(layoutServiceService.currentLayout | async) === 'vertical'">
-      <dx-vertical-content [menu]="menu">
-    
-        <dx-lcnc-breadcrumb [breadcrumbList]="(breadcrumb$ | async) ?? []" *ngIf="(breadcrumb$ | async)?.length > 0">
-        </dx-lcnc-breadcrumb>
+<div class="dx-explorer">
+  <!-- Sidebar -->
+  <aside class="dx-explorer__sidebar">
+    <div class="dx-explorer__sidebar-header">
+      <span class="dx-explorer__logo-icon material-icons">widgets</span>
+      <span class="dx-explorer__logo-text">ng-dijta</span>
+    </div>
+
+    <div class="dx-explorer__search-wrap">
+      <mat-icon class="dx-explorer__search-icon">search</mat-icon>
+      <input
+        class="dx-explorer__search"
+        type="text"
+        placeholder="Search components..."
+        [(ngModel)]="searchQuery"
+        (input)="onSearch()"
+      />
+    </div>
+
+    <nav class="dx-explorer__nav" aria-label="Component list">
+      @for (category of filteredCategories; track category.name) {
+        <button
+          class="dx-explorer__category"
+          (click)="toggleCategory(category.name)"
+          [attr.aria-expanded]="expandedCategories[category.name]"
+        >
+          <mat-icon class="dx-explorer__category-icon">{{ category.icon }}</mat-icon>
+          <span>{{ category.name }}</span>
+          <mat-icon class="dx-explorer__category-chevron">
+            {{ expandedCategories[category.name] ? 'expand_less' : 'expand_more' }}
+          </mat-icon>
+        </button>
+
+        @if (expandedCategories[category.name]) {
+          <div class="dx-explorer__items">
+            @for (comp of category.components; track comp.selector) {
+              <div
+                class="dx-explorer__item"
+                [class.dx-explorer__item--active]="isActive(comp)"
+                (click)="selectComponent(comp)"
+                [attr.aria-current]="isActive(comp) ? 'page' : null"
+                role="link"
+                tabindex="0"
+                (keydown.enter)="selectComponent(comp)"
+              >
+                <span class="dx-explorer__item-selector">{{ comp.selector }}</span>
+                <span class="dx-explorer__item-name">{{ comp.name }}</span>
+              </div>
+            }
+          </div>
+        }
+      }
+    </nav>
+  </aside>
+
+  <!-- Main content -->
+  <main class="dx-explorer__main">
+    <!-- Toolbar -->
+    @if (selectedComponent) {
+      <header class="dx-explorer__toolbar">
+        <div class="dx-explorer__toolbar-info">
+          <code class="dx-explorer__selector-badge">{{ selectedComponent.selector }}</code>
+          <h1 class="dx-explorer__comp-title">{{ selectedComponent.name }}</h1>
+          <p class="dx-explorer__comp-desc">{{ selectedComponent.description }}</p>
+        </div>
+
+        <!-- Tabs only for page-based routes (button, card, table, …).
+             Preview routes embed their own Controls/Code/Types/Events panel. -->
+        @if (!selectedComponent.routeIsPreview) {
+          <div class="dx-explorer__tabs" role="tablist">
+            <button
+              class="dx-explorer__tab"
+              [class.dx-explorer__tab--active]="activeTab === 'preview'"
+              (click)="activeTab = 'preview'"
+              role="tab"
+              [attr.aria-selected]="activeTab === 'preview'"
+            >
+              <mat-icon>visibility</mat-icon>
+              Preview
+            </button>
+            <button
+              class="dx-explorer__tab"
+              [class.dx-explorer__tab--active]="activeTab === 'code'"
+              (click)="activeTab = 'code'"
+              role="tab"
+              [attr.aria-selected]="activeTab === 'code'"
+            >
+              <mat-icon>code</mat-icon>
+              Code
+            </button>
+          </div>
+        }
+      </header>
+    }
+
+    <!-- Preview panel (router-outlet) -->
+    @if (selectedComponent?.routeIsPreview || activeTab === 'preview') {
+      <div class="dx-explorer__panel" [class.dx-explorer__panel--flex]="selectedComponent?.routeIsPreview">
         <router-outlet></router-outlet>
-      </dx-vertical-content>
-    </ng-container>
-    <ng-container *ngIf="(layoutServiceService.currentLayout | async) === 'horizontal'">
-      <dx-horizontal-content [menu]="menu">
-    
-        <dx-lcnc-breadcrumb [breadcrumbList]="(breadcrumb$ | async) ?? []" *ngIf="(breadcrumb$ | async)?.length > 0">
-        </dx-lcnc-breadcrumb>
-        <router-outlet></router-outlet>
-      </dx-horizontal-content>
-    </ng-container>
-    <ng-container *ngIf="(layoutServiceService.currentLayout | async) === 'compact'">
-      <dx-compact-content [menu]="menu"
-        [flexMenu]="true" [expandMenu]="false" [disableDispalyConditions]="false">
-          <router-outlet></router-outlet>
-      </dx-compact-content>
-    </ng-container>
-  </content>
-</dx-vertical-layout>
+      </div>
+    }
+
+    <!-- Code panel (page-based routes only) -->
+    @if (!selectedComponent?.routeIsPreview && activeTab === 'code' && selectedComponent) {
+      <div class="dx-explorer__panel dx-explorer__code-panel" role="tabpanel">
+
+        <!-- ── Angular component: module + template ── -->
+        @if (!isDesignToken(selectedComponent)) {
+          <div class="dx-code-section">
+            <div class="dx-code-block-header">
+              <span class="dx-code-lang">TypeScript · Module</span>
+              <button class="dx-code-copy-btn" (click)="copySnippet(generateModuleSnippet(selectedComponent), 'module')">
+                <mat-icon>{{ copiedSnippet === 'module' ? 'check' : 'content_copy' }}</mat-icon>
+                {{ copiedSnippet === 'module' ? 'Copied!' : 'Copy' }}
+              </button>
+            </div>
+            <pre class="dx-code-pre"><code>{{ generateModuleSnippet(selectedComponent) }}</code></pre>
+          </div>
+
+          <div class="dx-code-section">
+            <div class="dx-code-block-header">
+              <span class="dx-code-lang">HTML · Template</span>
+              <button class="dx-code-copy-btn" (click)="copySnippet(generateHtmlSnippet(selectedComponent), 'html')">
+                <mat-icon>{{ copiedSnippet === 'html' ? 'check' : 'content_copy' }}</mat-icon>
+                {{ copiedSnippet === 'html' ? 'Copied!' : 'Copy' }}
+              </button>
+            </div>
+            <pre class="dx-code-pre"><code>{{ generateHtmlSnippet(selectedComponent) }}</code></pre>
+          </div>
+        }
+
+        <!-- ── Design token: CSS usage ── -->
+        @if (isDesignToken(selectedComponent)) {
+          <div class="dx-code-section">
+            <div class="dx-code-block-header">
+              <span class="dx-code-lang">{{ selectedComponent.selector === 'dx-typography' ? 'HTML · Class Usage' : 'CSS · Variable Usage' }}</span>
+              <button class="dx-code-copy-btn" (click)="copySnippet(generateCssSnippet(selectedComponent), 'html')">
+                <mat-icon>{{ copiedSnippet === 'html' ? 'check' : 'content_copy' }}</mat-icon>
+                {{ copiedSnippet === 'html' ? 'Copied!' : 'Copy' }}
+              </button>
+            </div>
+            <pre class="dx-code-pre"><code>{{ generateCssSnippet(selectedComponent) }}</code></pre>
+          </div>
+        }
+
+        <!-- ── Class / property reference table ── -->
+        @if (selectedComponent.properties.length > 0) {
+          <div class="dx-code-section">
+            <div class="dx-code-block-header">
+              <span class="dx-code-lang">{{ isDesignToken(selectedComponent) ? 'Class / Token Reference' : 'Input Reference' }}</span>
+            </div>
+            <div class="dx-code-ref-table-wrap">
+              <table class="dx-code-ref-table">
+                <thead>
+                  <tr>
+                    <th>{{ isDesignToken(selectedComponent) ? 'Name' : 'Input' }}</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (prop of selectedComponent.properties; track prop.name) {
+                    <tr [class.dx-code-ref-row--required]="prop.required">
+                      <td><code class="dx-code-ref-name">{{ prop.name }}</code></td>
+                      <td><code class="dx-code-ref-type">{{ prop.type }}</code></td>
+                      <td><code class="dx-code-ref-default">{{ prop.default }}</code></td>
+                      <td class="dx-code-ref-desc">{{ prop.description }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        }
+
+      </div>
+    }
+
+    <!-- Empty state -->
+    @if (!selectedComponent) {
+      <div class="dx-explorer__empty">
+        <mat-icon class="dx-explorer__empty-icon">widgets</mat-icon>
+        <h2>Select a component</h2>
+        <p>Pick a component from the sidebar to preview it and explore its properties.</p>
+      </div>
+    }
+  </main>
+</div>

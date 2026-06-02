@@ -60,6 +60,9 @@
       "ng-dijta": [
         "dist/ng-dijta/ng-dijta",
         "dist/ng-dijta"
+      ],
+      "@ngdx/dijta": [
+        "projects/ng-dijta/src/public-api"
       ]
     },
     "experimentalDecorators": true,

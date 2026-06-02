@@ -10,6 +10,8 @@ import { ModalModule } from './modal.module';
 // To render it in isolation we provide a `ModalComponent` at this host's level so
 // DI resolves — mirroring how the shell hosts the container in production.
 @Component({
+  standalone: true,
+  imports: [ModalModule],
   selector: 'd-modal-anatomy-container',
   template: `
     <div style="width:480px; border:1px solid #ececec; border-radius:6px; overflow:hidden;">
@@ -51,6 +53,8 @@ export class DModalAnatomyContainer {
 // ──────────────────────────────────────────────────────────────────────────
 
 @Component({
+  standalone: true,
+  imports: [CommonModule, ModalModule],
   selector: 'd-modal-demo',
   template: `
     <ng-template #content let-modal="modalInstance">
@@ -118,8 +122,7 @@ const meta: Meta<DModalDemo> = {
   component: DModalDemo,
   decorators: [
     moduleMetadata({
-      imports: [CommonModule, ModalModule],
-      declarations: [DModalDemo, DModalAnatomyContainer],
+      imports: [CommonModule, ModalModule, DModalDemo, DModalAnatomyContainer],
     }),
     applicationConfig({ providers: [provideAnimations()] }),
   ],

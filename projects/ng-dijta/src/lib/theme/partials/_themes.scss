@@ -1,0 +1,54 @@
+// Persian Blue is the default theme — tokens live in _default.scss.
+// Apply these classes to <body> (or any container) to switch themes.
+
+// ─── Tune / Arise theme ───────────────────────────────────────────────────────
+// Apply with: <body class="dx-theme-tune">
+
+.dx-theme-tune {
+  --primary-base:      #cc0000;
+  --primary-on-base:   #ffffff;
+  --primary-light:     #ff0000;
+  --primary-on-light:  #ffffff;
+  --primary-dark:      #990000;
+  --primary-on-dark:   #ffffff;
+  --primary-hover:     #cc0000;
+  --primary-on-hover:  #ffffff;
+  --two-toned:         #f2994a;
+  --primary-opacity-20: rgba(255, 85, 85, 0.2);
+  --primary-opacity-10: rgba(255, 85, 85, 0.1);
+  --secondary-base:        #f2994a;
+  --secondary-on-base:     #ffffff;
+  --secondary-opacity-70:  rgba(242, 153, 74, 0.7);
+  --secondary-opacity-20:  rgba(242, 153, 74, 0.2);
+  --secondary-opacity-10:  rgba(242, 153, 74, 0.1);
+  --background-base:   #f6f7fb;
+  --background-light:  #f6f7fb;
+  --alert-success:     #27ae60;
+  --alert-error:       #e94545;
+}
+
+// ─── SeaNeo / Optus theme ─────────────────────────────────────────────────────
+// Apply with: <body class="dx-theme-optus">
+
+.dx-theme-optus {
+  --primary-base:      #388188;
+  --primary-on-base:   #ffffff;
+  --primary-light:     #4c8e94;
+  --primary-on-light:  #ffffff;
+  --primary-dark:      #2d676d;
+  --primary-on-dark:   #ffffff;
+  --primary-hover:     #4c8e94;
+  --primary-on-hover:  #ffffff;
+  --two-toned:         #ffe145;
+  --primary-opacity-20: rgba(41, 206, 220, 0.2);
+  --primary-opacity-10: rgba(41, 206, 220, 0.1);
+  --secondary-base:        #ffda28;
+  --secondary-on-base:     #2f2f2f;
+  --secondary-opacity-70:  rgba(255, 225, 69, 0.7);
+  --secondary-opacity-20:  rgba(255, 225, 69, 0.2);
+  --secondary-opacity-10:  rgba(255, 225, 69, 0.1);
+  --background-base:   #f6f7fb;
+  --background-light:  #f6f7fb;
+  --alert-success:     #27ae60;
+  --alert-error:       #e94545;
+}

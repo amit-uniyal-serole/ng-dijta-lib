@@ -1,0 +1,181 @@
+<div class="dx-ie-page">
+
+  <!-- ── Intro ────────────────────────────────────────────────────────── -->
+  <section class="dx-ie-section">
+    <h2 class="dx-ie-section__title">Icon Primitive</h2>
+    <p class="dx-ie-section__desc">
+      <code>&lt;dx-icon&gt;</code> is a thin, token-aligned wrapper around Angular Material's
+      <code>mat-icon</code>. It standardises icon sizing, font-set selection, and accessibility
+      handling across the library — decorative icons are hidden from screen readers by default,
+      and semantic icons opt-in via <code>ariaLabel</code>.
+    </p>
+    <code class="dx-ie-usage">
+      &lt;dx-icon name="notifications" size="md" fontSet="outlined"&gt;&lt;/dx-icon&gt;
+    </code>
+  </section>
+
+  <!-- ── Size Scale ───────────────────────────────────────────────────── -->
+  <section class="dx-ie-section">
+    <h2 class="dx-ie-section__title">Size Scale</h2>
+    <p class="dx-ie-section__desc">
+      5-step scale mapped to <code>rem</code> units. Choose a step to see the icon rendered at
+      that size. All steps stay in rhythm with the spacing scale.
+    </p>
+
+    <div class="dx-ie-size-cards">
+      @for (s of sizes; track s.name) {
+        <button
+          class="dx-ie-size-card"
+          [class.dx-ie-size-card--active]="selectedSize === s.name"
+          (click)="selectSize(s.name)"
+        >
+          <dx-icon name="star" [size]="s.name" class="dx-ie-size-card__icon"></dx-icon>
+          <code class="dx-ie-size-card__label">{{ s.name }}</code>
+          <span class="dx-ie-size-card__rem">{{ s.rem }}</span>
+          <span class="dx-ie-size-card__px">{{ s.px }} px</span>
+          <span class="dx-ie-size-card__usage">{{ s.usage }}</span>
+        </button>
+      }
+    </div>
+
+    <!-- Live preview -->
+    <div class="dx-ie-size-preview">
+      <span class="dx-ie-size-preview__label">Preview — size="{{ selected.name }}"</span>
+      <div class="dx-ie-size-preview__row">
+        <dx-icon name="home"          [size]="selectedSize"></dx-icon>
+        <dx-icon name="notifications" [size]="selectedSize"></dx-icon>
+        <dx-icon name="settings"      [size]="selectedSize"></dx-icon>
+        <dx-icon name="search"        [size]="selectedSize"></dx-icon>
+        <dx-icon name="close"         [size]="selectedSize"></dx-icon>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Font Sets ────────────────────────────────────────────────────── -->
+  <section class="dx-ie-section">
+    <h2 class="dx-ie-section__title">Font Sets</h2>
+    <p class="dx-ie-section__desc">
+      Switch between Material icon font variants via the <code>fontSet</code> input.
+      The same set of icons renders in a different visual style depending on the variant chosen.
+    </p>
+
+    <div class="dx-ie-fontset-cards">
+      @for (fs of fontSets; track fs.name) {
+        <button
+          class="dx-ie-fontset-card"
+          [class.dx-ie-fontset-card--active]="selectedFontSet === fs.name"
+          (click)="selectFontSet(fs.name)"
+        >
+          <div class="dx-ie-fontset-card__icons">
+            @for (icon of sampleIcons.slice(0, 5); track icon) {
+              <dx-icon [name]="icon" [fontSet]="fs.name" size="sm"></dx-icon>
+            }
+          </div>
+          <span class="dx-ie-fontset-card__label">{{ fs.label }}</span>
+          <span class="dx-ie-fontset-card__desc">{{ fs.description }}</span>
+        </button>
+      }
+    </div>
+
+    <!-- Live comparison row -->
+    <div class="dx-ie-fontset-compare">
+      @for (fs of fontSets; track fs.name) {
+        <div class="dx-ie-fontset-compare__col" [class.dx-ie-fontset-compare__col--active]="selectedFontSet === fs.name">
+          <span class="dx-ie-fontset-compare__name">{{ fs.label }}</span>
+          @for (icon of sampleIcons; track icon) {
+            <dx-icon [name]="icon" [fontSet]="fs.name" size="md"></dx-icon>
+          }
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- ── Accessibility ────────────────────────────────────────────────── -->
+  <section class="dx-ie-section">
+    <h2 class="dx-ie-section__title">Accessibility</h2>
+    <p class="dx-ie-section__desc">
+      <code>dx-icon</code> applies <code>aria-hidden="true"</code> to the host by default — correct
+      for decorative icons. Pass <code>ariaLabel</code> to make an icon semantic; the label is
+      announced by screen readers and <code>aria-hidden</code> is automatically removed.
+    </p>
+
+    <div class="dx-ie-a11y-cards">
+
+      <div class="dx-ie-a11y-card">
+        <div class="dx-ie-a11y-card__header dx-ie-a11y-card__header--decorative">
+          <dx-icon name="visibility_off" size="sm"></dx-icon>
+          Decorative (default)
+        </div>
+        <p class="dx-ie-a11y-card__body">
+          The icon conveys no meaning — it is visual reinforcement only.
+          <code>aria-hidden="true"</code> is set automatically; no attribute needed in the template.
+        </p>
+        <code class="dx-ie-a11y-card__snippet">&lt;dx-icon name="close"&gt;&lt;/dx-icon&gt;</code>
+        <div class="dx-ie-a11y-card__demo">
+          <dx-icon name="close" size="lg"></dx-icon>
+        </div>
+      </div>
+
+      <div class="dx-ie-a11y-card">
+        <div class="dx-ie-a11y-card__header dx-ie-a11y-card__header--semantic">
+          <dx-icon name="record_voice_over" size="sm"></dx-icon>
+          Semantic (ariaLabel)
+        </div>
+        <p class="dx-ie-a11y-card__body">
+          The icon carries meaning on its own (e.g. icon-only button).
+          Set <code>ariaLabel</code> to the translated string — <code>aria-hidden</code>
+          is removed automatically.
+        </p>
+        <code class="dx-ie-a11y-card__snippet">&lt;dx-icon name="notifications"
+  [ariaLabel]="'dx.aria.notifications' | transloco"&gt;
+&lt;/dx-icon&gt;</code>
+        <div class="dx-ie-a11y-card__demo">
+          <dx-icon name="notifications" ariaLabel="Notifications" size="lg"></dx-icon>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Icon Gallery ─────────────────────────────────────────────────── -->
+  <section class="dx-ie-section">
+    <h2 class="dx-ie-section__title">Icon Gallery</h2>
+    <p class="dx-ie-section__desc">
+      Common Material icon names ready to use with <code>&lt;dx-icon&gt;</code>.
+      Click any icon to copy its name to the clipboard.
+    </p>
+
+    <div class="dx-ie-gallery-search">
+      <mat-icon class="dx-ie-gallery-search__icon" aria-hidden="true">search</mat-icon>
+      <input
+        class="dx-ie-gallery-search__input"
+        type="text"
+        placeholder="Filter icons…"
+        [(ngModel)]="searchQuery"
+        aria-label="Filter icon gallery"
+      />
+    </div>
+
+    @if (filteredIcons.length === 0) {
+      <p class="dx-ie-gallery-empty">No icons match "{{ searchQuery }}".</p>
+    }
+
+    <div class="dx-ie-gallery">
+      @for (icon of filteredIcons; track icon) {
+        <button
+          class="dx-ie-gallery-item"
+          [class.dx-ie-gallery-item--copied]="copiedIcon === icon"
+          (click)="copyIcon(icon)"
+          [attr.aria-label]="'Copy icon name: ' + icon"
+        >
+          <dx-icon [name]="icon" size="md" class="dx-ie-gallery-item__icon"></dx-icon>
+          <span class="dx-ie-gallery-item__name">{{ icon }}</span>
+          @if (copiedIcon === icon) {
+            <span class="dx-ie-gallery-item__copied">copied</span>
+          }
+        </button>
+      }
+    </div>
+  </section>
+
+</div>

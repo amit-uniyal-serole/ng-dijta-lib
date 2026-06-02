@@ -133,7 +133,8 @@ import { MatDialogModule } from "@angular/material/dialog";
     MatFormFieldModule,
     LocalizedNumberPipe,
     DxInputPhoneModule,
-    MatDialogModule
+    MatDialogModule,
+    DxPopupComponent,
 ],
   declarations: [
     DxTableComponent,
@@ -185,7 +186,6 @@ import { MatDialogModule } from "@angular/material/dialog";
     DxDefaultComponent,
     DxFlatActionComponent,
     InlineEditTableComponent,
-    DxPopupComponent
   ],
   exports: [
     DxTableComponent,
@@ -236,7 +236,7 @@ import { MatDialogModule } from "@angular/material/dialog";
     AbilityModule,
     DxFlatActionComponent,
     InlineEditTableComponent,
-    DxPopupComponent
+    DxPopupComponent,
   ]
 })
 export class FlexTableModule { }

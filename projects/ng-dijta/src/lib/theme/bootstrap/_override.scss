@@ -1,3 +1,67 @@
+@import '../partials/variables';
+
+// Override Bootstrap's default spacing scale with $spacers.
+// Bootstrap level 5 is 3rem by default; we override to 2rem.
+// All properties use !important to match Bootstrap's own utility specificity.
+@each $size, $value in $spacers {
+  .p-#{$size}           { padding: $value !important; }
+  .pt-#{$size}          { padding-top: $value !important; }
+  .pb-#{$size}          { padding-bottom: $value !important; }
+  .ps-#{$size}          { padding-left: $value !important; }
+  .pe-#{$size}          { padding-right: $value !important; }
+  .px-#{$size}          { padding-left: $value !important; padding-right: $value !important; }
+  .py-#{$size}          { padding-top: $value !important; padding-bottom: $value !important; }
+
+  .m-#{$size}           { margin: $value !important; }
+  .mt-#{$size}          { margin-top: $value !important; }
+  .mb-#{$size}          { margin-bottom: $value !important; }
+  .ms-#{$size}          { margin-left: $value !important; }
+  .me-#{$size}          { margin-right: $value !important; }
+  .mx-#{$size}          { margin-left: $value !important; margin-right: $value !important; }
+  .my-#{$size}          { margin-top: $value !important; margin-bottom: $value !important; }
+
+  .gap-#{$size}         { gap: $value !important; }
+  .row-gap-#{$size}     { row-gap: $value !important; }
+  .column-gap-#{$size}  { column-gap: $value !important; }
+}
+
+// dx-shadow-* utility classes — one class per shadow token level.
+@each $name, $value in $dx-shadows {
+  .dx-shadow-#{$name} { box-shadow: $value !important; }
+}
+
+// dx-text-* / dx-bg-* color utility classes — mirrors $dx-colors map.
+@each $name, $value in $dx-colors {
+  .dx-text-#{$name} { color: $value !important; }
+  .dx-bg-#{$name}   { background-color: $value !important; }
+}
+
+// dx-fs-* font-size utility classes — mirrors $dx-font-sizes map.
+// Separate prefix from dx-text-* (color) to avoid naming conflicts.
+@each $name, $value in $dx-font-sizes {
+  .dx-fs-#{$name} { font-size: $value !important; }
+}
+
+// dx-fw-* font-weight utility classes — mirrors $dx-font-weights map.
+@each $name, $value in $dx-font-weights {
+  .dx-fw-#{$name} { font-weight: $value !important; }
+}
+
+// dx-rounded-* utility classes — Bootstrap-style border-radius utilities.
+// Uses $dx-radii map so every class references the --dx-radius-* CSS token.
+@each $name, $value in $dx-radii {
+  .dx-rounded-#{$name}        { border-radius: $value !important; }
+  .dx-rounded-top-#{$name}    { border-top-left-radius: $value !important; border-top-right-radius: $value !important; }
+  .dx-rounded-bottom-#{$name} { border-bottom-left-radius: $value !important; border-bottom-right-radius: $value !important; }
+  .dx-rounded-start-#{$name}  { border-top-left-radius: $value !important; border-bottom-left-radius: $value !important; }
+  .dx-rounded-end-#{$name}    { border-top-right-radius: $value !important; border-bottom-right-radius: $value !important; }
+}
+
+// dx-z-* z-index utility classes — mirrors $dx-z-index map.
+// Each class applies z-index via the corresponding --dx-z-* CSS token.
+@each $name, $value in $dx-z-index {
+  .dx-z-#{$name} { z-index: var(--dx-z-#{$name}, #{$value}) !important; }
+}
 
 .dx-typography {
     .nav-pills {

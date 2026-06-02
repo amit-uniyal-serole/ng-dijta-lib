@@ -14,6 +14,8 @@ import { MatButtonModule } from '@angular/material/button';
 // ──────────────────────────────────────────────────────────────────────────
 
 @Component({
+  standalone: true,
+  imports: [DxDrawerModule, MatButtonModule],
   selector: 'dx-drawer-launcher',
   template: `
     <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start;">
@@ -40,13 +42,13 @@ import { MatButtonModule } from '@angular/material/button';
         [dxWrapClassName]="wrapClassName"
         (dxOnClose)="visible = false"
         (dxVisibleChange)="onVisibleChange($event)">
-        <dx-drawer-content>
+        <ng-template dxDrawerContent>
           <div style="padding:16px; line-height:1.6;">
             <p style="margin-top:0;"><strong>{{ title || 'Drawer body' }}</strong></p>
             <p>{{ body }}</p>
-            <p style="margin:0;">Place anything inside <code>&lt;dx-drawer-content&gt;</code> — forms, tables, summaries.</p>
+            <p style="margin:0;">Place anything inside a <code>dxDrawerContent</code> template — forms, tables, summaries.</p>
           </div>
-        </dx-drawer-content>
+        </ng-template>
       </dx-drawer>
     </div>
   `,
@@ -84,8 +86,7 @@ const meta: Meta<DxDrawerLauncher> = {
   component: DxDrawerLauncher,
   decorators: [
     moduleMetadata({
-      imports: [DxDrawerModule, MatButtonModule],
-      declarations: [DxDrawerLauncher],
+      imports: [DxDrawerLauncher],
     }),
     applicationConfig({ providers: [provideAnimations()] }),
   ],

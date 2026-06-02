@@ -1,0 +1,229 @@
+<div class="dx-br-page">
+
+  <!-- ── Scale Overview ──────────────────────────────────────────────── -->
+  <section class="dx-br-section">
+    <h2 class="dx-br-section__title">Border Radius Scale</h2>
+    <p class="dx-br-section__desc">
+      3-step token scale plus <code>rounded-circle</code> (50%) at 20 px root.
+      Reference via <code>var(--dx-radius-*)</code> — never hardcode corner values.
+    </p>
+
+    <div class="dx-br-scale">
+      @for (token of tokens; track token.name) {
+        <button
+          class="dx-br-card"
+          [class.dx-br-card--active]="selectedSize === token.name"
+          (click)="select(token.name)"
+        >
+          <div class="dx-br-card__preview">
+            <div
+              class="dx-br-card__box"
+              [style.border-radius]="radiusStyle(token)"
+            ></div>
+          </div>
+
+          <code class="dx-br-card__token">{{ token.token }}</code>
+
+          <div class="dx-br-card__row">
+            <span class="dx-br-card__size">{{ token.name }}</span>
+            <span class="dx-br-card__divider">·</span>
+            <span class="dx-br-card__value">{{ token.value }}</span>
+            @if (token.px !== null) {
+              <span class="dx-br-card__divider">·</span>
+              <span class="dx-br-card__px">{{ token.px }} px</span>
+            }
+          </div>
+          <span class="dx-br-card__usage">{{ token.usage }}</span>
+        </button>
+      }
+    </div>
+  </section>
+
+  <!-- ── Applied to Elements ─────────────────────────────────────────── -->
+  <section class="dx-br-section">
+    <h2 class="dx-br-section__title">Applied to Elements</h2>
+
+    <!-- Controls: size + direction -->
+    <div class="dx-br-controls">
+
+      <!-- Size -->
+      <div class="dx-br-controls__group">
+        <span class="dx-br-controls__label">Size</span>
+        <div class="dx-br-btn-row">
+          @for (token of tokens; track token.name) {
+            <button
+              class="dx-br-size-btn"
+              [class.dx-br-size-btn--active]="selectedSize === token.name"
+              (click)="select(token.name)"
+            >
+              {{ token.name }}
+              @if (token.px !== null) {
+                <span class="dx-br-size-btn__px">{{ token.px }} px</span>
+              } @else {
+                <span class="dx-br-size-btn__px">50%</span>
+              }
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="dx-br-controls__divider"></div>
+
+      <!-- Direction -->
+      <div class="dx-br-controls__group">
+        <span class="dx-br-controls__label">Direction</span>
+        <div class="dx-br-btn-row">
+          @for (dir of directions; track dir.name) {
+            <button
+              class="dx-br-size-btn"
+              [class.dx-br-size-btn--active]="selectedDirection === dir.name"
+              (click)="selectDirection(dir.name)"
+            >
+              {{ dir.label }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Active class hint -->
+      <span class="dx-br-controls__hint dx-br-controls__hint--class">
+        <code>{{ demoClass }}</code>
+      </span>
+
+    </div>
+
+    <!-- Gallery -->
+    <div class="dx-br-gallery">
+
+      <!-- Avatar / Icon (best demonstrates rounded-circle) -->
+      <div class="dx-br-row">
+        <span class="dx-br-row__label">Avatar · Icon</span>
+        <div class="dx-br-row__items">
+          <div class="dx-br-el-avatar" [ngStyle]="demoStyles">AB</div>
+          <div class="dx-br-el-avatar dx-br-el-avatar--b" [ngStyle]="demoStyles">JD</div>
+          <div class="dx-br-el-avatar dx-br-el-avatar--c" [ngStyle]="demoStyles">
+            <mat-icon aria-hidden="true">person</mat-icon>
+          </div>
+          <div class="dx-br-el-avatar dx-br-el-avatar--d" [ngStyle]="demoStyles">
+            <mat-icon aria-hidden="true">notifications</mat-icon>
+          </div>
+        </div>
+      </div>
+
+      <!-- Button -->
+      <div class="dx-br-row">
+        <span class="dx-br-row__label">Button</span>
+        <div class="dx-br-row__items">
+          <button
+            class="dx-br-el-btn dx-br-el-btn--primary"
+            [ngStyle]="demoStyles"
+          >
+            Primary
+          </button>
+          <button
+            class="dx-br-el-btn dx-br-el-btn--outline"
+            [ngStyle]="demoStyles"
+          >
+            Outline
+          </button>
+          <button
+            class="dx-br-el-btn dx-br-el-btn--ghost"
+            [ngStyle]="demoStyles"
+          >
+            Ghost
+          </button>
+        </div>
+      </div>
+
+      <!-- Chip / Badge -->
+      <div class="dx-br-row">
+        <span class="dx-br-row__label">Chip · Badge</span>
+        <div class="dx-br-row__items">
+          <span class="dx-br-el-chip"               [ngStyle]="demoStyles">Design</span>
+          <span class="dx-br-el-chip dx-br-el-chip--success" [ngStyle]="demoStyles">Active</span>
+          <span class="dx-br-el-chip dx-br-el-chip--warning" [ngStyle]="demoStyles">Pending</span>
+          <span class="dx-br-el-chip dx-br-el-chip--error"   [ngStyle]="demoStyles">Error</span>
+        </div>
+      </div>
+
+      <!-- Input -->
+      <div class="dx-br-row">
+        <span class="dx-br-row__label">Input</span>
+        <div class="dx-br-row__items">
+          <div class="dx-br-el-input" [ngStyle]="demoStyles">
+            <span class="dx-br-el-input__label">Email address</span>
+            <span class="dx-br-el-input__value">user&#64;example.com</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card -->
+      <div class="dx-br-row">
+        <span class="dx-br-row__label">Card</span>
+        <div class="dx-br-row__items">
+          <div class="dx-br-el-card" [ngStyle]="demoStyles">
+            <div class="dx-br-el-card__header">
+              <span class="dx-br-el-card__title">Card Title</span>
+            </div>
+            <div class="dx-br-el-card__body">
+              A card container uses <code>--dx-radius-lg</code> for its outer frame
+              and <code>--dx-radius-md</code> for inner elements.
+            </div>
+            <div class="dx-br-el-card__footer">
+              <button class="dx-br-el-btn dx-br-el-btn--primary" [ngStyle]="demoStyles">
+                Action
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Utility Class Reference ─────────────────────────────────────── -->
+  <section class="dx-br-section">
+    <h2 class="dx-br-section__title">Utility Classes</h2>
+    <p class="dx-br-section__desc">
+      Generated from <code>$dx-radii</code> map — every class references a
+      <code>--dx-radius-*</code> token. Click any chip to copy.
+    </p>
+
+    <div class="dx-br-ref">
+      <!-- Header -->
+      <div class="dx-br-ref__row dx-br-ref__row--header">
+        <div class="dx-br-ref__prop-col">Property</div>
+        <div class="dx-br-ref__chips-col">
+          @for (name of radiusNames; track name) {
+            <span class="dx-br-ref__head">{{ name }}</span>
+          }
+        </div>
+      </div>
+
+      @for (group of radiusGroups; track group.prefix) {
+        <div class="dx-br-ref__row">
+          <div class="dx-br-ref__prop">
+            <code class="dx-br-ref__prop-name">{{ group.property }}</code>
+            <span class="dx-br-ref__css-prop">{{ group.cssProperty }}</span>
+          </div>
+          <div class="dx-br-ref__chips">
+            @for (name of radiusNames; track name) {
+              <button
+                class="dx-br-chip"
+                [class.dx-br-chip--copied]="copiedClass === (group.prefix + '-' + name)"
+                (click)="copyClass(group.prefix + '-' + name)"
+                [title]="group.cssProperty + ': var(--dx-radius-' + name + ')'">
+                @if (copiedClass === (group.prefix + '-' + name)) {
+                  <mat-icon class="dx-br-chip__icon">check</mat-icon>
+                } @else {
+                  {{ group.prefix }}-{{ name }}
+                }
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+</div>

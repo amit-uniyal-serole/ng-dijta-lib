@@ -1,0 +1,90 @@
+<div class="dx-color-palette">
+
+  <!-- ── Theme Palettes ────────────────────────────────────── -->
+  <section class="dx-cp-section">
+    <div class="dx-cp-section__header">
+      <h2 class="dx-cp-section__title">Theme Palettes</h2>
+      <div class="dx-cp-theme-toggle" role="group" aria-label="Select theme">
+        @for (theme of themes; track theme.key) {
+          <button
+            class="dx-cp-theme-btn"
+            [class.dx-cp-theme-btn--active]="activeThemeKey === theme.key"
+            (click)="activeThemeKey = theme.key"
+            type="button"
+          >{{ theme.name }}</button>
+        }
+      </div>
+    </div>
+
+    @for (group of activeTheme.groups; track group.title) {
+      <div class="dx-cp-group">
+        <h3 class="dx-cp-group__title">{{ group.title }}</h3>
+        <div class="dx-cp-swatches">
+          @for (swatch of group.swatches; track swatch.name) {
+            <div class="dx-cp-card" [class.dx-cp-card--bordered]="swatch.darkText && swatch.hex === '#ffffff'">
+              <div class="dx-cp-card__swatch" [style.background]="swatch.hex"></div>
+              <div class="dx-cp-card__info">
+                <span class="dx-cp-card__name">{{ swatch.name }}</span>
+                <div class="dx-cp-card__divider"></div>
+                <span class="dx-cp-card__hex">{{ hexLabel(swatch.hex) }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </section>
+
+  <!-- ── Alert Colors ──────────────────────────────────────── -->
+  <section class="dx-cp-section">
+    <div class="dx-cp-section__header">
+      <h2 class="dx-cp-section__title">Alert Colors</h2>
+      <span class="dx-cp-section__note">Shared across all themes</span>
+    </div>
+
+    @for (group of alertGroups; track group.title) {
+      <div class="dx-cp-group">
+        <h3 class="dx-cp-group__title">{{ group.title }}</h3>
+        <div class="dx-cp-swatches">
+          @for (swatch of group.swatches; track swatch.name) {
+            <div class="dx-cp-card">
+              <div class="dx-cp-card__swatch" [style.background]="swatch.hex"></div>
+              <div class="dx-cp-card__info">
+                <span class="dx-cp-card__name">{{ swatch.name }}</span>
+                <div class="dx-cp-card__divider"></div>
+                <span class="dx-cp-card__hex">{{ hexLabel(swatch.hex) }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </section>
+
+  <!-- ── Element Colors ────────────────────────────────────── -->
+  <section class="dx-cp-section">
+    <div class="dx-cp-section__header">
+      <h2 class="dx-cp-section__title">Element Colors</h2>
+      <span class="dx-cp-section__note">Shared across all themes</span>
+    </div>
+
+    @for (group of elementGroups; track group.title) {
+      <div class="dx-cp-group">
+        <h3 class="dx-cp-group__title">{{ group.title }}</h3>
+        <div class="dx-cp-swatches">
+          @for (swatch of group.swatches; track swatch.name) {
+            <div class="dx-cp-card" [class.dx-cp-card--bordered]="swatch.darkText">
+              <div class="dx-cp-card__swatch" [style.background]="swatch.hex"></div>
+              <div class="dx-cp-card__info">
+                <span class="dx-cp-card__name">{{ swatch.name }}</span>
+                <div class="dx-cp-card__divider"></div>
+                <span class="dx-cp-card__hex">{{ hexLabel(swatch.hex) }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </section>
+
+</div>

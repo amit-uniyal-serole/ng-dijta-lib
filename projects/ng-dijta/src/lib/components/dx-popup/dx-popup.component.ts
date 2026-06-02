@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
+  standalone: true,
+  imports: [CommonModule, MatDialogModule, TranslocoModule],
   selector: 'dx-popup',
   templateUrl: './dx-popup.component.html',
   styleUrls: ['./dx-popup.component.css']

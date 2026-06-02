@@ -1,0 +1,129 @@
+<div class="dx-shadow-page">
+
+  <!-- ── Scale Overview ──────────────────────────────────────────────── -->
+  <section class="dx-sh-section">
+    <h2 class="dx-sh-section__title">Elevation Scale</h2>
+    <p class="dx-sh-section__desc">
+      8-level shadow scale from <code>none</code> to <code>2xl</code>.
+      Use <code>var(--dx-shadow-*)</code> or the generated <code>.dx-shadow-*</code> utility classes.
+    </p>
+
+    <div class="dx-sh-scale">
+      @for (token of tokens; track token.name) {
+        <button
+          class="dx-sh-card"
+          [class.dx-sh-card--active]="selectedShadow === token.name"
+          (click)="selectShadow(token.name)"
+        >
+          <div class="dx-sh-card__stage">
+            <div
+              class="dx-sh-card__swatch"
+              [style.box-shadow]="'var(' + token.token + ')'"
+            ></div>
+          </div>
+
+          <code class="dx-sh-card__token">{{ token.token }}</code>
+
+          <div class="dx-sh-card__row">
+            <span class="dx-sh-card__name">{{ token.name }}</span>
+            @if (token.layers > 1) {
+              <span class="dx-sh-card__layers">{{ token.layers }} layers</span>
+            }
+          </div>
+        </button>
+      }
+    </div>
+  </section>
+
+  <!-- ── Interactive Demo ────────────────────────────────────────────── -->
+  <section class="dx-sh-section">
+    <h2 class="dx-sh-section__title">Applied to Elements</h2>
+
+    <div class="dx-sh-demo">
+
+      <!-- Selector + active class -->
+      <div class="dx-sh-controls">
+        @for (token of tokens; track token.name) {
+          <button
+            class="dx-sh-ctrl-btn"
+            [class.dx-sh-ctrl-btn--active]="selectedShadow === token.name"
+            (click)="selectShadow(token.name)"
+          >
+            {{ token.name }}
+          </button>
+        }
+        <span class="dx-sh-controls__hint">
+          <code>dx-shadow-{{ selectedShadow }}</code>
+        </span>
+      </div>
+
+      <!-- Canvas -->
+      <div class="dx-sh-canvas">
+
+        <!-- Card -->
+        <div class="dx-sh-el-card" [ngStyle]="demoStyle">
+          <div class="dx-sh-el-card__header">Card Title</div>
+          <div class="dx-sh-el-card__body">
+            Content inside a card elevated with
+            <code>var({{ selected.token }})</code>.
+          </div>
+          <div class="dx-sh-el-card__footer">
+            <button class="dx-sh-el-btn dx-sh-el-btn--primary" [ngStyle]="demoStyle">Action</button>
+            <button class="dx-sh-el-btn dx-sh-el-btn--ghost">Cancel</button>
+          </div>
+        </div>
+
+        <!-- Right column: input + image placeholder -->
+        <div class="dx-sh-el-col">
+
+          <div class="dx-sh-el-input" [ngStyle]="demoStyle">
+            <span class="dx-sh-el-input__label">Search</span>
+            <span class="dx-sh-el-input__value">Enter keyword…</span>
+          </div>
+
+          <div class="dx-sh-el-image" [ngStyle]="demoStyle">
+            <mat-icon class="dx-sh-el-image__icon" aria-hidden="true">image</mat-icon>
+          </div>
+
+          <div class="dx-sh-el-chip-row">
+            <span class="dx-sh-el-chip" [ngStyle]="demoStyle">Design</span>
+            <span class="dx-sh-el-chip" [ngStyle]="demoStyle">System</span>
+            <span class="dx-sh-el-chip" [ngStyle]="demoStyle">Token</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- CSS value -->
+      <div class="dx-sh-value-block">
+        <span class="dx-sh-value-block__label">CSS value</span>
+        <code class="dx-sh-value-block__value">{{ selected.cssValue }}</code>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Utility Class Reference ─────────────────────────────────────── -->
+  <section class="dx-sh-section">
+    <h2 class="dx-sh-section__title">Utility Classes</h2>
+    <p class="dx-sh-section__desc">Click any chip to copy the class name.</p>
+
+    <div class="dx-sh-chips">
+      @for (token of tokens; track token.name) {
+        <button
+          class="dx-sh-chip-btn"
+          [class.dx-sh-chip-btn--copied]="copiedClass === ('dx-shadow-' + token.name)"
+          (click)="copyClass('dx-shadow-' + token.name)"
+          [title]="'box-shadow: var(' + token.token + ')'">
+          @if (copiedClass === ('dx-shadow-' + token.name)) {
+            <mat-icon class="dx-sh-chip-btn__icon">check</mat-icon>
+          } @else {
+            dx-shadow-{{ token.name }}
+          }
+        </button>
+      }
+    </div>
+  </section>
+
+</div>

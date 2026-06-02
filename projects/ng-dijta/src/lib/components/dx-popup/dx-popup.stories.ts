@@ -36,6 +36,8 @@ const stubDialogRef = {
 // that: it frames the popup and pushes the values onto the child after view
 // init, so the inline stories reflect real usage.
 @Component({
+  standalone: true,
+  imports: [DxPopupComponent],
   selector: 'dx-popup-host',
   template: `
     <div style="max-width:480px; padding:16px 20px; border:1px solid #e0e0e0; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,0.08); background:#fff;">
@@ -69,6 +71,8 @@ const inlineRender = (title: string, description: string[]) => ({
 // ──────────────────────────────────────────────────────────────────────────
 
 @Component({
+  standalone: true,
+  imports: [MatButtonModule],
   selector: 'dx-popup-launcher',
   template: `
     <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start;">
@@ -92,8 +96,7 @@ const meta: Meta<DxPopupComponent> = {
   component: DxPopupComponent,
   decorators: [
     moduleMetadata({
-      imports: [CommonModule, MatDialogModule, MatButtonModule, TranslocoModule],
-      declarations: [DxPopupComponent, DxPopupLauncher, DxPopupHost],
+      imports: [MatDialogModule, DxPopupHost, DxPopupLauncher],
     }),
     applicationConfig({ providers: [provideAnimations()] }),
   ],

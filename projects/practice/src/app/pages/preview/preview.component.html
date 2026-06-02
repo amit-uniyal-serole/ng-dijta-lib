@@ -1,0 +1,444 @@
+<div class="dx-preview-wrapper">
+
+  <!-- ═══════════════════ LIVE CANVAS ═══════════════════ -->
+  <div class="dx-preview-canvas">
+    <div class="dx-canvas-card">
+
+      @switch (selector) {
+
+        @case ('dx-input') {
+          <form [formGroup]="fg">
+            @if (getVal('outline', '') === 'outer-label') {
+              <dx-input outline="outer-label" formControlName="normal"
+                (focus)="logEvent('focus', null)" (blur)="logEvent('blur', null)">
+                <div dxLabel>Text Input</div>
+              </dx-input>
+            } @else {
+              <dx-input formControlName="normal"
+                (focus)="logEvent('focus', null)" (blur)="logEvent('blur', null)">
+                <dx-label>Text Input</dx-label>
+              </dx-input>
+            }
+          </form>
+        }
+
+        @case ('dx-select') {
+          <form [formGroup]="fg">
+            @if (getVal('outline', '') === 'outer-label') {
+              <dx-select [options]="options" outline="outer-label" formControlName="normal"
+                (selectionChange)="logEvent('selectionChange', $event)">
+                <div dxLabel>Select</div>
+              </dx-select>
+            } @else {
+              <dx-select [options]="options" formControlName="normal"
+                (selectionChange)="logEvent('selectionChange', $event)">
+                <dx-label>Select</dx-label>
+              </dx-select>
+            }
+          </form>
+        }
+
+        @case ('dx-autocomplete-select') {
+          <form [formGroup]="fg">
+            @if (getVal('outline', '') === 'outer-label') {
+              <dx-autocomplete-select [options]="options" outline="outer-label" formControlName="normal">
+                <div dxLabel>Autocomplete</div>
+              </dx-autocomplete-select>
+            } @else {
+              <dx-autocomplete-select [options]="options" formControlName="normal">
+                <dx-label>Autocomplete</dx-label>
+              </dx-autocomplete-select>
+            }
+          </form>
+        }
+
+        @case ('dx-chip-autocomplete') {
+          <form [formGroup]="fg">
+            @if (getVal('outline', '') === 'outer-label') {
+              <dx-chip-autocomplete [options]="options" outline="outer-label" formControlName="normal">
+                <div dxLabel>Chip Autocomplete</div>
+              </dx-chip-autocomplete>
+            } @else {
+              <dx-chip-autocomplete [options]="options" formControlName="normal">
+                <dx-label>Chip Autocomplete</dx-label>
+              </dx-chip-autocomplete>
+            }
+          </form>
+        }
+
+        @case ('dx-chip-select') {
+          <form [formGroup]="fg">
+            @if (getVal('outline', '') === 'outer-label') {
+              <dx-chip-select [options]="options" outline="outer-label" formControlName="normal">
+                <div dxLabel>Chip Select</div>
+              </dx-chip-select>
+            } @else {
+              <dx-chip-select [options]="options" formControlName="normal">
+                <dx-label>Chip Select</dx-label>
+              </dx-chip-select>
+            }
+          </form>
+        }
+
+        @case ('dx-tag-input') {
+          <form [formGroup]="fg">
+            @if (getVal('outline', '') === 'outer-label') {
+              <dx-tag-input outline="outer-label" formControlName="normal">
+                <div dxLabel>Tag Input</div>
+              </dx-tag-input>
+            } @else {
+              <dx-tag-input formControlName="normal">
+                <dx-label>Tag Input</dx-label>
+              </dx-tag-input>
+            }
+          </form>
+        }
+
+        @case ('dx-checkbox') {
+          <form [formGroup]="fg">
+            <dx-checkbox formControlName="normal"
+              (change)="logEvent('change', $event)">
+              <dx-label>Option A</dx-label>
+            </dx-checkbox>
+          </form>
+        }
+
+        @case ('dx-radio-button') {
+          <form [formGroup]="fg">
+            <dx-radio-button [options]="options" formControlName="normal">
+              <dx-label>Status</dx-label>
+            </dx-radio-button>
+          </form>
+        }
+
+        @case ('dx-textarea') {
+          <form [formGroup]="fg">
+            @if (getVal('outline', '') === 'outer-label') {
+              <dx-textarea outline="outer-label" formControlName="normal"
+                (focus)="logEvent('focus', null)" (blur)="logEvent('blur', null)">
+                <div dxLabel>Textarea</div>
+              </dx-textarea>
+            } @else {
+              <dx-textarea formControlName="normal"
+                (focus)="logEvent('focus', null)" (blur)="logEvent('blur', null)">
+                <dx-label>Textarea</dx-label>
+              </dx-textarea>
+            }
+          </form>
+        }
+
+        @case ('dx-number') {
+          <form [formGroup]="fg">
+            @if (getVal('outline', '') === 'outer-label') {
+              <dx-number outline="outer-label" formControlName="normal">
+                <div dxLabel>Number</div>
+              </dx-number>
+            } @else {
+              <dx-number formControlName="normal">
+                <dx-label>Number</dx-label>
+              </dx-number>
+            }
+          </form>
+        }
+
+        @case ('dx-input-currency') {
+          <form [formGroup]="fg">
+            @if (getVal('outline', '') === 'outer-label') {
+              <dx-input-currency outline="outer-label" formControlName="normal">
+                <div dxLabel>Amount</div>
+              </dx-input-currency>
+            } @else {
+              <dx-input-currency formControlName="normal">
+                <dx-label>Amount</dx-label>
+              </dx-input-currency>
+            }
+          </form>
+        }
+
+        @case ('dx-input-phone') {
+          <form [formGroup]="fg">
+            @if (getVal('outline', '') === 'outer-label') {
+              <dx-input-phone outline="outer-label" formControlName="phone">
+                <div dxLabel>Phone Number</div>
+              </dx-input-phone>
+            } @else {
+              <dx-input-phone formControlName="phone">
+                <dx-label>Phone Number</dx-label>
+              </dx-input-phone>
+            }
+          </form>
+        }
+
+        @case ('dx-input-url') {
+          <form [formGroup]="fg">
+            @if (getVal('outline', '') === 'outer-label') {
+              <dx-input-url outline="outer-label" formControlName="normal">
+                <div dxLabel>Website URL</div>
+              </dx-input-url>
+            } @else {
+              <dx-input-url formControlName="normal">
+                <dx-label>Website URL</dx-label>
+              </dx-input-url>
+            }
+          </form>
+        }
+
+        @case ('dx-image-input') {
+          <form [formGroup]="fg">
+            @if (getVal('outline', '') === 'outer-label') {
+              <dx-image-input outline="outer-label" formControlName="normal">
+                <div dxLabel>Upload Image</div>
+              </dx-image-input>
+            } @else {
+              <dx-image-input formControlName="normal">
+                <dx-label>Upload Image</dx-label>
+              </dx-image-input>
+            }
+          </form>
+        }
+
+        @case ('dx-coordinates') {
+          <form [formGroup]="fg">
+            @if (getVal('outline', '') === 'outer-label') {
+              <dx-coordinates outline="outer-label" formControlName="normal">
+                <div dxLabel>Location</div>
+              </dx-coordinates>
+            } @else {
+              <dx-coordinates formControlName="normal">
+                <dx-label>Location</dx-label>
+              </dx-coordinates>
+            }
+          </form>
+        }
+
+        @case ('dx-datepicker') {
+          <form [formGroup]="fg">
+            @if (getVal('outline', '') === 'outer-label') {
+              <dx-datepicker outline="outer-label" formControlName="normal">
+                <div dxLabel>Date</div>
+              </dx-datepicker>
+            } @else {
+              <dx-datepicker formControlName="normal">
+                <dx-label>Date</dx-label>
+              </dx-datepicker>
+            }
+          </form>
+        }
+
+        @case ('dx-daterange') {
+          <form [formGroup]="fg">
+            @if (getVal('outline', '') === 'outer-label') {
+              <dx-daterange outline="outer-label" formControlName="normal">
+                <div dxLabel>Date Range</div>
+              </dx-daterange>
+            } @else {
+              <dx-daterange formControlName="normal">
+                <dx-label>Date Range</dx-label>
+              </dx-daterange>
+            }
+          </form>
+        }
+
+        @case ('dx-datetime-picker') {
+          <form [formGroup]="fg">
+            @if (getVal('outline', '') === 'outer-label') {
+              <dx-datetime-picker outline="outer-label" formControlName="normal">
+                <div dxLabel>Date &amp; Time</div>
+              </dx-datetime-picker>
+            } @else {
+              <dx-datetime-picker formControlName="normal">
+                <dx-label>Date &amp; Time</dx-label>
+              </dx-datetime-picker>
+            }
+          </form>
+        }
+
+        @case ('dx-time-picker-input') {
+          <form [formGroup]="fg">
+            <dx-time-picker-input
+              [mode]="getVal('mode', '24h')"
+              [anteMeridiemAbbreviation]="getVal('anteMeridiemAbbreviation', 'AM')"
+              [postMeridiemAbbreviation]="getVal('postMeridiemAbbreviation', 'PM')"
+              formControlName="normal">
+              <dx-label>Time</dx-label>
+            </dx-time-picker-input>
+          </form>
+        }
+
+        @default {
+          <div class="dx-canvas-fallback">
+            <mat-icon>widgets</mat-icon>
+            <p>No live preview for <code>{{ selector }}</code>.</p>
+          </div>
+        }
+
+      }
+    </div>
+  </div>
+
+  <!-- ═══════════════════ BOTTOM PANEL ═══════════════════ -->
+  <div class="dx-preview-bottom">
+
+    <!-- Tab bar -->
+    <div class="dx-panel-tabbar">
+      <button class="dx-panel-tab" [class.dx-panel-tab--active]="activePanel === 'controls'"
+        (click)="activePanel = 'controls'">
+        <mat-icon>tune</mat-icon> Controls
+      </button>
+      <button class="dx-panel-tab" [class.dx-panel-tab--active]="activePanel === 'code'"
+        (click)="activePanel = 'code'">
+        <mat-icon>code</mat-icon> Code
+      </button>
+      <button class="dx-panel-tab" [class.dx-panel-tab--active]="activePanel === 'types'"
+        (click)="activePanel = 'types'">
+        <mat-icon>schema</mat-icon> Types
+      </button>
+      <button class="dx-panel-tab" [class.dx-panel-tab--active]="activePanel === 'events'"
+        (click)="activePanel = 'events'">
+        <mat-icon>bolt</mat-icon> Events
+        @if (eventLog.length > 0) {
+          <span class="dx-event-count">{{ eventLog.length }}</span>
+        }
+      </button>
+      <span class="dx-tabbar-spacer"></span>
+      @if (activePanel === 'controls') {
+        <button class="dx-panel-action" (click)="resetOverrides()">
+          <mat-icon>refresh</mat-icon> Reset
+        </button>
+      }
+      @if (activePanel === 'events' && eventLog.length > 0) {
+        <button class="dx-panel-action" (click)="clearEvents()">
+          <mat-icon>delete_sweep</mat-icon> Clear
+        </button>
+      }
+    </div>
+
+    <!-- ── Controls ── -->
+    @if (activePanel === 'controls') {
+      <div class="dx-panel-body">
+        @if ((currentMeta?.properties?.length ?? 0) > 0) {
+          @for (prop of currentMeta!.properties; track prop.name) {
+            <div class="dx-ctrl-row">
+              <div class="dx-ctrl-meta">
+                <span class="dx-ctrl-name">
+                  {{ prop.name }}
+                  @if (prop.required) {
+                    <span class="dx-ctrl-required-dot" title="Required"></span>
+                  }
+                </span>
+                <span class="dx-ctrl-desc">{{ prop.description }}</span>
+              </div>
+
+              <div class="dx-ctrl-widget">
+                @switch (getControlType(prop.type)) {
+
+                  @case ('boolean') {
+                    <mat-slide-toggle color="primary"
+                      [checked]="getVal(prop.name, getDefaultValue(prop))"
+                      (change)="setVal(prop.name, $event.checked)">
+                    </mat-slide-toggle>
+                  }
+
+                  @case ('toggle-group') {
+                    <mat-button-toggle-group
+                      [value]="getVal(prop.name, getDefaultValue(prop))"
+                      (change)="setVal(prop.name, $event.value)">
+                      @for (opt of getEnumOptions(prop.type); track opt) {
+                        <mat-button-toggle [value]="opt">
+                          {{ opt === '' ? 'default' : opt }}
+                        </mat-button-toggle>
+                      }
+                    </mat-button-toggle-group>
+                  }
+
+                  @case ('text') {
+                    <input class="dx-ctrl-input" type="text"
+                      [value]="getVal(prop.name, getDefaultValue(prop))"
+                      (input)="setVal(prop.name, $any($event.target).value)"
+                      placeholder="string" />
+                  }
+
+                  @case ('number') {
+                    <input class="dx-ctrl-input dx-ctrl-input--num" type="number"
+                      [value]="getVal(prop.name, getDefaultValue(prop))"
+                      (input)="setVal(prop.name, +$any($event.target).value)"
+                      placeholder="0" />
+                  }
+
+                  @default {
+                    <button class="dx-complex-badge"
+                      (click)="activePanel = 'types'"
+                      title="See Types tab for the full interface definition">
+                      {{ prop.type }}
+                      <mat-icon>open_in_new</mat-icon>
+                    </button>
+                  }
+
+                }
+              </div>
+            </div>
+          }
+        } @else {
+          <p class="dx-panel-empty">No properties defined for this component.</p>
+        }
+      </div>
+    }
+
+    <!-- ── Code ── -->
+    @if (activePanel === 'code') {
+      <div class="dx-panel-body dx-panel-body--code">
+        <div class="dx-code-toolbar">
+          <span class="dx-code-lang">HTML</span>
+          <button class="dx-copy-btn" (click)="copyCode()">
+            <mat-icon>{{ copiedCode ? 'check' : 'content_copy' }}</mat-icon>
+            {{ copiedCode ? 'Copied!' : 'Copy' }}
+          </button>
+        </div>
+        <pre class="dx-code-pre"><code class="dx-code">{{ generatedCode }}</code></pre>
+      </div>
+    }
+
+    <!-- ── Types ── -->
+    @if (activePanel === 'types') {
+      <div class="dx-panel-body">
+        @if (complexProps().length > 0) {
+          @for (prop of complexProps(); track prop.name) {
+            <div class="dx-type-block">
+              <div class="dx-type-header">
+                <code class="dx-type-prop-name">{{ prop.name }}</code>
+                <code class="dx-type-name">{{ prop.type }}</code>
+              </div>
+              @if (getTypeDef(prop.type); as def) {
+                <pre class="dx-type-def">{{ def }}</pre>
+              } @else {
+                <p class="dx-type-fallback">{{ prop.description }}</p>
+              }
+            </div>
+          }
+        } @else {
+          <p class="dx-panel-empty">All properties for this component have simple types — nothing to expand.</p>
+        }
+      </div>
+    }
+
+    <!-- ── Events ── -->
+    @if (activePanel === 'events') {
+      <div class="dx-panel-body dx-panel-body--events">
+        @if (eventLog.length === 0) {
+          <p class="dx-panel-empty">
+            Interact with the component above to see emitted events here.
+          </p>
+        } @else {
+          @for (entry of eventLog; track $index) {
+            <div class="dx-event-row" [class.dx-event-row--new]="$index === 0">
+              <span class="dx-event-ts">{{ entry.timestamp }}</span>
+              <span class="dx-event-name">{{ entry.eventName }}</span>
+              <span class="dx-event-payload">{{ entry.payload }}</span>
+            </div>
+          }
+        }
+      </div>
+    }
+
+  </div>
+</div>

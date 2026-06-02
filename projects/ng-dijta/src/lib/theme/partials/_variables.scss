@@ -153,3 +153,104 @@ $primary-light: rgba(27, 83, 228, 0.729);
 $table-header-bg: rgba(255, 255, 255, 0.612);
 
 $reset-filter:rgb(238, 62, 84);
+
+// ── Typography scale maps ─────────────────────────────────────────────────────
+// Mirrors --dx-font-size-* and --dx-font-weight-* CSS tokens in _default.scss.
+// Import this file in component SCSS to reference sizes/weights by name
+// instead of hard-coding pixel values.
+
+$dx-font-sizes: (
+  'h1':        var(--dx-font-size-h1,        48.8px),
+  'h2':        var(--dx-font-size-h2,        39.8px),
+  'h3':        var(--dx-font-size-h3,        33.2px),
+  'h4':        var(--dx-font-size-h4,        27.6px),
+  'h5':        var(--dx-font-size-h5,        23px),
+  'h6':        var(--dx-font-size-h6,        19px),
+  'subtitle':  var(--dx-font-size-subtitle,  16px),
+  'body':      var(--dx-font-size-body,      16px),
+  'subbody':   var(--dx-font-size-subbody,   14px),
+  'paragraph': var(--dx-font-size-paragraph, 12px),
+  'label':     var(--dx-font-size-label,     13px),
+  'button':    var(--dx-font-size-button,    14px),
+);
+
+$dx-font-weights: (
+  'extralight': var(--dx-font-weight-extralight, 200),
+  'light':      var(--dx-font-weight-light,      300),
+  'regular':    var(--dx-font-weight-regular,    400),
+  'medium':     var(--dx-font-weight-medium,     500),
+  'semibold':   var(--dx-font-weight-semibold,   600),
+  'bold':       var(--dx-font-weight-bold,       700),
+  'extrabold':  var(--dx-font-weight-extrabold,  800),
+);
+
+// ── Color token map ───────────────────────────────────────────────────────────
+// Mirrors the CSS custom properties in _default.scss.
+// Useful for @each loops that generate color utility classes.
+
+$dx-colors: (
+  'primary':          var(--dx-primary,          #1f3bb3),
+  'on-primary':       var(--dx-on-primary,        #ffffff),
+  'surface':          var(--dx-surface,            #ffffff),
+  'on-surface':       var(--dx-on-surface,         #2f2f2f),
+  'surface-variant':  var(--dx-surface-variant,    #f3f7ff),
+  'on-surface-variant': var(--dx-on-surface-variant, #667085),
+  'surface-card':     var(--dx-surface-card,       #ffffff),
+  'error':            var(--dx-error,              #bd3232),
+);
+
+// ── Bootstrap 5-compatible spacing scale ──────────────────────────────────────
+// Mirrors --dx-spacing-* CSS tokens (xs→1, sm→2, md→3, lg→4, xl→5).
+// Bootstrap's default level 5 is 3rem; we tighten it to 2rem.
+// Pixel equivalents at 16px root: 0 / 4px / 8px / 16px / 24px / 32px.
+$spacers: (
+  0: 0,
+  1: 0.25rem,  //  5px
+  2: 0.5rem,   // 10px
+  3: 1rem,     // 20px
+  4: 1.5rem,   // 30px
+  5: 2rem,     // 40px
+);
+
+// Shadow utility scale — mirrors --dx-shadow-* CSS tokens.
+// Generates .dx-shadow-* utility classes (see bootstrap/_override.scss).
+// Using var() references avoids SCSS comma-list issues with multi-layer shadows.
+$dx-shadows: (
+  'none': var(--dx-shadow-none),
+  '2xs':  var(--dx-shadow-2xs),
+  'xs':   var(--dx-shadow-xs),
+  'sm':   var(--dx-shadow-sm),
+  'md':   var(--dx-shadow-md),
+  'lg':   var(--dx-shadow-lg),
+  'xl':   var(--dx-shadow-xl),
+  '2xl':  var(--dx-shadow-2xl),
+);
+
+// Border-radius utility scale — mirrors --dx-radius-* CSS tokens.
+// Generates .dx-rounded-* utility classes (see bootstrap/_override.scss).
+$dx-radii: (
+  '0':      0,
+  'sm':     var(--dx-radius-sm),     //  5px (0.25rem)
+  'md':     var(--dx-radius-md),     // 10px (0.5rem)
+  'lg':     var(--dx-radius-lg),     // 20px (1rem)
+  'circle': var(--dx-radius-circle), // 50%
+);
+
+// Z-index scale — mirrors --dx-z-* CSS tokens.
+// Generates .dx-z-* utility classes (see bootstrap/_override.scss).
+$dx-z-index: (
+  'hide':               -1,
+  'base':                1,
+  'dropdown':         1000,
+  'sticky':           1020,
+  'fixed':            1030,
+  'offcanvas-backdrop': 1040,
+  'offcanvas':        1045,
+  'modal-backdrop':   1050,
+  'modal':            1055,
+  'popover':          1070,
+  'tooltip':          1080,
+  'toast':            1090,
+  'loader':           1100,
+  'notification':     1200,
+);

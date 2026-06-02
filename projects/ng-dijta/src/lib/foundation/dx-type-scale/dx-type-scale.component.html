@@ -1,0 +1,91 @@
+<div class="dx-type-scale dx-typography">
+
+  <!-- Controls -->
+  <div class="dx-ts-controls">
+    <mat-form-field appearance="outline" class="dx-ts-select">
+      <mat-label>Font Family</mat-label>
+      <mat-select [(ngModel)]="selectedFamily">
+        @for (f of fontFamilies; track f) {
+          <mat-option [value]="f">{{ f }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="dx-ts-select">
+      <mat-label>Typography Level</mat-label>
+      <mat-select [(ngModel)]="selectedLevelKey">
+        @for (l of levels; track l.cssClass) {
+          <mat-option [value]="l.cssClass">{{ l.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- Preview Card -->
+  @if (selectedLevel; as level) {
+    <div class="dx-ts-preview-card">
+
+      <div class="dx-ts-preview-header">
+        <span class="dx-ts-level-label" [style.font-family]="selectedFamily">{{ level.label }}</span>
+        <div class="dx-ts-meta">
+          <div class="dx-ts-meta-col">
+            <span class="dx-ts-meta-key">Font Family</span>
+            <span class="dx-ts-meta-val">{{ selectedFamily }}</span>
+          </div>
+          <div class="dx-ts-meta-col">
+            <span class="dx-ts-meta-key">Font Size</span>
+            <span class="dx-ts-meta-val">{{ level.size }}</span>
+          </div>
+          <div class="dx-ts-meta-col">
+            <span class="dx-ts-meta-key">Letter Spacing</span>
+            <span class="dx-ts-meta-val">{{ level.letterSpacing }}</span>
+          </div>
+          <div class="dx-ts-meta-col">
+            <span class="dx-ts-meta-key">Line Height</span>
+            <span class="dx-ts-meta-val">{{ level.lineHeight }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Usage code snippets -->
+      <div class="dx-ts-usage-section">
+        <div class="dx-ts-usage-block">
+          <span class="dx-ts-usage-label">
+            <span class="dx-ts-usage-badge dx-ts-usage-badge--class">Class</span>
+            Apply inside a <code class="dx-ts-inline-code">dx-typography</code> parent
+          </span>
+          <pre class="dx-ts-code-block"><code [textContent]="classSnippet"></code></pre>
+        </div>
+        <div class="dx-ts-usage-block">
+          <span class="dx-ts-usage-label">
+            <span class="dx-ts-usage-badge dx-ts-usage-badge--scss">SCSS</span>
+            Use the <code class="dx-ts-inline-code">fontSize()</code> function after importing the theme
+          </span>
+          <pre class="dx-ts-code-block"><code [textContent]="scssSnippet"></code></pre>
+        </div>
+      </div>
+
+      <div class="dx-ts-preview-body">
+        @for (w of weights; track w.value) {
+          <div class="dx-ts-weight-row">
+            <p class="dx-ts-weight-label"
+               [style.font-family]="selectedFamily"
+               [style.font-weight]="w.value">
+              {{ w.label }}
+            </p>
+            <p class="dx-ts-sample-text"
+               [style.font-family]="selectedFamily"
+               [style.font-size]="level.size"
+               [style.font-weight]="w.value"
+               [style.letter-spacing]="level.letterSpacing"
+               [style.line-height]="level.lineHeight">
+              The quick brown fox jumps over the lazy dog.
+            </p>
+          </div>
+        }
+      </div>
+
+    </div>
+  }
+
+</div>

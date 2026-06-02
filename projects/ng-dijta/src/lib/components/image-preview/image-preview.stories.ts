@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata, applicationConfig } from '@storybook/angular';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
 import { ImagePreviewModule } from './image-preview.module';
 import { ImagePreviewDirective } from './image-preview.directive';
@@ -15,6 +16,8 @@ import { ModalModule } from '../modal';
 // ──────────────────────────────────────────────────────────────────────────
 
 @Component({
+  standalone: true,
+  imports: [CommonModule, ImagePreviewModule, ModalModule],
   selector: 'dx-image-preview-launcher',
   template: `
     <div [class.dx-image-preview-container]="true"
@@ -42,8 +45,7 @@ const meta: Meta<DxImagePreviewLauncher> = {
   component: DxImagePreviewLauncher,
   decorators: [
     moduleMetadata({
-      imports: [ImagePreviewModule, ModalModule],
-      declarations: [DxImagePreviewLauncher],
+      imports: [DxImagePreviewLauncher],
     }),
     applicationConfig({ providers: [provideAnimations()] }),
   ],

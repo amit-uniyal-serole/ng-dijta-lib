@@ -38,6 +38,8 @@ const SAMPLE_FILES: fileObject[] = [
 // popup and assigns config onto the child after view init, re-running ngOnInit
 // so `acceptFormat` is recomputed from the supplied `fileFormat`.
 @Component({
+  standalone: true,
+  imports: [DxUploadFilePopupModule],
   selector: 'dx-upload-file-popup-host',
   template: `
     <div style="max-width:560px; border:1px solid #e0e0e0; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,0.08); background:#fff; overflow:hidden;">
@@ -63,6 +65,8 @@ export class DxUploadFilePopupHost implements AfterViewInit {
 // Launcher — opens the real MatDialog and configures it via Object.assign,
 // exactly as a consumer would, then logs the returned FileList.
 @Component({
+  standalone: true,
+  imports: [MatButtonModule],
   selector: 'dx-upload-file-popup-launcher',
   template: `
     <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start;">
@@ -90,8 +94,7 @@ const meta: Meta<DxUploadFilePopupComponent> = {
   component: DxUploadFilePopupComponent,
   decorators: [
     moduleMetadata({
-      imports: [DxUploadFilePopupModule, MatDialogModule, MatButtonModule],
-      declarations: [DxUploadFilePopupHost, DxUploadFilePopupLauncher],
+      imports: [MatDialogModule, DxUploadFilePopupHost, DxUploadFilePopupLauncher],
     }),
     applicationConfig({ providers: [provideAnimations()] }),
   ],

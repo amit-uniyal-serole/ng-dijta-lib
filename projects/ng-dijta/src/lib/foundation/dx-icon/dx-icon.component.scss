@@ -1,0 +1,24 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dx-icon__inner {
+  color: inherit;
+  flex-shrink: 0;
+  user-select: none;
+
+  &.dx-icon--xs { font-size: 1rem;    width: 1rem;    height: 1rem;    }
+  &.dx-icon--sm { font-size: 1.25rem; width: 1.25rem; height: 1.25rem; }
+  &.dx-icon--md { font-size: 1.5rem;  width: 1.5rem;  height: 1.5rem;  }
+  &.dx-icon--lg { font-size: 2rem;    width: 2rem;    height: 2rem;    }
+  &.dx-icon--xl { font-size: 3rem;    width: 3rem;    height: 3rem;    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    transition: none;
+    animation: none;
+  }
+}
