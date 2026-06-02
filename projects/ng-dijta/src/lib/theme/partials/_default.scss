@@ -157,6 +157,12 @@
   --dx-radius-lg:     1rem;    /* 20px — modals, surfaces       */
   --dx-radius-circle: 50%;     /*  —   — avatars, icon buttons  */
 
+  /* ── Border Width Scale ─────────────────────────────────────────────────── */
+  --dx-border-none: 0px;  /*  0px — no border                       */
+  --dx-border-sm:   1px;  /*  1px — inputs, cards                   */
+  --dx-border-md:   2px;  /*  2px — focus rings, accents            */
+  --dx-border-lg:   4px;  /*  4px — emphasis, selected states       */
+
   /* ── Z-Index Scale ──────────────────────────────────────────────────────── */
   --dx-z-hide:               -1;   /* Visually hidden below stacking context   */
   --dx-z-base:                1;   /* Default stacked element                  */

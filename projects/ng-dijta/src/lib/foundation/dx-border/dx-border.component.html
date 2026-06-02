@@ -1,0 +1,214 @@
+<div class="dx-border-page">
+
+  <!-- ── Scale Overview ──────────────────────────────────────────────── -->
+  <section class="dx-bd-section">
+    <h2 class="dx-bd-section__title">Border Width Scale</h2>
+    <p class="dx-bd-section__desc">
+      4-step token scale from <code>none</code> to <code>lg</code>.
+      Reference via <code>var(--dx-border-*)</code> — never hardcode border-width values.
+    </p>
+
+    <div class="dx-bd-scale">
+      @for (token of tokens; track token.name) {
+        <button
+          class="dx-bd-card"
+          [class.dx-bd-card--active]="selectedSize === token.name"
+          (click)="select(token.name)"
+        >
+          <div class="dx-bd-card__preview">
+            <div
+              class="dx-bd-card__box"
+              [style.border-width]="'var(' + token.token + ', ' + token.value + ')'"
+              [style.border-style]="'solid'"
+              [style.border-color]="'var(--dx-primary, #1f3bb3)'"
+            ></div>
+          </div>
+
+          <code class="dx-bd-card__token">{{ token.token }}</code>
+
+          <div class="dx-bd-card__row">
+            <span class="dx-bd-card__size">{{ token.name }}</span>
+            @if (token.px > 0) {
+              <span class="dx-bd-card__divider">·</span>
+              <span class="dx-bd-card__value">{{ token.value }}</span>
+              <span class="dx-bd-card__divider">·</span>
+              <span class="dx-bd-card__px">{{ token.px }} px</span>
+            } @else {
+              <span class="dx-bd-card__divider">·</span>
+              <span class="dx-bd-card__value">{{ token.value }}</span>
+            }
+          </div>
+          <span class="dx-bd-card__usage">{{ token.usage }}</span>
+        </button>
+      }
+    </div>
+  </section>
+
+  <!-- ── Applied to Elements ─────────────────────────────────────────── -->
+  <section class="dx-bd-section">
+    <h2 class="dx-bd-section__title">Applied to Elements</h2>
+
+    <div class="dx-bd-demo">
+
+      <!-- Controls -->
+      <div class="dx-bd-controls">
+
+        <!-- Width -->
+        <div class="dx-bd-controls__group">
+          <span class="dx-bd-controls__label">Width</span>
+          <div class="dx-bd-btn-row">
+            @for (token of tokens; track token.name) {
+              <button
+                class="dx-bd-size-btn"
+                [class.dx-bd-size-btn--active]="selectedSize === token.name"
+                (click)="select(token.name)"
+              >
+                {{ token.name }}
+                @if (token.px > 0) {
+                  <span class="dx-bd-size-btn__px">{{ token.px }} px</span>
+                }
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="dx-bd-controls__divider"></div>
+
+        <!-- Style -->
+        <div class="dx-bd-controls__group">
+          <span class="dx-bd-controls__label">Style</span>
+          <div class="dx-bd-btn-row">
+            @for (s of styles; track s.name) {
+              <button
+                class="dx-bd-size-btn"
+                [class.dx-bd-size-btn--active]="selectedStyle === s.name"
+                (click)="selectStyle(s.name)"
+              >
+                {{ s.label }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="dx-bd-controls__divider"></div>
+
+        <!-- Color -->
+        <div class="dx-bd-controls__group">
+          <span class="dx-bd-controls__label">Color</span>
+          <div class="dx-bd-btn-row">
+            @for (c of colors; track c.name) {
+              <button
+                class="dx-bd-size-btn"
+                [class.dx-bd-size-btn--active]="selectedColor === c.name"
+                (click)="selectColor(c.name)"
+              >
+                <span
+                  class="dx-bd-color-dot"
+                  [style.background]="c.cssVar"
+                ></span>
+                {{ c.label }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Active class hint -->
+        <span class="dx-bd-controls__hint">
+          <code>{{ demoClass }}</code>
+        </span>
+
+      </div>
+
+      <!-- Gallery -->
+      <div class="dx-bd-gallery">
+
+        <!-- Button -->
+        <div class="dx-bd-row">
+          <span class="dx-bd-row__label">Button</span>
+          <div class="dx-bd-row__items">
+            <button class="dx-bd-el-btn dx-bd-el-btn--primary" [ngStyle]="demoStyle">
+              Primary
+            </button>
+            <button class="dx-bd-el-btn dx-bd-el-btn--outline" [ngStyle]="demoStyle">
+              Outline
+            </button>
+            <button class="dx-bd-el-btn dx-bd-el-btn--ghost" [ngStyle]="demoStyle">
+              Ghost
+            </button>
+          </div>
+        </div>
+
+        <!-- Chip / Badge -->
+        <div class="dx-bd-row">
+          <span class="dx-bd-row__label">Chip · Badge</span>
+          <div class="dx-bd-row__items">
+            <span class="dx-bd-el-chip"                    [ngStyle]="demoStyle">Design</span>
+            <span class="dx-bd-el-chip dx-bd-el-chip--success" [ngStyle]="demoStyle">Active</span>
+            <span class="dx-bd-el-chip dx-bd-el-chip--warning" [ngStyle]="demoStyle">Pending</span>
+            <span class="dx-bd-el-chip dx-bd-el-chip--error"   [ngStyle]="demoStyle">Error</span>
+          </div>
+        </div>
+
+        <!-- Input -->
+        <div class="dx-bd-row">
+          <span class="dx-bd-row__label">Input</span>
+          <div class="dx-bd-row__items">
+            <div class="dx-bd-el-input" [ngStyle]="demoStyle">
+              <span class="dx-bd-el-input__label">Email address</span>
+              <span class="dx-bd-el-input__value">user&#64;example.com</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card -->
+        <div class="dx-bd-row">
+          <span class="dx-bd-row__label">Card</span>
+          <div class="dx-bd-row__items">
+            <div class="dx-bd-el-card" [ngStyle]="demoStyle">
+              <div class="dx-bd-el-card__header">
+                <span class="dx-bd-el-card__title">Card Title</span>
+              </div>
+              <div class="dx-bd-el-card__body">
+                A card uses <code>--dx-border-sm</code> for its frame and
+                <code>--dx-outline</code> for the color token.
+              </div>
+              <div class="dx-bd-el-card__footer">
+                <button class="dx-bd-el-btn dx-bd-el-btn--primary" [ngStyle]="demoStyle">
+                  Action
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Utility Class Reference ─────────────────────────────────────── -->
+  <section class="dx-bd-section">
+    <h2 class="dx-bd-section__title">Utility Classes</h2>
+    <p class="dx-bd-section__desc">
+      Generated from <code>$dx-borders</code> map — each class sets
+      <code>border-width</code> via its <code>--dx-border-*</code> token.
+      Click any chip to copy.
+    </p>
+
+    <div class="dx-bd-chips">
+      @for (name of borderNames; track name) {
+        <button
+          class="dx-bd-chip-btn"
+          [class.dx-bd-chip-btn--copied]="copiedClass === ('dx-border-' + name)"
+          (click)="copyClass('dx-border-' + name)"
+          [title]="'border-width: var(--dx-border-' + name + ')'">
+          @if (copiedClass === ('dx-border-' + name)) {
+            <mat-icon class="dx-bd-chip-btn__icon">check</mat-icon>
+          } @else {
+            dx-border-{{ name }}
+          }
+        </button>
+      }
+    </div>
+  </section>
+
+</div>

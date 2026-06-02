@@ -37,6 +37,7 @@ import { DxBorderRadiusModule } from "projects/ng-dijta/src/lib/foundation/dx-bo
 import { DxShadowModule } from "projects/ng-dijta/src/lib/foundation/dx-shadow/dx-shadow.module";
 import { DxZIndexModule } from "projects/ng-dijta/src/lib/foundation/dx-z-index/dx-z-index.module";
 import { DxIconModule } from "projects/ng-dijta/src/lib/foundation/dx-icon/dx-icon.module";
+import { DxBorderModule } from "projects/ng-dijta/src/lib/foundation/dx-border/dx-border.module";
 import { PreviewComponent } from "./pages/preview/preview.component";
 
 
@@ -111,6 +112,7 @@ import { PreviewComponent } from "./pages/preview/preview.component";
     DxShadowModule,
     DxZIndexModule,
     DxIconModule,
+    DxBorderModule,
     ToastrModule.forRoot(),
     ],
     providers: [

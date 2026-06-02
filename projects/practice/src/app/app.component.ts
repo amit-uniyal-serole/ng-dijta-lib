@@ -219,6 +219,35 @@ export class AppComponent implements OnInit {
       ].join('\n');
     }
 
+    if (comp.selector === 'dx-border') {
+      return [
+        `// ── Utility class usage (generated from $dx-borders) ─────────────────`,
+        `<div class="dx-border-sm">…</div>   // border-width: 1px`,
+        `<div class="dx-border-md">…</div>   // border-width: 2px`,
+        `<div class="dx-border-lg">…</div>   // border-width: 4px`,
+        `<div class="dx-border-none">…</div> // border-width: 0px (remove border)`,
+        ``,
+        `// ── CSS token usage in SCSS ───────────────────────────────────────────`,
+        `.dx-input  { border-width: var(--dx-border-sm); }  // 1px`,
+        `.dx-focus  { border-width: var(--dx-border-md); }  // 2px — focus ring`,
+        `.dx-selected { border-width: var(--dx-border-lg); } // 4px — emphasis`,
+        ``,
+        `// ── Combine with color and style tokens ──────────────────────────────`,
+        `.dx-card {`,
+        `  border: var(--dx-border-sm) solid var(--dx-outline);`,
+        `}`,
+        `.dx-card:focus-visible {`,
+        `  border: var(--dx-border-md) solid var(--dx-primary);`,
+        `}`,
+        ``,
+        `// ── Scale ────────────────────────────────────────────────────────────`,
+        `// --dx-border-none  0px   no border`,
+        `// --dx-border-sm    1px   inputs · cards`,
+        `// --dx-border-md    2px   focus rings · accents`,
+        `// --dx-border-lg    4px   emphasis · selected states`,
+      ].join('\n');
+    }
+
     if (comp.selector === 'dx-colors') {
       return [
         `/* Use CSS custom properties directly */`,

@@ -226,6 +226,15 @@ $dx-shadows: (
   '2xl':  var(--dx-shadow-2xl),
 );
 
+// Border-width utility scale — mirrors --dx-border-* CSS tokens.
+// Generates .dx-border-* utility classes (see bootstrap/_override.scss).
+$dx-borders: (
+  'none': var(--dx-border-none), //  0px
+  'sm':   var(--dx-border-sm),   //  1px
+  'md':   var(--dx-border-md),   //  2px
+  'lg':   var(--dx-border-lg),   //  4px
+);
+
 // Border-radius utility scale — mirrors --dx-radius-* CSS tokens.
 // Generates .dx-rounded-* utility classes (see bootstrap/_override.scss).
 $dx-radii: (

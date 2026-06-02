@@ -30,6 +30,11 @@
   .dx-shadow-#{$name} { box-shadow: $value !important; }
 }
 
+// dx-border-* utility classes — one class per border-width token level.
+@each $name, $value in $dx-borders {
+  .dx-border-#{$name} { border-width: $value !important; border-style: solid; }
+}
+
 // dx-text-* / dx-bg-* color utility classes — mirrors $dx-colors map.
 @each $name, $value in $dx-colors {
   .dx-text-#{$name} { color: $value !important; }

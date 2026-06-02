@@ -13,6 +13,7 @@ import { DxBorderRadiusComponent } from 'projects/ng-dijta/src/lib/foundation/dx
 import { DxShadowComponent } from 'projects/ng-dijta/src/lib/foundation/dx-shadow/dx-shadow.component';
 import { DxZIndexComponent } from 'projects/ng-dijta/src/lib/foundation/dx-z-index/dx-z-index.component';
 import { DxIconExplorerComponent } from 'projects/ng-dijta/src/lib/foundation/dx-icon/dx-icon-explorer.component';
+import { DxBorderComponent } from 'projects/ng-dijta/src/lib/foundation/dx-border/dx-border.component';
 import { PreviewComponent } from './pages/preview/preview.component';
 
 export const routes: Routes = [
@@ -39,4 +40,5 @@ export const routes: Routes = [
   { path: 'shadow',        component: DxShadowComponent },
   { path: 'z-index',       component: DxZIndexComponent },
   { path: 'icons',         component: DxIconExplorerComponent },
+  { path: 'border',        component: DxBorderComponent },
 ];

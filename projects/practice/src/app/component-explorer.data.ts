@@ -102,6 +102,19 @@ export const COMPONENT_CATEGORIES: ComponentCategory[] = [
         ],
       },
       {
+        name: 'Border',
+        selector: 'dx-border',
+        routeIsPreview: false,
+        route: 'border',
+        description: '4-step border-width scale from none to lg — CSS tokens + .dx-border-* utility classes for inputs, cards, chips, and focus rings.',
+        properties: [
+          { name: '--dx-border-none', type: 'CSS var', default: '0px',  description: 'No border — removes border entirely.' },
+          { name: '--dx-border-sm',   type: 'CSS var', default: '1px',  description: '1 px — default input and card border.' },
+          { name: '--dx-border-md',   type: 'CSS var', default: '2px',  description: '2 px — focus rings and accented borders.' },
+          { name: '--dx-border-lg',   type: 'CSS var', default: '4px',  description: '4 px — emphasis and selected-state borders.' },
+        ],
+      },
+      {
         name: 'Z-Index',
         selector: 'dx-z-index',
         routeIsPreview: false,
